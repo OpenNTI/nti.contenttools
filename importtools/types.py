@@ -12,8 +12,8 @@ class _Node( object ):
     def add_child( self, child ):
         if self.children == ():
             self.children = []
-        self.children.append( child )
         if isinstance( child, _Node ):
+            self.children.append( child )
             child.__parent__ = self
 
     def remove_child( self, child ):
