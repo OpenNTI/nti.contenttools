@@ -20,6 +20,14 @@ class _Node( object ):
         self.children.remove( child )
         child.__parent__ = None
 
+    def render( self ):
+        result = u''
+        
+        for child in self.children:
+            result = result + child.render()
+
+        return result
+
 class TextNode(_Node, frg_interfaces.PlainTextContentFragment):
     __slots__ = frg_interfaces.PlainTextContentFragment.__slots__ + ('children','__parent__')
 
@@ -29,6 +37,9 @@ class TextNode(_Node, frg_interfaces.PlainTextContentFragment):
     def __init__( self, text='' ):
         # Note: __new__ does all the actual work, because these are immutable as strings
         super(TextNode,self).__init__( self, PlainTextToLatexFragmentConverter(text) )
+
+    def render( self ):
+        return unicode( self )
 
 class _Container(_Node, frg_interfaces.LatexContentFragment):
     __slots__ = frg_interfaces.LatexContentFragment.__slots__ + ('children','__parent__')
@@ -198,13 +209,13 @@ class _EnvironmentElement( _Node ):
             self.optional = ''
 
     def __str__( self ):
-        body = ''
-        optional = ''
+        body = u''
+        optional = u''
         if self.optional:
-            optional = '[' + self.optional + ']'
+            optional = u'[' + self.optional + u']'
         if self.children:
             for child in self.children:
-                body = body + unicode(child) + '\n'
+                body = body + unicode(child) + u'\n'
             return '\\begin{' + self.element + '}' + optional + '\n' + body + '\\end{' + self.element + '}'
         else:
             return ''
