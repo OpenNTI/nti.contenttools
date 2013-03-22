@@ -1,15 +1,15 @@
 from . import _DocxStructureElement
 from . import process_border
 from . import properties as docx
-#from ..word2latex import processParagraph
+from .paragraph import Paragraph
 
 class Table( _DocxStructureElement ):
-    grid = []
-    borders = {}
 
     @classmethod
     def process( cls, table, doc, rels=None ):
         me = cls()
+        me.grid = []
+        me.borders = {}
 
         if rels is None:
             rels = doc.relationships
@@ -17,7 +17,9 @@ class Table( _DocxStructureElement ):
 	# Parse element and determine table properties
         for element in table.iterchildren():
             if element.tag == '{'+docx.nsprefixes['w']+'}tblGrid':
+                print('processing grid\n%s' % me.grid)
                 me.process_grid( element )
+                print(me.grid)
             elif element.tag == '{'+docx.nsprefixes['w']+'}tblPr':
                 me.process_properties( element, doc, rels=rels )
             elif element.tag == '{'+docx.nsprefixes['w']+'}tr':
@@ -45,18 +47,18 @@ class Table( _DocxStructureElement ):
             return me
 
         class Cell( _DocxStructureElement ):
-
+            
             @classmethod
             def process( cls, cell, doc, rels=None ):
                 me = cls()
+                me.grid_span = 1
 
                 if rels is None:
                     rels = doc.relationships
 
                 for element in cell.iterchildren():
                     if element.tag == '{'+docx.nsprefixes['w']+'}p':
-                        pass
-                            #me.add_child( processParagraph( element, doc, rels=rels ) )
+                        me.add_child( Paragraph.process( element, doc, rels=rels ) )
                     elif element.tag == '{'+docx.nsprefixes['w']+'}tcPr':
                         me.process_properties( element )
                     else:
@@ -75,7 +77,8 @@ class Table( _DocxStructureElement ):
                     elif element.tag == '{'+docx.nsprefixes['w']+'}cnfStyle':
                         pass
                     elif element.tag == '{'+docx.nsprefixes['w']+'}gridSpan':
-                        pass
+                        self.grid_span = int(element.attrib['{'+docx.nsprefixes['w']+'}val'])
+                        print(self.grid_span)
                     elif element.tag == '{'+docx.nsprefixes['w']+'}headers':
                         pass
                     elif element.tag == '{'+docx.nsprefixes['w']+'}hideMark':
@@ -139,7 +142,9 @@ class Table( _DocxStructureElement ):
                 elif element.tag == '{'+docx.nsprefixes['w']+'}tblHeader':
                     self.header = True
                 elif element.tag == '{'+docx.nsprefixes['w']+'}trHeight':
-                    mode = element.attrib['{'+docx.nsprefixes['w']+'}hRule'] 
+                    mode = 'auto'
+                    if '{'+docx.nsprefixes['w']+'}hRule' in element.attrib.keys():
+                        mode = element.attrib['{'+docx.nsprefixes['w']+'}hRule']
                     value = element.attrib['{'+docx.nsprefixes['w']+'}val']
                     self.height = ( mode, value )
                 elif element.tag == '{'+docx.nsprefixes['w']+'}trPrChange':
@@ -184,6 +189,8 @@ class Table( _DocxStructureElement ):
                     self.grid.append(element.attrib['{'+docx.nsprefixes['w']+'}w'])
                 else:
                     print('Did not handle table grid property: %s' % element.tag)
+            elif element.tag == '{'+docx.nsprefixes['w']+'}tblGridChange':
+                pass
             else:
                 print('Did not handle table grid element: %s' % element.tag)
 
