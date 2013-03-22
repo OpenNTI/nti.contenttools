@@ -22,7 +22,10 @@ class _Node( object ):
 
     def render( self ):
         result = u''
-        
+
+        if not hasattr(self, 'children'):
+            return self
+
         for child in self.children:
             result = result + child.render()
 
