@@ -102,5 +102,11 @@ def process_border( border ):
             borders['start'] = process_attributes( element.attrib )
         elif element.tag == '{'+docx.nsprefixes['w']+'}top':
             borders['top'] = process_attributes( element.attrib )
+        elif element.tag == '{'+docx.nsprefixes['w']+'}left':
+            borders['left'] = process_attributes( element.attrib )
+        elif element.tag == '{'+docx.nsprefixes['w']+'}right':
+            borders['right'] = process_attributes( element.attrib )
+        else:
+            print(element.tag)
 
     return borders
