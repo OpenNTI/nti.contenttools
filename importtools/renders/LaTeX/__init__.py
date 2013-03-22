@@ -1,105 +1,37 @@
 from ...docx.paragraph import Item, List, Paragraph, Run, OrderedList, UnorderedList, Note, Newline, Hyperlink, Image
-from ... import types
+from ...docx.table import Table
+from .base import base_renderer
+from .assessment import *
+from .image import *
+from .list import *
+from .paragraph import *
+from .run import *
+from .table import *
 
 
-def baseRenderer(self):
-    result = u''
+def note_renderer(self):
+    return u'\\footnote{%s}' % base_renderer(self)
 
-    for child in self.children:
-        result = result + child.render()
-
-    return result
-
-def paragraphRenderer(self):
-    STYLES = { 'Heading1': types.Chapter,
-               'Heading2': types.Section,
-               'Heading3': types.SubSection,
-               'Heading4': types.SubSubSection,
-               'Heading5': types.Paragraph,
-               'Heading6': types.SubParagraph,
-               'Heading7': types.SubSubParagraph}
-
-    result = baseRenderer(self) + u'\n'
-
-    for style in self.styles:
-        if style in STYLES.keys():
-            result = STYLES[style](result)
-        else:
-            print('Unhandled paragraph style: %s' % style)
-
-    return result
-
-def runRenderer(self):
-    STYLES = { 'bold': types.TextBF,
-               'inserted': types.Modified,
-               'italic': types.TextIT,
-               'strike': types.Strikeout,
-               'underline': types.Uline}
-
-    result = baseRenderer(self)
-
-    for style in self.styles:
-        if style in STYLES.keys():
-            result = STYLES[style](result)
-        else:
-            print('Unhandled run style: %s' % style)
-
-    return result
-
-
-def environmentRenderer( self, element, optional ):
-    body = baseRenderer(self)
-    return u'\\begin{%s}%s\n%s\\end{%s}\n' % ( element, optional, body, element)
-
-def orderedListRenderer(self):
-    optional = u''
-    if self.format == 'decimal':
-        optional = u'1'
-    elif self.format == 'lowerLetter':
-        optional = u'a'
-    elif self.format == 'upperLetter':
-        optional = u'A'
-    elif self.format == 'lowerRoman':
-        optional = u'i'
-    elif self.format == 'upperRoman':
-        optional = u'I'
-
-    if self.start != 1:
-        optional = optional + u', start=%s' % self.start
-
-    if optional:
-        optional = u'[' + optional + u']'
-
-    return environmentRenderer(self, u'enumerate', optional)
-
-def listRenderer(self):
-    return environmentRenderer(self, u'itemize', u'')
-
-def itemRenderer(self):
-    return u'\\item %s' % baseRenderer(self)
-
-def noteRenderer(self):
-    return u'\\footnote{%s}' % baseRenderer(self)
-
-def newlineRenderer(self):
-    return u'\\newline'
-
-def hyperlinkRenderer(self):
+def hyperlink_renderer(self):
     result = u''
     if self.type == 'Normal':
-        result = u'\\href{%s}{%s}' % (self.target, baseRenderer(self))
+        result = u'\\href{%s}{%s}' % (self.target, base_renderer(self))
     elif self.type == 'YouTube':
-        result = u'\\href{%s}{%s}' % (self.target, baseRenderer(self))
+        result = u'\\ntiincludevideo{%s}' % self.target
     elif self.type == 'Thumbnail':
-        result = u'\\href{%s}{%s}' % (self.target, baseRenderer(self))
+        result = u'\\href{%s}{%s}' % (self.target, base_renderer(self))
     return result
 
-Paragraph.render = paragraphRenderer
-Run.render = runRenderer
-OrderedList.render = orderedListRenderer
-UnorderedList.render = listRenderer
-List.render = listRenderer
-Item.render = itemRenderer
-Note.render = noteRenderer
-Newline.render = newlineRenderer
-Hyperlink.render = hyperlinkRenderer
+Paragraph.render = paragraph_renderer
+Run.render = run_renderer
+OrderedList.render = ordered_list_renderer
+UnorderedList.render = list_renderer
+List.render = list_renderer
+Item.render = item_renderer
+Note.render = note_renderer
+Newline.render = newline_renderer
+Hyperlink.render = hyperlink_renderer
+Table.render = table_renderer
+Table.Row.render = table_row_renderer
+Table.Row.Cell.render = table_cell_renderer
+Image.render = image_annotation_renderer
