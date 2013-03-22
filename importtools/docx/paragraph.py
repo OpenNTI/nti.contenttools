@@ -74,11 +74,11 @@ class Paragraph( _DocxStructureElement ):
             # Check for NTI Tags
             s,v = doc.tagparser.parse_line( me.raw() )
             if s != 'IDLE':
-                me = ''
+                me = None
             if v:
                 me = v
 
-	if me is not None and  me.numbering is not None:
+	if me is not None and hasattr(me, 'numbering') and me.numbering is not None:
             item = Item()
             item.add_child(me)
             me.numbering.add_child( item )
@@ -388,7 +388,7 @@ class Hyperlink( _DocxStructureElement ):
             netloc = 'www.youtube.com'
             path = '/embed'
             query = { 'html5': '1', 'rel': '0' }
-            parsed_url = urlparse.urlsplit( me.target )
+            parsed_url = urlparse.urlsplit( self.target )
 
             if len(parsed_url.path.split('/')) > 2:
                 # Then assume that we were passed a more complete URL
@@ -439,6 +439,9 @@ class Image( _DocxStructureElement ):
                     self.height = (float(element.attrib['cy']) / 914400)
                 if 'cx' in element.attrib:
                     self.width = (float(element.attrib['cx']) / 914400)
+
+        # Set the image path
+        self.path = os.path.join( doc.IMAGE_FOLDER , os.path.splitext( os.path.basename(self.target) )[0] )
 
 
 def processField( field, doc, result, rels=None ):
