@@ -83,6 +83,7 @@ def processDocument( doc ):
 
 	doc.tagparser = NTITagParser()
 	doc.numbering_collection = {}
+	doc.IMAGE_FOLDER = IMAGE_FOLDER
 
 	# Iterate over the structure of the document, process document body
 	for element in doc.document.iterchildren():
