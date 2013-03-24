@@ -45,25 +45,6 @@ class _DocxStructureElement( _Node ):
         self.styles.remove(style)
 
 
-class _TextRun( _DocxStructureElement ):
-    STYLES = { 'bold': TextBF,
-               'inserted': Modified,
-               'italic': TextIT,
-               'strike': Strikeout,
-               'underline': Uline}
-
-class _Paragraph( _DocxStructureElement ):
-    STYLES = { 'Heading1': Chapter,
-               'Heading2': Section,
-               'Heading3': SubSection,
-               'Heading4': SubSubSection,
-               'Heading5': Paragraph,
-               'Heading6': SubParagraph,
-               'Heading7': SubSubParagraph}
-
-    def __str__( self ):
-        return '' + super(_Paragraph, self).__str__() + '\n'
-
 def process_border( border ):
 
     def process_attributes( attributes ):
