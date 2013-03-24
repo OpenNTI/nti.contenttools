@@ -5,12 +5,43 @@ This parses out assessment questions from text blocks.  Currently it can handle 
 
 """
 
-
-
 import os
 import sys
 
-from .types import *
+from .types import _Node, TextNode
+
+
+class NAQChoice( _Node ):
+    pass
+
+
+class NAQChoices( _Node ):
+    pass
+
+
+class NAQSolution( _Node ):
+    pass
+
+
+class NAQSolutions( _Node ):
+    pass
+
+
+class NAQHint( _Node ):
+    pass
+
+
+class NAQHints( _Node ):
+    pass
+
+
+class NAQuestionPart( _Node ):
+    pass
+
+
+class NAQuestion( _Node ):
+    pass
+
 
 class _Parser( object ):
 
@@ -95,7 +126,7 @@ class AssessmentParser( _Parser ):
         return (self.state, self._val)
 
     def _question_handler( self, line ):
-        self.question = TextNode( line.strip() )
+        self.question = TextNode( line.strip() + u'\n' )
 
     def _choice_handler( self, line ):
         if line[0] in [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ]:
@@ -112,28 +143,25 @@ class AssessmentParser( _Parser ):
                     if line.strip() == self.choice_list[i]:
                         self.answer_list.append(i)
             else:
-                self.solutions.add_child( NAQSolution( line.strip(), '1' ) )
+                solution = NAQSolution()
+                solution.optional = '1'
+                solution.add_child( TextNode( line.strip() ) )
+                self.solutions.add_child( solution )
 
     def _hint_handler( self, line ):
         if self.hint is None:
             self.hint = NAQHints()
 
         if line.strip() is not '':
-            self.hint.add_child( NAQHint( line.strip() ) )
+            hint = NAQHint()
+            hint.add_child( TextNode( line.strip() ) )
+            self.hint.add_child( hint )
         else:
             self.hint = None
 
     def _finished_handler( self, line ):
-        # Determine which question type we are
-        elem = None
-        if self.choice_list:
-            if len(self.answer_list) > 1:
-                elem = NAQMultipleChoiceMultipleAnswerPart()
-            else:
-                elem = NAQMultipleChoicePart()
-        else:
-            elem = NAQFreeResponsePart()
-
+        elem = NAQuestionPart()
+ 
         # Add the question text child
         elem.add_child( self.question )
 
@@ -141,9 +169,14 @@ class AssessmentParser( _Parser ):
         if self.choice_list:
             for i in range(len(self.choice_list)):
                 if i in self.answer_list:
-                    self.choices.add_child( NAQChoice(self.choice_list[i], '1') )
+                    choice = NAQChoice()
+                    choice.optional = '1'
+                    choice.add_child( TextNode( self.choice_list[i] ) )
+                    self.choices.add_child( choice )
                 else:
-                    self.choices.add_child( NAQChoice(self.choice_list[i]) )
+                    choice = NAQChoice()
+                    choice.add_child( TextNode( self.choice_list[i] ) )
+                    self.choices.add_child( choice )
             elem.add_child(self.choices)
         else:
             elem.add_child(self.solutions)

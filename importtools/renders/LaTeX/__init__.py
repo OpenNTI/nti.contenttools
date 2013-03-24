@@ -1,5 +1,6 @@
 from ...docx.paragraph import Item, List, Paragraph, Run, OrderedList, UnorderedList, Note, Newline, Hyperlink, Image
 from ...docx.table import Table
+from ...tag_parser import NAQuestion, NAQuestionPart, NAQChoices, NAQChoice, NAQSolutions, NAQSolution, NAQHints, NAQHint, NAQExplanation
 from .base import base_renderer
 from .assessment import *
 from .image import *
@@ -35,3 +36,9 @@ Table.render = table_renderer
 Table.Row.render = table_row_renderer
 Table.Row.Cell.render = table_cell_renderer
 Image.render = image_annotation_renderer
+NAQuestion.render = question_renderer
+NAQuestionPart.render = question_part_renderer
+NAQChoices.render = choices_renderer
+NAQChoice.render = choice_renderer
+NAQSolutions.render = solutions_renderer
+NAQSolution.render = solution_renderer
