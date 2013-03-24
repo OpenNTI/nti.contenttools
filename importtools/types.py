@@ -112,59 +112,8 @@ class DocumentClass(_WrappedElement):
 class UsePackage(_WrappedElement):
     wrapper = 'usepackage'
 
-class Footnote(_WrappedElement):
-    wrapper = 'footnote'
-
-class Chapter(_WrappedElement):
-    wrapper = 'chapter'
-
-class Section(_WrappedElement):
-    wrapper = 'section'
-
-class SubSection(_WrappedElement):
-    wrapper = 'subsection'
-
-class SubSubSection(_WrappedElement):
-    wrapper = 'subsubsection'
-
-class Paragraph(_WrappedElement):
-    wrapper = 'paragraph'
-
-class SubParagraph(_WrappedElement):
-    wrapper = 'subparagraph'
-
-class SubSubParagraph(_WrappedElement):
-    wrapper = 'subsubparagraph'
-
-class Label(_WrappedElement):
-    wrapper = 'label'
-
 class Title(_WrappedElement):
     wrapper = 'title'
-
-class Author(_WrappedElement):
-    wrapper = 'author'
-
-class Modified(_WrappedElement):
-    wrapper = 'modified'
-
-class Strikeout(_WrappedElement):
-    wrapper = 'sout'
-
-class TextIT(_WrappedElement):
-    wrapper = 'textit'
-
-class TextBF(_WrappedElement):
-    wrapper = 'textbf'
-
-class Uline(_WrappedElement):
-    wrapper = 'uline'
-
-class NTIIncludeVideo(_WrappedElement):
-    wrapper = 'ntiincludevideo'
-
-class NTIImageHref(_WrappedElement):
-    wrapper = 'ntiimagehref'
 
 class _SimpleElement( _Container ):
     element = None
@@ -190,18 +139,6 @@ class Quad( _SimpleElement ):
 class QQuad( _SimpleElement ):
     element = 'qquad'
 
-class Item( _SimpleElement ):
-    element = 'item'
-
-class NAQChoice( _SimpleElement ):
-    element = 'naqchoice'
-
-class NAQSolution( _SimpleElement ):
-    element = 'naqsolution'
-
-class NAQHint( _SimpleElement ):
-    element = 'naqhint'
-
 class _EnvironmentElement( _Node ):
     element = None
 
@@ -222,57 +159,4 @@ class _EnvironmentElement( _Node ):
             return '\\begin{' + self.element + '}' + optional + '\n' + body + '\\end{' + self.element + '}'
         else:
             return ''
-
-class Document( _EnvironmentElement ):
-    element = 'document'
-
-class NAQChoices( _EnvironmentElement ):
-    element = 'naqchoices'
-
-class NAQSolutions( _EnvironmentElement ):
-    element = 'naqsolutions'
-
-class NAQHints( _EnvironmentElement ):
-    element = 'naqhints'
-
-class NAQMultipleChoicePart( _EnvironmentElement ):
-    element = 'naqmultiplechoicepart'
-
-class NAQMultipleChoiceMultipleAnswerPart( _EnvironmentElement ):
-    element = 'naqmultiplechoicemultipleanswerpart'
-
-class NAQFreeResponsePart( _EnvironmentElement ):
-    element = 'naqfreeresponsepart'
-
-class NAQuestion( _EnvironmentElement ):
-    element = 'naquestion'
-
-class _List( _EnvironmentElement ):
-    level = ''
-    group = ''
-    start = 0
-
-class Enumerate( _List ):
-    element = 'enumerate'
-    format = 'decimal'
-
-    def __str__( self ):
-        if self.format == 'decimal':
-            self.optional = '1'
-        elif self.format == 'lowerLetter':
-            self.optional = 'a'
-        elif self.format == 'upperLetter':
-            self.optional = 'A'
-        elif self.format == 'lowerRoman':
-            self.optional = 'i'
-        elif self.format == 'upperRoman':
-            self.optional = 'I'
-
-        if self.start != 1:
-            self.optional = self.optional + ', start=%s' % self.start
-
-        return super( Enumerate, self ).__str__()
-
-class Itemize( _List ):
-    element = 'itemize'
 
