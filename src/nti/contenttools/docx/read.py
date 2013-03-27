@@ -26,6 +26,7 @@ class DocxFile( object ):
     def __init__( self, filename, image_dir='Images' ):
         self.zip = ZipFile( filename )
         self.image_dir = image_dir
+        self.title = u''
 	_document = ElementTree.fromstring(self.zip.read('word/document.xml'))
 	self.relationships = ElementTree.fromstring(self.zip.read('word/_rels/document.xml.rels'))
 	try:
