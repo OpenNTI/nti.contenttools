@@ -1,8 +1,0 @@
-[question]
-What song do we sing to welcome people?
-[answers]
-The Hello Song
-Hello Song
-hello song
-the hello song
-
