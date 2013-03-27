@@ -47,48 +47,6 @@ class TextNode(_Node, frg_interfaces.PlainTextContentFragment):
 class _Container(_Node, frg_interfaces.LatexContentFragment):
     __slots__ = frg_interfaces.LatexContentFragment.__slots__ + ('children','__parent__')
 
-class Newline(_Container):
-
-    def __new__( cls ):
-        return super(Newline,cls).__new__( cls, '\\newline\n' )
-
-    def __init__( self ):
-        super(Newline,self).__init__( self, '\\newline\n' )
-
-class href(_Container):
-
-    def __new__( cls, url, text=None ):
-        if text:
-            _t = url + '}{' + text
-        else:
-            _t = url
-        return super(href,cls).__new__( cls, '\\href{' + _t + '}' )
-
-    def __init__( self, url, text=None ):
-        # Note: __new__ does all the actual work, because these are immutable as strings
-        if text:
-            _t = url + '}{' + text
-        else:
-            _t = url
-        super(href,self).__init__( self, '\\href{' + _t + '}' )
-
-class Image(_Container):
-
-    def __new__( cls, image_file, parms=None ):
-        if parms:
-            _t = '[%s]{%s}' % (parms,image_file)
-        else:
-            _t = '{%s}' % image_file
-        return super(Image,cls).__new__( cls, '\\includegraphics' + _t  )
-
-    def __init__( self, image_file, parms=None ):
-        # Note: __new__ does all the actual work, because these are immutable as strings
-        if parms:
-            _t = '[%s]{%s}' % (parms,image_file)
-        else:
-            _t = '{%s}' % image_file
-        super(Image,self).__init__( self, '\\includegraphics' + _t  )
-
 class _WrappedElement(_Container):
     wrapper = None
 
@@ -138,25 +96,4 @@ class Quad( _SimpleElement ):
 
 class QQuad( _SimpleElement ):
     element = 'qquad'
-
-class _EnvironmentElement( _Node ):
-    element = None
-
-    def __init__( self, optional='' ):
-        if optional:
-            self.optional = '[' + optional + ']'
-        else:
-            self.optional = ''
-
-    def __str__( self ):
-        body = u''
-        optional = u''
-        if self.optional:
-            optional = u'[' + self.optional + u']'
-        if self.children:
-            for child in self.children:
-                body = body + unicode(child) + u'\n'
-            return '\\begin{' + self.element + '}' + optional + '\n' + body + '\\end{' + self.element + '}'
-        else:
-            return ''
 
