@@ -1,5 +1,3 @@
-from lxml import etree
-
 # Import NTI things
 from nti.contentfragments import interfaces as frg_interfaces
 from nti.contentfragments.latex import PlainTextToLatexFragmentConverter
@@ -43,57 +41,3 @@ class TextNode(_Node, frg_interfaces.PlainTextContentFragment):
 
     def render( self ):
         return unicode( self )
-
-class _Container(_Node, frg_interfaces.LatexContentFragment):
-    __slots__ = frg_interfaces.LatexContentFragment.__slots__ + ('children','__parent__')
-
-class _WrappedElement(_Container):
-    wrapper = None
-
-    def __new__( cls, text, optional=''  ):
-        options = ''
-        if optional:
-            options = '[' + optional + '] '
-
-        return super(_WrappedElement,cls).__new__( cls, '\\' + cls.wrapper + '{' + unicode(text) + '}' + options )
-
-    def __init__( self, text='', optional=''  ):
-        # Note: __new__ does all the actual work, because these are immutable as strings
-        options = ''
-        if optional:
-            options = '[' + optional + '] '
-        super(_WrappedElement,self).__init__( self, '\\' + self.wrapper + '{' + text + '}' + options )
-
-class DocumentClass(_WrappedElement):
-    wrapper = 'documentclass'
-
-class UsePackage(_WrappedElement):
-    wrapper = 'usepackage'
-
-class Title(_WrappedElement):
-    wrapper = 'title'
-
-class _SimpleElement( _Container ):
-    element = None
-
-    def __new__( cls, text='', optional='' ):
-        if optional:
-            spacer = '[' + optional + '] '
-        else:
-            spacer = ' '
-        return super(_SimpleElement,cls).__new__( cls, '\\' + cls.element + spacer + unicode(text) )
-
-    def __init__( self, text='', optional='' ):
-        # Note: __new__ does all the actual work, because these are immutable as strings
-        if optional:
-            spacer = '[' + optional + '] '
-        else:
-            spacer = ' '
-        super(_SimpleElement,self).__init__( self, '\\' + self.element + spacer + unicode(text) )
-
-class Quad( _SimpleElement ):
-    element = 'quad'
-
-class QQuad( _SimpleElement ):
-    element = 'qquad'
-
