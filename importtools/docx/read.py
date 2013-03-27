@@ -9,7 +9,9 @@ import os
 from zipfile import ZipFile
 from parser import ElementTree
 
+from .document import Document
 from .numbering import process_numbering
+from ..tag_parser import NTITagParser
 
 DEFAULT_RELATIONSHIPS = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
@@ -24,7 +26,7 @@ class DocxFile( object ):
     def __init__( self, filename, image_dir='Images' ):
         self.zip = ZipFile( filename )
         self.image_dir = image_dir
-	self.document = ElementTree.fromstring(self.zip.read('word/document.xml'))
+	_document = ElementTree.fromstring(self.zip.read('word/document.xml'))
 	self.relationships = ElementTree.fromstring(self.zip.read('word/_rels/document.xml.rels'))
 	try:
             self.footnotes = ElementTree.fromstring(self.zip.read('word/footnotes.xml'))
@@ -54,6 +56,13 @@ class DocxFile( object ):
 
         self.image_list = []
 
+        # The numbering_collection attribute is used to determine what the next list item's number is
+        self.numbering_collection = {}
+        self.tagparser = NTITagParser()
+        # This call needs to be last, because we rely on other parts of this object to be initialized first
+        self.document = Document.process( _document, self )
+        self.document.title = self.title
+
     def get_images( self, dest ):
 	'''Retrieve a list of images from the specified document, 
 	which are then copied to the target destination directory.
@@ -72,3 +81,6 @@ class DocxFile( object ):
 		image_outfile.writelines(image_data)
 		image_outfile.close()
 	return True
+
+    def render(self):
+        return self.document.render()
