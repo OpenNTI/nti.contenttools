@@ -161,6 +161,14 @@ class AssessmentParser( _Parser ):
 
     def _finished_handler( self, line ):
         elem = NAQuestionPart()
+
+        if self.choice_list:
+            if len(self.answer_list) > 1:
+                elem.type = 'MultipleChoiceMultipleAnswer'
+            else:
+                elem.type = 'MultipleChoice'
+        else:
+            elem = 'FreeResponse'
  
         # Add the question text child
         elem.add_child( self.question )

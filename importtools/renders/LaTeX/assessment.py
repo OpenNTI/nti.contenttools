@@ -4,7 +4,14 @@ def question_renderer( self ):
     return _environment_renderer(self, 'naquestion', '')
 
 def question_part_renderer( self ):
-    return _environment_renderer(self, 'naqpart', '')
+    result = u''
+    if self.type == 'MultipleChoiceMultipleAnswer':
+        result = _environment_renderer(self, 'naqmultiplechoicemultipleanswerpart', '')
+    elif self.type == 'MultipleChoice':
+        result = _environment_renderer(self, 'naqmultiplechoicepart', '')
+    else:
+        result = _environment_renderer(self, 'naqfreeresponsepart', '')
+    return result
 
 def choices_renderer( self ):
     return _environment_renderer(self, 'naqchoices', '')
