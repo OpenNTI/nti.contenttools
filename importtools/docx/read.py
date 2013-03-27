@@ -21,8 +21,9 @@ DEFAULT_FOOTNOTES = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 
 class DocxFile( object ):
 
-    def __init__( self, filename ):
+    def __init__( self, filename, image_dir='Images' ):
         self.zip = ZipFile( filename )
+        self.image_dir = image_dir
 	self.document = ElementTree.fromstring(self.zip.read('word/document.xml'))
 	self.relationships = ElementTree.fromstring(self.zip.read('word/_rels/document.xml.rels'))
 	try:

@@ -24,10 +24,6 @@ from .types import UsePackage
 from docx.body import Body
 from .tag_parser import NTITagParser
 
-##------------ Global Structures ------------## 
-
-IMAGE_FOLDER = 'Images'
-
 ##------------ Class Methods ------------## 
 
 PACKAGES = [ 'graphicx',
@@ -49,7 +45,6 @@ def processDocument( doc ):
 
 	doc.tagparser = NTITagParser()
 	doc.numbering_collection = {}
-	doc.IMAGE_FOLDER = IMAGE_FOLDER
 
 	# Iterate over the structure of the document, process document body
 	for element in doc.document.iterchildren():
@@ -109,7 +104,7 @@ def main():
 	output.close()
 
 	# Copy Document Images to Subfolder
-	img_exportfolder = os.path.join(os.path.abspath(os.path.dirname(outputfile)), IMAGE_FOLDER)
+	img_exportfolder = os.path.join(os.path.abspath(os.path.dirname(outputfile)), doc.image_dir)
 	doc.get_images( img_exportfolder )
 	
 	print 'Conversion successful, output written to ' + outputfile

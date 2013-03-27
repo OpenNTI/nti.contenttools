@@ -441,7 +441,7 @@ class Image( _DocxStructureElement ):
                     self.width = (float(element.attrib['cx']) / 914400)
 
         # Set the image path
-        self.path = os.path.join( doc.IMAGE_FOLDER , os.path.splitext( os.path.basename(self.target) )[0] )
+        self.path = os.path.join( doc.image_dir , os.path.splitext( os.path.basename(self.target) )[0] )
 
 
 def processField( field, doc, result, rels=None ):
