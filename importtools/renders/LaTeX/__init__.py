@@ -1,9 +1,11 @@
+from ...docx.document import Document
 from ...docx.body import Body
 from ...docx.paragraph import Item, List, Paragraph, Run, OrderedList, UnorderedList, Note, Newline, Hyperlink, Image
 from ...docx.table import Table
 from ...tag_parser import NAQuestion, NAQuestionPart, NAQChoices, NAQChoice, NAQSolutions, NAQSolution, NAQHints, NAQHint
 from .base import base_renderer
 from .assessment import *
+from .document import *
 from .body import *
 from .image import *
 from .list import *
@@ -25,6 +27,7 @@ def hyperlink_renderer(self):
         result = u'\\href{%s}{%s}' % (self.target, base_renderer(self))
     return result
 
+Document.render = document_renderer
 Body.render = body_renderer
 Paragraph.render = paragraph_renderer
 Run.render = run_renderer
