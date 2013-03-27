@@ -98,7 +98,6 @@ class Paragraph( _DocxStructureElement ):
                 pass
             # Look for numbering levels
             elif (element.tag == '{'+docx.nsprefixes['w']+'}numPr'):
-                print('processing numbering')
                 self.numbering = process_numbering( element, doc )
             # Skip elements in IGNORED_TAGS
             elif element.tag in IGNORED_TAGS:
