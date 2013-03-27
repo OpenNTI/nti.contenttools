@@ -3,9 +3,6 @@ from . import properties as docx
 from .paragraph import Paragraph
 from .paragraph import List
 from .table import Table
-#from ..types import _Node
-#from ..types import TextNode
-
 
 
 class Body( _DocxStructureElement ):
