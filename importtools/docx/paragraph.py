@@ -28,6 +28,10 @@ IGNORED_TAGS = [ '{'+docx.nsprefixes['w']+'}ind',
 
 class Paragraph( _DocxStructureElement ):
 
+    def __init__(self):
+        super( Paragraph, self ).__init__()
+        self.numbering = None
+
     @classmethod
     def process(cls, paragraph, doc, rels=None ):
 	'''Processes the text of a given paragraph into insets and text.'''
@@ -36,7 +40,6 @@ class Paragraph( _DocxStructureElement ):
             rels = doc.relationships
 
 	me = cls()
-        me.numbering = None
 	fields = []
 	# Scan the elements in the paragraph and extract information
 	for element in paragraph.iterchildren():
@@ -44,7 +47,6 @@ class Paragraph( _DocxStructureElement ):
             # Process Text Runs
             if element.tag == '{'+docx.nsprefixes['w']+'}r':
                 me.add_child(Run.process(element, doc, fields = fields, rels = rels))
-                pass
             # Process 'Deleted' Text Runs
             elif element.tag == '{'+docx.nsprefixes['w']+'}del':
                 me.add_child(Del.process(element, doc, fields = fields, rels = rels))
