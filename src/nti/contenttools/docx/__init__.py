@@ -11,28 +11,10 @@ class _DocxStructureElement( _Node ):
         super( _DocxStructureElement, self ).__init__()
         self.styles = []
 
-    def __str__( self ):
-        val = u''
-        for child in self.children:
-            if isinstance( child, _DocxStructureElement ):
-                val = val + child.__str__()
-            else:
-                val = val + child
-
-
-        for style in self.styles:
-            if val:
-                if style in self.__class__.STYLES:
-                    val = self.__class__.STYLES[style](val)
-                else:
-                    print('Unhandled style: %s' % style)
-
-        return val
-
     def raw( self ):
         val = u''
         for child in self.children:
-            if isinstance( child, _DocxStructureElement ):
+            if hasattr( child, 'raw' ):
                 val = val + child.raw()
             else:
                 val = val + child
