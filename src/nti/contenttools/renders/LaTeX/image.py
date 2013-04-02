@@ -1,15 +1,18 @@
 def _image_renderer(self, command):
-    # SAJ: Assuming 72 DPI.  This is bound to cause a problem somewhere.
-    dpi = 72
-    width = int(round(self.width * dpi))
-    height = int(round(self.height * dpi))
+    width = self.width
+    height = self.height
 
-    if width > 600:
-        if height != 0:
-            height = int(round((600 / width) * height))
+    if self.width > 600:
+        if self.height != 0:
+            height = int(float(600.0 / self.width) * self.height)
         width = 600
 
-    params = 'width=%s,height=%s' % (width, height)
+    params = 'width=%spx,height=%spx' % (width, height)
+
+    # Output 'small' images as ordinary graphics instead of some fancy type
+    threshold = 30
+    if self.width < threshold or self.height < threshold:
+        command = u'includegraphics'
 
     return u'\\%s[%s]{%s}' % (command, params, self.path)
 

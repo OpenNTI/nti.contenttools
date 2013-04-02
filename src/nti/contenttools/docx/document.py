@@ -1,18 +1,9 @@
-from . import _DocxStructureElement
 from . import properties as docx
+
+from ..import types
 from .body import Body
 
-class Document( _DocxStructureElement ):
-
-    def __init__( self, doc_type=u'book' ):
-        self.doc_type = doc_type
-        self.title = u''
-        self.author = u''
-        self.packages = [ 'graphicx',
-                          'hyperref',
-                          'ulem',
-                          'ntilatexmacros',
-                          'ntiassessment']
+class Document( types.Document ):
 
     @classmethod
     def process(cls, document, docxfile):

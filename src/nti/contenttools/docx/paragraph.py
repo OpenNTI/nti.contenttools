@@ -2,11 +2,10 @@ import os
 import urllib
 import urlparse
 
-from . import _DocxStructureElement
 from . import process_border
 from . import properties as docx
 from ..types import _Node
-from ..types import TextNode
+from .. import types
 
 IGNORED_TAGS = [ '{'+docx.nsprefixes['w']+'}ind',
 		 '{'+docx.nsprefixes['w']+'}sectPr',
@@ -26,7 +25,7 @@ IGNORED_TAGS = [ '{'+docx.nsprefixes['w']+'}ind',
 		 '{'+docx.nsprefixes['w']+'}outlineLvl',
 		 '{'+docx.nsprefixes['w']+'}lastRenderedPageBreak']
 
-class Paragraph( _DocxStructureElement ):
+class Paragraph( types.Paragraph ):
 
     def __init__(self):
         super( Paragraph, self ).__init__()
@@ -70,7 +69,7 @@ class Paragraph( _DocxStructureElement ):
 	# Check to see if we found the document title
 	if 'Title' in me.styles:
             me.removeStyle('Title')
-            doc.title = str(me).strip()
+            doc.title = me.raw().strip()
             me = None
 	else:
             # Check for NTI Tags
@@ -81,7 +80,7 @@ class Paragraph( _DocxStructureElement ):
                 me = v
 
 	if me is not None and hasattr(me, 'numbering') and me.numbering is not None:
-            item = Item()
+            item = types.Item()
             item.add_child(me)
             me.numbering.add_child( item )
             me = me.numbering
@@ -106,7 +105,7 @@ class Paragraph( _DocxStructureElement ):
                 print('Unhandled paragraph property: %s' % element.tag)
 
 
-class Run( _DocxStructureElement ):
+class Run( types.Run ):
 
     @classmethod
     def process( cls, textrun, doc, fields = [], rels=None ):
@@ -125,7 +124,7 @@ class Run( _DocxStructureElement ):
             elif (element.tag == '{'+docx.nsprefixes['w']+'}t'): 
                 # If not character style, append to the end of the paragraph
                 if element.text:
-                    me.add_child( TextNode(element.text) )
+                    me.add_child( types.TextNode(element.text) )
             elif element.tag == '{'+docx.nsprefixes['w']+'}drawing':
                 me.add_child( Image.process(element, doc, rels=rels ) )
                 pass
@@ -133,7 +132,7 @@ class Run( _DocxStructureElement ):
             elif element.tag == '{'+docx.nsprefixes['w']+'}delText':
                 me.addStyle('strike')
                 if element.text:
-                    me.add_child( TextNode(element.text) )
+                    me.add_child( types.TextNode(element.text) )
             # Look for hyperlinks
             elif (element.tag == '{'+docx.nsprefixes['w']+'}hyperlink'):
                  me.add_child( Hyperlink.process(element, doc, rels = rels) )
@@ -256,25 +255,9 @@ class Ins( Run ):
 	return me
 
 
-class Newline( _DocxStructureElement ):
+class Newline( types.Note ):
     pass
 
-
-class List( _DocxStructureElement ):
-    level = ''
-    group = ''
-    start = 0
-
-
-class UnorderedList( List ):
-    pass
-
-
-class OrderedList( List ):
-    format = 'decimal'
-
-class Item( _DocxStructureElement ):
-    pass
 
 def process_numbering( element, doc ):
 	numId = ''
@@ -304,12 +287,12 @@ def process_numbering( element, doc ):
 	if numId in doc.numbering:
 		numbering = doc.numbering[numId]
 		if numbering.levels[str(ilvl)].format in fmt_list:
-			el = OrderedList()
+			el = types.OrderedList()
 			el.format = numbering.levels[str(ilvl)].format
 		else:
-			el = UnorderedList()
+			el = types.UnorderedList()
 	else:
-		el = UnorderedList()
+		el = types.UnorderedList()
 
 	if ilvl > 0:
 		el.start = len(doc.numbering_collection[numId][ilvl][-1].__parent__.children)
@@ -321,7 +304,7 @@ def process_numbering( element, doc ):
 	return el
 
 
-class Note( _DocxStructureElement ):
+class Note( types.Note ):
     notes = None
     rels = None
     type = ''
@@ -354,9 +337,7 @@ class Note( _DocxStructureElement ):
         return me
 
 
-class Hyperlink( _DocxStructureElement ):
-    target = ''
-    type = ''
+class Hyperlink( types.Hyperlink ):
 
     @classmethod
     def process(cls, node, doc, rels=None ):
@@ -408,7 +389,7 @@ class Hyperlink( _DocxStructureElement ):
             self.type = 'Normal'
 
 
-class Image( _DocxStructureElement ):
+class Image( types.Image ):
     target = ''
     type = ''
     height = 0
@@ -435,11 +416,12 @@ class Image( _DocxStructureElement ):
                 self.type, self.target = relationshipProperties(id, doc, rels)
                 doc.image_list.append(os.path.basename(self.target))
             elif element.tag == '{'+docx.nsprefixes['a']+'}ext':
-                # Convert EMU to inches. 1 inch = 914400 EMU
+                # Convert EMU to inches and then to pixels.
+                # 1 inch = 914400 EMU, 72 pixels = 1 inch 
                 if 'cy' in element.attrib:
-                    self.height = (float(element.attrib['cy']) / 914400)
+                    self.height = int(float(element.attrib['cy']) / 914400 * 72)
                 if 'cx' in element.attrib:
-                    self.width = (float(element.attrib['cx']) / 914400)
+                    self.width = int(float(element.attrib['cx']) / 914400 * 72)
 
         # Set the image path
         self.path = os.path.join( doc.image_dir , os.path.splitext( os.path.basename(self.target) )[0] )
@@ -471,7 +453,7 @@ def processComplexField( elements, doc, rels=None ):
         if isinstance( element, Run ):
             result.add_child( element )
         elif element.tag == '{'+docx.nsprefixes['w']+'}instrText':
-            field = field + TextNode( element.text )
+            field = field + types.TextNode( element.text )
     return processField( field, doc, result )
 
 def relationshipProperties( rId, doc, rels=None ):

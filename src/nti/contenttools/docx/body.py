@@ -1,11 +1,11 @@
-from . import _DocxStructureElement
 from . import properties as docx
+
+from .. import types
 from .paragraph import Paragraph
-from .paragraph import List
 from .table import Table
 
 
-class Body( _DocxStructureElement ):
+class Body( types.Body ):
 
     @classmethod
     def process(cls, body, doc, rels=None ):
@@ -35,7 +35,7 @@ class Body( _DocxStructureElement ):
 def _consolidate_lists( list = [] ):
     new_list = []
     for i in range(len(list)):
-        if isinstance(list[i], List) and (i + 1 < len(list)) and isinstance(list[i+1], List) and list[i].group == list[i+1].group:
+        if isinstance(list[i], types.List) and (i + 1 < len(list)) and isinstance(list[i+1], types.List) and list[i].group == list[i+1].group:
             if list[i].level == list[i+1].level:
                 for child in list[i+1].children:
                     list[i].add_child( child )
@@ -47,7 +47,7 @@ def _consolidate_lists( list = [] ):
                 list[i].children = _consolidate_lists( list[i].children )
                 new_list.append( list[i] )
         else:
-            if isinstance(list[i], List):
+            if isinstance(list[i], types.List):
                 list[i].children = _consolidate_lists( list[i].children )
             new_list.append( list[i] )
     return new_list
