@@ -38,7 +38,10 @@ def paragraph_renderer(self):
         else:
             print('Unhandled paragraph style: %s' % style)
 
-    return result + u'\n\n'
+    if result:
+        result = result + u'\n\n'
+
+    return result
 
 def newline_renderer(self):
     return u'\\newline '
