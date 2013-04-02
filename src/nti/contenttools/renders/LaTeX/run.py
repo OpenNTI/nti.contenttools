@@ -12,6 +12,9 @@ def _textit( arg ):
 def _strikeout( arg ):
     return _command_renderer( 'strikeout', arg )
 
+def _subscript( arg ):
+    return _command_renderer( 'textsubscript', arg )
+
 def _uline( arg ):
     return _command_renderer( 'uline', arg )
 
@@ -20,6 +23,7 @@ def run_renderer(self):
                'inserted': _modified,
                'italic': _textit,
                'strike': _strikeout,
+               'sub': _subscript,
                'underline': _uline}
 
     result = base_renderer(self)
