@@ -8,7 +8,7 @@ def document_renderer(self):
     if self.title:
         output = output + _title( self.title )
     if self.author:
-        output = output + _title( self.author )
+        output = output + _author( self.author )
     output = output + base_renderer(self)
     return output
 
