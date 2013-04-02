@@ -4,6 +4,7 @@ from setuptools import setup, find_packages
 entry_points = {
 	'console_scripts': [
 		'import_docx = nti.contenttools.word2latex:main',
+		'import_epub = nti.contenttools.import_epub:main',
 	]
 }
 
