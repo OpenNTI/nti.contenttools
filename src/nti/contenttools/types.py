@@ -143,6 +143,16 @@ class Image( DocumentStructureNode ):
         self.width = 0
         self.height = 0
 
+class Video( DocumentStructureNode ):
+
+    def __init__(self, path=''):
+        super( Video, self ).__init__()
+        self.path = u''
+        self.thumbnail = u''
+        self.caption = u''
+        self.width = 0
+        self.height = 0
+
 class List( DocumentStructureNode ):
 
     def __init__(self, level='', group='', start=0, format=''):
