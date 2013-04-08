@@ -39,7 +39,7 @@ def main():
     if docxFile.title:
         outputfile = os.path.join(args.output, _title_escape(docxFile.title)+'.tex')
     else:
-        outputfile = os.path.join(args.output, _title_escape(os.path.splitext(inputfile)[0])+'.tex')
+        outputfile = os.path.join(args.output, _title_escape(os.path.splitext(os.path.basename(inputfile))[0])+'.tex')
     with codecs.open( outputfile, 'w', 'utf-8' ) as file:
         file.write( docxFile.render() )
 
