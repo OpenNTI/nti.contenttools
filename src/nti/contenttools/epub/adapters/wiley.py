@@ -54,6 +54,9 @@ class Paragraph( types.Paragraph ):
     def process(cls, element, epub):
         me = cls()
 
+        if 'id' in element.attrib:
+            me.add_child( Label.process( element, epub ) )
+
         if element.text:
             me.add_child( types.TextNode( element.text ) )
 
@@ -65,13 +68,15 @@ class Paragraph( types.Paragraph ):
             elif child.tag == 'i':
                 me.add_child( _process_i_elements( child, epub ) )
             elif child.tag == 'img':
-                me.add_child( _process_img_elements( child, epub ) )
+                me.add_child( Image.process( child, epub ) )
             elif child.tag == 'p':
                 me.add_child( _process_p_elements( child, epub ) )
             elif child.tag == 'span':
                 me.add_child( _process_span_elements( child, epub ) )
             elif child.tag == 'sub':
                 me.add_child( _process_sub_elements( child, epub ) )
+            elif child.tag == 'video':
+                me.add_child( Video.process( child, epub ) )
             else:
                 print('Unhandled p child: %s' % child)
 
@@ -96,6 +101,9 @@ class Run( types.Run ):
                 me.add_child( _process_a_elements( child, epub ) )
             elif child.tag == 'b':
                 me.add_child( _process_b_elements( child, epub ) )
+            elif child.tag == 'br':
+                me.add_child( types.Newline() )
+                me.add_child( types.TextNode( child.tail ) )
             elif child.tag == 'i':
                 me.add_child( _process_i_elements( child, epub ) )
             elif child.tag == 'span':
@@ -184,6 +192,21 @@ class Image( types.Image ):
         epub.image_list.append(me)
         return me
 
+class Video( types.Video ):
+
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.path = element.attrib['src']
+        me.caption = element.attrib['title']
+        me.thumbnail = element.attrib['poster']
+        me.thumbnaildata = StringIO.StringIO( epub.zipfile.read(os.path.join(epub.content_path, me.thumbnail)) )
+        #me.width, me.height = PILImage.open(me.thumbnaildata).size
+        me.width, me.height = ( 640, 480 )
+        me.add_child( Run.process( element, epub ) )
+        epub.video_list.append(me)
+        return me
+
 class UnorderedList( types.UnorderedList ):
 
     @classmethod
@@ -202,7 +225,7 @@ class UnorderedList( types.UnorderedList ):
                 print(child)
                 el = Item()
 
-            if isinstance(el, types.Item):
+            if isinstance(el, types.Item) or isinstance(el, types.List):
                 me.add_child( el )
             else:
                 if len(me.children) == 0:
@@ -216,8 +239,13 @@ class Item( types.Item ):
 
     @classmethod
     def process(cls, element, epub):
-        me = cls()
-        me.add_child( Run.process(element, epub) )
+        me = None
+        child = Run.process(element, epub)
+        if isinstance(child, types.List):
+            me = child
+        else:
+            me = cls()
+            me.add_child( child )
         return me
 
 
@@ -303,6 +331,9 @@ def _process_fragment( fragment, epub ):
     elif not ( (isinstance(el[0], Chapter) or isinstance(el[0], Section)) ):
         el.insert(0,chapter)
 
+    # Consolidate list elements
+    el = _consolidate_lists( el )
+
     return el
 
 def _get_title( head ):
@@ -311,6 +342,39 @@ def _get_title( head ):
         if element.tag == 'title':
             title = element.text
     return title
+
+def _consolidate_lists( list = [] ):
+    def pull_up_children( element ):
+        if isinstance(element, types.List):
+            for i in xrange(len(element.children)):
+                if isinstance(element.children[i], types.List) and element.level == element.children[i].level:
+                    child = element.children[i]
+                    for j in xrange(len(child.children)):
+                        element.children.insert(i+j, child.children[j])
+                    element.children.remove(child)
+
+    new_list = []
+    for i in range(len(list)):
+        if isinstance(list[i], types.List) and (i + 1 < len(list)) and isinstance(list[i+1], types.List) and list[i].group == list[i+1].group:
+            if list[i].level == list[i+1].level:
+                for child in list[i+1].children:
+                    list[i].add_child( child )
+                    list[i+1] = list[i]
+            elif list[i].level < list[i+1].level:
+                list[i].add_child( list[i+1] )
+                list[i+1] = list[i]
+            else:
+                list[i].children = _consolidate_lists( list[i].children )
+                # Pull up children if necessary
+                pull_up_children( list[i] )
+                new_list.append( list[i] )
+        else:
+            if isinstance(list[i], types.List):
+                list[i].children = _consolidate_lists( list[i].children )
+                # Pull up children if necessary
+                pull_up_children( list[i] )
+            new_list.append( list[i] )
+    return new_list
 
 def _process_div_elements( element, epub ):
 
@@ -324,6 +388,7 @@ def _process_div_elements( element, epub ):
     elif class_ in [ 'list' ]:
         el = UnorderedList.process( element, epub )
         el.format = 'None'
+        el.level = 1
     elif class_ in [ 'feature1', 'feature2', 'feature3', 'feature4' ]:
         el = Sidebar.process( element, epub )
     elif class_ in [ 'featuretitle', 'feature1_title', 'feature2_title', 'feature3_title', 'feature4_title' ]:
@@ -334,12 +399,23 @@ def _process_div_elements( element, epub ):
         el = Paragraph.process( element, epub )
     elif class_ in [ 'top', 'dotted_top', 'bottom', 'dotted_bottom' ]:
         pass #ignored
-    elif class_ in [ 'item1', 'item2' ]:
-        el = Item.process( element, epub )
+    elif class_ in [ 'item1' ]:
+        el = UnorderedList()
+        el.format = 'None'
+        el.level = 1
+        el.add_child( Item.process( element, epub ) )
+    elif class_ in [ 'item2' ]:
+        el = UnorderedList()
+        el.format = 'None'
+        el.level = 2
+        el.add_child( Item.process( element, epub ) )
     elif class_ in [ 'listpara1' ]:
         el = Paragraph.process( element, epub )
-    #elif class_ in [ 'index2' ]:
-    #    pass
+    elif class_ in [ 'index2' ]:
+        el = UnorderedList()
+        el.format = 'None'
+        el.level = 2
+        el.add_child( Item.process( element, epub ) )
     else:
         print(class_)
 
@@ -356,8 +432,6 @@ def _process_p_elements( element, epub ):
         el = Paragraph.process( element, epub )
     elif class_ in [ 'extractpara' ]:
         el = BlockQuote.process( element, epub )
-    #elif class_ in [ 'index1', 'mattertitle' ]:
-    #    pass 
     elif class_ in [ 'bibliographyentry' ]:
         el = Paragraph.process( element, epub )
     elif class_ in [ 'parttitle' ]:
@@ -368,11 +442,30 @@ def _process_p_elements( element, epub ):
         el = Section.process( element, epub )
     elif class_ in [ 'figuresource', 'quotesource', 'featuresource' ]:
         el = Paragraph.process( element, epub )
-    elif class_ in [ 'featureh1' ]:
+    elif class_ == 'featureh1':
         el = Run.process( element, epub, styles=['bold'] )
-    elif class_ in [ 'featureextract' ]:
+    elif class_ == 'featureextract':
         el = BlockQuote.process( element, epub )
-    elif class_ in [ 'contentschaptertitle', 'contentsh1', 'contentsparttitle', 'toctitle' ]:
+    elif class_ == 'av-caption':
+        el = Paragraph.process( element, epub )
+    elif class_ in [ 'mattertitle', 'toctitle' ]:
+        el = SubSection.process( element, epub )
+    elif class_ in [ 'index1', 'contentsparttitle' ]:
+        el = UnorderedList()
+        el.format = 'None'
+        el.level = 1
+        el.add_child( Item.process( element, epub ) )
+    elif class_ == 'contentschaptertitle':
+        el = UnorderedList()
+        el.format = 'None'
+        el.level = 2
+        el.add_child( Item.process( element, epub ) )
+    elif class_ == 'contentsh1':
+        el = UnorderedList()
+        el.format = 'None'
+        el.level = 3
+        el.add_child( Item.process( element, epub ) )
+    elif class_ == 'av':
         el = Paragraph.process( element, epub )
     else:
         print( class_ )
@@ -424,5 +517,3 @@ def _process_a_elements( element, epub ):
             el = Label.process(element, epub)
         return el
 
-def _process_img_elements( element, epub ):
-    return Image.process( element, epub )

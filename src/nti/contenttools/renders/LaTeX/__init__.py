@@ -1,3 +1,5 @@
+import os
+
 from ... import types
 from ...docx.table import Table
 from ...tag_parser import NAQuestion, NAQuestionPart, NAQChoices, NAQChoice, NAQSolutions, NAQSolution, NAQHints, NAQHint
@@ -17,6 +19,7 @@ def note_renderer(self):
     return u'\\footnote{%s}' % base_renderer(self)
 
 def hyperlink_renderer(self):
+    print(self.__dict__)
     result = u''
     if self.type == 'Normal':
         result = u'\\href{%s}{%s}' % (self.target, base_renderer(self))
@@ -42,6 +45,14 @@ def blockquote_renderer(self):
     body = base_renderer(self)
     return u'\\begin{quote}\n%s\\end{quote}\n' % body
 
+def video_renderer(self):
+    body = base_renderer(self)
+    parameters = 'width=%spx,height=%spx' % (self.width, self.height)
+    src = os.path.splitext( self.path )[0]
+    s = (parameters, src, self.caption, self.thumbnail, body)
+    t = u'\n\\begin{ntilocalvideo}\n\\ntiincludelocalvideo[%s]{%s}{%s}{%s}\n%s\n\\end{ntilocalvideo}\n'
+    return t % s
+
 types.Document.render = document_renderer
 types.Body.render = body_renderer
 types.Chapter.render = chapter_renderer
@@ -64,6 +75,7 @@ Table.render = table_renderer
 Table.Row.render = table_row_renderer
 Table.Row.Cell.render = table_cell_renderer
 types.Image.render = image_annotation_renderer
+types.Video.render = video_renderer
 NAQuestion.render = question_renderer
 NAQuestionPart.render = question_part_renderer
 NAQChoices.render = choices_renderer

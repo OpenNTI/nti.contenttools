@@ -40,7 +40,7 @@ def main():
     with codecs.open( outputfile, 'w', 'utf-8' ) as file:
         file.write( epub.render() )
 
-    epub.get_images(args.output)
+    epub.get_media(args.output)
 
 
 if __name__ == '__main__': # pragma: no cover

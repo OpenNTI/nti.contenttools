@@ -1,10 +1,13 @@
 #!/usr/bin/env python2.7
 
-import argparse
 import os
+import shutil
+import subprocess
 
+from argparse import ArgumentParser
 from lxml import etree, html
 from lxml.html import html5parser, XHTMLParser
+from tempfile import mkdtemp
 from zipfile import ZipFile
 
 from .adapters import wiley as Adapter
@@ -27,7 +30,8 @@ class EPUBFile( object ):
         def _extract_manifest( manifest ):
             result = {}
             for item in manifest:
-                result[item.attrib['id']] = { 'href': item.attrib['href'],
+                if hasattr(item, 'tag') and item.tag == '{http://www.idpf.org/2007/opf}item':
+                    result[item.attrib['id']] = { 'href': item.attrib['href'],
                                               'media-type': item.attrib['media-type'] }
             return result
 
@@ -70,7 +74,9 @@ class EPUBFile( object ):
         self.metadata = {}
         self.manifest = {}
         self.spine = []
+        self.audio_list = []
         self.image_list = []
+        self.video_list = []
 
         container = etree.fromstring(self.zipfile.read(u'META-INF/container.xml'))
         rootfile = etree.fromstring(self.zipfile.read(_get_rootfile( container )))
@@ -118,6 +124,10 @@ class EPUBFile( object ):
     def render(self):
         return self.document.render()
 
+    def get_media(self, output_dir='.'):
+        self.get_images(output_dir)
+        self.get_videos(output_dir)
+
     def get_images(self, output_dir='.'):
         for image in self.image_list:
             path = os.path.join( output_dir, image.path )
@@ -127,9 +137,52 @@ class EPUBFile( object ):
             with open( path, 'wb' ) as file:
                 file.write(image.data.read())
 
+    def get_videos(self, output_dir='.'):
+        # Convert output_dir to an absolute path
+        output_dir = os.path.abspath( os.path.expanduser(output_dir) )
+        # Create a temporary working directory
+        working_dir = mkdtemp()
+        # Store the current working directory
+        orig_dir = os.getcwd()
+        # Change the current working directory to the temp directory
+        os.chdir( working_dir )
+        try:
+            for video in self.video_list:
+                # Create the tmp working directories if it does not exist
+                if not os.path.exists( os.path.join( working_dir, os.path.dirname( video.path ) ) ):
+                    os.mkdir( os.path.join( working_dir, os.path.dirname( video.path ) ) )
+                # Extract the original video from the EPUB
+                with open( os.path.join( working_dir, video.path ), 'wb' ) as file:
+                    file.write(self.zipfile.read(os.path.join(self.content_path, video.path)))
+                # Create the output path if it does not exist
+                if not os.path.exists( os.path.join( output_dir, os.path.dirname( video.path ) ) ):
+                    os.mkdir( os.path.join( output_dir, os.path.dirname( video.path ) ) )
+                # Transcode video, first to webm and then to mp4
+                override = '-n'
+                src = os.path.join( working_dir, video.path )
+
+                dest = os.path.join( output_dir, os.path.splitext(video.path)[0] + '.webm' )
+                cmd = [ 'ffmpeg', '-v', 'quiet', override, '-i', src, '-strict', '-2', dest ]
+                subprocess.call( cmd )
+
+                dest = os.path.join( output_dir, os.path.splitext(video.path)[0] + '.mp4' )
+                cmd = [ 'ffmpeg', '-v', 'quiet', override, '-i', src, '-strict', '-2', dest ]
+                subprocess.call( cmd )
+
+                # Extract the poster files, if any
+                if not os.path.exists(os.path.join( output_dir, os.path.dirname( video.thumbnail )) ):
+                    os.mkdir( os.path.join( output_dir, os.path.dirname( video.thumbnail )) )
+                video.thumbnaildata.seek(0)
+                with open( os.path.join( output_dir, video.thumbnail ), 'wb' ) as file:
+                    file.write(video.thumbnaildata.read())
+        finally:
+            # Return to the original working directory
+            os.chdir( orig_dir )
+            # Remove the temp directory
+            shutil.rmtree( working_dir )
 
 def _parse_args():
-    arg_parser = argparse.ArgumentParser( description="NTI EPUB Converter" )
+    arg_parser = ArgumentParser( description="NTI EPUB Converter" )
     arg_parser.add_argument( 'inputfile', help="The EPUB file" )
     return arg_parser.parse_args()
 
