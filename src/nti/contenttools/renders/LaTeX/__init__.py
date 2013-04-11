@@ -19,7 +19,6 @@ def note_renderer(self):
     return u'\\footnote{%s}' % base_renderer(self)
 
 def hyperlink_renderer(self):
-    print(self.__dict__)
     result = u''
     if self.type == 'Normal':
         result = u'\\href{%s}{%s}' % (self.target, base_renderer(self))
