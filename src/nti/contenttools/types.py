@@ -24,10 +24,16 @@ class _Node( object ):
         if not hasattr(self, 'children'):
             return self
 
-        for child in self.children:
+        for child in self:
             result = result + child.render()
 
         return result
+
+    def __iter__(self):
+        curent_item = 0
+        while ( current_item < len(self.children) ):
+            yield self.children[current_item]
+            current_item += 1
 
 class TextNode(_Node, frg_interfaces.PlainTextContentFragment):
     __slots__ = frg_interfaces.PlainTextContentFragment.__slots__ + ('children','__parent__')
@@ -51,7 +57,7 @@ class DocumentStructureNode( _Node ):
 
     def raw( self ):
         val = u''
-        for child in self.children:
+        for child in self:
             if hasattr( child, 'raw' ):
                 val = val + child.raw()
             else:
