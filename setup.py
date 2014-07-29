@@ -1,36 +1,42 @@
-#!/usr/bin/env python
+import codecs
 from setuptools import setup, find_packages
 
+VERSION = '0.0.0'
+
 entry_points = {
-	'console_scripts': [
-		'import_docx = nti.contenttools.word2latex:main',
-		'import_epub = nti.contenttools.import_epub:main',
-	]
+    "z3c.autoinclude.plugin": [
+		'target = nti.app',
+	],
 }
 
+import platform
+py_impl = getattr(platform, 'python_implementation', lambda: None)
+IS_PYPY = py_impl() == 'PyPy'
+
 setup(
-	name = 'nti.contenttools',
-	version = '0.0',
-	keywords = 'web',
-	author = 'NTI',
-	author_email = 'sean.jones@nextthought.com',
-	description = 'NextThought Platform Content Development Tools',
-	long_description = 'Dataserver README',
-	classifiers=[
-		"Development Status :: 4 - Beta",
-		"Intended Audience :: Developers :: Education",
-		"Operating System :: OS Independent",
-		"Programming Language :: Python :: 2.7",
-		"Framework :: Pylons :: ZODB :: Pyramid",
-		"Internet :: WWW/HTTP",
-		"Natural Language :: English",
-		"Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-		],
-        requires = [ 'nti.dataserver' ],
-	packages = find_packages( 'src' ),
-	package_dir = {'': 'src'},
-	include_package_data = True,
-	namespace_packages=['nti',],
-	zip_safe = False,
-	entry_points = entry_points
-	)
+    name='nti.contenttools',
+    version=VERSION,
+    author='Jason Madden',
+    author_email='jason@nextthought.com',
+    description="NTI Content Tools",
+    long_description=codecs.open('README.rst', encoding='utf-8').read(),
+    license='Proprietary',
+    keywords='pyramid preference',
+    classifiers=[
+        'Intended Audience :: Developers',
+        'Natural Language :: English',
+        'Operating System :: OS Independent',
+		'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        ],
+	packages=find_packages('src'),
+	package_dir={'': 'src'},
+	namespace_packages=['nti','nti.app'],
+	install_requires=[
+		'setuptools',
+        'nti.dataserver',
+	],
+	entry_points=entry_points
+)
