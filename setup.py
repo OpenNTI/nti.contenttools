@@ -33,7 +33,7 @@ setup(
         ],
 	packages=find_packages('src'),
 	package_dir={'': 'src'},
-	namespace_packages=['nti','nti.app'],
+	namespace_packages=['nti'],
 	install_requires=[
 		'setuptools',
         'nti.dataserver',
