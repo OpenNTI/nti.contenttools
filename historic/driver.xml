@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+          "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!ENTITY chap1 SYSTEM "collins-ch01.xml">
+<!ENTITY chap2 SYSTEM "collins-ch02.xml">
+<!ENTITY chap3 SYSTEM "collins-ch03.xml">
+]>
+<book>
+  <title>Exploring Business</title>
+  <titleabbrev>Exploring Business</titleabbrev>
+  <bookinfo>
+	<legalnotice><para>No notice is required.</para></legalnotice>
+	  <author><firstname>Karen</firstname><surname>Collins</surname></author>
+  </bookinfo>
+&chap1;
+&chap2;
+&chap3;
+</book>
