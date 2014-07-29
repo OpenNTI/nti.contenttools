@@ -5,8 +5,12 @@ VERSION = '0.0.0'
 
 entry_points = {
     "z3c.autoinclude.plugin": [
-		'target = nti.app',
+		'target = nti.dataserver',
 	],
+    'console_scripts': [
+        'import_docx = nti.contenttools.word2latex:main',
+        'import_epub = nti.contenttools.import_epub:main',
+    ]
 }
 
 import platform
