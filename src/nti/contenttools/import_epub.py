@@ -1,12 +1,18 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+.. $Id$
+"""
+from __future__ import print_function, unicode_literals, absolute_import, division
+__docformat__ = "restructuredtext en"
 
-import argparse
-import codecs
+logger = __import__('logging').getLogger(__name__)
+
 import os
+import codecs
+import argparse
 
-import renders.LaTeX
-
-from epub.epub import EPUBFile
+from .epub.epub import EPUBFile
 
 def _parse_args():
     arg_parser = argparse.ArgumentParser( description="NTI EPUB Converter" )
@@ -37,8 +43,8 @@ def main():
         outputfile = os.path.join(args.output, _title_escape(epub.title)+'.tex')
     else:
         outputfile = os.path.join(args.output, _title_escape(os.path.splitext(inputfile)[0])+'.tex')
-    with codecs.open( outputfile, 'w', 'utf-8' ) as file:
-        file.write( epub.render() )
+    with codecs.open( outputfile, 'w', 'utf-8' ) as fp:
+        fp.write( epub.render() )
 
     epub.get_media(args.output)
 

@@ -1,11 +1,16 @@
 #!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
 """
-This parses out assessment questions from text blocks.  Currently it can handle multiple choice, multiple choice multiple answer, and short answer.
+This parses out assessment questions from text blocks.  
+Currently it can handle multiple choice, multiple choice multiple answer, and short answer.
 
+.. $Id$
 """
+from __future__ import print_function, unicode_literals, absolute_import, division
+__docformat__ = "restructuredtext en"
 
-import os
+logger = __import__('logging').getLogger(__name__)
+
 import sys
 
 from .types import _Node, TextNode
@@ -209,13 +214,10 @@ class AssessmentParser( _Parser ):
         self.handlers[self.state]( line )
 
 def main():
-    data = []
     tag_parser = NTITagParser()
-    # Get the input
-    with open( sys.argv[1:][0], 'rb' ) as input:
-        for line in input:
-            state, val = tag_parser.parse_line(line)
-
+    with open( sys.argv[1:][0], 'rb' ) as fp:
+        for line in fp:
+            _, val = tag_parser.parse_line(line)
             if val:
                 sys.stdout.write( str( val ) )
                 sys.stdout.write('\n')

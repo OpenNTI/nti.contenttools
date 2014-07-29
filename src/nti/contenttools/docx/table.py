@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+.. $Id$
+"""
+from __future__ import print_function, unicode_literals, absolute_import, division
+__docformat__ = "restructuredtext en"
+
+logger = __import__('logging').getLogger(__name__)
+
 from . import _DocxStructureElement
 from . import process_border
 from . import properties as docx
@@ -14,7 +24,7 @@ class Table( _DocxStructureElement ):
         if rels is None:
             rels = doc.relationships
 
-	# Parse element and determine table properties
+        # Parse element and determine table properties
         for element in table.iterchildren():
             if element.tag == '{'+docx.nsprefixes['w']+'}tblGrid':
                 print('processing grid\n%s' % me.grid)
@@ -195,5 +205,3 @@ class Table( _DocxStructureElement ):
                 print('Did not handle table grid element: %s' % element.tag)
 
         print( self.grid )
-
-
