@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+.. $Id: views.py 44701 2014-07-29 20:30:15Z carlos.sanchez $
+"""
+from __future__ import print_function, unicode_literals, absolute_import, division
+__docformat__ = "restructuredtext en"
+
+logger = __import__('logging').getLogger(__name__)
+
 from .base import base_renderer
 
 def table_renderer(self):
@@ -8,7 +18,7 @@ def table_renderer(self):
     elif 'left' in self.borders.keys() and self.borders['left']['val'] not in ['nil', 'none']:
         colspec = u'|'
 
-    for i in xrange(len(self.grid)-1):
+    for _ in xrange(len(self.grid)-1):
         colspec = colspec + u' c '
         if 'insideV' in self.borders.keys() and self.borders['insideV']['val'] not in ['nil', 'none']:
             colspec = colspec + u'|'

@@ -1,5 +1,14 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+.. $Id$
+"""
+from __future__ import print_function, unicode_literals, absolute_import, division
+__docformat__ = "restructuredtext en"
 
-import properties as docx
+logger = __import__('logging').getLogger(__name__)
+
+from . import properties as docx
 
 class _Level( object ):
     ignored = [ '{'+docx.nsprefixes['w']+'}lvlText',

@@ -1,7 +1,15 @@
-# Import NTI things
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+.. $Id$
+"""
+from __future__ import print_function, unicode_literals, absolute_import, division
+__docformat__ = "restructuredtext en"
+
+logger = __import__('logging').getLogger(__name__)
+
 from nti.contentfragments import interfaces as frg_interfaces
 from nti.contentfragments.latex import PlainTextToLatexFragmentConverter
-
 
 class _Node( object ):
     __parent__ = None
@@ -30,7 +38,7 @@ class _Node( object ):
         return result
 
     def __iter__(self):
-        curent_item = 0
+        current_item = 0
         while ( current_item < len(self.children) ):
             yield self.children[current_item]
             current_item += 1
@@ -117,10 +125,10 @@ class Note( DocumentStructureNode ):
 
 class Hyperlink( DocumentStructureNode ):
 
-    def __init__(self, target='', type='Normal'):
+    def __init__(self, target='', type_='Normal'):
         super( Hyperlink, self ).__init__()
         self.target = target
-        self.type = type
+        self.type = type_
 
 class Label( DocumentStructureNode ):
 
@@ -161,11 +169,11 @@ class Video( DocumentStructureNode ):
 
 class List( DocumentStructureNode ):
 
-    def __init__(self, level='', group='', start=0, format=''):
+    def __init__(self, level='', group='', start=0, fmt=''):
         self.level = level
         self.group = group
         self.start = start
-        self.format = format
+        self.format = fmt
 
 class UnorderedList( List ):
     pass
