@@ -12,7 +12,7 @@ import os
 import codecs
 import argparse
 
-from .epub.epub import EPUBFile
+from .epub.generic_epub import EPUBFile
 
 def _parse_args():
     arg_parser = argparse.ArgumentParser( description="NTI EPUB Converter" )
@@ -28,6 +28,7 @@ def main():
     # Parse command line args
     args = _parse_args()
     inputfile = os.path.expanduser(args.inputfile)
+    print('print here in import_epub.py')
 
     # Verify the input file exists
     if not os.path.exists( inputfile ):
@@ -39,6 +40,10 @@ def main():
         os.mkdir( args.output )
 
     epub = EPUBFile(args.inputfile)
+    print('at import_epub epub type: ',type(epub))
+    print('epub.title: ', epub.title)
+    print('epub.manifest: ', epub.manifest)
+    print('epub.spine:', epub.spine)
     if epub.title:
         outputfile = os.path.join(args.output, _title_escape(epub.title)+'.tex')
     else:
