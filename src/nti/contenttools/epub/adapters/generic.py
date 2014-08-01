@@ -8,7 +8,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from IPython.core.debugger import Tracer
+#from IPython.core.debugger import Tracer
 
 import os
 try:
@@ -83,7 +83,7 @@ class Paragraph( types.Paragraph ):
             elif child.tag == 'i':
                 me.add_child( _process_i_elements( child, epub ) )
             elif child.tag == 'img':
-                logger.info ('FOUND image')
+                logger.info ('FOUND image under a Paragraph')
                 me.add_child( Image.process( child, epub ) )
             elif child.tag == 'p':
                 me.add_child( _process_p_elements( child, epub ) )
@@ -93,8 +93,18 @@ class Paragraph( types.Paragraph ):
                 me.add_child( _process_sub_elements( child, epub ) )
             elif child.tag == 'video':
                 me.add_child( Video.process( child, epub ) )
+            elif child.tag == 'br':
+                logger.info("FOUND child.tag == 'br' inside Paragraph")
+                me.add_child( types.Newline() )
+                if child.tail is not None:
+                    logger.info("child tail inside br: %s", child.tail)
+                    me.add_child( types.TextNode( child.tail ) )
+                else:
+                    logger.info ("child tail is NONE")
+                    me.add_child(types.TextNode( '' ) )
             else:
-                logger.info('on Paragraph.process >> UNHANDLED  CHILD : %s' % child)
+                #Tracer()()
+                logger.info('on Paragraph.process >> UNHANDLED  CHILD : %s', child)
 
         if element.tail:
             me.add_child( types.TextNode( element.tail.replace('\r', '' ) ) )
@@ -124,9 +134,11 @@ class Run( types.Run ):
                 logger.info("FOUND child.tag == 'br'")
                 me.add_child( types.Newline() )
                 if child.tail is not None:
+                    logger.info("child tail inside br: %s", child.tail)
                     me.add_child( types.TextNode( child.tail ) )
                 else:
                     logger.info ("child tail is NONE")
+                    me.add_child(types.TextNode( '' ) )
             elif child.tag == 'i':
                 logger.info("FOUND child.tag == 'i'")
                 me.add_child( _process_i_elements( child, epub ) )
@@ -149,7 +161,7 @@ class Run( types.Run ):
                 logger.info("FOUND child.tag == 'section'")
                 me.add_child(_process_section_elements(child, epub))
             elif child.tag == 'img':
-                logger.info('FOUND image')
+                logger.info('FOUND image under Run.process')
                 me.add_child( Image.process( child, epub ) )
             else:
                 logger.info('Unhandled Run child: %s',child)
@@ -233,6 +245,7 @@ class Image( types.Image ):
         me.data = StringIO.StringIO( epub.zipfile.read(os.path.join(epub.content_path, me.path)) )
         me.width, me.height = PILImage.open(me.data).size
         epub.image_list.append(me)
+        #Tracer()()
         return me
 
 class Video( types.Video ):
@@ -346,6 +359,10 @@ def _process_fragment( fragment, epub ):
         elif element.tag == 'h1':
             el.append(_process_h1_elements( element, epub ))
         elif element.tag == 'h2':
+            el.append(_process_h2_elements( element, epub ))
+        elif element.tag == 'h3':
+            el.append(_process_h2_elements( element, epub ))
+        elif element.tag == 'h4':
             el.append(_process_h2_elements( element, epub ))
         elif element.tag == 'ul':
             el.append(_process_ul_elements( element, epub ))
@@ -477,6 +494,14 @@ def _process_h2_elements( element, epub ):
     # Model as a subsubsection
     return SubSubSection.process(element, epub)
 
+def _process_h3_elements( element, epub ):
+    # Model as a subsubsection
+    return SubSubSection.process(element, epub)
+
+def _process_h4_elements( element, epub ):
+    # Model as a subsubsection
+    return SubSubSection.process(element, epub)
+
 def _process_span_elements( element, epub ):
     return Run.process(element, epub)
 
@@ -501,6 +526,7 @@ def _process_a_elements( element, epub ):
             el.add_child( types.TextNode(element.tail) )
         else:
             el = Hyperlink.process(element, epub)
+        #Tracer()()
         return el
     else:
         el = None
@@ -510,5 +536,6 @@ def _process_a_elements( element, epub ):
             el.add_child( types.TextNode(element.tail) )
         else:
             el = Label.process(element, epub)
+        #Tracer()()
         return el
 
