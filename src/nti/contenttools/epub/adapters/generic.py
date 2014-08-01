@@ -8,7 +8,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-#from IPython.core.debugger import Tracer
+from IPython.core.debugger import Tracer
 
 import os
 try:
@@ -95,13 +95,14 @@ class Paragraph( types.Paragraph ):
                 me.add_child( Video.process( child, epub ) )
             elif child.tag == 'br':
                 logger.info("FOUND child.tag == 'br' inside Paragraph")
-                me.add_child( types.Newline() )
+                #me.add_child( types.Newline() )
                 if child.tail is not None:
                     logger.info("child tail inside br: %s", child.tail)
+                    me.add_child(types.TextNode('\n'))
                     me.add_child( types.TextNode( child.tail ) )
                 else:
                     logger.info ("child tail is NONE")
-                    me.add_child(types.TextNode( '' ) )
+                    me.add_child(types.TextNode( '\n' ) )
             else:
                 #Tracer()()
                 logger.info('on Paragraph.process >> UNHANDLED  CHILD : %s', child)
@@ -132,13 +133,15 @@ class Run( types.Run ):
                 me.add_child( _process_b_elements( child, epub ) )
             elif child.tag == 'br':
                 logger.info("FOUND child.tag == 'br'")
-                me.add_child( types.Newline() )
+                #me.add_child( types.Newline() )
                 if child.tail is not None:
                     logger.info("child tail inside br: %s", child.tail)
-                    me.add_child( types.TextNode( child.tail ) )
+                    me.add_child(types.TextNode('\n'))
+                    me.add_child(types.TextNode( child.tail ) )
                 else:
                     logger.info ("child tail is NONE")
-                    me.add_child(types.TextNode( '' ) )
+                    me.add_child(types.TextNode( '\n' ) )
+                #Tracer()()
             elif child.tag == 'i':
                 logger.info("FOUND child.tag == 'i'")
                 me.add_child( _process_i_elements( child, epub ) )
