@@ -8,6 +8,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from IPython.core.debugger import Tracer
+
 import os
 try:
     import cStringIO as StringIO
@@ -64,14 +66,13 @@ class Paragraph( types.Paragraph ):
     def process(cls, element, epub):
         me = cls()
 
-        if 'id' in element.attrib:
-            print ('id is here element.attrib')
+        if 'id' in element.attrib.keys():
+            logger.info ('id is here element.attrib')
             me.add_child( Label.process( element, epub ) )
 
-        print('Class Paragraph element.text type: ', type(element.text))    
-
+        logger.info('Class Paragraph element.text type: %s', type(element.text))    
         if element.text:
-            print(element.text)
+            logger.info(element.text)
             me.add_child( types.TextNode( element.text ) )
 
         for child in element:
@@ -82,6 +83,7 @@ class Paragraph( types.Paragraph ):
             elif child.tag == 'i':
                 me.add_child( _process_i_elements( child, epub ) )
             elif child.tag == 'img':
+                logger.info ('FOUND image')
                 me.add_child( Image.process( child, epub ) )
             elif child.tag == 'p':
                 me.add_child( _process_p_elements( child, epub ) )
@@ -92,7 +94,7 @@ class Paragraph( types.Paragraph ):
             elif child.tag == 'video':
                 me.add_child( Video.process( child, epub ) )
             else:
-                print('Unhandled p child: %s' % child)
+                logger.info('on Paragraph.process >> UNHANDLED  CHILD : %s' % child)
 
         if element.tail:
             me.add_child( types.TextNode( element.tail.replace('\r', '' ) ) )
@@ -106,48 +108,54 @@ class Run( types.Run ):
     def process(cls, element, epub, styles=[]):
         me = cls()
         me.styles.extend(styles)
-        print('at generic.py: class Run : element.text >>',element.text)
+        logger.info('at generic.py: class Run : element.text >> %s',element.text)
         if element.text:
-            #print('element.text IS NOT EMPTY :',element.text, '<<')
+            #logger.info('element.text IS NOT EMPTY :',element.text, '<<')
             me.add_child( types.TextNode( element.text ) )
 
         for child in element:
             if child.tag == 'a':
-                print("FOUND child.tag == 'a'")
+                logger.info("FOUND child.tag == 'a'")
                 me.add_child( _process_a_elements( child, epub ) )
             elif child.tag == 'b':
-                print("FOUND child.tag == 'b'")
+                logger.info("FOUND child.tag == 'b'")
                 me.add_child( _process_b_elements( child, epub ) )
             elif child.tag == 'br':
-                print("FOUND child.tag == 'br'")
+                logger.info("FOUND child.tag == 'br'")
                 me.add_child( types.Newline() )
-                me.add_child( types.TextNode( child.tail ) )
+                if child.tail is not None:
+                    me.add_child( types.TextNode( child.tail ) )
+                else:
+                    logger.info ("child tail is NONE")
             elif child.tag == 'i':
-                print("FOUND child.tag == 'i'")
+                logger.info("FOUND child.tag == 'i'")
                 me.add_child( _process_i_elements( child, epub ) )
             elif child.tag == 'span':
-                print("FOUND child.tag == 'span'")
+                logger.info("FOUND child.tag == 'span'")
                 me.add_child( _process_span_elements( child, epub ) )
             elif child.tag == 'sub':
-                print("FOUND child.tag == 'sub'")
+                logger.info("FOUND child.tag == 'sub'")
                 me.add_child( _process_sub_elements( child, epub ) )
             elif child.tag == 'p':
-                print("FOUND child.tag == 'p'")
+                logger.info("FOUND child.tag == 'p'")
                 me.add_child(_process_p_elements( child, epub ))
             elif child.tag == 'div':
-                print("FOUND child.tag == 'div'")
+                logger.info("FOUND child.tag == 'div'")
                 me.add_child(_process_div_elements(child, epub))
             elif child.tag == 'h2':
-                print("FOUND child.tag == 'h2'")
+                logger.info("FOUND child.tag == 'h2'")
                 me.add_child(_process_h2_elements(child, epub ))
             elif child.tag == 'section':
-                print("FOUND child.tag == 'section'")
+                logger.info("FOUND child.tag == 'section'")
                 me.add_child(_process_section_elements(child, epub))
+            elif child.tag == 'img':
+                logger.info('FOUND image')
+                me.add_child( Image.process( child, epub ) )
             else:
-                print('Unhandled Run child: %s' % child)
+                logger.info('Unhandled Run child: %s',child)
 
         if element.tail:
-            #print("check if element.tail:", element.tail)
+            #logger.info("check if element.tail:", element.tail)
             _t = cls()
             _t.add_child( me )
             _t.add_child( types.TextNode( element.tail.replace('\r', '' ) ) )
@@ -179,8 +187,9 @@ class Label( types.Label ):
 
     @classmethod
     def process(cls, label, epub ):
+        #Tracer()()
         me = cls()
-        me.name = label.attrib['id']
+        me.name = label.attrib.keys()
         return me
 
 
@@ -202,7 +211,7 @@ class Sidebar( types.Sidebar ):
             elif child.tag == 'ul':
                 me.add_child( _process_ul_elements( child, epub ) )
             else:
-                print('Unhandled Sidebar child: %s' % child)
+                logger.info('Unhandled Sidebar child: %s', child)
 
         return me
 
@@ -256,7 +265,7 @@ class UnorderedList( types.UnorderedList ):
             elif child.tag == 'p':
                 el = _process_p_elements(child, epub)
             else:
-                print('undordered list',child)
+                logger.info('undordered list %',child)
                 el = Item()
 
             if isinstance(el, types.Item) or isinstance(el, types.List):
@@ -326,8 +335,10 @@ def _process_fragment( fragment, epub ):
     body = fragment.find('body')
     el = []
     for element in body:
-        print('^^^^^^^^^^')
-        print('element tag: ',element.tag,'-type of element in body : ', type(element))
+        #Tracer()()
+        logger.info('^^^^^^^^^^')
+        logger.info('element tag: %s',element.tag)
+        logger.info('-type of element in body : %s', type(element))
         if element.tag == 'div':
             el.append(_process_div_elements( element, epub ))
         elif element.tag == 'p':
@@ -341,8 +352,8 @@ def _process_fragment( fragment, epub ):
         elif element.tag == 'section':
             el.append(_process_section_elements(element, epub))
         else:
-            print('Unhandled body child: %s >> %s',element.tag, element )
-        print('**********')
+            logger.info('on process_fragment UNHANDLED BODY CHILD: %s >> %s',element.tag, element )
+        logger.info('**********')
     # Consolidate multi-line chapter or section titles
     new_el = []
     for i in xrange(len(el)):
@@ -357,27 +368,19 @@ def _process_fragment( fragment, epub ):
         else:
             new_el.append(el[i])
     el = new_el
-    el2 = el
+    #el2 = el
     # If the chapter or section title was not parsed out of the text, then extract it from the document head.
     # Maybe we should do this all of the time.
     chapter = Chapter()
     chapter.suppressed = True
-    print('_get_title(head) >> ', _get_title( head ))
+    #logger.info('_get_title(head) >> %s', _get_title( head ))
     chapter.add_child( types.TextNode( _get_title( head ) ) )
-    print (el)
-    if el is []:
-        print ('append el')
+    if el == []:
+        logger.info ('append el')
         el.append(chapter)
     elif not ( (isinstance(el[0], Chapter) or isinstance(el[0], Section)) ):
-        print('el.insert works')
+        logger.info('el.insert works')
         el.insert(0,chapter)
-
-    # Consolidate list elements
-    el3 = el
-    eldiff = list(set(el3)-set(el2))
-    ellcommon = list(set(el3) & set(el2))
-    print('eldiff: ', eldiff)
-    print('ellcommon: ', ellcommon)
     el = _consolidate_lists( el )
 
     return el
@@ -423,13 +426,13 @@ def _consolidate_lists( list = [] ):
     return new_list
 
 def _process_div_elements( element, epub ):
-    print ('check element atrribute of body:', element.attrib.keys())
-    #print ('type: ',type(element))
+    logger.info ('check element atrribute of body: %s', element.attrib.keys())
+    #logger.info ('type: ',type(element))
     class_ = u''
     el = None
     if 'class' in element.attrib.keys():
         class_ = element.attrib['class']
-        print ('div: check class_', class_)
+        logger.info ('div: check class_ %s', class_)
         el = Run.process( element, epub )
     elif 'id' in element.attrib.keys() and el == None:
         el = Run.process( element, epub )
@@ -439,13 +442,12 @@ def _process_div_elements( element, epub ):
 
 
 def _process_p_elements( element, epub ):
-    print ('check element atrribute of body:P', element.attrib.keys())
-    #print ('type: ',type(element))
+    logger.info ('check element atrribute of body:P %s', element.attrib.keys())
     class_ = u''
     el = None
     if 'class' in element.attrib.keys():
         class_ = element.attrib['class']
-        print ('div: check class_', class_)
+        logger.info ('div: check class_ %s', class_)
         el = Run.process( element, epub )
     elif 'id' in element.attrib.keys() and el == None:
         el = Run.process( element, epub )
@@ -454,12 +456,12 @@ def _process_p_elements( element, epub ):
     return el
 
 def _process_section_elements(element, epub):
-    print ('check element atrribute of body:SECTION', element.attrib.keys())
+    logger.info ('check element atrribute of body:SECTION %s', element.attrib.keys())
     class_ = u''
     el = None
     if 'class' in element.attrib.keys():
         class_ = element.attrib['class']
-        print ('div: check class_', class_)
+        logger.info ('div: check class_ %s', class_)
         el = Run.process( element, epub )
     elif 'id' in element.attrib.keys() and el == None:
         el = Run.process( element, epub )
