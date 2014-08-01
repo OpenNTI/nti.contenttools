@@ -11,8 +11,12 @@ logger = __import__('logging').getLogger(__name__)
 import os
 import codecs
 import argparse
+import logging
+from zope.exceptions import log as ze_log
 
 from .epub.generic_epub import EPUBFile
+
+DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
 def _parse_args():
     arg_parser = argparse.ArgumentParser( description="NTI EPUB Converter" )
@@ -24,15 +28,29 @@ def _parse_args():
 def _title_escape( title ):
     return title.replace(' ', '_').replace('-','_').replace(':','_')
 
+def _configure_logging(level='INFO'):
+    numeric_level = getattr(logging, level.upper(), None)
+    numeric_level = logging.INFO if not isinstance(numeric_level, int) else numeric_level
+    logging.basicConfig(level=numeric_level)
+    logging.root.handlers[0].setFormatter(ze_log.Formatter(DEFAULT_FORMAT_STRING))
+
+def _setup_configs():
+    # logging
+    _configure_logging()
+    
+
 def main():
     # Parse command line args
     args = _parse_args()
+
+    _setup_configs()
+
     inputfile = os.path.expanduser(args.inputfile)
-    print('print here in import_epub.py')
+    logger.info('logger.info here in import_epub.py')
 
     # Verify the input file exists
     if not os.path.exists( inputfile ):
-        print( 'The source file, %s, does not exist.' % inputfile )
+        logger.info( 'The source file, %s, does not exist.', inputfile )
         exit()
 
     # Create the output directory if it does not exist
@@ -40,10 +58,10 @@ def main():
         os.mkdir( args.output )
 
     epub = EPUBFile(args.inputfile)
-    print('at import_epub epub type: ',type(epub))
-    print('epub.title: ', epub.title)
-    print('epub.manifest: ', epub.manifest)
-    print('epub.spine:', epub.spine)
+    logger.info('at import_epub epub type: %s', type(epub))
+    logger.info('epub.title: %s', epub.title)
+    logger.info('epub.manifest: %s', epub.manifest)
+    logger.info('epub.spine: %s', epub.spine)
     if epub.title:
         outputfile = os.path.join(args.output, _title_escape(epub.title)+'.tex')
     else:
