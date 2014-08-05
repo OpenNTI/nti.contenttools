@@ -103,6 +103,33 @@ class Paragraph( types.Paragraph ):
                 else:
                     logger.info ("child tail is NONE")
                     me.add_child(types.TextNode( '\n' ) )
+            elif child.tag == 'hr':
+                logger.info("FOUND child.tag == 'hr' inside Paragraph")
+                me.add_child(_process_hr_elements(child, epub))
+            elif child.tag == 'h1':
+                logger.info("FOUND child.tag == 'h1'")
+                me.add_child(_process_h1_elements(child, epub ))
+            elif child.tag == 'h2':
+                logger.info("FOUND child.tag == 'h2'")
+                me.add_child(_process_h2_elements(child, epub ))
+            elif child.tag == 'h3':
+                logger.info("FOUND child.tag == 'h3'")
+                me.add_child(_process_h3_elements(child, epub ))
+            elif child.tag == 'h4':
+                logger.info("FOUND child.tag == 'h4'")
+                me.add_child(_process_h4_elements(child, epub ))
+            elif child.tag == 'div':
+                logger.info("FOUND child.tag == 'div'")
+                me.add_child(_process_div_elements(child, epub))
+            elif child.tag == 'blockquote':
+                logger.info("FOUND child.tag == 'blockquote'")
+                me.add_child(BlockQuote.process(child, epub))
+            elif child.tag == 'ol':
+                logger.info('FOUND ol under Run.process')
+                me.add_child(_process_ol_elements(child, epub))
+            elif child.tag == 'ul':
+                logger.info('FOUND ol under Run.process')
+                me.add_child(_process_ul_elements(child, epub))
             else:
                 #Tracer()()
                 logger.info('on Paragraph.process >> UNHANDLED  CHILD : %s', child)
@@ -141,7 +168,6 @@ class Run( types.Run ):
                 else:
                     logger.info ("child tail is NONE")
                     me.add_child(types.TextNode( '\n' ) )
-                #Tracer()()
             elif child.tag == 'i':
                 logger.info("FOUND child.tag == 'i'")
                 me.add_child( _process_i_elements( child, epub ) )
@@ -157,15 +183,39 @@ class Run( types.Run ):
             elif child.tag == 'div':
                 logger.info("FOUND child.tag == 'div'")
                 me.add_child(_process_div_elements(child, epub))
+            elif child.tag == 'h1':
+                logger.info("FOUND child.tag == 'h1'")
+                me.add_child(_process_h1_elements(child, epub ))
             elif child.tag == 'h2':
                 logger.info("FOUND child.tag == 'h2'")
                 me.add_child(_process_h2_elements(child, epub ))
+            elif child.tag == 'h3':
+                logger.info("FOUND child.tag == 'h3'")
+                me.add_child(_process_h3_elements(child, epub ))
+            elif child.tag == 'h4':
+                logger.info("FOUND child.tag == 'h4'")
+                me.add_child(_process_h4_elements(child, epub ))
             elif child.tag == 'section':
                 logger.info("FOUND child.tag == 'section'")
                 me.add_child(_process_section_elements(child, epub))
             elif child.tag == 'img':
                 logger.info('FOUND image under Run.process')
                 me.add_child( Image.process( child, epub ) )
+            elif child.tag == 'blockquote':
+                logger.info("FOUND blockquote under Run.process")
+                me.add_child(BlockQuote.process(child, epub))
+            elif child.tag == 'strong':
+                logger.info('FOUND strong under Run.process')
+            elif child.tag == 'math':
+                logger.info('FOUND math under Run.process')
+            elif child.tag == 'ol':
+                logger.info('FOUND ol under Run.process')
+                me.add_child(_process_ol_elements(child, epub))
+            elif child.tag == 'ul':
+                logger.info('FOUND ol under Run.process')
+                me.add_child(_process_ul_elements(child, epub))
+            elif child.tag == 'table':
+                logger.info('FOUND table under Run.process')
             else:
                 logger.info('Unhandled Run child: %s',child)
 
