@@ -135,7 +135,11 @@ class Paragraph( types.Paragraph ):
                 logger.info('FOUND em inside Paragraph')
                 me.add_child(_process_em_elements(child,epub))
             elif child.tag == 'section':
+                logger.info('FOUND section')
                 me.add_child(_process_section_elements(child, epub))
+            elif child.tag == 'q':
+                logger.info('FOUND q')
+                me.add_child
             else:
                 #Tracer()()
                 logger.info('on Paragraph.process >> UNHANDLED  CHILD : %s', child)
@@ -184,48 +188,9 @@ class Run( types.Run ):
             elif child.tag == 'sub':
                 logger.info("FOUND child.tag == 'sub'")
                 me.add_child( _process_sub_elements( child, epub ) )
-            elif child.tag == 'p':
-                logger.info("FOUND child.tag == 'p'")
-                me.add_child(_process_p_elements( child, epub ))
-            elif child.tag == 'div':
-                logger.info("FOUND child.tag == 'div'")
-                me.add_child(_process_div_elements(child, epub))
-            elif child.tag == 'h1':
-                logger.info("FOUND child.tag == 'h1'")
-                me.add_child(_process_h1_elements(child, epub ))
-            elif child.tag == 'h2':
-                logger.info("FOUND child.tag == 'h2'")
-                me.add_child(_process_h2_elements(child, epub ))
-            elif child.tag == 'h3':
-                logger.info("FOUND child.tag == 'h3'")
-                me.add_child(_process_h3_elements(child, epub ))
-            elif child.tag == 'h4':
-                logger.info("FOUND child.tag == 'h4'")
-                me.add_child(_process_h4_elements(child, epub ))
-            elif child.tag == 'section':
-                logger.info("FOUND child.tag == 'section'")
-                me.add_child(_process_section_elements(child, epub))
-            elif child.tag == 'img':
-                logger.info('FOUND image under Run.process')
-                me.add_child( Image.process( child, epub ) )
-            elif child.tag == 'blockquote':
-                logger.info("FOUND blockquote under Run.process")
-                me.add_child(BlockQuote.process(child, epub))
-            elif child.tag == 'strong':
-                logger.info('FOUND strong under Run.process')
-            elif child.tag == 'math':
-                logger.info('FOUND math under Run.process')
-            elif child.tag == 'ol':
-                logger.info('FOUND ol under Run.process')
-                me.add_child(_process_ol_elements(child, epub))
-            elif child.tag == 'ul':
-                logger.info('FOUND ol under Run.process')
-                me.add_child(_process_ul_elements(child, epub))
             elif child.tag == 'em':
-                logger.info('FOUND ol under Run.process')
-                me.add_child(_process_em_elements(child, epub))
-            elif child.tag == 'table':
-                logger.info('FOUND table under Run.process')
+                logger.info("FOUND child.tag == 'em'")
+                me.add_child( _process_em_elements( child, epub ) )
             else:
                 logger.info('Unhandled Run child: %s',child)
 
@@ -310,7 +275,6 @@ class Image( types.Image ):
         me.data = StringIO.StringIO( epub.zipfile.read(os.path.join(epub.content_path, me.path)) )
         me.width, me.height = PILImage.open(me.data).size
         epub.image_list.append(me)
-        #Tracer()()
         return me
 
 class Video( types.Video ):
@@ -369,6 +333,10 @@ class Item( types.Item ):
             me.add_child( child )
         return me
 
+class Table(types.Table):
+    @classmethod
+    def process(cls, element, epub):
+        pass
 
 def adapt( fragment, epub, label ):
     els = _process_fragment( fragment, epub )
@@ -433,6 +401,11 @@ def _process_fragment( fragment, epub ):
             el.append(_process_ul_elements( element, epub ))
         elif element.tag == 'section':
             el.append(_process_section_elements(element, epub))
+        elif element.tag == 'hr':
+            el.append(_process_hr_elements(element,epub))
+        elif element.tag == 'table':
+            logger.info("FOUND table in body child")
+            el.append(_process_table_elements(element,epub))
         else:
             logger.info('on process_fragment UNHANDLED BODY CHILD: %s >> %s',element.tag, element )
         logger.info('**********')
@@ -457,7 +430,7 @@ def _process_fragment( fragment, epub ):
     chapter.suppressed = True
     #logger.info('_get_title(head) >> %s', _get_title( head ))
     chapter.add_child( types.TextNode( _get_title( head ) ) )
-    if el == []:
+    if el is []:
         logger.info ('append el')
         el.append(chapter)
     elif not ( (isinstance(el[0], Chapter) or isinstance(el[0], Section)) ):
@@ -577,8 +550,17 @@ def _process_a_elements( element, epub ):
         return el
 
 def _process_em_elements(element, epub):
-    return Run.process(element, epub, ['italic', 'bold', 'quote'])
+    return Run.process(element, epub, ['italic', 'bold'])
+
+def _process_q_elements(element, epub):
+    return Run.process(element, epub, ['bold'])
+
+def _process_hr_elements(element, epub):
+    return Run.process(element, epub)
 
 def _process_ol_elements(element, epub):
     return UnorderedList.process(element, epub)
+
+def _process_table_elements(element, epub):
+    return Table.process(element, epub)
 
