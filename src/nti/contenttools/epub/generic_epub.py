@@ -8,6 +8,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from IPython.core.debugger import Tracer
+
 import os
 import shutil
 import subprocess
@@ -20,6 +22,9 @@ from zipfile import ZipFile
 
 from .adapters import generic as Adapter
 from .. import types
+
+from nti.contenttools.renders import LaTeX
+
 
 class EPUBFile( object ):
     """Class to open, read, and close EPUB documents."""
@@ -89,10 +94,10 @@ class EPUBFile( object ):
         container = etree.fromstring(self.zipfile.read(u'META-INF/container.xml'))
         rootfile = etree.fromstring(self.zipfile.read(_get_rootfile( container )))
         self.content_path = os.path.dirname(_get_rootfile( container ))
-        print ('container', container)
-        print ('rootfile', rootfile)
-        print('_get_rootfile( container )', _get_rootfile( container ))
-        print('content_path', self.content_path)
+        logger.info('container %s', container)
+        logger.info('rootfile %s', rootfile)
+        logger.info('_get_rootfile( container ) %s', _get_rootfile( container ))
+        logger.info('content_path %s', self.content_path)
 
         for element in rootfile:
             logger.info(element)
@@ -120,26 +125,33 @@ class EPUBFile( object ):
         doc_body = types.Body()
         # Create a special parser for dealing with the content files
         parser = XHTMLParser(load_dtd=True,dtd_validation=True)
-        print ('SPINE:',self.spine)
+        logger.info('SPINE: %s',self.spine)
         for item in self.spine:
-            print('---------------------------------')
-            print('SPINE ITEM >>', item)
-            print('>>')
+            logger.info('---------------------------------')
+            logger.info('SPINE ITEM >> %s', item)
+            logger.info('>>')
             docfragment = html.fromstring(self.zipfile.read(self.content_path+'/'+self.manifest[item]['href']))
-            #print('docfragment:')
-            #print(type(docfragment))
-            print(docfragment.tag, docfragment.prefix, docfragment.base, docfragment.attrib, docfragment.nsmap, docfragment.sourceline, docfragment.tail, docfragment.text)
+            logger.info("%s %s %s %s %s %s %s %s", \
+                docfragment.tag, \
+                docfragment.prefix, \
+                docfragment.base, \
+                docfragment.attrib, \
+                docfragment.nsmap, \
+                docfragment.sourceline, \
+                docfragment.tail, \
+                docfragment.text)
             for child in Adapter.adapt( docfragment, self, item ):
                 doc_body.add_child(child)
-            print('---------------------------------')
+            logger.info('---------------------------------')
 
         # Remove the first child of the body if it is a Chapter or Section object
         if isinstance(doc_body.children[0], types.Chapter) or isinstance(doc_body.children[0], types.Section):
             doc_body.children.pop(0)
 
+
+
         self.document = types.Document()
         self.document.add_child(doc_body)
-
         self.document.title = self.title
         self.document.author = self.author
 

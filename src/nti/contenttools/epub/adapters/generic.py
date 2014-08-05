@@ -24,6 +24,7 @@ from urlparse import urlparse
 from lxml import etree
 
 
+
 class Chapter( types.Chapter ):
 
     @classmethod
@@ -95,14 +96,14 @@ class Paragraph( types.Paragraph ):
                 me.add_child( Video.process( child, epub ) )
             elif child.tag == 'br':
                 logger.info("FOUND child.tag == 'br' inside Paragraph")
-                #me.add_child( types.Newline() )
                 if child.tail is not None:
                     logger.info("child tail inside br: %s", child.tail)
-                    me.add_child(types.TextNode('\n'))
-                    me.add_child( types.TextNode( child.tail ) )
+                    me.add_child( types.Newline() )
+                    me.add_child(types.TextNode(u"\n" + child.tail) )
                 else:
                     logger.info ("child tail is NONE")
-                    me.add_child(types.TextNode( '\n' ) )
+                    me.add_child( types.Newline() )
+                    me.add_child(types.TextNode( u"\n" ) )
             elif child.tag == 'hr':
                 logger.info("FOUND child.tag == 'hr' inside Paragraph")
                 me.add_child(_process_hr_elements(child, epub))
@@ -125,11 +126,16 @@ class Paragraph( types.Paragraph ):
                 logger.info("FOUND child.tag == 'blockquote'")
                 me.add_child(BlockQuote.process(child, epub))
             elif child.tag == 'ol':
-                logger.info('FOUND ol under Run.process')
+                logger.info('FOUND ol inside Paragraph')
                 me.add_child(_process_ol_elements(child, epub))
             elif child.tag == 'ul':
-                logger.info('FOUND ol under Run.process')
+                logger.info('FOUND ul inside Paragraph')
                 me.add_child(_process_ul_elements(child, epub))
+            elif child.tag == 'em':
+                logger.info('FOUND em inside Paragraph')
+                me.add_child(_process_em_elements(child,epub))
+            elif child.tag == 'section':
+                me.add_child(_process_section_elements(child, epub))
             else:
                 #Tracer()()
                 logger.info('on Paragraph.process >> UNHANDLED  CHILD : %s', child)
@@ -163,11 +169,12 @@ class Run( types.Run ):
                 #me.add_child( types.Newline() )
                 if child.tail is not None:
                     logger.info("child tail inside br: %s", child.tail)
-                    me.add_child(types.TextNode('\n'))
-                    me.add_child(types.TextNode( child.tail ) )
+                    me.add_child( types.Newline() )
+                    me.add_child(types.TextNode(u"\n" + child.tail) )
                 else:
                     logger.info ("child tail is NONE")
-                    me.add_child(types.TextNode( '\n' ) )
+                    me.add_child( types.Newline() )
+                    me.add_child(types.TextNode( u"\n"))
             elif child.tag == 'i':
                 logger.info("FOUND child.tag == 'i'")
                 me.add_child( _process_i_elements( child, epub ) )
@@ -244,10 +251,11 @@ class Hyperlink( types.Hyperlink ):
         me.target = link.attrib['href']
 
         if link.text:
-            logger.info("link.text", link.text)
+            logger.info("link.text %s", link.text)
             me.add_child( types.TextNode( link.text ) )
 
         for child in link:
+
             me.add_child( Run.process( child, epub ) )
 
         return me
@@ -504,43 +512,16 @@ def _process_div_elements( element, epub ):
     #logger.info ('type: ',type(element))
     class_ = u''
     el = None
-    if 'class' in element.attrib.keys():
-        class_ = element.attrib['class']
-        logger.info ('div: check class_ %s', class_)
-        el = Run.process( element, epub )
-    elif 'id' in element.attrib.keys() and el == None:
-        el = Run.process( element, epub )
-    else:
-        el = Paragraph.process(element,epub)
+    el = Paragraph.process(element, epub)
     return el
 
 
 def _process_p_elements( element, epub ):
-    logger.info ('check element atrribute of body:P %s', element.attrib.keys())
-    class_ = u''
-    el = None
-    if 'class' in element.attrib.keys():
-        class_ = element.attrib['class']
-        logger.info ('div: check class_ %s', class_)
-        el = Run.process( element, epub )
-    elif 'id' in element.attrib.keys() and el == None:
-        el = Run.process( element, epub )
-    else:
-        el = Paragraph.process(element,epub)
+    el = Paragraph.process(element, epub)
     return el
 
 def _process_section_elements(element, epub):
-    logger.info ('check element atrribute of body:SECTION %s', element.attrib.keys())
-    class_ = u''
-    el = None
-    if 'class' in element.attrib.keys():
-        class_ = element.attrib['class']
-        logger.info ('div: check class_ %s', class_)
-        el = Run.process( element, epub )
-    elif 'id' in element.attrib.keys() and el == None:
-        el = Run.process( element, epub )
-    else:
-        el = Section.process(element,epub)
+    el = Paragraph.process(element, epub)
     return el
 
 def _process_h1_elements( element, epub ):
@@ -583,7 +564,6 @@ def _process_a_elements( element, epub ):
             el.add_child( types.TextNode(element.tail) )
         else:
             el = Hyperlink.process(element, epub)
-        #Tracer()()
         return el
     else:
         el = None
@@ -597,7 +577,7 @@ def _process_a_elements( element, epub ):
         return el
 
 def _process_em_elements(element, epub):
-    return Run.process(element, epub, ['italic', 'bold'])
+    return Run.process(element, epub, ['italic', 'bold', 'quote'])
 
 def _process_ol_elements(element, epub):
     return UnorderedList.process(element, epub)
