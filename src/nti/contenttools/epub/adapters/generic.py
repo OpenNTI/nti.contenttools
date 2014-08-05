@@ -214,6 +214,9 @@ class Run( types.Run ):
             elif child.tag == 'ul':
                 logger.info('FOUND ol under Run.process')
                 me.add_child(_process_ul_elements(child, epub))
+            elif child.tag == 'em':
+                logger.info('FOUND ol under Run.process')
+                me.add_child(_process_em_elements(child, epub))
             elif child.tag == 'table':
                 logger.info('FOUND table under Run.process')
             else:
@@ -591,4 +594,10 @@ def _process_a_elements( element, epub ):
             el = Label.process(element, epub)
         #Tracer()()
         return el
+
+def _process_em_elements(element, epub):
+    return Run.process(element, epub, ['italic', 'bold'])
+
+def _process_ol_elements(element, epub):
+    return UnorderedList.process(element, epub)
 
