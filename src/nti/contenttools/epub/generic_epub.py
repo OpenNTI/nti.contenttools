@@ -148,8 +148,6 @@ class EPUBFile( object ):
         if isinstance(doc_body.children[0], types.Chapter) or isinstance(doc_body.children[0], types.Section):
             doc_body.children.pop(0)
 
-
-
         self.document = types.Document()
         self.document.add_child(doc_body)
         self.document.title = self.title
