@@ -244,6 +244,7 @@ class Hyperlink( types.Hyperlink ):
         me.target = link.attrib['href']
 
         if link.text:
+            logger.info("link.text", link.text)
             me.add_child( types.TextNode( link.text ) )
 
         for child in link:
