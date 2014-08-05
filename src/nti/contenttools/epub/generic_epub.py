@@ -151,8 +151,12 @@ class EPUBFile( object ):
         self.get_videos(output_dir)
 
     def get_images(self, output_dir='.'):
+        logger.info ("STORE IMAGES")
+        if self.image_list == []:
+            logger.info ("NO IMAGE FOUND")
         for image in self.image_list:
             path = os.path.join( output_dir, image.path )
+            logger.info("location: %s", path)
             if not os.path.exists(os.path.dirname(path)):
                 os.mkdir(os.path.dirname(path))
             image.data.seek(0)
