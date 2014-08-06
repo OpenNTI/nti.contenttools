@@ -180,9 +180,22 @@ class UnorderedList( List ):
 
 class OrderedList( List ):
 
+    """
     def __init__(self):
         super(OrderedList, self).__init__(format='decimal')
+    """
+    pass
 
 class Item( DocumentStructureNode ):
     pass
+
+class Table(DocumentStructureNode):
+    pass
+
+class Row(DocumentStructureNode):
+    pass
+
+class Cell (DocumentStructureNode):
+    pass
+
 
