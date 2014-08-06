@@ -7,6 +7,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
+#from IPython.core.debugger import Tracer
 
 from .base import base_renderer, _command_renderer
 
@@ -42,6 +43,7 @@ def paragraph_renderer(self):
 
     result = base_renderer(self)
 
+    #Tracer()()
     for style in self.styles:
         if style in STYLES.keys():
             result = STYLES[style](result)
@@ -50,6 +52,8 @@ def paragraph_renderer(self):
 
     if result:
         result = result + u'\n\n'
+
+    
 
     return result
 
