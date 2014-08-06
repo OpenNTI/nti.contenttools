@@ -91,3 +91,7 @@ NAQChoices.render = choices_renderer
 NAQChoice.render = choice_renderer
 NAQSolutions.render = solutions_renderer
 NAQSolution.render = solution_renderer
+
+types.Table =  table_renderer
+types.Row = table_row_renderer
+types.Cell = table_cell_renderer

@@ -99,7 +99,7 @@ class Paragraph( types.Paragraph ):
                 if child.tail is not None:
                     logger.info("child tail inside br: %s", child.tail)
                     me.add_child( types.Newline() )
-                    me.add_child(types.TextNode(u"\n" + child.tail) )
+                    me.add_child(types.TextNode(child.tail))
                 else:
                     logger.info ("child tail is NONE")
                     me.add_child( types.Newline() )
@@ -191,6 +191,9 @@ class Run( types.Run ):
             elif child.tag == 'em':
                 logger.info("FOUND child.tag == 'em'")
                 me.add_child( _process_em_elements( child, epub ) )
+            elif child.tag == 'img':
+                logger.info("FOUND child.tag == 'img' under Run.process")
+                me.add_child(Image.process(child, epub))
             else:
                 logger.info('Unhandled Run child: %s',child)
 
@@ -336,7 +339,49 @@ class Item( types.Item ):
 class Table(types.Table):
     @classmethod
     def process(cls, element, epub):
-        pass
+        me = cls()
+        if 'id' in element.attrib:
+            me.add_child(Label.process(element, epub))
+
+        if element.text:
+            me.add_child(types.TextNode(element.text))
+
+        for child in element:
+            if child.tag == 'colgroup':
+                me.add_child(_process_colgroup_elements(child, epub))
+            if child.tag == 'tbody':
+                me.add_child(_process_tbody_elements(child, epub))
+            if child.tag == 'tr':
+                me.add_child(Row.process(child, epub))
+            else:
+                logger.info("UNHANDLED child under TABLE element %s: ", child.tag)
+        if element.tail:
+            me.add_child(types.TextNode(element.tail.replace('\r', '')))
+        return me
+
+class Row (types.Row):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        if 'id' in element.attrib:
+            me.add_child(Label.process(element, epub))
+        if element.text:
+            me.add_child(types.TextNode(element.text))
+        for child in element:
+            if child.tag == 'td':
+                me.add_child(_process_td_elements(child, epub))
+            else:
+                logger.info("UNHANDLED child under TABLE:tr element %s: ", child.tag)
+        if element.tail:
+            me.add_child(types.TextNode(element.tail.replace('\r', '')))
+        return me
+
+class Cell(types.Cell):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.add_child(Run.process(element, epub))
+        return me
 
 def adapt( fragment, epub, label ):
     els = _process_fragment( fragment, epub )
@@ -563,4 +608,16 @@ def _process_ol_elements(element, epub):
 
 def _process_table_elements(element, epub):
     return Table.process(element, epub)
+
+def _process_colgroup_elements(element, epub):
+    return Table.process(element, epub)
+
+def _process_tbody_elements(element, epub):
+    return Table.process(element, epub)
+
+def _process_tr_elements(element, epub):
+    return Row.process(element, epub)
+
+def _process_td_elements(element, epub):
+    return Cell.process(element, epub)
 
