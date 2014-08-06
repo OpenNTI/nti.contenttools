@@ -139,7 +139,15 @@ class Paragraph( types.Paragraph ):
                 me.add_child(_process_section_elements(child, epub))
             elif child.tag == 'q':
                 logger.info('FOUND q')
-                me.add_child
+                me.add_child(_process_q_elements(child, epub))
+            elif child.tag == 'table':
+                logger.info('FOUND table')
+                me.add_child(_process_table_elements(child, epub))
+            elif child.tag == 'strong':
+                logger.info('FOUND strong el')
+                me.add_child(_process_strong_elements(child, epub))
+            elif child.tag == 'math':
+                pass
             else:
                 #Tracer()()
                 logger.info('on Paragraph.process >> UNHANDLED  CHILD : %s', child)
@@ -194,11 +202,22 @@ class Run( types.Run ):
             elif child.tag == 'img':
                 logger.info("FOUND child.tag == 'img' under Run.process")
                 me.add_child(Image.process(child, epub))
+            elif child.tag == 'h1':
+                me.add_child(_process_h1_elements(child, epub))
+            elif child.tag == 'ol':
+                me.add_child(_process_ol_elements(child, epub))
+            elif child.tag == 'p':
+                me.add_child(_process_p_elements(child, epub))
+            elif child.tag == 'div':
+                me.add_child(_process_div_elements(child, epub))
+            elif child.tag == 'blockquote':
+                me.add_child(BlockQuote.process(child, epub))
+            elif child.tag == 'math':
+                pass
             else:
                 logger.info('Unhandled Run child: %s',child)
 
         if element.tail:
-            #logger.info("check if element.tail:", element.tail)
             _t = cls()
             _t.add_child( me )
             _t.add_child( types.TextNode( element.tail.replace('\r', '' ) ) )
@@ -234,7 +253,7 @@ class Label( types.Label ):
     def process(cls, label, epub ):
         #Tracer()()
         me = cls()
-        me.name = label.attrib.keys()
+        me.name = label.attrib['id']
         return me
 
 
@@ -339,6 +358,7 @@ class Item( types.Item ):
 class Table(types.Table):
     @classmethod
     def process(cls, element, epub):
+        logger.info("CHECK TABLE element")
         me = cls()
         if 'id' in element.attrib:
             me.add_child(Label.process(element, epub))
@@ -349,12 +369,12 @@ class Table(types.Table):
         for child in element:
             if child.tag == 'colgroup':
                 me.add_child(_process_colgroup_elements(child, epub))
-            if child.tag == 'tbody':
+            elif child.tag == 'tbody':
                 me.add_child(_process_tbody_elements(child, epub))
-            if child.tag == 'tr':
+            elif child.tag == 'tr':
                 me.add_child(Row.process(child, epub))
             else:
-                logger.info("UNHANDLED child under TABLE element %s: ", child.tag)
+                logger.info("UNHANDLED child under TABLE element %s", child.tag)
         if element.tail:
             me.add_child(types.TextNode(element.tail.replace('\r', '')))
         return me
@@ -369,7 +389,8 @@ class Row (types.Row):
             me.add_child(types.TextNode(element.text))
         for child in element:
             if child.tag == 'td':
-                me.add_child(_process_td_elements(child, epub))
+                logger.info('FOUND td')
+                me.add_child(Cell.process(child, epub))
             else:
                 logger.info("UNHANDLED child under TABLE:tr element %s: ", child.tag)
         if element.tail:
@@ -439,9 +460,9 @@ def _process_fragment( fragment, epub ):
         elif element.tag == 'h2':
             el.append(_process_h2_elements( element, epub ))
         elif element.tag == 'h3':
-            el.append(_process_h2_elements( element, epub ))
+            el.append(_process_h3_elements( element, epub ))
         elif element.tag == 'h4':
-            el.append(_process_h2_elements( element, epub ))
+            el.append(_process_h4_elements( element, epub ))
         elif element.tag == 'ul':
             el.append(_process_ul_elements( element, epub ))
         elif element.tag == 'section':
@@ -451,6 +472,9 @@ def _process_fragment( fragment, epub ):
         elif element.tag == 'table':
             logger.info("FOUND table in body child")
             el.append(_process_table_elements(element,epub))
+        elif element.tag == 'nav':
+            logger.info("FOUND nav in body child")
+            el.append(_process_nav_elements(element, epub))
         else:
             logger.info('on process_fragment UNHANDLED BODY CHILD: %s >> %s',element.tag, element )
         logger.info('**********')
@@ -475,7 +499,7 @@ def _process_fragment( fragment, epub ):
     chapter.suppressed = True
     #logger.info('_get_title(head) >> %s', _get_title( head ))
     chapter.add_child( types.TextNode( _get_title( head ) ) )
-    if el is []:
+    if el == []:
         logger.info ('append el')
         el.append(chapter)
     elif not ( (isinstance(el[0], Chapter) or isinstance(el[0], Section)) ):
@@ -526,11 +550,11 @@ def _consolidate_lists( list = [] ):
     return new_list
 
 def _process_div_elements( element, epub ):
-    logger.info ('check element atrribute of body: %s', element.attrib.keys())
+    #logger.info ('check element atrribute of body: %s', element.attrib.keys())
     #logger.info ('type: ',type(element))
-    class_ = u''
-    el = None
-    el = Paragraph.process(element, epub)
+    #class_ = u''
+    #el = None
+    el = Run.process(element, epub)
     return el
 
 
@@ -607,7 +631,7 @@ def _process_ol_elements(element, epub):
     return UnorderedList.process(element, epub)
 
 def _process_table_elements(element, epub):
-    return Table.process(element, epub)
+    return Table.process(element,epub)
 
 def _process_colgroup_elements(element, epub):
     return Table.process(element, epub)
@@ -621,3 +645,8 @@ def _process_tr_elements(element, epub):
 def _process_td_elements(element, epub):
     return Cell.process(element, epub)
 
+def _process_strong_elements(element, epub):
+    return Run.process(element, epub, ['bold'])
+
+def _process_nav_elements(element, epub):
+    return Run.process(element, epub)
