@@ -68,12 +68,11 @@ class Paragraph( types.Paragraph ):
         me = cls()
 
         if 'id' in element.attrib.keys():
-            logger.info ('id is here element.attrib')
             me.add_child( Label.process( element, epub ) )
 
         logger.info('Class Paragraph element.text type: %s', type(element.text))    
         if element.text:
-            logger.info(element.text)
+            logger.info("p el text :%sdone", element.text)
             me.add_child( types.TextNode( element.text ) )
 
         for child in element:
@@ -251,7 +250,6 @@ class Label( types.Label ):
 
     @classmethod
     def process(cls, label, epub ):
-        #Tracer()()
         me = cls()
         me.name = label.attrib['id']
         return me
@@ -375,6 +373,27 @@ class Table(types.Table):
                 me.add_child(Row.process(child, epub))
             else:
                 logger.info("UNHANDLED child under TABLE element %s", child.tag)
+        if element.tail:
+            me.add_child(types.TextNode(element.tail.replace('\r', '')))
+        return me
+
+class TBody(types.TBody):
+    @classmethod
+    def process(cls, element, epub):
+        logger.info("CHECK tbody element")
+        me = cls()
+        if 'id' in element.attrib:
+            me.add_child(Label.process(element, epub))
+
+        if element.text:
+            me.add_child(types.TextNode(element.text))
+
+        for child in element:
+            if child.tag == 'tr':
+                me.add_child(Row.process(child, epub))
+            else:
+                logger.info("UNHANDLED child under tbody element %s", child.tag)
+
         if element.tail:
             me.add_child(types.TextNode(element.tail.replace('\r', '')))
         return me
@@ -611,10 +630,12 @@ def _process_a_elements( element, epub ):
         el = None
         if element.tail:
             el = Run()
-            el.add_child( Label.process(element, epub) )
+            if 'id' in element.attrib.keys():
+                el.add_child( Label.process(element, epub) )
             el.add_child( types.TextNode(element.tail) )
         else:
-            el = Label.process(element, epub)
+            if 'id' in element.attrib.keys():
+                el = Label.process(element, epub)
         #Tracer()()
         return el
 
@@ -634,10 +655,10 @@ def _process_table_elements(element, epub):
     return Table.process(element,epub)
 
 def _process_colgroup_elements(element, epub):
-    return Table.process(element, epub)
+    pass
 
 def _process_tbody_elements(element, epub):
-    return Table.process(element, epub)
+    return TBody.process(element, epub)
 
 def _process_tr_elements(element, epub):
     return Row.process(element, epub)

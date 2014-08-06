@@ -198,4 +198,6 @@ class Row(DocumentStructureNode):
 class Cell (DocumentStructureNode):
     pass
 
+class TBody(DocumentStructureNode):
+    pass
 

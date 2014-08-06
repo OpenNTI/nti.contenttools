@@ -8,7 +8,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from IPython.core.debugger import Tracer
+#from IPython.core.debugger import Tracer
 
 import os
 import shutil
@@ -154,6 +154,7 @@ class EPUBFile( object ):
         self.document.author = self.author
 
     def render(self):
+        #Tracer()()
         return self.document.render()
 
     def get_media(self, output_dir='.'):

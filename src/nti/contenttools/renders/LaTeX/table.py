@@ -58,3 +58,13 @@ def table_cell_renderer(self):
         result = base_renderer(self)
     return result
 
+def table_html_renderer(self):
+    body = u''
+    for child in self.children:
+        body = body + child.render()
+    result = u'\\begin{table}\n\\begin{tabular}\n%s\\end{tabular}\n\\end{table}\n'
+    return result % (body)
+
+def table_cell_html_renderer(self):
+    result = base_renderer(self)
+    return result

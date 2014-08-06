@@ -7,6 +7,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
+#from IPython.core.debugger import Tracer
 
 def _image_renderer(self, command):
     width = self.width
@@ -24,6 +25,7 @@ def _image_renderer(self, command):
     if self.width < threshold or self.height < threshold:
         command = u'includegraphics'
 
+    #Tracer()()
     return u'\\%s[%s]{%s}' % (command, params, self.path)
 
 def image_annotation_renderer(self):
