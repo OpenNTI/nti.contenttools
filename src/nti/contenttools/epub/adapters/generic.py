@@ -421,6 +421,20 @@ class Cell(types.Cell):
     def process(cls, element, epub):
         me = cls()
         me.add_child(Run.process(element, epub))
+        """
+        if 'id' in element.attrib:
+            me.add_child(Label.process(element, epub))
+        if element.text:
+            me.add_child(types.TextNode(element.text))
+        for child in element:
+            if child.tag =='a':
+                logger.info('Found tag a inside td')
+                me.add_child(_process_a_elements(child, epub))
+            else:
+                logger.info("UNHANDLED child inside td: %s", child.tag)
+        if element.tail:
+            me.add_child(types.TextNode(element.tail.replace('\r','')))
+        """
         return me
 
 def adapt( fragment, epub, label ):
@@ -617,12 +631,22 @@ def _process_sub_elements( element, epub ):
     return Run.process(element, epub, ['sub'])
 
 def _process_a_elements( element, epub ):
+
+    for child in element:
+        if child.tag == 'img':
+            el = Run()
+            el.add_child(Image.process(child, epub))
+            return el
+        else:
+            logger.info ("Unhandled child under 'a' element")
+
     if 'href' in element.attrib.keys():
         el = None
+        Tracer()()
         if element.tail:
             el = Run()
             el.add_child( Hyperlink.process(element, epub) )
-            el.add_child( types.TextNode(element.tail) )
+            el.add_child( types.TextNode(element.tail))
         else:
             el = Hyperlink.process(element, epub)
         return el
@@ -636,8 +660,8 @@ def _process_a_elements( element, epub ):
         else:
             if 'id' in element.attrib.keys():
                 el = Label.process(element, epub)
-        #Tracer()()
-        return el
+    #Tracer()()
+    return el
 
 def _process_em_elements(element, epub):
     return Run.process(element, epub, ['italic', 'bold'])
