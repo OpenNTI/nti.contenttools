@@ -10,6 +10,8 @@ logger = __import__('logging').getLogger(__name__)
 
 from .base import base_renderer
 
+from IPython.core.debugger import Tracer
+
 def table_renderer(self):
     caption = u''
     colspec = u''
@@ -64,6 +66,13 @@ def table_html_renderer(self):
         body = body + child.render()
     result = u'\\begin{table}\n\\begin{tabular}\n%s\\end{tabular}\n\\end{table}\n'
     return result % (body)
+
+def table_row_html_renderer(self):
+    result = []
+    for child in self.children:
+        result.append(child.render())
+    #Tracer()()
+    return u' & '.join(result) + u'\\\\\n'
 
 def table_cell_html_renderer(self):
     result = base_renderer(self)

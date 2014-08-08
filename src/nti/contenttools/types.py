@@ -201,3 +201,38 @@ class Cell (DocumentStructureNode):
 class TBody(DocumentStructureNode):
     pass
 
+class Math(DocumentStructureNode):
+    pass
+
+class MRow(DocumentStructureNode):
+    pass
+
+class MSup(DocumentStructureNode):
+    pass
+
+class MathRun(DocumentStructureNode):
+    pass
+
+class MFenced(DocumentStructureNode):
+    def __init__(self, opener=u'', close=u'', separators = u''):
+        self.opener = opener
+        self.close = close
+        self.separators = separators
+
+class MSpace(DocumentStructureNode):
+    def __init__(self, width=0, height=0):
+        self.width = width
+        self.height = height
+
+class Mtable(DocumentStructureNode):
+    pass
+
+class Mtr(DocumentStructureNode):
+    pass
+
+class Mtd (DocumentStructureNode):
+    pass
+
+
+
+
