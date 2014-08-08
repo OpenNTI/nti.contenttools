@@ -61,18 +61,25 @@ def table_cell_renderer(self):
     return result
 
 def table_html_renderer(self):
+    #logger.info(" self.number_of_col : %s",self.number_of_col)
+    number_of_col = self.number_of_col
+    count_col = 0
+    string_col = u''
+    while count_col < number_of_col:
+        string_col = string_col + u' l '
+        count_col = count_col + 1
     body = u''
     for child in self.children:
         body = body + child.render()
-    result = u'\\begin{table}\n\\begin{tabular}\n%s\\end{tabular}\n\\end{table}\n'
-    return result % (body)
+    result = u'\\begin{table}{%s}\n\\begin{tabular}\n%s\\end{tabular}\n\\end{table}\n'
+    return result % (string_col, body)
 
 def table_row_html_renderer(self):
     result = []
     for child in self.children:
         result.append(child.render())
     #Tracer()()
-    return u' & '.join(result) + u'\\\\\n'
+    return result[0] + u' & '.join(result[1:len(result)]) + u'\\\\\n'
 
 def table_cell_html_renderer(self):
     result = base_renderer(self)
