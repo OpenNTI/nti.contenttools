@@ -190,16 +190,28 @@ class Item( DocumentStructureNode ):
     pass
 
 class Table(DocumentStructureNode):
-    pass
+    def __init__(self, number_of_col=0):
+        self.number_of_col = number_of_col
+
+    def set_number_of_col(self, number_of_col):
+        self.number_of_col = number_of_col
 
 class Row(DocumentStructureNode):
-    pass
+    def __init__(self, number_of_col=0):
+        self.number_of_col = number_of_col
+        
+    def set_number_of_col(self, number_of_col):
+        self.number_of_col = number_of_col
 
 class Cell (DocumentStructureNode):
     pass
 
 class TBody(DocumentStructureNode):
-    pass
+    def __init__(self, number_of_col=0):
+        self.number_of_col = number_of_col
+        
+    def set_number_of_col(self, number_of_col):
+        self.number_of_col = number_of_col
 
 class Math(DocumentStructureNode):
     pass
