@@ -23,7 +23,7 @@ from .paragraph import *
 from .run import *
 from .sectioning import *
 from .table import *
-
+from .math import *
 
 def note_renderer(self):
     return u'\\footnote{%s}' % base_renderer(self)
@@ -93,6 +93,11 @@ NAQSolutions.render = solutions_renderer
 NAQSolution.render = solution_renderer
 
 types.Table.render =  table_html_renderer
-types.Row.render = table_row_renderer
+types.Row.render = table_row_html_renderer
 types.Cell.render = table_cell_html_renderer
 
+types.Math.render = math_html_renderer
+types.MRow.render = math_row_html_renderer
+types.MSup.render = math_sup_html_renderer
+types.MFenced.render = math_fenced_html_rendered
+types.MathRun.render = math_run_html_rendered
