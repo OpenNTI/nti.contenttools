@@ -79,7 +79,7 @@ def table_row_html_renderer(self):
     for child in self.children:
         result.append(child.render())
     #Tracer()()
-    return result[0] + u' & '.join(result[1:len(result)]) + u'\\\\\n'
+    return u' & '.join(result) + u'\\\\\n'
 
 def table_cell_html_renderer(self):
     result = base_renderer(self)
