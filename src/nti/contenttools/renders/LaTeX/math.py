@@ -53,23 +53,13 @@ def math_fenced_html_rendered(self):
 	result = []
 	for child in self.children:
 	    result.append(child.render())
-	
+
 	if isinstance(self.children[0], Mtable):
-		if opener = '[':
-			return u'\\begin{bmatrix}\n'+ u''.join(result) + u'\\end{bmatrix}\n'
-		elif opener = '(':
-			return u'\\begin{pmatrix}\n'+ u''.join(result) + u'\\end{pmatrix}\n'
-		else:
-			return u'\\begin{matrix}\n'+ u''.join(result) + u'\\end{matrix}\n'
+		return set_matrix_border(opener, result)
 	elif isinstance(self.children[0], MRow):
 		if self.children[0].children:
 			if isinstance(self.children[0].children[0], Mtable):
-				if opener = '[':
-					return u'\\begin{bmatrix}\n'+ u''.join(result) + u'\\end{bmatrix}\n'
-				elif opener = '(':
-					return u'\\begin{pmatrix}\n'+ u''.join(result) + u'\\end{pmatrix}\n'
-				else:
-					return u'\\begin{matrix}\n'+ u''.join(result) + u'\\end{matrix}\n'
+				return set_matrix_border(opener, result)
 			else:
 				return opener + u''.join(result) + u'' + close
 		else:
@@ -77,6 +67,14 @@ def math_fenced_html_rendered(self):
 	else:
 		return opener + u''.join(result) + u'' + close 
 
+
+def set_matrix_border (opener, result):
+	if opener == '[':
+		return u'\\begin{bmatrix}\n'+ u''.join(result) + u'\\end{bmatrix}\n'
+	elif opener == '(':
+		return u'\\begin{pmatrix}\n'+ u''.join(result) + u'\\end{pmatrix}\n'
+	else:
+		return u'\\begin{matrix}\n'+ u''.join(result) + u'\\end{matrix}\n'
 
 def math_run_html_rendered(self):
 	"""
