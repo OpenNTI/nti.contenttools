@@ -104,3 +104,6 @@ types.MathRun.render = math_run_html_rendered
 types.Mtable.render = math_table_html_rendered
 types.Mtr.render = math_tr_html_rendered
 types.Mtd.render = math_td_html_rendered
+types.Mfrac.render = math_frac_html_rendered
+types.MSup.render = math_sup_html_rendered
+types.MSub.render = math_sub_html_rendered

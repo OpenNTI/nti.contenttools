@@ -23,8 +23,8 @@ def math_html_renderer(self):
 	body = u''
 	for child in self.children:
 	    body = body + child.render()
-	return body
-
+	return u'$ ' + body + u' $'
+ 
 def math_row_html_renderer(self):
 	"""
 	to render element <mrow>
@@ -90,15 +90,30 @@ def math_table_html_rendered(self):
 	body = u''
 	for child in self.children:
 	    body = body + child.render()
-	#logger.info('type of mtable parent %s',type(self.__parent__))
+	logger.info('type of mtable parent %s',type(self.__parent__))
 	if isinstance(self.__parent__, MFenced):
 		result = u'%s'
 	elif isinstance (self.__parent__, MRow):
-		result = u'%s'
+		if self.__parent__.__parent__:
+			if isinstance(self.__parent__.__parent__, MFenced):
+				logger.info('type of mtable parent.parent %s',type(self.__parent__.__parent__))
+				result = u'%s'
+			else:
+				body = remove_special_char("&\\", body)
+				result = u'\\begin{tabular}\n%s\\end{tabular}\n' 
+		else:
+			result = u'\\begin{tabular}\n%s\\end{tabular}\n' 
 	else:
-		result = u'\\begin{tabular}\n%s\\end{tabular}\n'
-
+		logger.info("else")
+		result = u'\\begin{tabular}\n%s\\end{tabular}\n' 	
+	
 	return result % (body)
+
+def remove_special_char(char_list, string):
+	for char in string:
+		if char in char_list:
+			string.replace(char, u'')
+	return string
 
 def math_tr_html_rendered(self):
 	"""
@@ -109,14 +124,37 @@ def math_tr_html_rendered(self):
 	for child in self.children:
 	    result.append(child.render())
 
-	return result[0] + u' & '.join(result[1:len(result)]) + u'\\\\\n'
+	return u' & '.join(result) + u'\\\\\n'
 
 def math_td_html_rendered(self):
 	"""
 	to render <mtd> element
 	"""
 	#logger.info("run math_td_html_rendered")
-	result = []
-	for child in self.children:
-	    result.append(child.render())
-	return u''.join(result) + u''
+	#result = []
+	#for child in self.children:
+	#    result.append(child.render())
+	#return u''.join(result) + u''
+	result = base_renderer(self)
+	return result
+
+def math_frac_html_rendered(self):
+	"""
+	to render <mfrac> element
+	"""
+	if len(self.children) > 2 :
+		raise Exception("mfrac should only have 2 children")
+	else:
+		return u'\\frac{%s}{%s}' %(self.children[0].render(), self.children[1].render())
+
+def math_sub_html_rendered(self):
+	if len(self.children[0].children)> 2 :
+		raise Exception("msub should only have 2 children")
+	else:
+		return u'{%s}_{%s}' %(self.children[0].children[0].render(), self.children[0].children[1].render())
+
+def math_sup_html_rendered(self):
+	if len(self.children[0].children)> 2 :
+		raise Exception("msup should only have 2 children")
+	else:
+		return u'{%s}^{%s}' %(self.children[0].children[0].render(), self.children[0].children[1].render())
