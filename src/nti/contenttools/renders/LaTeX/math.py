@@ -29,11 +29,9 @@ def math_row_html_renderer(self):
 	"""
 	to render element <mrow>
 	"""
-	#logger.info("run math_row_html_rendered")
 	result = []
 	for child in self.children:
 	    result.append(child.render())
-	#Tracer()()
 	return u''.join(result) + u''
 
 def math_sup_html_renderer(self):
@@ -49,7 +47,6 @@ def math_fenced_html_rendered(self):
 	"""
 	to render element <mfenced>
 	"""
-	#logger.info("run math_fenced_html_rendered")
 	opener = self.opener
 	close = self.close
 	separators = self.separators
@@ -58,12 +55,21 @@ def math_fenced_html_rendered(self):
 	    result.append(child.render())
 	
 	if isinstance(self.children[0], Mtable):
-		return u'\\begin{matrix}\n'.join(result) + u'\\end{matrix}'
+		if opener = '[':
+			return u'\\begin{bmatrix}\n'+ u''.join(result) + u'\\end{bmatrix}\n'
+		elif opener = '(':
+			return u'\\begin{pmatrix}\n'+ u''.join(result) + u'\\end{pmatrix}\n'
+		else:
+			return u'\\begin{matrix}\n'+ u''.join(result) + u'\\end{matrix}\n'
 	elif isinstance(self.children[0], MRow):
 		if self.children[0].children:
 			if isinstance(self.children[0].children[0], Mtable):
-				logger.info("Found matrix")
-				return u'\\begin{matrix}\n'+ u''.join(result) + u'\\end{matrix}\n'
+				if opener = '[':
+					return u'\\begin{bmatrix}\n'+ u''.join(result) + u'\\end{bmatrix}\n'
+				elif opener = '(':
+					return u'\\begin{pmatrix}\n'+ u''.join(result) + u'\\end{pmatrix}\n'
+				else:
+					return u'\\begin{matrix}\n'+ u''.join(result) + u'\\end{matrix}\n'
 			else:
 				return opener + u''.join(result) + u'' + close
 		else:
@@ -76,7 +82,6 @@ def math_run_html_rendered(self):
 	"""
 	to render types.MathRun
 	"""
-	#logger.info("run math_run_html_rendered")
 	result = []
 	for child in self.children:
 	    result.append(child.render())
@@ -86,7 +91,6 @@ def math_table_html_rendered(self):
 	"""
 	to render <mtable> element
 	"""
-	#logger.info("run math_table_html_rendered")
 	body = u''
 	for child in self.children:
 	    body = body + child.render()
@@ -119,7 +123,6 @@ def math_tr_html_rendered(self):
 	"""
 	to render <mtr> element
 	"""
-	#logger.info("run math_tr_html_rendered")
 	result = []
 	for child in self.children:
 	    result.append(child.render())
@@ -130,11 +133,6 @@ def math_td_html_rendered(self):
 	"""
 	to render <mtd> element
 	"""
-	#logger.info("run math_td_html_rendered")
-	#result = []
-	#for child in self.children:
-	#    result.append(child.render())
-	#return u''.join(result) + u''
 	result = base_renderer(self)
 	return result
 
