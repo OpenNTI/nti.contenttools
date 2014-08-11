@@ -222,6 +222,9 @@ class MRow(DocumentStructureNode):
 class MSup(DocumentStructureNode):
     pass
 
+class MSub(DocumentStructureNode):
+    pass
+
 class MathRun(DocumentStructureNode):
     pass
 
@@ -245,6 +248,7 @@ class Mtr(DocumentStructureNode):
 class Mtd (DocumentStructureNode):
     pass
 
-
+class Mfrac(DocumentStructureNode):
+    pass
 
 

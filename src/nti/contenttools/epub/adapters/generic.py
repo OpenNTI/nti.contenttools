@@ -70,7 +70,6 @@ class Paragraph( types.Paragraph ):
         if 'id' in element.attrib.keys():
             me.add_child( Label.process( element, epub ) )
 
-        #logger.info('Class Paragraph element.text type: %s', type(element.text))    
         if element.text:
             if element.text.isspace():
                 pass 
@@ -86,7 +85,6 @@ class Paragraph( types.Paragraph ):
             elif child.tag == 'i':
                 me.add_child( _process_i_elements( child, epub ) )
             elif child.tag == 'img':
-                #logger.info ('FOUND image under a Paragraph')
                 me.add_child( Image.process( child, epub ) )
             elif child.tag == 'p':
                 me.add_child( _process_p_elements( child, epub ) )
@@ -97,54 +95,38 @@ class Paragraph( types.Paragraph ):
             elif child.tag == 'video':
                 me.add_child( Video.process( child, epub ) )
             elif child.tag == 'br':
-                #logger.info("FOUND child.tag == 'br' inside Paragraph")
                 me.add_child( types.Newline())
                 if child.tail is not None:
-                    #logger.info("child tail inside br: %s", child.tail)
                     me.add_child(types.TextNode(child.tail))
             elif child.tag == 'hr':
-                #logger.info("FOUND child.tag == 'hr' inside Paragraph")
                 me.add_child(_process_hr_elements(child, epub))
             elif child.tag == 'h1':
-                #logger.info("FOUND child.tag == 'h1'")
                 me.add_child(_process_h1_elements(child, epub ))
             elif child.tag == 'h2':
-                #logger.info("FOUND child.tag == 'h2'")
                 me.add_child(_process_h2_elements(child, epub ))
             elif child.tag == 'h3':
-                #logger.info("FOUND child.tag == 'h3'")
                 me.add_child(_process_h3_elements(child, epub ))
             elif child.tag == 'h4':
-                #logger.info("FOUND child.tag == 'h4'")
                 me.add_child(_process_h4_elements(child, epub ))
             elif child.tag == 'div':
-                #logger.info("FOUND child.tag == 'div'")
                 me.add_child(_process_div_elements(child, epub))
             elif child.tag == 'blockquote':
-                #logger.info("FOUND child.tag == 'blockquote'")
                 me.add_child(BlockQuote.process(child, epub))
             elif child.tag == 'ol':
-                #logger.info('FOUND ol inside Paragraph')
                 me.add_child(_process_ol_elements(child, epub))
             elif child.tag == 'ul':
-                #logger.info('FOUND ul inside Paragraph')
                 me.add_child(_process_ul_elements(child, epub))
             elif child.tag == 'em':
-                #logger.info('FOUND em inside Paragraph')
                 me.add_child(_process_em_elements(child,epub))
             elif child.tag == 'section':
-                #logger.info('FOUND section')
                 me.add_child(_process_section_elements(child, epub))
             elif child.tag == 'q':
-                #logger.info('FOUND q')
                 me.add_child(_process_q_elements(child, epub))
             elif child.tag == 'strong':
-                #logger.info('FOUND strong el')
                 me.add_child(_process_strong_elements(child, epub))
             elif child.tag == 'math':
                 me.add_child(_process_math_elements(child, epub))
             else:
-                #Tracer()()
                 logger.info('on Paragraph.process >> UNHANDLED  CHILD : %s', child)
 
         if element.tail:
@@ -163,38 +145,27 @@ class Run( types.Run ):
             if element.text.isspace():
                 pass
             else:
-                #logger.info('at generic.py: class Run : element.text >> %s',element.text)
                 new_el_text = element.text.rstrip() + u' '
                 me.add_child( types.TextNode(new_el_text))
 
         for child in element:
             if child.tag == 'a':
-                #logger.info("FOUND child.tag == 'a'")
                 me.add_child( _process_a_elements( child, epub ) )
             elif child.tag == 'b':
-                #logger.info("FOUND child.tag == 'b'")
                 me.add_child( _process_b_elements( child, epub ) )
             elif child.tag == 'br':
-                #logger.info("FOUND child.tag == 'br'")
-                #me.add_child( types.Newline() )
                 me.add_child( types.Newline() )
                 if child.tail is not None:
-                    #logger.info("child tail inside br: %s", child.tail)
                     me.add_child(types.TextNode(u"\n" + child.tail) )    
             elif child.tag == 'i':
-                #logger.info("FOUND child.tag == 'i'")
                 me.add_child( _process_i_elements( child, epub ) )
             elif child.tag == 'span':
-                #logger.info("FOUND child.tag == 'span'")
                 me.add_child( _process_span_elements( child, epub ) )
             elif child.tag == 'sub':
-                #logger.info("FOUND child.tag == 'sub'")
                 me.add_child( _process_sub_elements( child, epub ) )
             elif child.tag == 'em':
-                #logger.info("FOUND child.tag == 'em'")
                 me.add_child( _process_em_elements( child, epub ) )
             elif child.tag == 'img':
-                #logger.info("FOUND child.tag == 'img' under Run.process")
                 me.add_child(Image.process(child, epub))
             elif child.tag == 'h1':
                 me.add_child(_process_h1_elements(child, epub))
@@ -215,7 +186,6 @@ class Run( types.Run ):
             elif child.tag == 'strong':
                 me.add_child(_process_strong_elements(child, epub))
             elif child.tag == 'math':
-                #logger.info ("FOUND math tag element inside Run.process")
                 me.add_child(_process_math_elements(child, epub))
             else:
                 logger.info('Unhandled Run child: %s',child)
@@ -241,7 +211,6 @@ class Hyperlink( types.Hyperlink ):
         me.target = link.attrib['href']
 
         if link.text:
-            #logger.info("link.text %s", link.text)
             me.add_child( types.TextNode( link.text ) )
 
         for child in link:
@@ -359,7 +328,6 @@ class Item( types.Item ):
 class Table(types.Table):
     @classmethod
     def process(cls, element, epub):
-        #logger.info("CHECK TABLE element")
         me = cls()
         count_child = -1
         number_of_col = 0
@@ -373,8 +341,6 @@ class Table(types.Table):
                 me.add_child(_process_colgroup_elements(child, epub))
             elif child.tag == 'tbody':
                 me.add_child(_process_tbody_elements(child, epub))
-                #logger.info(count_child)
-                #logger.info(me.children)
                 number_of_col = me.children[count_child].number_of_col
             elif child.tag == 'tr':
                 me.add_child(Row.process(child, epub))
@@ -388,7 +354,6 @@ class Table(types.Table):
 class TBody(types.TBody):
     @classmethod
     def process(cls, element, epub):
-        #logger.info("CHECK tbody element")
         me = cls()
         number_of_col = 0 
         count_child = -1
@@ -456,11 +421,9 @@ class Math(types.Math):
 class MRow(types.MRow):
     @classmethod
     def process(cls, element, epub):
-        #logger.info("CHECK mrow math element")
         me = cls()
         for child in element:
             if child.tag == 'mtable':
-                #logger.info("Found mtable under mrow")
                 me.add_child(_process_mtable_elements(child, epub))
             elif child.tag == 'mi':
                 me.add_child(_process_mi_elements(child, epub))
@@ -477,11 +440,11 @@ class MRow(types.MRow):
             elif child.tag == 'msqrt':
                 pass
             elif child.tag == 'msub':
-                pass
+                me.add_child(_process_msub_elements(child, epub))
             elif child.tag == 'msup':
-                pass
+                me.add_child(_process_msup_elements(child, epub))
             elif child.tag == 'mfrac':
-                pass
+                me.add_child(_process_mfrac_elements(child, epub))
             elif child.tag == 'msubsup':
                 pass
             elif child.tag == 'munderover':
@@ -492,21 +455,11 @@ class MRow(types.MRow):
                 pass
             else:
                 logger.info('UNHANDLED element found under mrow %s', child.tag)
-        #logger.info("################################")
-        return me
-
-class MSup(types.MSup):
-    @classmethod
-    def process(cls, element, epub):
-        me =cls()
-        me.add_child(MathRun.process(element, epub))
         return me
 
 class MFenced(types.MFenced):
     @classmethod
     def process(cls, element, epub):
-        #logger.info("CHECK mfenced math element")
-        #logger.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         me = cls()
         me.close = element.attrib['close']
         me.opener = element.attrib['open']
@@ -518,7 +471,6 @@ class MFenced(types.MFenced):
                 me.add_child(_process_mrow_elements(child, epub))
             else:
                 me.add_child(MathRun.process(element,epub))
-        #logger.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         return me
 
 class Mtable(types.Mtable):
@@ -529,7 +481,10 @@ class Mtable(types.Mtable):
             me.add_child(Label.process(element, epub))
 
         if element.text:
-            me.add_child(types.TextNode(element.text))
+            if element.text.isspace():
+                pass
+            else:
+                me.add_child(types.TextNode(element.text))
 
         for child in element:
             if child.tag == 'mtr':
@@ -541,31 +496,62 @@ class Mtable(types.Mtable):
 class Mtr(types.Mtr):
     @classmethod
     def process(cls, element, epub):
-        #logger.info("CHECK Mtr element")
-        #logger.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
         me = cls()
         if 'id' in element.attrib:
             me.add_child(Label.process(element, epub))
 
         if element.text:
-            me.add_child(types.TextNode(element.text))
+            if element.text.isspace():
+                pass
+            else:
+                me.add_child(types.TextNode(element.text))
 
         for child in element:
             if child.tag == 'mtd':
                 me.add_child(_process_mtd_elements(child, epub))
             else:
                 logger.info("UNHANDLED child under TABLE element %s", child.tag)
-        #logger.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
         return me
 
 class Mtd(types.Mtd):
     @classmethod
     def process(cls, element, epub):
-        #logger.info("CHECK Mtd element")
-        #logger.info("((((((((((((((((((((((((((((((((((")
         me = cls()
         me.add_child(MathRun.process(element, epub))
-        #logger.info("((((((((((((((((((((((((((((((((((")
+        return me
+
+class Mfrac (types.Mfrac):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        if 'id' in element.attrib:
+            me.add_child(Label.process(element, epub))
+
+        if element.text:
+            if element.text.isspace():
+                pass
+            else:
+                me.add_child(types.TextNode(element.text))
+
+        for child in element:
+            if child.tag == 'mrow':
+                me.add_child(_process_mrow_elements(child, epub))
+            else:
+                logger.info("UNHANDLED child under TABLE element %s", child.tag)
+        return me
+
+class MSup (types.MSup):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.add_child(MathRun.process(element, epub))
+        return me
+
+class MSub (types.MSub):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.add_child(MathRun.process(element, epub))
         return me
 
 class MathRun(types.MathRun):
@@ -577,7 +563,6 @@ class MathRun(types.MathRun):
             if element.text.isspace():
                 pass
             else:
-                #logger.info("MathRun >> element.text: %s", element.text)
                 me.add_child(types.TextNode(element.text))
         
         for child in element:
@@ -600,11 +585,10 @@ class MathRun(types.MathRun):
             elif child.tag == 'msubsup':
                 pass
             elif child.tag == 'mfrac':
-                pass
+                me.add_child(_process_mfrac_elements(child, epub))
             elif child.tag == 'mover':
                 pass
             elif child.tag == 'mtable':
-                #logger.info("found mtable")
                 me.add_child(_process_mtable_elements(child, epub))
             elif child.tag == 'msqrt':
                 pass
@@ -665,10 +649,6 @@ def _process_fragment( fragment, epub ):
     body = fragment.find('body')
     el = []
     for element in body:
-        #Tracer()()
-        #logger.info('^^^^^^^^^^')
-        #logger.info('element tag: %s',element.tag)
-        #logger.info('-type of element in body : %s', type(element))
         if element.tag == 'div':
             el.append(_process_div_elements( element, epub ))
         elif element.tag == 'p':
@@ -695,7 +675,6 @@ def _process_fragment( fragment, epub ):
             el.append(_process_nav_elements(element, epub))
         else:
             logger.info('on process_fragment UNHANDLED BODY CHILD: %s >> %s',element.tag, element )
-        #logger.info('**********')
     # Consolidate multi-line chapter or section titles
     new_el = []
     for i in xrange(len(el)):
@@ -889,6 +868,9 @@ def _process_mrow_elements(element,epub):
 def _process_msup_elements(element,epub):
     return MSup.process(element, epub)
 
+def _process_msub_elements(element, epub):
+    return MSub.process(element, epub)
+
 def _process_mi_elements(element, epub):
     return MathRun.process(element, epub)
 
@@ -896,9 +878,6 @@ def _process_mn_elements(element, epub):
     return MathRun.process(element, epub)
 
 def _process_mo_elements(element, epub):
-    return MathRun.process(element, epub)
-
-def _process_msub_elements(element, epub):
     return MathRun.process(element, epub)
 
 def _process_mspace_elements(element, epub):
@@ -916,3 +895,5 @@ def _process_mtr_elements(element, epub):
 def _process_mtd_elements(element, epub):
     return Mtd.process(element, epub)
 
+def _process_mfrac_elements(element, epub):
+    return Mfrac.process(element, epub)
