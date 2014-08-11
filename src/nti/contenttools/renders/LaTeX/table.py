@@ -66,12 +66,13 @@ def table_html_renderer(self):
     count_col = 0
     string_col = u''
     while count_col < number_of_col:
+        #by default we use 'l' as caption, however we can modify this code later
         string_col = string_col + u' l '
         count_col = count_col + 1
     body = u''
     for child in self.children:
         body = body + child.render()
-    result = u'\\begin{table}{%s}\n\\begin{tabular}\n%s\\end{tabular}\n\\end{table}\n'
+    result = u'\\begin{table}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
     return result % (string_col, body)
 
 def table_row_html_renderer(self):
