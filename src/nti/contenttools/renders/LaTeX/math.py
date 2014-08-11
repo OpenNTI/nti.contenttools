@@ -9,6 +9,7 @@ logger = __import__('logging').getLogger(__name__)
 from .base import base_renderer
 from nti.contenttools.epub.adapters.generic import Mtable
 from nti.contenttools.epub.adapters.generic import MRow
+from nti.contenttools.epub.adapters.generic import MFenced
 from IPython.core.debugger import Tracer
 
 
@@ -42,7 +43,6 @@ def math_sup_html_renderer(self):
 	result = []
 	for child in self.children:
 	    result.append(child.render())
-	#Tracer()()
 	return u''.join(result) + u' '
 
 def math_fenced_html_rendered(self):
@@ -50,20 +50,24 @@ def math_fenced_html_rendered(self):
 	to render element <mfenced>
 	"""
 	#logger.info("run math_fenced_html_rendered")
-	#logger.info("self.children[0].children[0] %s", self.children[0].children[0])
-	#logger.info("self.children[0].children[0].children[0] %s", self.children[0].children[0].children[0])
 	opener = self.opener
 	close = self.close
 	separators = self.separators
 	result = []
 	for child in self.children:
 	    result.append(child.render())
-	#Tracer()()
 	
-	if isinstance(self.children[0].children[0], MRow) and isinstance(self.children[0].children[0].children[0], Mtable):
+	if isinstance(self.children[0], Mtable):
 		return u'\\begin{matrix}\n'.join(result) + u'\\end{matrix}'
-	elif isinstance(self.children[0].children[0], Mtable):
-		return u'\\begin{matrix}\n'.join(result) + u'\\end{matrix}'
+	elif isinstance(self.children[0], MRow):
+		if self.children[0].children:
+			if isinstance(self.children[0].children[0], Mtable):
+				logger.info("Found matrix")
+				return u'\\begin{matrix}\n'+ u''.join(result) + u'\\end{matrix}\n'
+			else:
+				return opener + u''.join(result) + u'' + close
+		else:
+			return opener + u''.join(result) + u'' + close 
 	else:
 		return opener + u''.join(result) + u'' + close 
 
@@ -76,7 +80,6 @@ def math_run_html_rendered(self):
 	result = []
 	for child in self.children:
 	    result.append(child.render())
-	#Tracer()()
 	return u''.join(result) + u''
 
 def math_table_html_rendered(self):
@@ -87,8 +90,14 @@ def math_table_html_rendered(self):
 	body = u''
 	for child in self.children:
 	    body = body + child.render()
-	result = u'\\begin{tabular}\n%s\\end{tabular}\n'
-	#Tracer()()
+	#logger.info('type of mtable parent %s',type(self.__parent__))
+	if isinstance(self.__parent__, MFenced):
+		result = u'%s'
+	elif isinstance (self.__parent__, MRow):
+		result = u'%s'
+	else:
+		result = u'\\begin{tabular}\n%s\\end{tabular}\n'
+
 	return result % (body)
 
 def math_tr_html_rendered(self):
@@ -111,4 +120,3 @@ def math_td_html_rendered(self):
 	for child in self.children:
 	    result.append(child.render())
 	return u''.join(result) + u''
-
