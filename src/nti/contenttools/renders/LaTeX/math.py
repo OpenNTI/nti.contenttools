@@ -88,30 +88,32 @@ def math_table_html_rendered(self):
 	"""
 	to render <mtable> element
 	"""
+	number_of_col = self.number_of_col
+	count_col = 0
+	string_col = u''
+	while count_col < number_of_col:
+		string_col = string_col + u' l '
+		count_col = count_col + 1
+	
 	body = u''
 	for child in self.children:
 	    body = body + child.render()
 
-	
 	if isinstance(self.__parent__, MFenced):
-		new_body = body
+		#when it is a matrix
+		return u'%s' %(body)
 	elif isinstance (self.__parent__, MRow):
 		if self.__parent__.__parent__:
 			if isinstance(self.__parent__.__parent__, MFenced):
 				#when it is a matrix
-				new_body = body
+				return u'%s' %(body)
 			else:
-				string = replace_special_char("&", body, u'\;')
-				new_body = find_and_replace_char_inside_matrix(string, "\;", "&")
+				return u'\\begin{tabular}{%s}\n%s\\end{tabular}' %(string_col, body)
 		else:
-			string = replace_special_char("&", body, u'\;')
-			new_body = find_and_replace_char_inside_matrix(string, "\;", "&")
+			return u'\\begin{tabular}{%s}\n%s\\end{tabular}' % (string_col, body)	
 	else:
-		string = replace_special_char("&", body, u'\;')
-		new_body = find_and_replace_char_inside_matrix(string, "\;", "&")
-	
-	result = u'%s' 	
-	return result % (new_body)
+		return u'\\begin{tabular}{%s}\n%s\\end{tabular}'	% (string_col, body)
+
 
 def replace_special_char(char_list, string, replacer):
 	new_string = string
@@ -121,7 +123,7 @@ def replace_special_char(char_list, string, replacer):
 	return new_string
 
 def find_and_replace_char_inside_matrix(string,old_char, new_char):
-	return re.sub("\\begin{.*}.*\\end{.*}", lambda x:x.group(0).replace(old_char,new_char), string)
+	return re.sub("begin{.*}.*end{.*?}", lambda x:x.group(0).replace(old_char,new_char), string)
 
 def math_tr_html_rendered(self):
 	"""

@@ -243,10 +243,19 @@ class MSpace(DocumentStructureNode):
         self.height = height
 
 class Mtable(DocumentStructureNode):
-    pass
+    def __init__(self, number_of_col=0):
+        self.number_of_col = number_of_col
+        
+    def set_number_of_col(self, number_of_col):
+        self.number_of_col = number_of_col
+
 
 class Mtr(DocumentStructureNode):
-    pass
+    def __init__(self, number_of_col=0):
+        self.number_of_col = number_of_col
+        
+    def set_number_of_col(self, number_of_col):
+        self.number_of_col = number_of_col
 
 class Mtd (DocumentStructureNode):
     pass
