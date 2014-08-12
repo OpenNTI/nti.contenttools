@@ -484,6 +484,8 @@ class Mtable(types.Mtable):
     @classmethod
     def process(cls, element, epub):
         me = cls()
+        number_of_col = 0 
+        count_child = -1
         if 'id' in element.attrib:
             me.add_child(Label.process(element, epub))
 
@@ -496,14 +498,18 @@ class Mtable(types.Mtable):
         for child in element:
             if child.tag == 'mtr':
                 me.add_child(_process_mtr_elements(child, epub))
+                number_of_col = me.children[count_child].number_of_col 
             else:
                 logger.info("UNHANDLED child under TABLE element %s", child.tag)
+            count_child = count_child + 1
+        me.set_number_of_col(number_of_col)
         return me
 
 class Mtr(types.Mtr):
     @classmethod
     def process(cls, element, epub):
         me = cls()
+        number_of_col = 0
         if 'id' in element.attrib:
             me.add_child(Label.process(element, epub))
 
@@ -516,8 +522,10 @@ class Mtr(types.Mtr):
         for child in element:
             if child.tag == 'mtd':
                 me.add_child(_process_mtd_elements(child, epub))
+                number_of_col = number_of_col + 1
             else:
                 logger.info("UNHANDLED child under TABLE element %s", child.tag)
+        me.set_number_of_col(number_of_col)
         return me
 
 class Mtd(types.Mtd):
