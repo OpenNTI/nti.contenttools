@@ -335,7 +335,8 @@ class Table(types.Table):
             if element.text.isspace():
                 pass
             else:
-                me.add_child(types.TextNode(element.text))
+                new_el_text = element.text.rstrip() + u' '
+                me.add_child(types.TextNode(new_el_text))
         for child in element:
             if child.tag == 'colgroup':
                 me.add_child(_process_colgroup_elements(child, epub))
@@ -400,7 +401,11 @@ class Cell(types.Cell):
             me.add_child(Label.process(element, epub))
 
         if element.text:
-            me.add_child(types.TextNode(element.text))
+            if element.text.isspace():
+                pass
+            else:
+                new_el_text = element.text.rstrip() + u' '
+                me.add_child(types.TextNode(new_el_text))
 
         for child in element:
             if child.tag == 'a':
@@ -438,7 +443,9 @@ class MRow(types.MRow):
             elif child.tag == 'mspace':
                 pass
             elif child.tag == 'msqrt':
-                pass
+                me.add_child(_process_msqrt_elements(child, epub))
+            elif child.tag == 'mroot':
+                me.add_child(_process_mroot_elements(child, epub))
             elif child.tag == 'msub':
                 me.add_child(_process_msub_elements(child, epub))
             elif child.tag == 'msup':
@@ -446,7 +453,7 @@ class MRow(types.MRow):
             elif child.tag == 'mfrac':
                 me.add_child(_process_mfrac_elements(child, epub))
             elif child.tag == 'msubsup':
-                pass
+                me.add_child(_process_msubsup_elements(child, epub))
             elif child.tag == 'munderover':
                 pass
             elif child.tag == 'mover':
@@ -554,6 +561,27 @@ class MSub (types.MSub):
         me.add_child(MathRun.process(element, epub))
         return me
 
+class MSubSup(types.MSubSup):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.add_child(MathRun.process(element, epub))
+        return me
+
+class MSqrt(types.Msqrt):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.add_child(MathRun.process(element,epub))
+        return me
+
+class MRoot(types.Mroot):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.add_child(MathRun.process(element, epub))
+        return me
+
 class MathRun(types.MathRun):
     @classmethod
     def process(cls, element, epub, styles=[]):
@@ -583,7 +611,7 @@ class MathRun(types.MathRun):
             elif child.tag == 'mspace':
                 pass
             elif child.tag == 'msubsup':
-                pass
+                me.add_child(_process_msubsup_elements(child, epub))
             elif child.tag == 'mfrac':
                 me.add_child(_process_mfrac_elements(child, epub))
             elif child.tag == 'mover':
@@ -591,7 +619,9 @@ class MathRun(types.MathRun):
             elif child.tag == 'mtable':
                 me.add_child(_process_mtable_elements(child, epub))
             elif child.tag == 'msqrt':
-                pass
+                me.add_child(_process_msqrt_elements(child,epub))
+            elif child.tag == 'mroot':
+                me.add_child(_process_mroot)
             elif child.tag == 'mtext':
                 pass
             elif child.tag == 'munderover':
@@ -871,6 +901,9 @@ def _process_msup_elements(element,epub):
 def _process_msub_elements(element, epub):
     return MSub.process(element, epub)
 
+def _process_msubsup_elements(element, epub):
+    return MSubSup.process(element, epub)
+
 def _process_mi_elements(element, epub):
     return MathRun.process(element, epub)
 
@@ -897,3 +930,9 @@ def _process_mtd_elements(element, epub):
 
 def _process_mfrac_elements(element, epub):
     return Mfrac.process(element, epub)
+
+def _process_msqrt_elements(element, epub):
+    return MSqrt.process(element, epub)
+
+def _process_mroot_elements(element, epub):
+    return MRoot.process(element, epub)

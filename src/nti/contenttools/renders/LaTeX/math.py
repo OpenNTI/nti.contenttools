@@ -10,8 +10,7 @@ from .base import base_renderer
 from nti.contenttools.epub.adapters.generic import Mtable
 from nti.contenttools.epub.adapters.generic import MRow
 from nti.contenttools.epub.adapters.generic import MFenced
-from IPython.core.debugger import Tracer
-
+import re
 
 """
 rendering MathML element
@@ -23,7 +22,7 @@ def math_html_renderer(self):
 	body = u''
 	for child in self.children:
 	    body = body + child.render()
-	return u'$ ' + body + u' $'
+	return u'$' + body + '$'
  
 def math_row_html_renderer(self):
 	"""
@@ -92,30 +91,37 @@ def math_table_html_rendered(self):
 	body = u''
 	for child in self.children:
 	    body = body + child.render()
-	logger.info('type of mtable parent %s',type(self.__parent__))
+
+	
 	if isinstance(self.__parent__, MFenced):
-		result = u'%s'
+		new_body = body
 	elif isinstance (self.__parent__, MRow):
 		if self.__parent__.__parent__:
 			if isinstance(self.__parent__.__parent__, MFenced):
-				logger.info('type of mtable parent.parent %s',type(self.__parent__.__parent__))
-				result = u'%s'
+				#when it is a matrix
+				new_body = body
 			else:
-				body = remove_special_char("&\\", body)
-				result = u'\\begin{tabular}\n%s\\end{tabular}\n' 
+				string = replace_special_char("&", body, u'\;')
+				new_body = find_and_replace_char_inside_matrix(string, "\;", "&")
 		else:
-			result = u'\\begin{tabular}\n%s\\end{tabular}\n' 
+			string = replace_special_char("&", body, u'\;')
+			new_body = find_and_replace_char_inside_matrix(string, "\;", "&")
 	else:
-		logger.info("else")
-		result = u'\\begin{tabular}\n%s\\end{tabular}\n' 	
+		string = replace_special_char("&", body, u'\;')
+		new_body = find_and_replace_char_inside_matrix(string, "\;", "&")
 	
-	return result % (body)
+	result = u'%s' 	
+	return result % (new_body)
 
-def remove_special_char(char_list, string):
+def replace_special_char(char_list, string, replacer):
+	new_string = string
 	for char in string:
 		if char in char_list:
-			string.replace(char, u'')
-	return string
+			new_string = new_string.replace(char, replacer)
+	return new_string
+
+def find_and_replace_char_inside_matrix(string,old_char, new_char):
+	return re.sub("\\begin{.*}.*\\end{.*}", lambda x:x.group(0).replace(old_char,new_char), string)
 
 def math_tr_html_rendered(self):
 	"""
@@ -139,18 +145,56 @@ def math_frac_html_rendered(self):
 	to render <mfrac> element
 	"""
 	if len(self.children) > 2 :
-		raise Exception("mfrac should only have 2 children")
+		raise Exception("<mfrac> should only have 2 children")
 	else:
 		return u'\\frac{%s}{%s}' %(self.children[0].render(), self.children[1].render())
 
 def math_sub_html_rendered(self):
+	"""
+	to render <msub> element
+	"""
 	if len(self.children[0].children)> 2 :
-		raise Exception("msub should only have 2 children")
+		raise Exception("<msub> should only have 2 children")
 	else:
 		return u'{%s}_{%s}' %(self.children[0].children[0].render(), self.children[0].children[1].render())
 
 def math_sup_html_rendered(self):
+	"""
+	to render <msup> element
+	"""
 	if len(self.children[0].children)> 2 :
-		raise Exception("msup should only have 2 children")
+		raise Exception("<msup> should only have 2 children")
 	else:
 		return u'{%s}^{%s}' %(self.children[0].children[0].render(), self.children[0].children[1].render())
+
+def math_subsup_html_rendered(self):
+	"""
+	to render <msubsup> element
+	"""
+	if len(self.children[0].children) > 3:
+		raise Exception("<msubsup> should only have 3 children")
+	elif "int" in self.children[0].children[0].render():
+		return u'\\int_%s^\\%s ' %(self.children[0].children[1].render(), self.children[0].children[2].render())
+	else:
+		return u'{%s}_{%s}^{%s} ' %(self.children[0].children[0].render(), self.children[0].children[1].render(), \
+			self.children[0].children[1].render()) 
+
+
+def math_msqrt_html_rendered(self):
+	"""
+	to render <msqrt> element
+	"""
+	if len(self.children[0].children) > 1:
+		raise Exception ("<msqrt> should only have a child")
+	else:
+		return u'\\sqrt{%s}' %(self.children[0].children[0].render())
+
+def math_mroot_html_rendered(self):
+	"""
+	to render <mroot> element
+	"""
+	if len(self.children[0].children) > 2:
+		raise Exception ("<mroot> should only have 2 children")
+	else:
+		return u'\\sqrt[%s]{%s}' %(self.children[0].children[1].render(), self.children[0].children[0].render())
+
