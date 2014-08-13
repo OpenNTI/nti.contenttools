@@ -9,9 +9,11 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
-from .interfaces import IMathLatexEscaper
 
-_escapes_math_tex = [(u'$', u'\\$'),
+from nti.contentfragments.interfaces import ITextLatexEscaper
+
+_escapes = [
+			(u'$', u'\\$'),
 			(u'%', u'\\%'),
 			(u'\xa2', u'$\\prime$'),  # \uf0
 			(u'\xad', u''),
@@ -125,16 +127,13 @@ _escapes_math_tex = [(u'$', u'\\$'),
 			(u'\u22f2', u'\\ddots '),
 			(u'\u00A7', u'\\S')]
 
-def _escape_tex(text):
-	escaped_text = text
-	for escape in _escapes_math_tex:
-		escaped_text = escaped_text.replace(_escapes_math_tex[0], _escapes_math_tex[1])
-	return escaped_text
-
-@interface.implementer(IMathLatexEscaper)
-class _DefaultTextLatexEscaper(object):
+@interface.implementer(ITextLatexEscaper)
+class _ExtendedTextLatexEscaper(object):
 	
 	__slots__ = ()
 	
 	def __call__(self, text):
-		return _escape_tex(text)
+		escaped_text = text
+		for escape in _escapes:
+			escaped_text = escaped_text.replace(escape[0], escape[1])
+		return escaped_text
