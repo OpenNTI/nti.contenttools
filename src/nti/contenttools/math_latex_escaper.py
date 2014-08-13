@@ -1,20 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id$
+.. $Id: math_latex_filter.py 44645 2014-07-29 15:15:36Z egawati.panjei $
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-# monkey patch escapes
+from zope import interface
+from .interfaces import IMathLatexEscaper
 
-import nti.contentfragments.latex
-
-#TODO: change to utility
-
-nti.contentfragments.latex._escapes = [(u'$', u'\\$'),
+@interface.implementer(IMathLatexEscaper)
+def _unicode_math_latex():
+	_escaper_tag_list = [(u'$', u'\\$'),
 			(u'%', u'\\%'),
 			(u'\xa2', u'$\\prime$'),  # \uf0
 			(u'\xad', u''),
@@ -127,3 +126,4 @@ nti.contentfragments.latex._escapes = [(u'$', u'\\$'),
 			(u'\u22ef', u'\\cdots '),
 			(u'\u22f2', u'\\ddots '),
 			(u'\u00A7', u'\\S')]
+	return _escaper_tag_list
