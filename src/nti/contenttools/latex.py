@@ -120,11 +120,11 @@ _escapes = [
 			(u'\uf044', u'$\\triangle$'),
 			(u'\uf06c', u' '),
 			(u'\uf0d0', u'$\\angle$'),
-			(u'. . .', u'\\ldots '),
-			(u'\u2026', u'\\ldots '),
-			(u'\u22ee', u'\\vdots '),
-			(u'\u22ef', u'\\cdots '),
-			(u'\u22f2', u'\\ddots '),
+			(u'. . .', u'\\$ldots$'),
+			(u'\u2026', u'\\$ldots$'),
+			(u'\u22ee', u'\\$vdots$'),
+			(u'\u22ef', u'\\$cdots$'),
+			(u'\u22f2', u'\\$ddots$'),
 			(u'\u00A7', u'\\S')]
 
 @interface.implementer(ITextLatexEscaper)
