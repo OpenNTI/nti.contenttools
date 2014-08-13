@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: math_latex_filter.py 44645 2014-07-29 15:15:36Z egawati.panjei $
+.. $Id: math_latex_escaper.py 44645 2014-07-29 15:15:36Z egawati.panjei $
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
@@ -11,9 +11,7 @@ logger = __import__('logging').getLogger(__name__)
 from zope import interface
 from .interfaces import IMathLatexEscaper
 
-@interface.implementer(IMathLatexEscaper)
-def _unicode_math_latex():
-	_escaper_tag_list = [(u'$', u'\\$'),
+_escapes_math_tex = [(u'$', u'\\$'),
 			(u'%', u'\\%'),
 			(u'\xa2', u'$\\prime$'),  # \uf0
 			(u'\xad', u''),
@@ -126,4 +124,17 @@ def _unicode_math_latex():
 			(u'\u22ef', u'\\cdots '),
 			(u'\u22f2', u'\\ddots '),
 			(u'\u00A7', u'\\S')]
-	return _escaper_tag_list
+
+def _escape_tex(text):
+	escaped_text = text
+	for escape in _escapes_math_tex:
+		escaped_text = escaped_text.replace(_escapes_math_tex[0], _escapes_math_tex[1])
+	return escaped_text
+
+@interface.implementer(IMathLatexEscaper)
+class _DefaultTextLatexEscaper(object):
+	
+	__slots__ = ()
+	
+	def __call__(self, text):
+		return _escape_tex(text)

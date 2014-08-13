@@ -10,5 +10,8 @@ __docformat__ = "restructuredtext en"
 from zope import interface
 
 class IMathLatexEscaper(interface.Interface):
-	pass
-
+	
+	def __call_(text):
+		"""
+		scape the specifed text
+		"""
