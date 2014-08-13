@@ -12,6 +12,17 @@ from zope import interface
 
 from nti.contentfragments.interfaces import ITextLatexEscaper
 
+@interface.implementer(ITextLatexEscaper)
+class _ExtendedTextLatexEscaper(object):
+	
+	__slots__ = ()
+	
+	def __call__(self, text):
+		escaped_text = text
+		for escape in _escapes:
+			escaped_text = escaped_text.replace(escape[0], escape[1])
+		return escaped_text
+	
 _escapes = [
 			(u'$', u'\\$'),
 			(u'%', u'\\%'),
@@ -2569,13 +2580,3 @@ _escapes = [
             (u'\U0001D7FE', u'\\mtteight'),
             (u'\U0001D7FF', u'\\mttnine') ]
 
-@interface.implementer(ITextLatexEscaper)
-class _ExtendedTextLatexEscaper(object):
-	
-	__slots__ = ()
-	
-	def __call__(self, text):
-		escaped_text = text
-		for escape in _escapes:
-			escaped_text = escaped_text.replace(escape[0], escape[1])
-		return escaped_text
