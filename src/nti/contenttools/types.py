@@ -44,7 +44,7 @@ class _Node( object ):
 			current_item += 1
 
 def _to_latex(text):
-	return PlainTextToLatexFragmentConverter(text, name='extended')
+	return PlainTextToLatexFragmentConverter(text, text_scaper='extended')
 
 class TextNode(_Node, PlainTextContentFragment):
 
