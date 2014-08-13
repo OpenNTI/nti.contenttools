@@ -98,7 +98,6 @@ types.Cell.render = table_cell_html_renderer
 
 types.Math.render = math_html_renderer
 types.MRow.render = math_row_html_renderer
-types.MSup.render = math_sup_html_renderer
 types.MFenced.render = math_fenced_html_rendered
 types.MathRun.render = math_run_html_rendered
 types.Mtable.render = math_table_html_rendered
