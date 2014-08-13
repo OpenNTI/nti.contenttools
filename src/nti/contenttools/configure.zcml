@@ -8,6 +8,8 @@
 	<include package="zope.component" />
 	<include package="zope.security" />
 
+	<include package="nti.contentfragments" />
+	
 	<!-- Utility for math latex tag-->
-	<utility factory=".math_latex_escaper._DefaultTextLatexEscaper"/>
+	<utility factory=".latex._ExtendedTextLatexEscaper" name="extended" />
 </configure>
