@@ -9,5 +9,5 @@
 	<include package="zope.security" />
 
 	<!-- Utility for math latex tag-->
-	<utility factory=".math_latex_escaper._unicode_math_latex" name="math_latex_tag" />
+	<utility factory=".math_latex_escaper._DefaultTextLatexEscaper"/>
 </configure>
