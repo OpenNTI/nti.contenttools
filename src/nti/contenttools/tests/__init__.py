@@ -46,3 +46,5 @@ class SharedConfiguringTestLayer(ZopeComponentLayer,
     def testTearDown(cls):
         pass
 
+class ContentToolsTestCase(unittest.TestCase):
+    layer = SharedConfiguringTestLayer
