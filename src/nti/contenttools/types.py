@@ -7,9 +7,14 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
-
+from nti.contentfragments.interfaces import ITextLatexEscaper
 from nti.contentfragments.interfaces import PlainTextContentFragment
 from nti.contentfragments.latex import PlainTextToLatexFragmentConverter
+
+
+#from nti.contenttools.interfaces import ITextLatexEscaper
+#from nti.contenttools.interfaces import PlainTextContentFragment
+#from nti.contenttools.latex import PlainTextToLatexFragmentConverter
 
 class _Node( object ):
 	__parent__ = None

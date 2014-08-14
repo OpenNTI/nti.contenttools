@@ -22,7 +22,7 @@ def math_html_renderer(self):
 	body = u''
 	for child in self.children:
 	    body = body + child.render()
-	return body
+	return u'$'+body+u'$'
  
 def math_row_html_renderer(self):
 	"""
@@ -60,11 +60,11 @@ def math_fenced_html_rendered(self):
 
 def set_matrix_border (opener, result):
 	if opener == '[':
-		return u'$\\begin{bmatrix}\n'+ u''.join(result) + u'\\end{bmatrix}$\n'
+		return u'\\begin{bmatrix}\n'+ u''.join(result) + u'\\end{bmatrix}\n'
 	elif opener == '(':
-		return u'$\\begin{pmatrix}\n'+ u''.join(result) + u'\\end{pmatrix}$\n'
+		return u'\\begin{pmatrix}\n'+ u''.join(result) + u'\\end{pmatrix}\n'
 	else:
-		return u'$\\begin{matrix}\n'+ u''.join(result) + u'\\end{matrix}$\n'
+		return u'\\begin{matrix}\n'+ u''.join(result) + u'\\end{matrix}\n'
 
 def math_run_html_rendered(self):
 	"""
@@ -131,7 +131,7 @@ def math_td_html_rendered(self):
 	to render <mtd> element
 	"""
 	result = base_renderer(self)
-	return result
+	return u'$' + result +u'$'
 
 def math_frac_html_rendered(self):
 	"""
@@ -140,7 +140,7 @@ def math_frac_html_rendered(self):
 	if len(self.children) > 2 :
 		raise Exception("<mfrac> should only have 2 children")
 	else:
-		return u'$\\frac{%s}{%s}$' %(self.children[0].render(), self.children[1].render())
+		return u'\\frac{%s}{%s}' %(self.children[0].render(), self.children[1].render())
 
 def math_sub_html_rendered(self):
 	"""
@@ -149,7 +149,7 @@ def math_sub_html_rendered(self):
 	if len(self.children[0].children)> 2 :
 		raise Exception("<msub> should only have 2 children")
 	else:
-		return u'${%s}_{%s}$' %(self.children[0].children[0].render(), self.children[0].children[1].render())
+		return u'{%s}_{%s}' %(self.children[0].children[0].render(), self.children[0].children[1].render())
 
 def math_sup_html_rendered(self):
 	"""
@@ -158,7 +158,7 @@ def math_sup_html_rendered(self):
 	if len(self.children[0].children)> 2 :
 		raise Exception("<msup> should only have 2 children")
 	else:
-		return u'${%s}^{%s}$' %(self.children[0].children[0].render(), self.children[0].children[1].render())
+		return u'{%s}^{%s}' %(self.children[0].children[0].render(), self.children[0].children[1].render())
 
 def math_subsup_html_rendered(self):
 	"""
@@ -167,9 +167,9 @@ def math_subsup_html_rendered(self):
 	if len(self.children[0].children) > 3:
 		raise Exception("<msubsup> should only have 3 children")
 	elif "int" in self.children[0].children[0].render():
-		return u'$\\int_%s^\\%s$' %(self.children[0].children[1].render(), self.children[0].children[2].render())
+		return u'\\int_%s^\\%s' %(self.children[0].children[1].render(), self.children[0].children[2].render())
 	else:
-		return u'${%s}_{%s}^{%s}$' %(self.children[0].children[0].render(), self.children[0].children[1].render(), \
+		return u'{%s}_{%s}^{%s}' %(self.children[0].children[0].render(), self.children[0].children[1].render(), \
 			self.children[0].children[1].render()) 
 
 
@@ -180,7 +180,7 @@ def math_msqrt_html_rendered(self):
 	if len(self.children[0].children) > 1:
 		raise Exception ("<msqrt> should only have a child")
 	else:
-		return u'$\\sqrt{%s}$' %(self.children[0].children[0].render())
+		return u'\\sqrt{%s}' %(self.children[0].children[0].render())
 
 def math_mroot_html_rendered(self):
 	"""
@@ -189,5 +189,5 @@ def math_mroot_html_rendered(self):
 	if len(self.children[0].children) > 2:
 		raise Exception ("<mroot> should only have 2 children")
 	else:
-		return u'$\\sqrt[%s]{%s}$' %(self.children[0].children[1].render(), self.children[0].children[0].render())
+		return u'\\sqrt[%s]{%s}' %(self.children[0].children[1].render(), self.children[0].children[0].render())
 
