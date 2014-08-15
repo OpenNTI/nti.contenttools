@@ -46,6 +46,11 @@ class _Node( object ):
 			current_item += 1
 
 def _to_latex(text):
+	#replace special unicode in TextNode with latex tag before calling PlainTextToLatexFragmentConverter
+	#we use unicode_to_latex._replace_unicode_with_latex_tag(text) to avoid going through large extended escape_list
+	#the replacement works when text (for example greek chars) is a single special char
+	#otherwise the text replacement will take place when calling in nti.contentfragments.latex.PlainTextToLatexFragmentConverter 
+	#and try to keep escape list for nti.contentfragments.latex.PlainTextToLatexFragmentConverter small
 	new_text = unicode_to_latex._replace_unicode_with_latex_tag(text)
 	return PlainTextToLatexFragmentConverter(new_text, text_scaper='extended')
 
