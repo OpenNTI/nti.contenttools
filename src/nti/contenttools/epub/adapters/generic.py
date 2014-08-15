@@ -124,6 +124,8 @@ class Paragraph( types.Paragraph ):
                 me.add_child(_process_q_elements(child, epub))
             elif child.tag == 'strong':
                 me.add_child(_process_strong_elements(child, epub))
+            elif child.tag == 'sup':
+                me.add_child(_process_sup_elements(child, epub))
             elif child.tag == 'math':
                 me.add_child(_process_math_elements(child, epub))
             else:
@@ -163,6 +165,8 @@ class Run( types.Run ):
                 me.add_child( _process_span_elements( child, epub ) )
             elif child.tag == 'sub':
                 me.add_child( _process_sub_elements( child, epub ) )
+            elif child.tag == 'sup':
+                me.add_child( _process_sup_elements( child, epub ) )
             elif child.tag == 'em':
                 me.add_child( _process_em_elements( child, epub ) )
             elif child.tag == 'img':
@@ -412,6 +416,12 @@ class Cell(types.Cell):
                 me.add_child(_process_a_elements(child,epub))
             elif child.tag == 'p':
                 me.add_child(_process_p_elements(child, epub))
+            elif child.tag == 'br':
+                me.add_child( types.Newline())
+                if child.tail is not None:
+                    me.add_child(types.TextNode(child.tail))
+            elif child.tag == 'img':
+                me.add_child(Image.process(child, epub))
             else:
                 logger.info("UNHANDLED child under table cell element %s", child.tag)
         return me
@@ -855,6 +865,9 @@ def _process_i_elements( element, epub ):
 def _process_sub_elements( element, epub ):
     return Run.process(element, epub, ['sub'])
 
+def _process_sup_elements( element, epub ):
+    return Run.process(element, epub, ['sup'])
+
 def _process_a_elements( element, epub ):
 
     for child in element:
@@ -862,6 +875,8 @@ def _process_a_elements( element, epub ):
             el = Run()
             el.add_child(Image.process(child, epub))
             return el
+        elif child.tag == 'span':
+            el = Run.process(child, epub)
         else:
             logger.info ("Unhandled child under 'a' element :%s", child.tag)
 
