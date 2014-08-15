@@ -15,38 +15,29 @@ import sys
 
 from .types import _Node, TextNode
 
-
 class NAQChoice( _Node ):
     pass
-
 
 class NAQChoices( _Node ):
     pass
 
-
 class NAQSolution( _Node ):
     pass
-
 
 class NAQSolutions( _Node ):
     pass
 
-
 class NAQHint( _Node ):
     pass
-
 
 class NAQHints( _Node ):
     pass
 
-
 class NAQuestionPart( _Node ):
     pass
 
-
 class NAQuestion( _Node ):
     pass
-
 
 class _Parser( object ):
 
