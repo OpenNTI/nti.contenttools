@@ -11,6 +11,12 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+def _replace_unicode_with_latex_tag(text):
+        new_text = text
+        if text in unicode_to_latex.keys():
+                new_text = new_text.replace(text, unicode_to_latex[text])
+        return new_text
+
 unicode_to_latex = {
         u"\u0023": "\\#",
         u"$": "\\$",

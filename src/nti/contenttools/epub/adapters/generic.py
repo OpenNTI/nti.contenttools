@@ -461,7 +461,7 @@ class MRow(types.MRow):
             elif child.tag == 'munder':
                 me.add_child(_process_munder_elements(child, epub))
             elif child.tag == 'mtext':
-                pass
+                me.add_child(_process_mtext_elements(child, epub))
             else:
                 logger.info('UNHANDLED element found under mrow %s', child.tag)
         return me
@@ -654,7 +654,7 @@ class MathRun(types.MathRun):
             elif child.tag == 'mroot':
                 me.add_child(_process_mroot_elements(child,epub))
             elif child.tag == 'mtext':
-                pass
+                me.add_child(_process_mtext_elements(child, epub))
             elif child.tag == 'munderover':
                 me.add_child(_process_munderover_elements(child, epub))
             elif child.tag == 'munder':
@@ -976,3 +976,6 @@ def _process_munderover_elements(element, epub):
 
 def _process_mover_elements(element, epub):
     return MOver.process(element,epub)
+
+def _process_mtext_elements(element, epub):
+    return MathRun.process(element, epub)

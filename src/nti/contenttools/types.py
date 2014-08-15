@@ -11,6 +11,8 @@ logger = __import__('logging').getLogger(__name__)
 from nti.contentfragments.interfaces import PlainTextContentFragment
 from nti.contentfragments.latex import PlainTextToLatexFragmentConverter
 
+from nti.contenttools import unicode_to_latex
+
 class _Node( object ):
 	__parent__ = None
 	children = ()
@@ -44,7 +46,8 @@ class _Node( object ):
 			current_item += 1
 
 def _to_latex(text):
-	return PlainTextToLatexFragmentConverter(text, text_scaper='extended')
+	new_text = unicode_to_latex._replace_unicode_with_latex_tag(text)
+	return PlainTextToLatexFragmentConverter(new_text, text_scaper='extended')
 
 class TextNode(_Node, PlainTextContentFragment):
 
