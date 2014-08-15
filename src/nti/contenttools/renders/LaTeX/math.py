@@ -12,6 +12,8 @@ from nti.contenttools.epub.adapters.generic import MRow
 from nti.contenttools.epub.adapters.generic import MFenced
 import re
 
+from IPython.core.debugger import Tracer
+
 """
 rendering MathML element
 """
@@ -155,6 +157,7 @@ def math_sup_html_rendered(self):
 	"""
 	to render <msup> element
 	"""
+	#Tracer()()
 	if len(self.children[0].children)> 2 :
 		raise Exception("<msup> should only have 2 children")
 	else:
@@ -190,4 +193,35 @@ def math_mroot_html_rendered(self):
 		raise Exception ("<mroot> should only have 2 children")
 	else:
 		return u'\\sqrt[%s]{%s}' %(self.children[0].children[1].render(), self.children[0].children[0].render())
+
+def math_munder_html_rendered(self):
+	"""
+	to render <munder> element
+	"""
+	if len(self.children[0].children) == 3 :
+		if u'\u2211' in unicode(self.children[0].children[0].render()).split() or u'\\sum' in self.children[0].children[0].render():
+			return u'\\sum_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
+		elif u'\u222b' in unicode(self.children[0].children[0].render()).split() or u'\\int' in self.children[0].children[0].render():
+			return u'\\int_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
+		else :
+			logger.info("Unhandled math expression for mathml <munder> element with 3 children")
+			logger.info("first child %s", self.children[0].children[0].render())
+			logger.info("second child %s", self.children[0].children[1].render())
+			logger.info("third child %s", self.children[0].children[2].render())
+			return u''
+	elif len(self.children[0].children) == 2:
+		if u'\u23df' in self.children[0].children[1].render() or u'&underbrace'in self.children[0].children[1].render():
+			return u'\\underbrace{%s}' %(self.children[0].children[0].render())
+		else:
+			logger.info("Unhandled math expression for mathml <munder> element with 2 children")
+			return u''
+	else:
+		logger.info("Unhandled math expression for mathml <munder> element")
+		return u''
+
+def math_munderover_html_rendered(self):
+	return u''
+
+def math_mover_html_rendered(self):
+	return u''
 

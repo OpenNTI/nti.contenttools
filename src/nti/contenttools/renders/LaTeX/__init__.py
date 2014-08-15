@@ -109,3 +109,6 @@ types.MSub.render = math_sub_html_rendered
 types.MSubSup.render = math_subsup_html_rendered
 types.Msqrt.render = math_msqrt_html_rendered
 types.Mroot.render = math_mroot_html_rendered
+types.MUnder.render = math_munder_html_rendered
+types.MUnderover.render = math_munderover_html_rendered
+types.MOver.render = math_mover_html_rendered
