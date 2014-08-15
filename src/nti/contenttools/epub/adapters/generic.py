@@ -455,9 +455,11 @@ class MRow(types.MRow):
             elif child.tag == 'msubsup':
                 me.add_child(_process_msubsup_elements(child, epub))
             elif child.tag == 'munderover':
-                pass
+                me.add_child(_process_munderover_elements(child,epub))
             elif child.tag == 'mover':
-                pass
+                me.add_child(_process_mover_elements(child, epub))
+            elif child.tag == 'munder':
+                me.add_child(_process_munder_elements(child, epub))
             elif child.tag == 'mtext':
                 pass
             else:
@@ -590,6 +592,27 @@ class MRoot(types.Mroot):
         me.add_child(MathRun.process(element, epub))
         return me
 
+class MUnder(types.MUnder):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.add_child(MathRun.process(element, epub))
+        return me
+
+class MUnderover(types.MUnder):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.add_child(MathRun.process(element, epub))
+        return me
+
+class MOver(types.MOver):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.add_child(MathRun.process(element, epub))
+        return me
+
 class MathRun(types.MathRun):
     @classmethod
     def process(cls, element, epub, styles=[]):
@@ -623,19 +646,19 @@ class MathRun(types.MathRun):
             elif child.tag == 'mfrac':
                 me.add_child(_process_mfrac_elements(child, epub))
             elif child.tag == 'mover':
-                pass
+                me.add_child(_process_mover_elements(child, epub))
             elif child.tag == 'mtable':
                 me.add_child(_process_mtable_elements(child, epub))
             elif child.tag == 'msqrt':
                 me.add_child(_process_msqrt_elements(child,epub))
             elif child.tag == 'mroot':
-                me.add_child(_process_mroot)
+                me.add_child(_process_mroot_elements(child,epub))
             elif child.tag == 'mtext':
                 pass
             elif child.tag == 'munderover':
-                pass
+                me.add_child(_process_munderover_elements(child, epub))
             elif child.tag == 'munder':
-                pass
+                me.add_child(_process_munder_elements(child,epub))
             elif child.tag == 'mstyle':
                 pass
             else:
@@ -944,3 +967,12 @@ def _process_msqrt_elements(element, epub):
 
 def _process_mroot_elements(element, epub):
     return MRoot.process(element, epub)
+
+def _process_munder_elements(element, epub):
+    return MUnder.process(element, epub)
+
+def _process_munderover_elements(element, epub):
+    return MUnderover.process(element, epub)
+
+def _process_mover_elements(element, epub):
+    return MOver.process(element,epub)

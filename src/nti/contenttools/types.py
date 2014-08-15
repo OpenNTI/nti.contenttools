@@ -273,3 +273,12 @@ class Msqrt(DocumentStructureNode):
 
 class Mroot(DocumentStructureNode):
 	pass
+
+class MUnder(DocumentStructureNode):
+	pass
+
+class MUnderover(DocumentStructureNode):
+	pass
+
+class MOver(DocumentStructureNode):
+	pass
