@@ -28,13 +28,17 @@ def _subscript( arg ):
 def _uline( arg ):
     return _command_renderer( 'uline', arg )
 
+def _superscript(arg):
+    return _command_renderer('textsuperscript', arg)
+
 def run_renderer(self):
     STYLES = { 'bold': _textbf,
                'inserted': _modified,
                'italic': _textit,
                'strike': _strikeout,
                'sub': _subscript,
-               'underline': _uline}
+               'underline': _uline,
+               'sup': _superscript}
 
     result = base_renderer(self)
 

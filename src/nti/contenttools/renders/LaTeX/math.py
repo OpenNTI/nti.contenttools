@@ -204,8 +204,8 @@ def math_munder_html_rendered(self):
 		elif u'\u220f' in unicode(self.children[0].children[0].render()).split() or u'\\prod' in self.children[0].children[0].render():
 			return u'\\prod_{%s}' %(self.children[0].children[1].render())
 		else:
-			logger.info("<munder> element containing children but underbracket n prod 1st: %s , 2nd: %s"\
-				, self.children[0].children[0].render(), self.children[0].children[1].render())
+			#logger.info("<munder> element containing children but underbracket n prod 1st: %s , 2nd: %s"\
+			#	, self.children[0].children[0].render(), self.children[0].children[1].render())
 			return u'\\underset{%s}{%s}' %(self.children[0].children[1].render(), self.children[0].children[0].render())
 	else:
 		raise Exception ("mathml <munder> element should have 2 children")
@@ -222,8 +222,8 @@ def math_munderover_html_rendered(self):
 		elif u'\u220f' in unicode(self.children[0].children[0].render()).split() or u'\\prod' in self.children[0].children[0].render():
 			return u'\\prod_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
 		else :
-			logger.info("<munderover> element with 3 children : %s -> %s -> %s\
-				", self.children[0].children[0].render(), self.children[0].children[1].render(), self.children[0].children[2].render())
+			#logger.info("<munderover> element with 3 children : %s -> %s -> %s\
+			#	", self.children[0].children[0].render(), self.children[0].children[1].render(), self.children[0].children[2].render())
 			return u'\\overset{%s}{\\underset{%s}{%s}}' %(self.children[0].children[2].render(), self.children[0].children[1].render(), self.children[0].children[0].render())
 	else:
 		raise Exception ("mathml <mover> element should have 3 children")
@@ -236,8 +236,8 @@ def math_mover_html_rendered(self):
 		if u'23de' in self.children[0].children[1].render().lower() or u'\u23de' in unicode(self.children[0].children[1].render()).split():
 			return u'\\overbracket{%s}' %(self.children[0].children[0].render())
 		else:
-			logger.info("<mover> element containing children but overbracket 1st : %s , 2nd: %s"\
-				, self.children[0].children[0].render(), self.children[0].children[1].render())
+			#logger.info("<mover> element containing children but overbracket 1st : %s , 2nd: %s"\
+			#	, self.children[0].children[0].render(), self.children[0].children[1].render())
 			return u'\\overset{%s}{%s}' %(self.children[0].children[1].render(), self.children[0].children[0].render())
 	else:
 		raise Exception ("mathml <mover> element should have 2 children")
