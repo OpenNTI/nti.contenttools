@@ -198,30 +198,51 @@ def math_munder_html_rendered(self):
 	"""
 	to render <munder> element
 	"""
+	if len(self.children[0].children) == 2:
+		if u'23df' in self.children[0].children[1].render().lower() or u'\u23df' in unicode(self.children[0].children[1].render()).split():
+			return u'\\underbracket{%s}' %(self.children[0].children[0].render())
+		elif u'\u220f' in unicode(self.children[0].children[0].render()).split() or u'\\prod' in self.children[0].children[0].render():
+			return u'\\prod_{%s}' %(self.children[0].children[1].render())
+		else:
+			logger.info("<munder> element containing children but underbracket n prod")
+			logger.info("1'st child %s", self.children[0].children[0].render())
+			logger.info("2'nd child %s", self.children[0].children[1].render())
+			return u'\\underset{%s}{%s}' %(self.children[0].children[1].render(), self.children[0].children[0].render())
+	else:
+		raise Exception ("mathml <munder> element should have 2 children")
+
+def math_munderover_html_rendered(self):
+	"""
+	to render <munderover> element
+	"""
 	if len(self.children[0].children) == 3 :
 		if u'\u2211' in unicode(self.children[0].children[0].render()).split() or u'\\sum' in self.children[0].children[0].render():
 			return u'\\sum_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
 		elif u'\u222b' in unicode(self.children[0].children[0].render()).split() or u'\\int' in self.children[0].children[0].render():
-			return u'\\int_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
+			return u'\\int\limits_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
+		elif u'\u220f' in unicode(self.children[0].children[0].render()).split() or u'\\prod' in self.children[0].children[0].render():
+			return u'\\prod_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
 		else :
-			logger.info("Unhandled math expression for mathml <munder> element with 3 children")
+			logger.info("Unhandled math expression for mathml <munderover> element with 3 children")
 			logger.info("first child %s", self.children[0].children[0].render())
 			logger.info("second child %s", self.children[0].children[1].render())
 			logger.info("third child %s", self.children[0].children[2].render())
 			return u''
-	elif len(self.children[0].children) == 2:
-		if u'\u23df' in self.children[0].children[1].render() or u'&underbrace'in self.children[0].children[1].render():
-			return u'\\underbrace{%s}' %(self.children[0].children[0].render())
-		else:
-			logger.info("Unhandled math expression for mathml <munder> element with 2 children")
-			return u''
 	else:
-		logger.info("Unhandled math expression for mathml <munder> element")
-		return u''
-
-def math_munderover_html_rendered(self):
-	return u''
+		raise Exception ("mathml <mover> element should have 3 children")
 
 def math_mover_html_rendered(self):
-	return u''
+	"""
+	to render <mover> element
+	"""
+	if len(self.children[0].children) == 2:
+		if u'23de' in self.children[0].children[1].render().lower() or u'\u23de' in unicode(self.children[0].children[1].render()).split():
+			return u'\\overbracket{%s}' %(self.children[0].children[0].render())
+		else:
+			logger.info("<mover> element containing children but overbracket")
+			logger.info("1'st child %s", self.children[0].children[0].render())
+			logger.info("2'nd child %s", self.children[0].children[1].render())
+			return u'\\overset{%s}{%s}' %(self.children[0].children[1].render(), self.children[0].children[0].render())
+	else:
+		raise Exception ("mathml <mover> element should have 2 children")
 

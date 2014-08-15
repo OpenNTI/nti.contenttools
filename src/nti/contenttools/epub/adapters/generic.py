@@ -599,7 +599,7 @@ class MUnder(types.MUnder):
         me.add_child(MathRun.process(element, epub))
         return me
 
-class MUnderover(types.MUnder):
+class MUnderover(types.MUnderover):
     @classmethod
     def process(cls, element, epub):
         me = cls()
