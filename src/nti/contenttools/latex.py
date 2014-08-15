@@ -25,3 +25,4 @@ class _ExtendedTextLatexEscaper(object):
 		return escaped_text
 
 #_escapes = unicode_to_latex.unicode_to_latex.items()
+_escapes = []
