@@ -13,6 +13,7 @@ import codecs
 import argparse
 
 from .docx.read import DocxFile
+from nti.contenttools.renders import LaTeX
 
 def _parse_args():
 	arg_parser = argparse.ArgumentParser( description="NTI DOCX Converter" )
