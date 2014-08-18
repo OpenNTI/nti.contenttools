@@ -14,6 +14,7 @@ from .. import types
 from .paragraph import Paragraph
 from .table import Table
 
+IGNORED_TAGS = [ '{'+docx.nsprefixes['w']+'}sectPr']
 
 class Body( types.Body ):
 
@@ -36,6 +37,9 @@ class Body( types.Body ):
 				# T (table) Elements
 				elif element.tag == '{'+docx.nsprefixes['w']+'}tbl':
 					me.add_child( Table.process(element, doc, rels = rels) )
+
+				elif element.tag in IGNORED_TAGS:
+					pass
 	
 				else:
 					print('Did not handle body element: %s' % element.tag)
