@@ -33,7 +33,12 @@ IGNORED_TAGS = [ '{'+docx.nsprefixes['w']+'}ind',
 		 '{'+docx.nsprefixes['w']+'}jc',
 		 '{'+docx.nsprefixes['w']+'}keepNext',
 		 '{'+docx.nsprefixes['w']+'}outlineLvl',
-		 '{'+docx.nsprefixes['w']+'}lastRenderedPageBreak']
+		 '{'+docx.nsprefixes['w']+'}lastRenderedPageBreak',
+		 '{'+docx.nsprefixes['w']+'}shd',
+		 '{'+docx.nsprefixes['w']+'}spacing',
+		 '{'+docx.nsprefixes['w']+'}autoSpaceDE',
+		 '{'+docx.nsprefixes['w']+'}autoSpaceDN',
+		 '{'+docx.nsprefixes['w']+'}adjustRightInd']
 
 class Paragraph( types.Paragraph ):
 
