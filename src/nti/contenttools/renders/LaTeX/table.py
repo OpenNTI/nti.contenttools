@@ -61,7 +61,6 @@ def table_cell_renderer(self):
     return result
 
 def table_html_renderer(self):
-    #logger.info(" self.number_of_col : %s",self.number_of_col)
     number_of_col = self.number_of_col
     count_col = 0
     string_col = u''
@@ -79,7 +78,6 @@ def table_row_html_renderer(self):
     result = []
     for child in self.children:
         result.append(child.render())
-    #Tracer()()
     return u' & '.join(result) + u'\\\\\n'
 
 def table_cell_html_renderer(self):
