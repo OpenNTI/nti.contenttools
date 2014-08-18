@@ -836,15 +836,15 @@ def _process_section_elements(element, epub):
 
 def _process_h1_elements( element, epub ):
     # Model as a subsection
-    return SubSection.process(element, epub)
+    return Chapter.process(element, epub)
 
 def _process_h2_elements( element, epub ):
     # Model as a subsubsection
-    return SubSubSection.process(element, epub)
+    return Section.process(element, epub)
 
 def _process_h3_elements( element, epub ):
     # Model as a subsubsection
-    return SubSubSection.process(element, epub)
+    return SubSection.process(element, epub)
 
 def _process_h4_elements( element, epub ):
     # Model as a subsubsection
@@ -869,7 +869,6 @@ def _process_sup_elements( element, epub ):
     return Run.process(element, epub, ['sup'])
 
 def _process_a_elements( element, epub ):
-
     for child in element:
         if child.tag == 'img':
             el = Run()
@@ -877,6 +876,13 @@ def _process_a_elements( element, epub ):
             return el
         elif child.tag == 'span':
             el = Run.process(child, epub)
+            return el
+        elif child.tag == 'sup':
+            el = Run.process(child, epub, ['sup'])
+            return el
+        elif child.tag == 'sub':
+            el = Run.process(child, epub, ['sub'])
+            return el
         else:
             logger.info ("Unhandled child under 'a' element :%s", child.tag)
 
@@ -899,7 +905,6 @@ def _process_a_elements( element, epub ):
         else:
             if 'id' in element.attrib.keys():
                 el = Label.process(element, epub)
-    #Tracer()()
     return el
 
 def _process_em_elements(element, epub):
