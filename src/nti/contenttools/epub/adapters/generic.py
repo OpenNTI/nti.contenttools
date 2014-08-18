@@ -64,9 +64,9 @@ class SubSubSection( types.SubSubSection ):
 class Paragraph( types.Paragraph ):
 
     @classmethod
-    def process(cls, element, epub):
+    def process(cls, element, epub, styles=[]):
         me = cls()
-
+        me.styles.extend(styles)
         if 'id' in element.attrib.keys():
             me.add_child( Label.process( element, epub ) )
 
@@ -96,18 +96,24 @@ class Paragraph( types.Paragraph ):
                 me.add_child( Video.process( child, epub ) )
             elif child.tag == 'br':
                 me.add_child( types.Newline())
-                if child.tail is not None:
+                if child.tail:
                     me.add_child(types.TextNode(child.tail))
             elif child.tag == 'hr':
                 me.add_child(_process_hr_elements(child, epub))
             elif child.tag == 'h1':
-                me.add_child(_process_h1_elements(child, epub ))
+                me.add_child(_process_h1_elements(child, epub))
             elif child.tag == 'h2':
-                me.add_child(_process_h2_elements(child, epub ))
+                me.add_child(_process_h2_elements(child, epub))
             elif child.tag == 'h3':
-                me.add_child(_process_h3_elements(child, epub ))
+                me.add_child(_process_h3_elements(child, epub))
             elif child.tag == 'h4':
-                me.add_child(_process_h4_elements(child, epub ))
+                me.add_child(_process_h4_elements(child, epub))
+            elif child.tag == 'h5':
+                me.add_child(_process_h5_elements(child, epub))
+            elif child.tag == 'h6':
+                me.add_child(_process_h6_elements(child, epub))
+            elif child.tag == 'h7':
+                me.add_child(_process_h7_elements(child, epub))
             elif child.tag == 'div':
                 me.add_child(_process_div_elements(child, epub))
             elif child.tag == 'blockquote':
@@ -126,6 +132,8 @@ class Paragraph( types.Paragraph ):
                 me.add_child(_process_strong_elements(child, epub))
             elif child.tag == 'sup':
                 me.add_child(_process_sup_elements(child, epub))
+            elif child.tag == 'big':
+                me.add_child(_process_big_elements(child, epub))
             elif child.tag == 'math':
                 me.add_child(_process_math_elements(child, epub))
             else:
@@ -157,8 +165,8 @@ class Run( types.Run ):
                 me.add_child( _process_b_elements( child, epub ) )
             elif child.tag == 'br':
                 me.add_child( types.Newline() )
-                if child.tail is not None:
-                    me.add_child(types.TextNode(u"\n" + child.tail) )    
+                if child.tail:
+                    me.add_child(types.TextNode(child.tail))    
             elif child.tag == 'i':
                 me.add_child( _process_i_elements( child, epub ) )
             elif child.tag == 'span':
@@ -175,6 +183,16 @@ class Run( types.Run ):
                 me.add_child(_process_h1_elements(child, epub))
             elif child.tag == 'h2':
                 me.add_child(_process_h2_elements(child, epub))
+            elif child.tag == 'h3':
+                me.add_child(_process_h3_elements(child, epub))
+            elif child.tag == 'h4':
+                me.add_child(_process_h4_elements(child, epub))
+            elif child.tag == 'h5':
+                me.add_child(_process_h5_elements(child, epub))
+            elif child.tag == 'h6':
+                me.add_child(_process_h6_elements(child, epub))
+            elif child.tag == 'h7':
+                me.add_child(_process_h7_elements(child, epub))
             elif child.tag == 'ol':
                 me.add_child(_process_ol_elements(child, epub))
             elif child.tag == 'p':
@@ -185,6 +203,10 @@ class Run( types.Run ):
                 me.add_child(BlockQuote.process(child, epub))
             elif child.tag == 'ul':
                 me.add_child(_process_ul_elements(child, epub))
+            elif child.tag == 'hr':
+                me.add_child(_process_hr_elements(child, epub))
+            elif child.tag == 'big':
+                me.add_child(_process_big_elements(child, epub))
             elif child.tag == 'table':
                 me.add_child(_process_table_elements(child, epub))
             elif child.tag == 'strong':
@@ -418,10 +440,16 @@ class Cell(types.Cell):
                 me.add_child(_process_p_elements(child, epub))
             elif child.tag == 'br':
                 me.add_child( types.Newline())
-                if child.tail is not None:
+                if child.tail:
                     me.add_child(types.TextNode(child.tail))
             elif child.tag == 'img':
                 me.add_child(Image.process(child, epub))
+            elif child.tag == 'sub':
+                me.add_child(_process_sub_elements(child, epub))
+            elif child.tag == 'h4':
+                me.add_child(_process_h4_elements(child, epub))
+            elif child.tag == 'big':
+                me.add_child(_process_big_elements(child, epub))
             else:
                 logger.info("UNHANDLED child under table cell element %s", child.tag)
         return me
@@ -732,6 +760,8 @@ def _process_fragment( fragment, epub ):
             el.append(_process_h3_elements( element, epub ))
         elif element.tag == 'h4':
             el.append(_process_h4_elements( element, epub ))
+        elif element.tag == 'h5':
+            el.append(_process_h5_elements( element, epub ))
         elif element.tag == 'ul':
             el.append(_process_ul_elements( element, epub ))
         elif element.tag == 'section':
@@ -835,20 +865,25 @@ def _process_section_elements(element, epub):
     return el
 
 def _process_h1_elements( element, epub ):
-    # Model as a subsection
-    return Chapter.process(element, epub)
+    return Paragraph.process(element, epub, ['Heading1'])
 
 def _process_h2_elements( element, epub ):
-    # Model as a subsubsection
-    return Section.process(element, epub)
+    return Paragraph.process(element, epub, ['Heading2'])
 
 def _process_h3_elements( element, epub ):
-    # Model as a subsubsection
-    return SubSection.process(element, epub)
+    return Paragraph.process(element, epub, ['Heading3'])
 
 def _process_h4_elements( element, epub ):
-    # Model as a subsubsection
-    return SubSubSection.process(element, epub)
+    return Paragraph.process(element, epub, ['Heading4'])
+
+def _process_h5_elements( element, epub ):
+    return Paragraph.process(element, epub, ['Heading5'])
+
+def _process_h6_elements( element, epub ):
+    return Paragraph.process(element, epub, ['Heading6'])
+
+def _process_h7_elements( element, epub ):
+    return Paragraph.process(element, epub, ['Heading7'])
 
 def _process_span_elements( element, epub ):
     return Run.process(element, epub)
@@ -883,6 +918,9 @@ def _process_a_elements( element, epub ):
         elif child.tag == 'sub':
             el = Run.process(child, epub, ['sub'])
             return el
+        elif child.tag == 'br':
+            el = Run()
+            el.add_child(types.Newline())
         else:
             logger.info ("Unhandled child under 'a' element :%s", child.tag)
 
@@ -914,6 +952,9 @@ def _process_q_elements(element, epub):
     return Run.process(element, epub, ['bold'])
 
 def _process_hr_elements(element, epub):
+    return Run.process(element, epub)
+
+def _process_big_elements(element, epub):
     return Run.process(element, epub)
 
 def _process_ol_elements(element, epub):
