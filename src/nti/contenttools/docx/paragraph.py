@@ -6,6 +6,8 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
+from IPython.core.debugger import Tracer
+
 logger = __import__('logging').getLogger(__name__)
 
 import os
@@ -116,6 +118,8 @@ class Paragraph( types.Paragraph ):
 			# Skip elements in IGNORED_TAGS
 			elif element.tag in IGNORED_TAGS:
 				pass
+			elif element.tag == '{'+docx.nsprefixes['w']+'}widowControl':
+				print('found widowControl property')
 			else:
 				print('Unhandled paragraph property: %s' % element.tag)
 
@@ -360,8 +364,12 @@ class Hyperlink( types.Hyperlink ):
 			rels = doc.relationships
 
 		me = cls()
-		rId = node.attrib['{'+docx.nsprefixes['r']+'}id']
-		rel_type, me.target = relationshipProperties(rId, doc, rels)
+		#Tracer()()
+		if '{'+docx.nsprefixes['r']+'}id' in node.attrib.keys():
+			rId = node.attrib['{'+docx.nsprefixes['r']+'}id']
+			rel_type, me.target = relationshipProperties(rId, doc, rels)
+		else:
+			pass
 		for element in node.iterchildren():
 			# Look for footnotes
 			if (element.tag == '{'+docx.nsprefixes['w']+'}footnoteReference'):
