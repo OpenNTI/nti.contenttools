@@ -81,7 +81,7 @@ class Paragraph( types.Paragraph ):
 	
 				# We did not handle the element
 				else:
-					print('Did not handle paragraph element: %s' % element.tag)
+					logger.info('Did not handle paragraph element: %s' % element.tag)
 	
 		# Check to see if we found the document title
 		if 'Title' in me.styles:
@@ -119,9 +119,9 @@ class Paragraph( types.Paragraph ):
 			elif element.tag in IGNORED_TAGS:
 				pass
 			elif element.tag == '{'+docx.nsprefixes['w']+'}widowControl':
-				print('found widowControl property')
+				logger.info('found widowControl property')
 			else:
-				print('Unhandled paragraph property: %s' % element.tag)
+				logger.info('Unhandled paragraph property: %s' % element.tag)
 
 
 class Run( types.Run ):
@@ -204,10 +204,13 @@ class Run( types.Run ):
 				# Skip elements in IGNORED_TAGS
 				elif element.tag in IGNORED_TAGS:
 					pass
-	
+
+				elif element.tag == '{'+docx.nsprefixes['w']+'}tab':
+					logger.info('found run element %s', element.tag)
+
 				# We did not handle the element
 				else:
-					print('Did not handle run element: %s' % element.tag)
+					logger.info('Did not handle run element: %s' % element.tag)
 	
 		# Remove styles handled in other manners:
 		if 'Hyperlink' in me.styles:
@@ -257,7 +260,7 @@ class Run( types.Run ):
 			elif element.tag in IGNORED_TAGS:
 				pass
 			else:
-				print('Unhandled run property: %s' % element.tag)
+				logger.info('Unhandled run property: %s' % element.tag)
 
 
 class Del( Run ):
@@ -364,7 +367,7 @@ class Hyperlink( types.Hyperlink ):
 			rels = doc.relationships
 
 		me = cls()
-		#Tracer()()
+		#check first if node.attrib.keys() has '{'+docx.nsprefixes['r']+'}id'
 		if '{'+docx.nsprefixes['r']+'}id' in node.attrib.keys():
 			rId = node.attrib['{'+docx.nsprefixes['r']+'}id']
 			rel_type, me.target = relationshipProperties(rId, doc, rels)
@@ -461,7 +464,7 @@ def processField( field, doc, result, rels=None ):
 		_t.process_target()
 	else:
 		_t = Run()
-		print( 'Unhandled field: %s. Field body: %s' % ( field, str(result) ) )
+		logger.info( 'Unhandled field: %s. Field body: %s' % ( field, str(result) ) )
 	return _t
 
 def processComplexField( elements, doc, rels=None ):
