@@ -40,7 +40,8 @@ IGNORED_TAGS = [ '{'+docx.nsprefixes['w']+'}ind',
 		 '{'+docx.nsprefixes['w']+'}spacing',
 		 '{'+docx.nsprefixes['w']+'}autoSpaceDE',
 		 '{'+docx.nsprefixes['w']+'}autoSpaceDN',
-		 '{'+docx.nsprefixes['w']+'}adjustRightInd']
+		 '{'+docx.nsprefixes['w']+'}adjustRightInd',
+		 '{'+docx.nsprefixes['w']+'}tab']
 
 class Paragraph( types.Paragraph ):
 
@@ -49,7 +50,7 @@ class Paragraph( types.Paragraph ):
 		self.numbering = None
 
 	@classmethod
-	def process(cls, paragraph, doc, rels=None ):
+	def process(cls, paragraph, doc, rels=None):
 		'''Processes the text of a given paragraph into insets and text.'''
 		
 		if rels is None:
@@ -59,7 +60,6 @@ class Paragraph( types.Paragraph ):
 		fields = []
 		# Scan the elements in the paragraph and extract information
 		for element in paragraph.iterchildren():
-	
 				# Process Text Runs
 				if element.tag == '{'+docx.nsprefixes['w']+'}r':
 					me.add_child(Run.process(element, doc, fields = fields, rels = rels))
@@ -78,7 +78,6 @@ class Paragraph( types.Paragraph ):
 				# Skip elements in IGNORED_TAGS
 				elif element.tag in IGNORED_TAGS:
 					pass
-	
 				# We did not handle the element
 				else:
 					logger.info('Did not handle paragraph element: %s' % element.tag)
@@ -101,7 +100,7 @@ class Paragraph( types.Paragraph ):
 				item.add_child(me)
 				me.numbering.add_child( item )
 				me = me.numbering
-	
+
 		return me
 
 	def process_properties( self, properties, doc, rels=None ):
@@ -127,21 +126,22 @@ class Paragraph( types.Paragraph ):
 class Run( types.Run ):
 
 	@classmethod
-	def process( cls, textrun, doc, fields = [], rels=None ):
+	def process( cls, textrun, doc, fields = [], rels=None):
 		'''Process a paragraph textrun, parse for character styles'''
 	
 		if rels is None:
 				rels = doc.relationships
 	
 		me = cls()
+		found_text = False
 		for element in textrun.iterchildren():
-	
 				# Look for run properties
 				if element.tag == '{'+docx.nsprefixes['w']+'}rPr':
 					me.process_properties( element, doc, rels=rels )
 				# Find run text
 				elif (element.tag == '{'+docx.nsprefixes['w']+'}t'): 
 					# If not character style, append to the end of the paragraph
+					found_text = True
 					if element.text:
 						me.add_child( types.TextNode(element.text) )
 				elif element.tag == '{'+docx.nsprefixes['w']+'}drawing':
@@ -206,11 +206,11 @@ class Run( types.Run ):
 					pass
 
 				elif element.tag == '{'+docx.nsprefixes['w']+'}tab':
-					logger.info('found run element %s', element.tag)
+					logger.info('found tab element at Run.process() %s', element.tag)
 
 				# We did not handle the element
 				else:
-					logger.info('Did not handle run element: %s' % element.tag)
+					logger.info('Did not handle run element: %s', element.tag)
 	
 		# Remove styles handled in other manners:
 		if 'Hyperlink' in me.styles:
@@ -219,12 +219,15 @@ class Run( types.Run ):
 			me.removeStyle('FootnoteReference')
 		elif 'FootnoteText' in me.styles:
 			me.removeStyle('FootnoteText')
-	
-		if fields:
-				fields.append( me )
-				return cls()
+		
+		if fields and found_text:
+			fields.append( me )
+			return me
+		elif fields and found_text == False:
+			fields.append( me )
+			return cls()
 		else:
-				return me
+			return me
 
 	def process_properties( self, properties, doc, rels=None ):
 		for element in properties.iterchildren():
