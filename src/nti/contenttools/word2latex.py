@@ -11,6 +11,10 @@ logger = __import__('logging').getLogger(__name__)
 import os
 import codecs
 import argparse
+import logging
+from zope.exceptions import log as ze_log
+
+DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
 from .docx.read import DocxFile
 from nti.contenttools.renders import LaTeX
@@ -22,17 +26,28 @@ def _parse_args():
 							 help="The output directory. The default is: %s" % 'output' )
 	return arg_parser.parse_args()
 
+def _configure_logging(level='INFO'):
+    numeric_level = getattr(logging, level.upper(), None)
+    numeric_level = logging.INFO if not isinstance(numeric_level, int) else numeric_level
+    logging.basicConfig(level=numeric_level)
+    logging.root.handlers[0].setFormatter(ze_log.Formatter(DEFAULT_FORMAT_STRING))
+
+def _setup_configs():
+    # logging
+    _configure_logging()
+
 def _title_escape( title ):
 	return title.replace(' ', '_').replace('-','_').replace(':','_')
 
 def main():
 	# Parse command line args
 	args = _parse_args()
+	_setup_configs()
 	inputfile = os.path.expanduser(args.inputfile)
 
 	# Verify the input file exists
 	if not os.path.exists( inputfile ):
-		print( 'The source file, %s, does not exist.' % inputfile )
+		logger.info( 'The source file, %s, does not exist.' % inputfile )
 		exit()
 
 	# Create the output directory if it does not exist
@@ -40,7 +55,7 @@ def main():
 		os.mkdir( args.output )
 
 	# Open document from input string
-	print('Beginning Conversion of ' + inputfile)
+	logger.info('Beginning Conversion of ' + inputfile)
 
 	docxFile = DocxFile( inputfile )
 	if docxFile.title:
@@ -54,7 +69,7 @@ def main():
 	img_exportfolder = os.path.join(os.path.abspath(os.path.dirname(outputfile)), docxFile.image_dir)
 	docxFile.get_images( img_exportfolder )
 	
-	print('Conversion successful, output written to ' + outputfile)
+	logger.info('Conversion successful, output written to ' + outputfile)
 
 if __name__ == '__main__': # pragma: no cover
 	main()
