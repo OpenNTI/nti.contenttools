@@ -192,12 +192,8 @@ class UnorderedList( List ):
 	pass
 
 class OrderedList( List ):
-
-	"""
 	def __init__(self):
-		super(OrderedList, self).__init__(format='decimal')
-	"""
-	pass
+		super(OrderedList, self).__init__(fmt='decimal')
 
 class Item( DocumentStructureNode ):
 	pass
