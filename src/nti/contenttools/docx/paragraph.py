@@ -6,7 +6,7 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-from IPython.core.debugger import Tracer
+#from IPython.core.debugger import Tracer
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -205,9 +205,6 @@ class Run( types.Run ):
 				elif element.tag in IGNORED_TAGS:
 					pass
 
-				elif element.tag == '{'+docx.nsprefixes['w']+'}tab':
-					logger.info('found tab element at Run.process() %s', element.tag)
-
 				# We did not handle the element
 				else:
 					logger.info('Did not handle run element: %s', element.tag)
@@ -323,7 +320,6 @@ def process_numbering( element, doc ):
 		el.start = len(doc.numbering_collection[numId][ilvl])
 	el.group = numId
 	el.level = str(ilvl)
-
 	return el
 
 
