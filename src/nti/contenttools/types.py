@@ -301,3 +301,12 @@ class OMathNumerator(DocumentStructureNode):
 
 class OMathDenominator(DocumentStructureNode):
 	pass
+
+class OMathRadical(DocumentStructureNode):
+	pass
+
+class OMathDegree(DocumentStructureNode):
+	pass
+
+class OMathBase(DocumentStructureNode):
+	pass
