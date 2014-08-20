@@ -19,6 +19,7 @@ from . import properties as docx
 from ..types import _Node
 from .. import types
 
+
 IGNORED_TAGS = [ '{'+docx.nsprefixes['w']+'}ind',
 		 '{'+docx.nsprefixes['w']+'}sectPr',
 		 '{'+docx.nsprefixes['w']+'}proofErr',
@@ -78,6 +79,10 @@ class Paragraph( types.Paragraph ):
 				# Skip elements in IGNORED_TAGS
 				elif element.tag in IGNORED_TAGS:
 					pass
+
+				elif element.tag in '{'+docx.nsprefixes['m']+'}oMath':
+					me.add_child(OMath.process(element,doc))
+
 				# We did not handle the element
 				else:
 					logger.info('Did not handle paragraph element: %s' % element.tag)
@@ -493,3 +498,64 @@ def relationshipProperties( rId, doc, rels=None ):
 				return relationship.attrib['Type'], relationship.attrib['Target']
 		except:
 			pass
+
+class OMath(types.OMath):
+	@classmethod
+	def process(cls, omath, doc):
+		me = cls()
+		for element in omath.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}r':
+				me.add_child(OMathRun.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}f':
+				me.add_child(OMathFrac.process(element, doc))
+			else:
+				logger.info('Unhandled omath element %s', element.tag)
+		return me
+
+class OMathRun(types.OMathRun):
+	@classmethod
+	def process(cls, mathrun, doc, rels=None):
+		me = cls()
+		for element in mathrun.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}t':
+				if element.text:
+					me.add_child(types.TextNode(element.text))
+			elif element.tag == '{'+docx.nsprefixes['w']+'}rPr':
+				pass
+			else:
+				logger.info ('Unhandled <m:r> element %s', element.tag)
+		return me
+
+class OMathFrac(types.OMathFrac):
+	@classmethod
+	def process(cls, mathfrac, doc):
+		me = cls()
+		for element in mathfrac.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}num':
+				me.add_child(OMathNumerator.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}den':
+				me.add_child(OMathDenominator.process(element, doc))
+		return me
+
+class OMathNumerator(types.OMathNumerator):
+	@classmethod
+	def process(cls, mathnum, doc):
+		me = cls()
+		for element in mathnum.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}r':
+				me.add_child(OMathRun.process(element, doc))
+			else:
+				logger.info('Unhandled <m:num> element %s', element.tag)
+		return me
+
+
+class OMathDenominator(types.OMathDenominator):
+	@classmethod
+	def process(cls, mathden, doc):
+		me = cls()
+		for element in mathden.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}r':
+				me.add_child(OMathRun.process(element, doc))
+			else:
+				logger.info('Unhandled <m:den> element %s', element.tag)
+		return me

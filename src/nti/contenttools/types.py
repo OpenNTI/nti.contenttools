@@ -286,3 +286,18 @@ class MUnderover(DocumentStructureNode):
 
 class MOver(DocumentStructureNode):
 	pass
+
+class OMath(DocumentStructureNode):
+	pass
+
+class OMathRun(DocumentStructureNode):
+	pass
+
+class OMathFrac(DocumentStructureNode):
+	pass
+
+class OMathNumerator(DocumentStructureNode):
+	pass
+
+class OMathDenominator(DocumentStructureNode):
+	pass
