@@ -120,3 +120,6 @@ types.OMathFrac.render = omath_fraction_rendered
 types.OMathNumerator.render = omath_numerator_rendered
 types.OMathDenominator.render = omath_denominator_rendered
 
+types.OMathRadical.render = omath_rad_rendered
+types.OMathDegree = omath_deg_rendered
+types.OMathBase = omath_base_rendered
