@@ -310,3 +310,9 @@ class OMathDegree(DocumentStructureNode):
 
 class OMathBase(DocumentStructureNode):
 	pass
+
+class OMathSuperscript(DocumentStructureNode):
+	pass
+
+class OMathSup(DocumentStructureNode):
+	pass

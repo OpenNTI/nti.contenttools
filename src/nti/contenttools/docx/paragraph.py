@@ -6,7 +6,7 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-#from IPython.core.debugger import Tracer
+from IPython.core.debugger import Tracer
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -510,6 +510,8 @@ class OMath(types.OMath):
 				me.add_child(OMathFrac.process(element, doc))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}rad':
 				me.add_child(OMathRadical.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}sSup':
+				me.add_child(OMathSuperscript.process(element, doc))
 			else:
 				logger.info('Unhandled omath element %s', element.tag)
 		return me
@@ -595,4 +597,32 @@ class OMathBase(types.OMathBase):
 				me.add_child(OMathRun.process(element, doc))
 			else:
 				logger.info('Unhandled <m:e> element %s', element.tag)
+		return me
+
+class OMathSuperscript(types.OMathSuperscript):
+	@classmethod
+	def process(cls, mathsup, doc):
+		me = cls()
+		for element in mathsup.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}sSupPr':
+				pass
+			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+				logger.info("found <m:e>")
+			elif element.tag == '{'+docx.nsprefixes['m']+'}sup':
+				me.add_child(OMathSup.process(element,doc))
+				logger.info("found <m:sup>")
+			else:
+				logger.info('Unhandled <m:sSup> element %s', element.tag)
+		return me
+
+class OMathSup(types.OMathSup):
+	@classmethod
+	def process(cls, msup, doc):
+		me = cls()
+		for element in msup.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}r':
+				me.add_child(OMathRun.process(element, doc))
+			else:
+				logger.info("Unhandled <m:sup> %s", element.tag)
 		return me
