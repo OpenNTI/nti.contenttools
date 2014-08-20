@@ -10,6 +10,12 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+def omath_basic_rendered(self):
+	result = []
+	for child in self.children:
+	    result.append(child.render())
+	return u''.join(result) + u''
+
 def omath_rendered(self):
 	"""
 	to render <m:OMath> element
@@ -23,10 +29,7 @@ def omath_run_rendered(self):
 	"""
 	to render <m:r> element
 	"""
-	result = []
-	for child in self.children:
-	    result.append(child.render())
-	return u''.join(result) + u''
+	return omath_basic_rendered(self)
 
 def omath_fraction_rendered(self):
 	"""
@@ -39,19 +42,13 @@ def omath_numerator_rendered(self):
 	"""
 	to render <m:num>
 	"""
-	result = []
-	for child in self.children:
-	    result.append(child.render())
-	return u''.join(result) + u''
+	return omath_basic_rendered(self)
 
 def omath_denominator_rendered(self):
 	"""
 	to render <m:den>
 	"""
-	result = []
-	for child in self.children:
-	    result.append(child.render())
-	return u''.join(result) + u''
+	return omath_basic_rendered(self)
 
 def omath_rad_rendered(self):
 	"""
@@ -66,16 +63,22 @@ def omath_base_rendered(self):
 	"""
 	to render <m:e>
 	"""
-	result = []
-	for child in self.children:
-	    result.append(child.render())
-	return u''.join(result) + u''
+	return omath_basic_rendered(self)
 
 def omath_deg_rendered(self):
 	"""
 	to render <m:deg>
 	"""
-	result = []
-	for child in self.children:
-	    result.append(child.render())
-	return u''.join(result) + u''
+	return omath_basic_rendered(self)
+
+def omath_superscript_rendered(self):
+	"""
+	to render <m:sSup>
+	"""
+	return u'{%s}^{%s}' % (self.children[0].render(), self.children[1].render())
+
+def omath_sup_rendered(self):
+	"""
+	to render <m:sup>
+	"""
+	return omath_basic_rendered(self)
