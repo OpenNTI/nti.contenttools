@@ -41,7 +41,7 @@ class TestDocxToLatex(ContentToolsTestCase):
 
 		assert_that(latex_file.read(), is_(result_file.read()))
 
-		def test_on_numbering(self):
+	def test_on_numbering(self):
 		inputfile = "src/nti/contenttools/tests/docx_sample/numbering_sample.docx"
 		outputdir = 'src/nti/contenttools/tests/tex_from_docx/'
 		if not os.path.exists( outputdir ):
