@@ -24,6 +24,7 @@ from .run import *
 from .sectioning import *
 from .table import *
 from .math import *
+from .omath import*
 
 def note_renderer(self):
     return u'\\footnote{%s}' % base_renderer(self)
@@ -112,3 +113,10 @@ types.Mroot.render = math_mroot_html_rendered
 types.MUnder.render = math_munder_html_rendered
 types.MUnderover.render = math_munderover_html_rendered
 types.MOver.render = math_mover_html_rendered
+
+types.OMath.render = omath_rendered
+types.OMathRun.render = omath_run_rendered
+types.OMathFrac.render = omath_fraction_rendered
+types.OMathNumerator.render = omath_numerator_rendered
+types.OMathDenominator.render = omath_denominator_rendered
+
