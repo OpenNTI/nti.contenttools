@@ -6,7 +6,7 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-from IPython.core.debugger import Tracer
+#from IPython.core.debugger import Tracer
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -38,7 +38,6 @@ def omath_fraction_rendered(self):
 	"""
 	to render <m:f> element
 	"""
-	Tracer()()
 	return u'\\frac{%s}{%s}' %(self.children[0].render(), self.children[1].render())
 
 
