@@ -86,7 +86,7 @@ class Paragraph( types.Paragraph ):
 
 				# We did not handle the element
 				else:
-					logger.info('Did not handle paragraph element: %s' % element.tag)
+					logger.warn('Did not handle paragraph element: %s' % element.tag)
 	
 		# Check to see if we found the document title
 		if 'Title' in me.styles:
@@ -126,7 +126,7 @@ class Paragraph( types.Paragraph ):
 			elif element.tag == '{'+docx.nsprefixes['w']+'}widowControl':
 				logger.info('found widowControl property')
 			else:
-				logger.info('Unhandled paragraph property: %s' % element.tag)
+				logger.warn('Unhandled paragraph property: %s' % element.tag)
 
 
 class Run( types.Run ):
@@ -213,7 +213,7 @@ class Run( types.Run ):
 
 				# We did not handle the element
 				else:
-					logger.info('Did not handle run element: %s', element.tag)
+					logger.warn('Did not handle run element: %s', element.tag)
 	
 		# Remove styles handled in other manners:
 		if 'Hyperlink' in me.styles:
@@ -266,7 +266,7 @@ class Run( types.Run ):
 			elif element.tag in IGNORED_TAGS:
 				pass
 			else:
-				logger.info('Unhandled run property: %s' % element.tag)
+				logger.warn('Unhandled run property: %s' % element.tag)
 
 
 class Del( Run ):
@@ -469,7 +469,7 @@ def processField( field, doc, result, rels=None ):
 		_t.process_target()
 	else:
 		_t = Run()
-		logger.info( 'Unhandled field: %s. Field body: %s' % ( field, str(result) ) )
+		logger.warn( 'Unhandled field: %s. Field body: %s' % ( field, str(result) ) )
 	return _t
 
 def processComplexField( elements, doc, rels=None ):
@@ -509,7 +509,7 @@ class OMath(types.OMath):
 			if new_child is not None:
 				me.add_child(new_child)
 			else:
-				logger.info('Unhandled <o:math> element %s',element.tag)
+				logger.warn('Unhandled <o:math> element %s',element.tag)
 		return me
 
 class OMathRun(types.OMathRun):
@@ -525,7 +525,7 @@ class OMathRun(types.OMathRun):
 			elif element.tag in IGNORED_TAGS:
 				pass
 			else:
-				logger.info ('Unhandled <m:r> element %s', element.tag)
+				logger.warn ('Unhandled <m:r> element %s', element.tag)
 		return me
 
 class OMathFrac(types.OMathFrac):
@@ -548,7 +548,7 @@ class OMathNumerator(types.OMathNumerator):
 			if new_child is not None:
 				me.add_child(new_child)
 			else:
-				logger.info('Unhandled <m:num> element %s',element.tag)
+				logger.warn('Unhandled <m:num> element %s',element.tag)
 		return me
 
 
@@ -561,7 +561,7 @@ class OMathDenominator(types.OMathDenominator):
 			if new_child is not None:
 				me.add_child(new_child)
 			else:
-				logger.info('Unhandled <m:den> element %s', element.tag)
+				logger.warn('Unhandled <m:den> element %s', element.tag)
 		return me
 
 class OMathRadical(types.OMathRadical):
@@ -586,7 +586,7 @@ class OMathDegree(types.OMathDegree):
 			if new_child is not None:
 				me.add_child(new_child)
 			else:
-				logger.info('Unhandled <m:deg> element %s', element.tag)
+				logger.warn('Unhandled <m:deg> element %s', element.tag)
 		return me
 
 class OMathBase(types.OMathBase):
@@ -598,7 +598,7 @@ class OMathBase(types.OMathBase):
 			if new_child is not None:
 				me.add_child(new_child)
 			else:
-				logger.info('Unhandled <m:e> element %s', element.tag)
+				logger.warn('Unhandled <m:e> element %s', element.tag)
 		return me
 
 class OMathSuperscript(types.OMathSuperscript):
@@ -613,7 +613,7 @@ class OMathSuperscript(types.OMathSuperscript):
 			elif element.tag == '{'+docx.nsprefixes['m']+'}sup':
 				me.add_child(OMathSup.process(element,doc))
 			else:
-				logger.info('Unhandled <m:sSup> element %s', element.tag)
+				logger.warn('Unhandled <m:sSup> element %s', element.tag)
 		return me
 
 class OMathSup(types.OMathSup):
@@ -625,7 +625,7 @@ class OMathSup(types.OMathSup):
 			if new_child is not None:
 				me.add_child(new_child)
 			else:
-				logger.info("Unhandled <m:sup> %s", element.tag)
+				logger.warn("Unhandled <m:sup> %s", element.tag)
 		return me
 
 class OMathSubscript(types.OMathSubscript):
@@ -640,7 +640,7 @@ class OMathSubscript(types.OMathSubscript):
 			elif element.tag == '{'+docx.nsprefixes['m']+'}sub':
 				me.add_child(OMathSub.process(element,doc))
 			else:
-				logger.info('Unhandled <m:sSup> element %s', element.tag)
+				logger.warn('Unhandled <m:sSup> element %s', element.tag)
 		return me
 
 class OMathSub(types.OMathSub):
@@ -652,7 +652,7 @@ class OMathSub(types.OMathSub):
 			if new_child is not None:
 				me.add_child(new_child)
 			else:
-				logger.info("Unhandled <m:sup> %s", element.tag)
+				logger.warn("Unhandled <m:sup> %s", element.tag)
 		return me
 
 
@@ -670,7 +670,7 @@ class OMathSubSup(types.OMathSubSup):
 			elif element.tag == '{'+docx.nsprefixes['m']+'}sup':
 				me.add_child(OMathSub.process(element,doc))
 			else:
-				logger.info('Unhandled <m:sSubSup> element %s', element.tag)
+				logger.warn('Unhandled <m:sSubSup> element %s', element.tag)
 		return me
 
 class OMathNary(types.OMathNary):
@@ -687,7 +687,7 @@ class OMathNary(types.OMathNary):
 			elif element.tag == '{'+docx.nsprefixes['m']+'}sup':
 				me.add_child(OMathSub.process(element,doc))
 			else:
-				logger.info('Unhandled <m:naryPr> element %s', element, tag)
+				logger.warn('Unhandled <m:naryPr> element %s', element, tag)
 		return me
 
 class OMathNaryPr(types.OMathNaryPr):
@@ -700,7 +700,7 @@ class OMathNaryPr(types.OMathNaryPr):
 			elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
 				pass
 			else:
-				logger.info('Unhandled <m:naryPr> element %s',element.tag)
+				logger.warn('Unhandled <m:naryPr> element %s',element.tag)
 		return me
 
 def process_omath_chr_attributes(element, doc):
@@ -715,11 +715,10 @@ class OMathDelimiter(types.OMathDelimiter):
 		for element in md.iterchildren():
 			if element.tag == '{'+docx.nsprefixes['m']+'}dPr':
 				me.add_child(OMathDPr.process(element, doc))
-				logger.info('found <m:dPr>')
 			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
 				me.add_child(OMathBase.process(element, doc))
 			else:
-				logger.info('Unhandled <m:d> element %s',element.tag)
+				logger.warn('Unhandled <m:d> element %s',element.tag)
 		return me
 
 class OMathDPr(types.OMathDPr):
@@ -736,7 +735,7 @@ class OMathDPr(types.OMathDPr):
 			elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
 				pass
 			else:
-				logger.info('Unhandled <m:dPr> element %s', element.tag)
+				logger.warn('Unhandled <m:dPr> element %s', element.tag)
 		return me
 
 class OMathLimLow(types.OMathLimLow):
@@ -751,7 +750,7 @@ class OMathLimLow(types.OMathLimLow):
 			elif element.tag == '{'+docx.nsprefixes['m']+'}limLowPr':
 				pass
 			else:
-				logger.info('Unhandled <m:limlow> element %s', element.tag)
+				logger.warn('Unhandled <m:limlow> element %s', element.tag)
 		return me
 
 class OMathLim(types.OMathLim):
@@ -763,7 +762,7 @@ class OMathLim(types.OMathLim):
 			if new_child is not None:
 				me.add_child(new_child)
 			else:
-				logger.info('Unhandled <m:lim> element %s', element.tag)
+				logger.warn('Unhandled <m:lim> element %s', element.tag)
 		return me
 
 class OMathElement(object):
@@ -793,8 +792,5 @@ class OMathElement(object):
 		elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
 			pass
 		else:
-			logger.info('Unhandled omath element %s', element.tag)
+			logger.warn('Unhandled omath element %s', element.tag)
 			return None
-		
-
-
