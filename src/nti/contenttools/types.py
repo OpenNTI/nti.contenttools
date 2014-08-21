@@ -316,3 +316,12 @@ class OMathSuperscript(DocumentStructureNode):
 
 class OMathSup(DocumentStructureNode):
 	pass
+
+class OMathSubscript(DocumentStructureNode):
+	pass
+
+class OMathSub(DocumentStructureNode):
+	pass 
+
+class OMathSubSup(DocumentStructureNode):
+	pass

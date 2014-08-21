@@ -82,3 +82,22 @@ def omath_sup_rendered(self):
 	to render <m:sup>
 	"""
 	return omath_basic_rendered(self)
+
+def omath_subscript_rendered(self):
+	"""
+	to render <m:sSub>
+	"""
+	return u'{%s}_{%s}' % (self.children[0].render(), self.children[1].render())
+
+def omath_sub_rendered(self):
+	"""
+	to render <m:sub>
+	"""
+	return omath_basic_rendered(self)
+
+def omath_subsup_rendered(self):
+	"""
+	to render <m:sSubSup>
+	"""
+	return u'{%s}_{%s}^{%s}' % (self.children[0].render(), self.children[1].render(), self.children[2].render())
+

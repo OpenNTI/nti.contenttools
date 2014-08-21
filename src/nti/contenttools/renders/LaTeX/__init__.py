@@ -119,10 +119,11 @@ types.OMathRun.render = omath_run_rendered
 types.OMathFrac.render = omath_fraction_rendered
 types.OMathNumerator.render = omath_numerator_rendered
 types.OMathDenominator.render = omath_denominator_rendered
-
 types.OMathRadical.render = omath_rad_rendered
 types.OMathDegree.render = omath_deg_rendered
 types.OMathBase.render = omath_base_rendered
-
 types.OMathSuperscript.render = omath_superscript_rendered
 types.OMathSup.render = omath_sup_rendered
+types.OMathSubscript.render = omath_subscript_rendered
+types.OMathSub.render = omath_sub_rendered
+types.OMathSubSup.render = omath_subsup_rendered
