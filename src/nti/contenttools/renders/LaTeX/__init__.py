@@ -127,3 +127,5 @@ types.OMathSup.render = omath_sup_rendered
 types.OMathSubscript.render = omath_subscript_rendered
 types.OMathSub.render = omath_sub_rendered
 types.OMathSubSup.render = omath_subsup_rendered
+types.OMathNary.render = omath_nary_rendered
+types.OMathNaryPr.render = omath_nary_pr_rendered

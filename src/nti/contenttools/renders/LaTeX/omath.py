@@ -6,7 +6,7 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-#from IPython.core.debugger import Tracer
+from IPython.core.debugger import Tracer
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -100,4 +100,26 @@ def omath_subsup_rendered(self):
 	to render <m:sSubSup>
 	"""
 	return u'{%s}_{%s}^{%s}' % (self.children[0].render(), self.children[1].render(), self.children[2].render())
+
+def omath_nary_rendered(self):
+	"""
+	to render <m:nary>
+	"""
+	if len(self.children) == 3:
+		#render sum of
+		if u'\\sum' in unicode(self.children[0].render()) or u'\u2211' in unicode(self.children[0].render()):
+			return u'\\sum_{%s}^{%s}' %(self.children[1].render(), self.children[2].render())
+		else:
+			logger.info('Unhandled <m:nary> render when num of children = 3')
+			return u''
+	else:
+		logger.info('Unhandled <m:nary> render')
+		return u''
+
+
+def omath_nary_pr_rendered(self):
+	"""
+	to render <m:naryPr>
+	"""
+	return omath_basic_rendered(self)
 

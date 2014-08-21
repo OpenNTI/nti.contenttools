@@ -42,7 +42,8 @@ IGNORED_TAGS = [ '{'+docx.nsprefixes['w']+'}ind',
 		 '{'+docx.nsprefixes['w']+'}autoSpaceDE',
 		 '{'+docx.nsprefixes['w']+'}autoSpaceDN',
 		 '{'+docx.nsprefixes['w']+'}adjustRightInd',
-		 '{'+docx.nsprefixes['w']+'}tab']
+		 '{'+docx.nsprefixes['w']+'}tab',
+		 '{'+docx.nsprefixes['w']+'}rtl']
 
 class Paragraph( types.Paragraph ):
 
@@ -516,6 +517,9 @@ class OMath(types.OMath):
 				me.add_child(OMathSubscript.process(element, doc))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}sSubSup':
 				me.add_child(OMathSubSup.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}nary':
+				logger.info("found %s", element.tag)
+				me.add_child(OMathNary.process(element, doc))
 			else:
 				logger.info('Unhandled omath element %s', element.tag)
 		return me
@@ -658,11 +662,28 @@ class OMathSub(types.OMathSub):
 
 class OMathSubSup(types.OMathSubSup):
 	@classmethod
-	def process(cls, mathsub, doc):
+	def process(cls, msubsup, doc):
 		me = cls()
-		for element in mathsub.iterchildren():
+		for element in msubsup.iterchildren():
 			if element.tag == '{'+docx.nsprefixes['m']+'}sSubPr':
 				pass
+			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}sub':
+				me.add_child(OMathSub.process(element,doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}sup':
+				me.add_child(OMathSub.process(element,doc))
+			else:
+				logger.info('Unhandled <m:sSubSup> element %s', element.tag)
+		return me
+
+class OMathNary(types.OMathNary):
+	@classmethod
+	def process(cls, mnary, doc):
+		me = cls()
+		for element in mnary.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}naryPr':
+				me.add_child(OMathNaryPr.process(element, doc))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
 				me.add_child(OMathBase.process(element, doc))
 				logger.info("found <m:e>")
@@ -673,8 +694,26 @@ class OMathSubSup(types.OMathSubSup):
 				me.add_child(OMathSub.process(element,doc))
 				logger.info("found <m:sup>")
 			else:
-				logger.info('Unhandled <m:sSubSup> element %s', element.tag)
+				logger.info('Unhandled <m:naryPr> element %s', element, tag)
 		return me
+
+class OMathNaryPr(types.OMathNaryPr):
+	@classmethod
+	def process(cls,mnarypr, doc):
+		me = cls()
+		for element in mnarypr.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}chr':
+				me.add_child(process_omath_chr_attributes(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
+				pass
+			else:
+				logger.info('Unhandled <m:naryPr> element %s',element.tag)
+		return me
+
+def process_omath_chr_attributes(element, doc):
+	chr_val = element.attrib['{'+docx.nsprefixes['m']+'}val']
+	el = types.TextNode(chr_val)
+	return el
 
 
 
