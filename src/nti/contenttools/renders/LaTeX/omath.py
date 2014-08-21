@@ -133,5 +133,13 @@ def omath_dpr_rendered(self):
 	"""
 	to render <m:dPr>
 	"""
-	return omath_basic_rendered()
+	return omath_basic_rendered(self)
+
+def omath_lim_low_rendered(self):
+	"""
+	to render <m:limlow>
+	"""
+	return u'\\lim_{%s \\to %s}' %(self.children[1].children[0].render(), self.children[1].children[2].render())
+
+	
 

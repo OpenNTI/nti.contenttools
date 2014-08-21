@@ -131,3 +131,4 @@ types.OMathNary.render = omath_nary_rendered
 types.OMathNaryPr.render = omath_nary_pr_rendered
 types.OMathDelimiter.render = omath_delimiter_rendered
 types.OMathDPr.render = omath_dpr_rendered
+types.OMathLimLow.render = omath_lim_low_rendered
