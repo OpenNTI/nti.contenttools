@@ -325,3 +325,9 @@ class OMathSub(DocumentStructureNode):
 
 class OMathSubSup(DocumentStructureNode):
 	pass
+
+class OMathNary(DocumentStructureNode):
+	pass
+
+class OMathNaryPr(DocumentStructureNode):
+	pass
