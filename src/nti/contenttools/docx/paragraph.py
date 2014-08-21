@@ -512,6 +512,10 @@ class OMath(types.OMath):
 				me.add_child(OMathRadical.process(element, doc))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}sSup':
 				me.add_child(OMathSuperscript.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}sSub':
+				me.add_child(OMathSubscript.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}sSubSup':
+				me.add_child(OMathSubSup.process(element, doc))
 			else:
 				logger.info('Unhandled omath element %s', element.tag)
 		return me
@@ -608,10 +612,8 @@ class OMathSuperscript(types.OMathSuperscript):
 				pass
 			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
 				me.add_child(OMathBase.process(element, doc))
-				logger.info("found <m:e>")
 			elif element.tag == '{'+docx.nsprefixes['m']+'}sup':
 				me.add_child(OMathSup.process(element,doc))
-				logger.info("found <m:sup>")
 			else:
 				logger.info('Unhandled <m:sSup> element %s', element.tag)
 		return me
@@ -626,3 +628,56 @@ class OMathSup(types.OMathSup):
 			else:
 				logger.info("Unhandled <m:sup> %s", element.tag)
 		return me
+
+class OMathSubscript(types.OMathSubscript):
+	@classmethod
+	def process(cls, mathsub, doc):
+		me = cls()
+		for element in mathsub.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}sSubPr':
+				pass
+			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}sub':
+				me.add_child(OMathSub.process(element,doc))
+			else:
+				logger.info('Unhandled <m:sSup> element %s', element.tag)
+		return me
+
+class OMathSub(types.OMathSub):
+	@classmethod
+	def process(cls, msub, doc):
+		me = cls()
+		for element in msub.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}r':
+				me.add_child(OMathRun.process(element, doc))
+			else:
+				logger.info("Unhandled <m:sup> %s", element.tag)
+		return me
+
+
+class OMathSubSup(types.OMathSubSup):
+	@classmethod
+	def process(cls, mathsub, doc):
+		me = cls()
+		for element in mathsub.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}sSubPr':
+				pass
+			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+				logger.info("found <m:e>")
+			elif element.tag == '{'+docx.nsprefixes['m']+'}sub':
+				me.add_child(OMathSub.process(element,doc))
+				logger.info("found <m:sub>")
+			elif element.tag == '{'+docx.nsprefixes['m']+'}sup':
+				me.add_child(OMathSub.process(element,doc))
+				logger.info("found <m:sup>")
+			else:
+				logger.info('Unhandled <m:sSubSup> element %s', element.tag)
+		return me
+
+
+
+
+
+
