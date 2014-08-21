@@ -521,6 +521,8 @@ class OMath(types.OMath):
 				me.add_child(OMathNary.process(element, doc))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}d':
 				me.add_child(OMathDelimiter.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}limLow':
+				me.add_child(OMathLimLow.process(element, doc))
 			else:
 				logger.info('Unhandled omath element %s', element.tag)
 		return me
@@ -747,10 +749,30 @@ class OMathDPr(types.OMathDPr):
 				logger.info('Unhandled <m:dPr> element %s', element.tag)
 		return me
 
+class OMathLimLow(types.OMathLimLow):
+	@classmethod
+	def process(cls, mlimlow, doc):
+		me =cls()
+		for element in mlimlow.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}lim':
+				me.add_child(OMathLim.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}limLowPr':
+				pass
+			else:
+				logger.info('Unhandled <m:limlow> element %s', element.tag)
+		return me
 
-
-
-
-
-
-
+class OMathLim(types.OMathLim):
+	@classmethod
+	def process(cls, mlim, doc):
+		me = cls()
+		for element in mlim.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}r':
+				me.add_child(OMathRun.process(element,doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
+				pass
+			else:
+				logger.info('Unhandled <m:lim> element %s', element.tag)
+		return me

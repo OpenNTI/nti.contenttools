@@ -337,3 +337,9 @@ class OMathDelimiter(DocumentStructureNode):
 
 class OMathDPr(DocumentStructureNode):
 	pass
+
+class OMathLim(DocumentStructureNode):
+	pass
+
+class OMathLimLow(DocumentStructureNode):
+	pass
