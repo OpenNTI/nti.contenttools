@@ -518,8 +518,9 @@ class OMath(types.OMath):
 			elif element.tag == '{'+docx.nsprefixes['m']+'}sSubSup':
 				me.add_child(OMathSubSup.process(element, doc))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}nary':
-				logger.info("found %s", element.tag)
 				me.add_child(OMathNary.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}d':
+				me.add_child(OMathDelimiter.process(element, doc))
 			else:
 				logger.info('Unhandled omath element %s', element.tag)
 		return me
@@ -714,6 +715,39 @@ def process_omath_chr_attributes(element, doc):
 	chr_val = element.attrib['{'+docx.nsprefixes['m']+'}val']
 	el = types.TextNode(chr_val)
 	return el
+
+class OMathDelimiter(types.OMathDelimiter):
+	@classmethod
+	def process(cls, md, doc):
+		me = cls()
+		for element in md.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}dPr':
+				me.add_child(OMathDPr.process(element, doc))
+				logger.info('found <m:dPr>')
+			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+			else:
+				logger.info('Unhandled <m:d> element %s',element.tag)
+		return me
+
+class OMathDPr(types.OMathDPr):
+	@classmethod
+	def process(cls, mdpr, doc):
+		me = cls()
+		for element in mdpr.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}begChr':
+				begChr = element.attrib['{'+docx.nsprefixes['m']+'}val']
+				me.add_child(types.TextNode(begChr))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}endChr':
+				endChr = element.attrib['{'+docx.nsprefixes['m']+'}val']
+				me.add_child(types.TextNode(endChr))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
+				pass
+			else:
+				logger.info('Unhandled <m:dPr> element %s', element.tag)
+		return me
+
+
 
 
 
