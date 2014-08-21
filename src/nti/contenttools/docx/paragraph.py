@@ -765,6 +765,32 @@ class OMathLim(types.OMathLim):
 				logger.warn('Unhandled <m:lim> element %s', element.tag)
 		return me
 
+class OMathBar(types.OMathBar):
+	@classmethod
+	def process(cls, mbar, doc):
+		me = cls()
+		for element in mbar.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}barPr':
+				pass
+			else:
+				logger.warn('Unhandled <m:bar> element %s', element.tag)
+		return me
+
+class OMathAcc(types.OMathAcc):
+	@classmethod
+	def process(cls, macc, doc):
+		me = cls()
+		for element in macc.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}accPr':
+				pass
+			else:
+				logger.warn('Unhandled <m:bar> element %s', element.tag)
+		return me
+
 class OMathElement(object):
 	@classmethod
 	def create_child(cls,element,doc):
@@ -791,6 +817,10 @@ class OMathElement(object):
 				return types.TextNode(element.text)
 		elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
 			pass
+		elif element.tag == '{'+docx.nsprefixes['m']+'}bar':
+			return(OMathBar.process(element,doc))
+		elif element.tag == '{'+docx.nsprefixes['m']+'}acc':
+			return(OMathAcc.process(element,doc))
 		else:
 			logger.warn('Unhandled omath element %s', element.tag)
 			return None

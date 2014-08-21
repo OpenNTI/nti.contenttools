@@ -343,3 +343,9 @@ class OMathLim(DocumentStructureNode):
 
 class OMathLimLow(DocumentStructureNode):
 	pass
+
+class OMathBar(DocumentStructureNode):
+	pass
+
+class OMathAcc(DocumentStructureNode):
+	pass

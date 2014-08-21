@@ -111,10 +111,10 @@ def omath_nary_rendered(self):
 		if u'\\sum' in unicode(self.children[0].render()) or u'\u2211' in unicode(self.children[0].render()):
 			return u'\\sum_{%s}^{%s}' %(self.children[1].render(), self.children[2].render())
 		else:
-			logger.info('Unhandled <m:nary> render when num of children = 3')
+			logger.warn('Unhandled <m:nary> render when num of children = 3')
 			return u''
 	else:
-		logger.info('Unhandled <m:nary> render')
+		logger.warn('Unhandled <m:nary> render')
 		return u''
 
 
@@ -141,3 +141,23 @@ def omath_lim_low_rendered(self):
 	to render <m:limlow>
 	"""
 	return u'\\lim_{%s \\to %s}' %(self.children[1].children[0].render(), self.children[1].children[2].render())
+
+
+def omath_bar_rendered(self):
+	"""
+	to render <m:bar>
+	"""
+	return u'\\bar{%s}' %(self.children[0].render())
+
+def omath_acc_rendered(self):
+	"""
+	to render <m:acc>
+	"""
+	return u'\\hat{%s}' %(self.children[0].render())
+
+
+
+
+
+
+
