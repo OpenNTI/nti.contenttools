@@ -331,3 +331,9 @@ class OMathNary(DocumentStructureNode):
 
 class OMathNaryPr(DocumentStructureNode):
 	pass
+
+class OMathDelimiter(DocumentStructureNode):
+	pass
+
+class OMathDPr(DocumentStructureNode):
+	pass

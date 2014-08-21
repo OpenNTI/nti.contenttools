@@ -123,3 +123,15 @@ def omath_nary_pr_rendered(self):
 	"""
 	return omath_basic_rendered(self)
 
+def omath_delimiter_rendered(self):
+	"""
+	to render <m:d>
+	"""
+	return u'%s%s%s' %(self.children[0].children[0].render(),self.children[1].render(), self.children[0].children[1].render())
+
+def omath_dpr_rendered(self):
+	"""
+	to render <m:dPr>
+	"""
+	return omath_basic_rendered()
+
