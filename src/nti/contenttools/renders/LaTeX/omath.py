@@ -110,6 +110,8 @@ def omath_nary_rendered(self):
 		#render sum of
 		if u'\\sum' in unicode(self.children[0].render()) or u'\u2211' in unicode(self.children[0].render()):
 			return u'\\sum_{%s}^{%s}' %(self.children[1].render(), self.children[2].render())
+		if u'\\prod' in unicode(self.children[0].render()) or u'\u220F' in unicode(self.children[0].render()):
+			return u'\\prod_{%s}^{%s}' %(self.children[1].render(), self.children[2].render())
 		else:
 			logger.warn('Unhandled <m:nary> render when num of children = 3')
 			return u''
