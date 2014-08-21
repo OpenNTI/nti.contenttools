@@ -220,7 +220,7 @@ def math_munderover_html_rendered(self):
 		if u'\u2211' in unicode(self.children[0].children[0].render()).split() or u'\\sum' in self.children[0].children[0].render():
 			return u'\\sum_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
 		elif u'\u222b' in unicode(self.children[0].children[0].render()).split() or u'\\int' in self.children[0].children[0].render():
-			return u'\\int\limits_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
+			return u'\\int_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
 		elif u'\u220f' in unicode(self.children[0].children[0].render()).split() or u'\\prod' in self.children[0].children[0].render():
 			return u'\\prod_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
 		else :
