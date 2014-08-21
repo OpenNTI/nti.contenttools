@@ -7,14 +7,15 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 from IPython.core.debugger import Tracer
+from .base import base_renderer
 
 logger = __import__('logging').getLogger(__name__)
 
 def omath_basic_rendered(self):
-	result = []
+	result = u''
 	for child in self.children:
-	    result.append(child.render())
-	return u''.join(result) + u''
+	    result = result + child.render()
+	return u''+result
 
 def omath_rendered(self):
 	"""
@@ -140,6 +141,3 @@ def omath_lim_low_rendered(self):
 	to render <m:limlow>
 	"""
 	return u'\\lim_{%s \\to %s}' %(self.children[1].children[0].render(), self.children[1].children[2].render())
-
-	
-
