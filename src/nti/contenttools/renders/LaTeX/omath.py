@@ -8,6 +8,8 @@ __docformat__ = "restructuredtext en"
 
 from IPython.core.debugger import Tracer
 from .base import base_renderer
+from nti.contenttools.docx.paragraph import OMathDPr
+from nti.contenttools.docx.paragraph import OMathMatrix
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -20,6 +22,15 @@ def omath_basic_rendered(self):
 def omath_rendered(self):
 	"""
 	to render <m:OMath> element
+	"""
+	body = u''
+	for child in self.children:
+	    body = body + child.render()
+	return u'$'+body+u'$'
+
+def omath_para_rendered(self):
+	"""
+	to render <m:OMathPara> element
 	"""
 	body = u''
 	for child in self.children:
@@ -131,7 +142,13 @@ def omath_delimiter_rendered(self):
 	"""
 	to render <m:d>
 	"""
-	return u'%s%s%s' %(self.children[0].children[0].render(),self.children[1].render(), self.children[0].children[1].render())
+	if self.begChr is not None:
+		return u'%s%s%s' %(self.begChr,self.children[1].render(),self.endChr)
+	else:
+		if isinstance (self.children[0],OMathDPr):
+			return u'%s' %(self.children[1].render())
+		else:
+			return u'%s' %(self.children[0].render())
 
 def omath_dpr_rendered(self):
 	"""
@@ -159,7 +176,25 @@ def omath_acc_rendered(self):
 	return u'\\hat{%s}' %(self.children[0].render())
 
 
+def omath_matrix_rendered(self):
+	"""
+	to render <m:m>
+	"""
+	body = u''
+	for child in self.children:
+	    body = body + child.render()
 
+	return u'\\begin{matrix}\n'+ body + u'\\end{matrix}\n'
+
+def omath_mr_rendered(self):
+	"""
+	to render <m:mr>
+	"""
+	result = []
+	for child in self.children:
+	    result.append(child.render())
+
+	return u' & '.join(result) + u' \\\\\n'
 
 
 

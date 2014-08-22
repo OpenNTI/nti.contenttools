@@ -333,7 +333,15 @@ class OMathNaryPr(DocumentStructureNode):
 	pass
 
 class OMathDelimiter(DocumentStructureNode):
-	pass
+	def __init__(self, begChr = None, endChr = None):
+		self.begChr = begChr
+		self.endChr = endChr
+
+	def set_beg_char (self, begChr):
+		self.begChr = begChr
+
+	def set_end_char (self, endChr):
+		self.endChr = endChr
 
 class OMathDPr(DocumentStructureNode):
 	pass
@@ -349,3 +357,38 @@ class OMathBar(DocumentStructureNode):
 
 class OMathAcc(DocumentStructureNode):
 	pass
+
+class OMathPara(DocumentStructureNode):
+	pass
+
+#handling matrix for docx
+class OMathMatrix(DocumentStructureNode):
+	def __init__(self, number_of_col=0, number_of_row=0):
+		self.number_of_col = number_of_col
+		self.number_of_row = number_of_row
+		
+	def set_number_of_col(self, number_of_col):
+		self.number_of_col = number_of_col
+
+	def set_number_of_row(self, number_of_row):
+		self.number_of_row = number_of_row
+
+#handling matrix property
+class OMathMPr (DocumentStructureNode):
+	pass
+
+class OMathMcs (DocumentStructureNode):
+	pass
+
+class OMathMc (DocumentStructureNode):
+	pass
+
+class OMathMcPr (DocumentStructureNode):
+	pass
+
+#handling matrix row
+class OMathMr (DocumentStructureNode):
+	pass
+
+
+

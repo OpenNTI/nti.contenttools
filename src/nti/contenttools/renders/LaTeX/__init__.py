@@ -115,6 +115,7 @@ types.MUnderover.render = math_munderover_html_rendered
 types.MOver.render = math_mover_html_rendered
 
 types.OMath.render = omath_rendered
+types.OMathPara.render = omath_para_rendered
 types.OMathRun.render = omath_run_rendered
 types.OMathFrac.render = omath_fraction_rendered
 types.OMathNumerator.render = omath_numerator_rendered
@@ -134,3 +135,5 @@ types.OMathDPr.render = omath_dpr_rendered
 types.OMathLimLow.render = omath_lim_low_rendered
 types.OMathBar.render = omath_bar_rendered
 types.OMathAcc.render = omath_acc_rendered
+types.OMathMatrix.render = omath_matrix_rendered
+types.OMathMr.render = omath_mr_rendered

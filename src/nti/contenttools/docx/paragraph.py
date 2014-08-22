@@ -81,8 +81,11 @@ class Paragraph( types.Paragraph ):
 				elif element.tag in IGNORED_TAGS:
 					pass
 
+				#handling math equations
 				elif element.tag in '{'+docx.nsprefixes['m']+'}oMath':
 					me.add_child(OMath.process(element,doc))
+				elif element.tag in '{'+docx.nsprefixes['m']+'}oMathPara':
+					me.add_child(OMathPara.process(element,doc))
 
 				# We did not handle the element
 				else:
@@ -728,10 +731,12 @@ class OMathDPr(types.OMathDPr):
 		for element in mdpr.iterchildren():
 			if element.tag == '{'+docx.nsprefixes['m']+'}begChr':
 				begChr = element.attrib['{'+docx.nsprefixes['m']+'}val']
-				me.add_child(types.TextNode(begChr))
+				me.set_beg_char(begChr)
+				#me.add_child(types.TextNode(begChr))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}endChr':
 				endChr = element.attrib['{'+docx.nsprefixes['m']+'}val']
-				me.add_child(types.TextNode(endChr))
+				me.set_end_char(endChr)
+				#me.add_child(types.TextNode(endChr))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
 				pass
 			else:
@@ -791,6 +796,73 @@ class OMathAcc(types.OMathAcc):
 				logger.warn('Unhandled <m:bar> element %s', element.tag)
 		return me
 
+class OMathPara(types.OMathPara):
+	@classmethod
+	def process(cls, mpara, doc):
+		me = cls()
+		for element in mpara.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}oMathParaPr':
+				pass
+			elif element.tag == '{'+docx.nsprefixes['m']+'}oMath':
+				me.add_child(OMath.process(element,doc))
+			else:
+				logger.warn('Unhandled <m:oMathPara> element %s', element.tag)
+		return me
+
+class OMathMatrix(types.OMathMatrix):
+	@classmethod
+	def process(cls, mm, doc):
+		me = cls()
+		number_of_row = 0
+		number_of_col = 0
+		for element in mm.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}mPr':
+				number_of_col = process_matrix_property(element,doc)
+				me.set_number_of_col(number_of_col)
+			elif element.tag == '{'+docx.nsprefixes['m']+'}mr':
+				number_of_row = number_of_row + 1
+				me.add_child(OMathMr.process(element,doc))
+			else:
+				logger.warn('Unhandled <m:m> element %s', element.tag)
+		me.set_number_of_row(number_of_row)
+		return me
+
+def process_matrix_property(element, doc):
+	number_of_col = 0
+	for sub_element in element.iterchildren():
+		if sub_element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
+			pass
+		elif sub_element.tag == '{'+docx.nsprefixes['m']+'}mcs':
+			for el in sub_element.iterchildren():
+				if el.tag == '{'+docx.nsprefixes['m']+'}mc':
+					number_of_col = process_mc(el, doc)
+		else:
+			logger.warn('Unhandled <mPr> element %s', sub_element.tag)
+	return number_of_col
+
+def process_mc(element, doc):
+	number_of_col = 0
+	for sub_element in element.iterchildren():
+		if sub_element.tag == '{'+docx.nsprefixes['m']+'}mcPr':
+			for el in sub_element.iterchildren():
+				if el.tag == '{'+docx.nsprefixes['m']+'}count':
+					number_of_col = el.attrib['{'+docx.nsprefixes['m']+'}val']
+		else:
+			logger.warn('Unhandled <m:mcs> element %s', sub_element.tag)
+	return number_of_col
+
+
+class OMathMr(types.OMathMr):
+	@classmethod
+	def process(cls, mr, doc):
+		me = cls()
+		for element in mr.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+			else:
+				logger.warn('Unhandled <m:e> element %s', element.tag)
+		return me
+
 class OMathElement(object):
 	@classmethod
 	def create_child(cls,element,doc):
@@ -821,6 +893,8 @@ class OMathElement(object):
 			return(OMathBar.process(element,doc))
 		elif element.tag == '{'+docx.nsprefixes['m']+'}acc':
 			return(OMathAcc.process(element,doc))
+		elif element.tag == '{'+docx.nsprefixes['m']+'}m':
+			return(OMathMatrix.process(element, docx))
 		else:
 			logger.warn('Unhandled omath element %s', element.tag)
 			return None
