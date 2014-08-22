@@ -101,7 +101,8 @@ class Document( DocumentStructureNode ):
 						  'hyperref',
 						  'ulem',
 						  'ntilatexmacros',
-						  'ntiassessment']
+						  'ntiassessment',
+						  'amsmath']
 
 class Body( DocumentStructureNode ):
 	pass
