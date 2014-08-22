@@ -27,7 +27,7 @@ def omath_rendered(self):
 	global endMatrixBorder
 	begMatrixBorder = None
 	endMatrixBorder = None
-	
+
 	body = u''
 	for child in self.children:
 	    body = body + child.render()
@@ -155,7 +155,7 @@ def omath_delimiter_rendered(self):
 			check_matrix_border(self.children[0].begChr, self.children[0].endChr)
 			return u'%s' %(self.children[1].render())
 		else:
-			return u'%s%s%s' %(self.children[0].begChr,self.children[1].render(),self.children[0].endChr)		
+			return u'%s%s%s' %(self.children[0].children[0].render(),self.children[1].render(),self.children[0].children[1].render())		
 	else:
 		return u'%s' %(self.children[0].render())
 
@@ -216,7 +216,3 @@ def omath_mr_rendered(self):
 	for child in self.children:
 	    result.append(child.render())
 	return u' & '.join(result) + u' \\\\\n'
-
-
-
-

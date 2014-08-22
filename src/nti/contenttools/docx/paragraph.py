@@ -732,11 +732,11 @@ class OMathDPr(types.OMathDPr):
 			if element.tag == '{'+docx.nsprefixes['m']+'}begChr':
 				begChr = element.attrib['{'+docx.nsprefixes['m']+'}val']
 				me.set_beg_char(begChr)
-				#me.add_child(types.TextNode(begChr))
+				me.add_child(types.TextNode(begChr))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}endChr':
 				endChr = element.attrib['{'+docx.nsprefixes['m']+'}val']
 				me.set_end_char(endChr)
-				#me.add_child(types.TextNode(endChr))
+				me.add_child(types.TextNode(endChr))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
 				pass
 			else:
