@@ -23,6 +23,11 @@ def omath_rendered(self):
 	"""
 	to render <m:OMath> element
 	"""
+	global begMatrixBorder 
+	global endMatrixBorder
+	begMatrixBorder = None
+	endMatrixBorder = None
+	
 	body = u''
 	for child in self.children:
 	    body = body + child.render()
@@ -142,13 +147,26 @@ def omath_delimiter_rendered(self):
 	"""
 	to render <m:d>
 	"""
-	if self.begChr is not None:
-		return u'%s%s%s' %(self.begChr,self.children[1].render(),self.endChr)
-	else:
-		if isinstance (self.children[0],OMathDPr):
+	if isinstance (self.children[0],OMathDPr):
+		if self.children[0].begChr is None:
+			return u'%s' %(self.children[1].render())
+		elif self.children[0].begChr is not None and isinstance(self.children[1].children[0], OMathMatrix):
+			#if it is a matrix
+			check_matrix_border(self.children[0].begChr, self.children[0].endChr)
 			return u'%s' %(self.children[1].render())
 		else:
-			return u'%s' %(self.children[0].render())
+			return u'%s%s%s' %(self.children[0].begChr,self.children[1].render(),self.children[0].endChr)		
+	else:
+		return u'%s' %(self.children[0].render())
+
+
+begMatrixBorder = None
+endMatrixBorder = None
+def check_matrix_border(begChr, endChr):
+	global begMatrixBorder
+	global endMatrixBorder
+	begMatrixBorder = begChr
+	endMatrixBorder = endChr
 
 def omath_dpr_rendered(self):
 	"""
@@ -183,8 +201,12 @@ def omath_matrix_rendered(self):
 	body = u''
 	for child in self.children:
 	    body = body + child.render()
-
-	return u'\\begin{matrix}\n'+ body + u'\\end{matrix}\n'
+	if begMatrixBorder == '(':
+		return u'\\begin{pmatrix}\n'+ body + u'\\end{pmatrix}\n'
+	elif begMatrixBorder == '[':
+		return u'\\begin{bmatrix}\n'+ body + u'\\end{bmatrix}\n'
+	else:
+		return u'\\begin{matrix}\n'+ body + u'\\end{matrix}\n'
 
 def omath_mr_rendered(self):
 	"""
@@ -193,7 +215,6 @@ def omath_mr_rendered(self):
 	result = []
 	for child in self.children:
 	    result.append(child.render())
-
 	return u' & '.join(result) + u' \\\\\n'
 
 
