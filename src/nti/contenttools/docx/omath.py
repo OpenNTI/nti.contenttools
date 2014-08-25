@@ -412,6 +412,19 @@ class OMathFName(types.OMathFName):
 				logger.warn('Unhandled <m:fName> element %s', element.tag)
 		return me
 
+class OMathEqArr(types.OMathEqArr):
+	@classmethod
+	def process(cls, meqarr, doc):
+		me = cls()
+		for element in meqarr.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}eqArrPr':
+				pass
+			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+			else:
+				logger.warn('Unhandled <m:eqArr> element %s', element.tag)
+		return me
+
 class OMathElement(object):
 	@classmethod
 	def create_child(cls,element,doc):
@@ -446,6 +459,9 @@ class OMathElement(object):
 			return(OMathMatrix.process(element, doc))
 		elif element.tag == '{'+docx.nsprefixes['m']+'}func':
 			return(OMathFunc.process(element,doc))
+		elif element.tag == '{'+docx.nsprefixes['m']+'}eqArr':
+			logger.info ("found %s", element.tag)
+			return(OMathEqArr.process(element,doc))
 		else:
 			logger.warn('Unhandled omath element %s', element.tag)
 			return None
