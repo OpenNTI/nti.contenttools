@@ -8,7 +8,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from .base import base_renderer, _command_renderer, _environment_renderer
+from .base import base_renderer, _environment_renderer
 
 def question_renderer( self ):
     return _environment_renderer(self, 'naquestion', '')
@@ -49,4 +49,3 @@ def hint_renderer( self ):
 
 def explanation_renderer( self ):
     return _environment_renderer(self, 'naqexplanation', '')
-

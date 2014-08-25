@@ -11,7 +11,6 @@ logger = __import__('logging').getLogger(__name__)
 from .base import base_renderer
 
 def document_renderer(self):
-    output = ''
     output = _document_class( self.doc_type )
     for package in self.packages:
         output = output + _use_package( package )
