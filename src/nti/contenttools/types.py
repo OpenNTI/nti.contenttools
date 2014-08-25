@@ -421,3 +421,7 @@ class OMathFunc(DocumentStructureNode):
 class OMathFName(DocumentStructureNode):
 	pass
 
+#omath : handling equation-array function
+class OMathEqArr(DocumentStructureNode):
+	pass
+

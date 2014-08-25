@@ -241,3 +241,9 @@ def omath_fname_rendered(self):
 	to render <m:fName>
 	"""
 	return omath_basic_rendered(self)
+
+def omath_eqarr_rendered(self):
+	"""
+	to render <m:eqArr>
+	"""
+	return omath_basic_rendered(self)
