@@ -27,15 +27,15 @@ class Table( _DocxStructureElement ):
         # Parse element and determine table properties
         for element in table.iterchildren():
             if element.tag == '{'+docx.nsprefixes['w']+'}tblGrid':
-                print('processing grid\n%s' % me.grid)
+                logger.info('processing grid\n%s' % me.grid)
                 me.process_grid( element )
-                print(me.grid)
+                logger.info(me.grid)
             elif element.tag == '{'+docx.nsprefixes['w']+'}tblPr':
                 me.process_properties( element, doc, rels=rels )
             elif element.tag == '{'+docx.nsprefixes['w']+'}tr':
                 me.add_child( cls.Row.process(element, doc, rels=rels ) )
             else:
-                print('Did not handle table element: %s' % element.tag)
+                logger.warn('Did not handle table element: %s' % element.tag)
         return me
 
     class Row( _DocxStructureElement ):
@@ -53,7 +53,7 @@ class Table( _DocxStructureElement ):
                 elif element.tag == '{'+docx.nsprefixes['w']+'}trPr':
                     me.process_properties( element )
                 else:
-                    print('Did not handle table row element: %s' % element.tag)
+                    logger.warn('Did not handle table row element: %s' % element.tag)
             return me
 
         class Cell( _DocxStructureElement ):
@@ -72,7 +72,7 @@ class Table( _DocxStructureElement ):
                     elif element.tag == '{'+docx.nsprefixes['w']+'}tcPr':
                         me.process_properties( element )
                     else:
-                        print('Did not handle table cell element: %s' % element.tag)
+                        logger.warn('Did not handle table cell element: %s' % element.tag)
 
                 return me
 
@@ -88,7 +88,7 @@ class Table( _DocxStructureElement ):
                         pass
                     elif element.tag == '{'+docx.nsprefixes['w']+'}gridSpan':
                         self.grid_span = int(element.attrib['{'+docx.nsprefixes['w']+'}val'])
-                        print(self.grid_span)
+                        logger.info(self.grid_span)
                     elif element.tag == '{'+docx.nsprefixes['w']+'}headers':
                         pass
                     elif element.tag == '{'+docx.nsprefixes['w']+'}hideMark':
@@ -119,7 +119,7 @@ class Table( _DocxStructureElement ):
                     elif element.tag == '{'+docx.nsprefixes['w']+'}vMerge':
                         pass
                     else:
-                        print('Did not handle cell property element: %s' % element.tag)
+                        logger.warn('Did not handle cell property element: %s' % element.tag)
 
         def process_properties( self, properties ):
             for element in properties.iterchildren():
@@ -169,7 +169,7 @@ class Table( _DocxStructureElement ):
                     units = element.attrib['{'+docx.nsprefixes['w']+'}type']
                     self.widthBefore = ( value, units )
                 else:
-                    print('Did not handle row property element: %s' % element.tag)
+                    logger.warn('Did not handle row property element: %s' % element.tag)
 
     def process_properties( self, properties, doc, rels=None ):
         if rels is None:
@@ -190,7 +190,7 @@ class Table( _DocxStructureElement ):
                 units = element.attrib['{'+docx.nsprefixes['w']+'}type']
                 self.width = ( value, units )
             else:
-                print('Did not handle table property element: %s' % element.tag)
+                logger.warn('Did not handle table property element: %s' % element.tag)
 
     def process_grid( self, grid ):
         for element in grid.iterchildren():
@@ -198,10 +198,10 @@ class Table( _DocxStructureElement ):
                 if '{'+docx.nsprefixes['w']+'}w' in element.attrib.keys():
                     self.grid.append(element.attrib['{'+docx.nsprefixes['w']+'}w'])
                 else:
-                    print('Did not handle table grid property: %s' % element.tag)
+                    logger.warn('Did not handle table grid property: %s' % element.tag)
             elif element.tag == '{'+docx.nsprefixes['w']+'}tblGridChange':
                 pass
             else:
-                print('Did not handle table grid element: %s' % element.tag)
+                logger.warn('Did not handle table grid element: %s' % element.tag)
 
-        print( self.grid )
+        logger.info( self.grid )

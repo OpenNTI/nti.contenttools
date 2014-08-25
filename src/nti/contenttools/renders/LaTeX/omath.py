@@ -8,8 +8,8 @@ __docformat__ = "restructuredtext en"
 
 from IPython.core.debugger import Tracer
 from .base import base_renderer
-from nti.contenttools.docx.paragraph import OMathDPr
-from nti.contenttools.docx.paragraph import OMathMatrix
+from nti.contenttools.docx.omath import OMathDPr
+from nti.contenttools.docx.omath import OMathMatrix
 
 logger = __import__('logging').getLogger(__name__)
 
