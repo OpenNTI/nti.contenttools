@@ -12,15 +12,14 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 def _replace_unicode_with_latex_tag(text):
+        #this is useful when text is a part of equation contain one unicode char
         new_text = text
         if text in unicode_to_latex.keys():
                 new_text = new_text.replace(text, unicode_to_latex[text])
         return new_text
 
 def _replace_multi_char(text):
-        """
-        this is useful when text is a equation
-        """
+        #this is useful when text is a part of equation contain more than one unicode char
         new_text = text
         for string in list(new_text):
                 if string in unicode_to_latex.keys():
@@ -821,8 +820,8 @@ unicode_to_latex = {
         u"\u222C": "\\int\\!\\int ",
         u"\u222D": "\\int\\!\\int\\!\\int ",
         u"\u222E": "\\oint ",
-        u"\u222F": "\\surfintegral ",
-        u"\u2230": "\\volintegral ",
+        u"\u222F": "\\oiint ", #or maybe use "\\surfintegral"
+        u"\u2230": "\\oiiint ", #or maybe use "\\volintegral"
         u"\u2231": "\\clwintegral ",
         u"\u2232": "\\ElsevierGlyph{2232}",
         u"\u2233": "\\ElsevierGlyph{2233}",
