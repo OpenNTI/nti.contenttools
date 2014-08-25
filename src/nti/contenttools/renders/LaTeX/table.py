@@ -10,7 +10,7 @@ logger = __import__('logging').getLogger(__name__)
 
 from .base import base_renderer
 
-from IPython.core.debugger import Tracer
+### from IPython.core.debugger import Tracer
 
 def table_renderer(self):
     caption = u''

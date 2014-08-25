@@ -8,11 +8,13 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from .base import base_renderer
-from nti.contenttools.epub.adapters.generic import Mtable
-from nti.contenttools.epub.adapters.generic import MRow
-from nti.contenttools.epub.adapters.generic import MFenced
 import re
+
+from nti.contenttools.epub.adapters.generic import MRow
+from nti.contenttools.epub.adapters.generic import Mtable
+from nti.contenttools.epub.adapters.generic import MFenced
+
+from .base import base_renderer
 
 #from IPython.core.debugger import Tracer
 
@@ -25,16 +27,16 @@ def math_html_renderer(self):
 	"""
 	body = u''
 	for child in self.children:
-	    body = body + child.render()
+		body = body + child.render()
 	return u'$'+body+u'$'
- 
+
 def math_row_html_renderer(self):
 	"""
 	to render element <mrow>
 	"""
 	result = []
 	for child in self.children:
-	    result.append(child.render())
+		result.append(child.render())
 	return u''.join(result) + u''
 
 def math_fenced_html_rendered(self):
@@ -43,10 +45,10 @@ def math_fenced_html_rendered(self):
 	"""
 	opener = self.opener
 	close = self.close
-	separators = self.separators
+	# separators = self.separators
 	result = []
 	for child in self.children:
-	    result.append(child.render())
+		result.append(child.render())
 
 	if isinstance(self.children[0], Mtable):
 		return set_matrix_border(opener, result)
@@ -76,7 +78,7 @@ def math_run_html_rendered(self):
 	"""
 	result = []
 	for child in self.children:
-	    result.append(child.render())
+		result.append(child.render())
 	return u''.join(result) + u''
 
 def math_table_html_rendered(self):
@@ -92,7 +94,7 @@ def math_table_html_rendered(self):
 	
 	body = u''
 	for child in self.children:
-	    body = body + child.render()
+		body = body + child.render()
 
 	if isinstance(self.__parent__, MFenced):
 		#when it is a matrix
@@ -126,7 +128,7 @@ def math_tr_html_rendered(self):
 	"""
 	result = []
 	for child in self.children:
-	    result.append(child.render())
+		result.append(child.render())
 
 	return u' & '.join(result) + u'\\\\\n'
 
@@ -201,6 +203,7 @@ def math_munder_html_rendered(self):
 	to render <munder> element
 	"""
 	if len(self.children[0].children) == 2:
+		#TODO: Too many assumptions
 		if u'23df' in self.children[0].children[1].render().lower() or u'\u23df' in unicode(self.children[0].children[1].render()).split():
 			return u'\\underbracket{%s}' %(self.children[0].children[0].render())
 		elif u'\u220f' in unicode(self.children[0].children[0].render()).split() or u'\\prod' in self.children[0].children[0].render():
@@ -217,6 +220,7 @@ def math_munderover_html_rendered(self):
 	to render <munderover> element
 	"""
 	if len(self.children[0].children) == 3 :
+		#TODO: Too many assumptions
 		if u'\u2211' in unicode(self.children[0].children[0].render()).split() or u'\\sum' in self.children[0].children[0].render():
 			return u'\\sum_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
 		elif u'\u222b' in unicode(self.children[0].children[0].render()).split() or u'\\int' in self.children[0].children[0].render():
@@ -243,4 +247,3 @@ def math_mover_html_rendered(self):
 			return u'\\overset{%s}{%s}' %(self.children[0].children[1].render(), self.children[0].children[0].render())
 	else:
 		raise Exception ("mathml <mover> element should have 2 children")
-

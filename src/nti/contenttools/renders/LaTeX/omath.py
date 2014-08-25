@@ -6,11 +6,12 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-from IPython.core.debugger import Tracer
-from .base import base_renderer
+logger = __import__('logging').getLogger(__name__)
+
+### from IPython.core.debugger import Tracer
 from nti.contenttools.docx.omath import OMathDPr
-from nti.contenttools.docx.omath import OMathMatrix
 from nti.contenttools.docx.omath import OMathFName
+from nti.contenttools.docx.omath import OMathMatrix
 from nti.contenttools.docx.omath import OMathNaryPr
 
 logger = __import__('logging').getLogger(__name__)
@@ -18,7 +19,7 @@ logger = __import__('logging').getLogger(__name__)
 def omath_basic_rendered(self):
 	result = u''
 	for child in self.children:
-	    result = result + child.render()
+		result = result + child.render()
 	return u''+result
 
 def omath_rendered(self):
@@ -32,7 +33,7 @@ def omath_rendered(self):
 
 	body = u''
 	for child in self.children:
-	    body = body + child.render()
+		body = body + child.render()
 	return u'$'+body+u'$'
 
 def omath_para_rendered(self):
@@ -41,7 +42,7 @@ def omath_para_rendered(self):
 	"""
 	body = u''
 	for child in self.children:
-	    body = body + child.render()
+		body = body + child.render()
 	return u'$'+body+u'$'
 
 def omath_run_rendered(self):
@@ -162,13 +163,14 @@ def omath_delimiter_rendered(self):
 			check_matrix_border(self.children[0].begChr, self.children[0].endChr)
 			return u'%s' %(self.children[1].render())
 		else:
+			#TODO: Too many assumptions here
 			return u'%s%s%s' %(self.children[0].children[0].render(),self.children[1].render(),self.children[0].children[1].render())		
 	else:
 		return u'%s' %(self.children[0].render())
 
-
 begMatrixBorder = None
 endMatrixBorder = None
+
 def check_matrix_border(begChr, endChr):
 	global begMatrixBorder
 	global endMatrixBorder
@@ -193,7 +195,6 @@ def omath_lim_low_rendered(self):
 		#example: equation_sample-10.docx
 		return u'\\lim_{%s \\to %s}' %(self.children[1].children[0].render(), self.children[1].children[2].render())
 
-
 def omath_bar_rendered(self):
 	"""
 	to render <m:bar>
@@ -206,14 +207,13 @@ def omath_acc_rendered(self):
 	"""
 	return u'\\hat{%s}' %(self.children[0].render())
 
-
 def omath_matrix_rendered(self):
 	"""
 	to render <m:m>
 	"""
 	body = u''
 	for child in self.children:
-	    body = body + child.render()
+		body = body + child.render()
 	if begMatrixBorder == '(':
 		return u'\\begin{pmatrix}\n'+ body + u'\\end{pmatrix}\n'
 	elif begMatrixBorder == '[':
@@ -227,7 +227,7 @@ def omath_mr_rendered(self):
 	"""
 	result = []
 	for child in self.children:
-	    result.append(child.render())
+		result.append(child.render())
 	return u' & '.join(result) + u' \\\\\n'
 
 def omath_func_rendered(self):

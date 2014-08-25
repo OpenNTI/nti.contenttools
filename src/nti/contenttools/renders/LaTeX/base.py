@@ -9,12 +9,10 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 def base_renderer(self):
-    result = u''
-
+    result = []
     for child in self.children:
-        result = result + child.render()
-
-    return result
+        result.append(child.render())
+    return ''.join(result)
 
 def _command_renderer(command, arg, optional=''):
     if optional is not '':
