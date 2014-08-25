@@ -137,3 +137,5 @@ types.OMathBar.render = omath_bar_rendered
 types.OMathAcc.render = omath_acc_rendered
 types.OMathMatrix.render = omath_matrix_rendered
 types.OMathMr.render = omath_mr_rendered
+types.OMathFunc.render = omath_func_rendered
+types.OMathFName.render = omath_fname_rendered

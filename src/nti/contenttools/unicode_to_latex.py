@@ -17,6 +17,14 @@ def _replace_unicode_with_latex_tag(text):
                 new_text = new_text.replace(text, unicode_to_latex[text])
         return new_text
 
+def _replace_multi_char(text):
+        new_text = text
+        for string in list(new_text):
+                if string in unicode_to_latex.keys():
+                        new_text = new_text.replace(string, unicode_to_latex[string])
+        return new_text
+
+
 unicode_to_latex = {
         u"\u0023": "\\#",
         u"$": "\\$",
@@ -396,7 +404,7 @@ unicode_to_latex = {
         u"\u03B5": "\\epsilon ",
         u"\u03B6": "\\zeta ",
         u"\u03B7": "\\eta ",
-        u"\u03B8": "\\texttheta ",
+        u"\u03B8": "\\theta ",
         u"\u03B9": "\\iota ",
         u"\u03BA": "\\kappa ",
         u"\u03BB": "\\lambda ",

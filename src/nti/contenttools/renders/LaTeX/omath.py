@@ -10,6 +10,7 @@ from IPython.core.debugger import Tracer
 from .base import base_renderer
 from nti.contenttools.docx.omath import OMathDPr
 from nti.contenttools.docx.omath import OMathMatrix
+from nti.contenttools.docx.omath import OMathFName
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -178,7 +179,12 @@ def omath_lim_low_rendered(self):
 	"""
 	to render <m:limlow>
 	"""
-	return u'\\lim_{%s \\to %s}' %(self.children[1].children[0].render(), self.children[1].children[2].render())
+	if isinstance(self.__parent__, OMathFName):
+		func_name = self.children[0].render()
+		under = self.children[1].render()
+		return u'\\%s_{%s}' %(func_name, under)
+	else:
+		return u'\\lim_{%s \\to %s}' %(self.children[1].children[0].render(), self.children[1].children[2].render())
 
 
 def omath_bar_rendered(self):
@@ -216,3 +222,15 @@ def omath_mr_rendered(self):
 	for child in self.children:
 	    result.append(child.render())
 	return u' & '.join(result) + u' \\\\\n'
+
+def omath_func_rendered(self):
+	"""
+	to render <m:func>
+	"""
+	return omath_basic_rendered(self)
+
+def omath_fname_rendered(self):
+	"""
+	to render <m:fName>
+	"""
+	return omath_basic_rendered(self)

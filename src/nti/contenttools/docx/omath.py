@@ -11,8 +11,8 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 from . import properties as docx
-from .run import Run
 from .. import types
+from .ignored_tags import IGNORED_TAGS
 
 class OMath(types.OMath):
 	@classmethod
@@ -33,8 +33,10 @@ class OMathRun(types.OMathRun):
 		for element in mathrun.iterchildren():
 			if element.tag == '{'+docx.nsprefixes['m']+'}t':
 				if element.text:
-					me.add_child(types.TextNode(element.text))
+					me.add_child(types.TextNode(element.text, type_text = 'omath'))
 			elif element.tag == '{'+docx.nsprefixes['w']+'}rPr':
+				pass
+			elif element.tag == '{'+docx.nsprefixes['m']+'}rPr':
 				pass
 			elif element.tag in IGNORED_TAGS:
 				pass
@@ -219,7 +221,7 @@ class OMathNaryPr(types.OMathNaryPr):
 
 def process_omath_chr_attributes(element, doc):
 	chr_val = element.attrib['{'+docx.nsprefixes['m']+'}val']
-	el = types.TextNode(chr_val)
+	el = types.TextNode(chr_val, type_text = 'omath')
 	return el
 
 class OMathDelimiter(types.OMathDelimiter):
@@ -243,11 +245,11 @@ class OMathDPr(types.OMathDPr):
 			if element.tag == '{'+docx.nsprefixes['m']+'}begChr':
 				begChr = element.attrib['{'+docx.nsprefixes['m']+'}val']
 				me.set_beg_char(begChr)
-				me.add_child(types.TextNode(begChr))
+				me.add_child(types.TextNode(begChr, type_text = 'omath'))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}endChr':
 				endChr = element.attrib['{'+docx.nsprefixes['m']+'}val']
 				me.set_end_char(endChr)
-				me.add_child(types.TextNode(endChr))
+				me.add_child(types.TextNode(endChr, type_text = 'omath'))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
 				pass
 			else:
@@ -374,6 +376,33 @@ class OMathMr(types.OMathMr):
 				logger.warn('Unhandled <m:e> element %s', element.tag)
 		return me
 
+class OMathFunc(types.OMathFunc):
+	@classmethod
+	def process(cls, mfunc, doc):
+		me =cls()
+		for element in mfunc.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}funcPr':
+				pass
+			elif element.tag == '{'+docx.nsprefixes['m']+'}fName':
+				me.add_child(OMathFName.process(element,doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+			else:
+				logger.warn('Unhandled <m:func> element %s', element.tag)
+		return me
+
+class OMathFName(types.OMathFName):
+	@classmethod
+	def process(cls, mfname, doc):
+		me =cls()
+		for element in mfname.iterchildren():
+			new_child = OMathElement.create_child(element,doc)
+			if new_child is not None:
+				me.add_child(new_child)
+			else:
+				logger.warn('Unhandled <m:fName> element %s', element.tag)
+		return me
+
 class OMathElement(object):
 	@classmethod
 	def create_child(cls,element,doc):
@@ -397,7 +426,7 @@ class OMathElement(object):
 			return(OMathLimLow.process(element, doc))
 		elif element.tag == '{'+docx.nsprefixes['m']+'}t':
 			if element.text:
-				return types.TextNode(element.text)
+				return types.TextNode(element.text, type_text='omath')
 		elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
 			pass
 		elif element.tag == '{'+docx.nsprefixes['m']+'}bar':
@@ -405,7 +434,9 @@ class OMathElement(object):
 		elif element.tag == '{'+docx.nsprefixes['m']+'}acc':
 			return(OMathAcc.process(element,doc))
 		elif element.tag == '{'+docx.nsprefixes['m']+'}m':
-			return(OMathMatrix.process(element, docx))
+			return(OMathMatrix.process(element, doc))
+		elif element.tag == '{'+docx.nsprefixes['m']+'}func':
+			return(OMathFunc.process(element,doc))
 		else:
 			logger.warn('Unhandled omath element %s', element.tag)
 			return None
