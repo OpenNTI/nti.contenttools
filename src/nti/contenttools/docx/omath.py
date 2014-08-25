@@ -213,6 +213,15 @@ class OMathNaryPr(types.OMathNaryPr):
 		for element in mnarypr.iterchildren():
 			if element.tag == '{'+docx.nsprefixes['m']+'}chr':
 				me.add_child(process_omath_chr_attributes(element, doc))
+				me.set_chr_val(element.attrib['{'+docx.nsprefixes['m']+'}val'])
+			elif element.tag == '{'+docx.nsprefixes['m']+'}limLoc':
+				me.set_lim_loc_val(element.attrib['{'+docx.nsprefixes['m']+'}val'])
+			elif element.tag == '{'+docx.nsprefixes['m']+'}grow':
+				pass
+			elif element.tag == '{'+docx.nsprefixes['m']+'}subHide':
+				pass
+			elif element.tag == '{'+docx.nsprefixes['m']+'}supHide':
+				pass
 			elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
 				pass
 			else:
