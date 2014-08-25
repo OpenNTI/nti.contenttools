@@ -338,7 +338,15 @@ class OMathNary(DocumentStructureNode):
 	pass
 
 class OMathNaryPr(DocumentStructureNode):
-	pass
+	def __init__(self, chrVal = None, limLocVal = None):
+		self.chrVal = chrVal
+		self.limLocVal = limLocVal
+
+	def set_chr_val (self, chrVal):
+		self.chrVal = chrVal
+
+	def set_lim_loc_val (self, limLocVal):
+		self.limLocVal = limLocVal
 
 class OMathDelimiter(DocumentStructureNode):
 	pass

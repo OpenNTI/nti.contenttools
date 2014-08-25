@@ -11,6 +11,7 @@ from .base import base_renderer
 from nti.contenttools.docx.omath import OMathDPr
 from nti.contenttools.docx.omath import OMathMatrix
 from nti.contenttools.docx.omath import OMathFName
+from nti.contenttools.docx.omath import OMathNaryPr
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -122,6 +123,7 @@ def omath_subsup_rendered(self):
 def omath_nary_rendered(self):
 	"""
 	to render <m:nary>
+	#example : equation_sample-6.docx, equation_sample-7.docx, 
 	"""
 	if len(self.children) == 3:
 		if u'\\sum' in unicode(self.children[0].render()) or u'\u2211' in unicode(self.children[0].render()):
@@ -133,9 +135,13 @@ def omath_nary_rendered(self):
 		else:
 			logger.warn('Unhandled <m:nary> render when num of children = 3')
 			return u''
-	else:
-		logger.warn('Unhandled <m:nary> render')
-		return u''
+	elif len(self.children) == 4:
+		if isinstance(self.children[0], OMathNaryPr):
+			if self.children[0].chrVal is not None:
+				return u'%s_{%s}^{%s}%s' %(self.children[0].render(), self.children[1].render(), self.children[2].render(), \
+					self.children[3].render())
+			else :
+				return u'\\int_{%s}^{%s}%s' %(self.children[1].render(), self.children[2].render(), self.children[3].render())
 
 
 def omath_nary_pr_rendered(self):
@@ -184,6 +190,7 @@ def omath_lim_low_rendered(self):
 		under = self.children[1].render()
 		return u'\\%s_{%s}' %(func_name, under)
 	else:
+		#example: equation_sample-10.docx
 		return u'\\lim_{%s \\to %s}' %(self.children[1].children[0].render(), self.children[1].children[2].render())
 
 

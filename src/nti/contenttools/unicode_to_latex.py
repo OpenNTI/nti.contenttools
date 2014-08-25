@@ -18,6 +18,9 @@ def _replace_unicode_with_latex_tag(text):
         return new_text
 
 def _replace_multi_char(text):
+        """
+        this is useful when text is a equation
+        """
         new_text = text
         for string in list(new_text):
                 if string in unicode_to_latex.keys():
