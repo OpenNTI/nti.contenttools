@@ -28,21 +28,24 @@ class Body( types.Body ):
 				rels = doc.relationships
 	
 		me = cls()
+		doc_main_prefix = docx.nsprefixes['w']
+		p_el = '{%s}p' %(doc_main_prefix)
+		tbl_el = '{%s}tbl' %(doc_main_prefix)
 		for element in body.iterchildren():
 	
 				# P (paragraph) Elements
-				if element.tag == '{'+docx.nsprefixes['w']+'}p':
+				if element.tag == p_el:
 					me.add_child( Paragraph.process(element, doc, rels = rels) )
 	
 				# T (table) Elements
-				elif element.tag == '{'+docx.nsprefixes['w']+'}tbl':
+				elif element.tag == tbl_el:
 					me.add_child( Table.process(element, doc, rels = rels) )
 
 				elif element.tag in IGNORED_TAGS:
 					pass
 	
 				else:
-					print('Did not handle body element: %s' % element.tag)
+					logger.warn('Did not handle body element: %s' % element.tag)
 	
 		me.children = _consolidate_lsts( me.children )
 	
