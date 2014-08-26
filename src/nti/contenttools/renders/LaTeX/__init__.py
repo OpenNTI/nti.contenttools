@@ -143,3 +143,4 @@ types.OMathEqArr.render = omath_eqarr_rendered
 types.OMathSPre.render = omath_spre_rendered
 types.OMathBox.render = omath_box_rendered
 types.OMathGroupChr.render = omath_groupchr_rendered
+types.OMathLimUpp.render = omath_limupp_rendered

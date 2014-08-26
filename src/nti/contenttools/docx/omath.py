@@ -325,13 +325,13 @@ class OMathLimLow(types.OMathLimLow):
 		doc_math_prefix = docx.nsprefixes['m']
 		e_el = '{%s}e' %(doc_math_prefix)
 		lim_el = '{%s}lim' %(doc_math_prefix)
-		limLow_el = '{%s}' %(doc_math_prefix)
+		limLowPr_el = '{%s}limLowPr' %(doc_math_prefix)
 		for element in mlimlow.iterchildren():
 			if element.tag == e_el:
 				me.add_child(OMathBase.process(element, doc))
 			elif element.tag == lim_el:
 				me.add_child(OMathLim.process(element, doc))
-			elif element.tag == limLow_el:
+			elif element.tag == limLowPr_el:
 				pass
 			else:
 				logger.warn('Unhandled <m:limlow> element %s', element.tag)
@@ -580,6 +580,24 @@ class OMathGroupChr(types.OMathGroupChr):
 				logger.warn('Unhandled <m:groupChr> element %s', element.tag)
 		return me
 
+class OMathLimUpp(types.OMathLimUpp):
+	@classmethod
+	def process(cls, mlimupp, doc):
+		me =cls()
+		doc_math_prefix = docx.nsprefixes['m']
+		e_el = '{%s}e' %(doc_math_prefix)
+		lim_el = '{%s}lim' %(doc_math_prefix)
+		limUppPr_el = '{%s}limUppPr' %(doc_math_prefix)
+		for element in mlimupp.iterchildren():
+			if element.tag == e_el:
+				me.add_child(OMathBase.process(element, doc))
+			elif element.tag == lim_el:
+				me.add_child(OMathLim.process(element, doc))
+			elif element.tag == limUppPr_el:
+				pass
+			else:
+				logger.warn('Unhandled <m:limUpp> element %s', element.tag)
+		return me
 
 class OMathElement(object):
 	@classmethod
@@ -626,6 +644,8 @@ class OMathElement(object):
 			return(OMathGroupChr.process(element,doc))
 		elif element.tag == '{%s}argPr' %(doc_math_prefix):
 			logger.info('found %s', element.tag)
+		elif element.tag == '{%s}limUpp' %(doc_math_prefix):
+			return(OMathLimUpp.process(element,doc))
 		else:
 			logger.warn('Unhandled omath element %s', element.tag)
 			return None
