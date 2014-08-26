@@ -202,8 +202,7 @@ def omath_lim_low_rendered(self):
 		under = self.children[1].render()
 		return u'\\%s_{%s}' %(func_name, under)
 	else:
-		#example: equation_sample-10.docx
-		return u'\\lim_{%s \\to %s}' %(self.children[1].children[0].render(), self.children[1].children[2].render())
+		return u'\\underset{%s}{%s}' %(self.children[1].render(), self.children[0].render())
 
 def omath_bar_rendered(self):
 	"""
@@ -314,3 +313,9 @@ def omath_groupchr_rendered(self):
 			return u''
 	else:
 		logger.warn('Unhandled <m.groupChr> having groupChrPr position and vertJc None')
+
+def omath_limupp_rendered(self):
+	"""
+	to render <m:limUpp>
+	"""
+	return u'\\underset{%s}{%s}' %(self.children[0].render(), self.children[1].render())

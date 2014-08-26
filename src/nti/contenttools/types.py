@@ -454,3 +454,7 @@ class OMathGroupChr(DocumentStructureNode):
 	def set_vertJc(self, vertJc):
 		self.vertJc = vertJc
 
+class OMathLimUpp(DocumentStructureNode):
+	pass
+
+
