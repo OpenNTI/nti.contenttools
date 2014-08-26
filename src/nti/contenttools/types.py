@@ -423,7 +423,11 @@ class OMathFName(DocumentStructureNode):
 
 #omath : handling equation-array function
 class OMathEqArr(DocumentStructureNode):
-	pass
+	def __init__(self, rowSpace=1):
+		self.rowSpace = rowSpace
+
+	def set_row_space (self, rowSpace):
+		self.rowSpace = rowSpace
 
 class OMathSPre(DocumentStructureNode):
 	pass

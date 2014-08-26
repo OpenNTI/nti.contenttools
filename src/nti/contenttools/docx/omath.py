@@ -418,7 +418,10 @@ class OMathEqArr(types.OMathEqArr):
 		me = cls()
 		for element in meqarr.iterchildren():
 			if element.tag == '{'+docx.nsprefixes['m']+'}eqArrPr':
-				pass
+				for el in  element.iterchildren():
+					if el.tag == '{'+docx.nsprefixes['m']+'}rSp':
+						row_space = el.attrib['{'+docx.nsprefixes['m']+'}val']
+						me.set_row_space(row_space)
 			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
 				me.add_child(OMathBase.process(element, doc))
 			else:
