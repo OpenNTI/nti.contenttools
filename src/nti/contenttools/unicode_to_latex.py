@@ -28,10 +28,10 @@ def _replace_multi_char(text):
 
 
 unicode_to_latex = {
-        u"\u0023": "\\#",
-        u"$": "\\$",
-        u"\u0025": "\\%",
-        u"\u0026": "\\&amp;",
+        u"\u0023": "\\# ",
+        u"$": "\\$ ",
+        u"\u0025": "\\% ",
+        u"\u0026": "& ",
         u"\u0027": "\\textquotesingle ",
         u"\u002A": "\\ast ",
         u"\u005E": "\\^{}",

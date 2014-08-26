@@ -8,7 +8,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-### from IPython.core.debugger import Tracer
+from IPython.core.debugger import Tracer
 from nti.contenttools.docx.omath import OMathDPr
 from nti.contenttools.docx.omath import OMathFName
 from nti.contenttools.docx.omath import OMathMatrix
@@ -162,11 +162,14 @@ def omath_delimiter_rendered(self):
 			#if it is a matrix
 			check_matrix_border(self.children[0].begChr, self.children[0].endChr)
 			return u'%s' %(self.children[1].render())
+		elif len(self.children) == 2 and self.children[0].begChr is not None :
+			logger.info('begChr is not none')
+			return u'%s%s%s' %(self.children[0].children[0].render(),self.children[1].render(),self.children[0].children[1].render())
 		else:
-			#TODO: Too many assumptions here
-			return u'%s%s%s' %(self.children[0].children[0].render(),self.children[1].render(),self.children[0].children[1].render())		
+			logger.warn ('Unhandled <m:d> render, children are %s', self.children)
+			return u''		
 	else:
-		return u'%s' %(self.children[0].render())
+		return omath_basic_rendered(self)
 
 begMatrixBorder = None
 endMatrixBorder = None
@@ -215,11 +218,11 @@ def omath_matrix_rendered(self):
 	for child in self.children:
 		body = body + child.render()
 	if begMatrixBorder == '(':
-		return u'\\begin{pmatrix}\n'+ body + u'\\end{pmatrix}\n'
+		return u'\\begin{pmatrix}\n %s \\end{pmatrix}\n' %(body)
 	elif begMatrixBorder == '[':
-		return u'\\begin{bmatrix}\n'+ body + u'\\end{bmatrix}\n'
+		return u'\\begin{bmatrix}\n %s \\end{bmatrix}\n' %(body)
 	else:
-		return u'\\begin{matrix}\n'+ body + u'\\end{matrix}\n'
+		return u'\\begin{matrix}\n %s \\end{matrix}\n' %(body)
 
 def omath_mr_rendered(self):
 	"""
@@ -246,7 +249,21 @@ def omath_eqarr_rendered(self):
 	"""
 	to render <m:eqArr>
 	"""
-	return omath_basic_rendered(self)
+	result = []
+	for child in self.children:
+		result.append(child.render())
+		result.append(u' \\\\\n')
+	if self.rowSpace == 1:
+		return u'\\begin{array}{l}\n'+ u''.join(result) +u'\\end{array}'
+	else:
+		number_of_space = self.rowSpace
+		count_space = 0
+		string_space = u''
+		while count_space < number_of_space:
+			string_space = string_space + u' l '
+			count_space = count_space + 1
+		return u'\\begin{array}{%s}\n' +u''.join(result)+ u'\\end{array}' %(string_space)
+
 
 def omath_spre_rendered(self):
 	"""
