@@ -53,6 +53,10 @@ class OMathFrac(types.OMathFrac):
 				me.add_child(OMathNumerator.process(element, doc))
 			elif element.tag == '{'+docx.nsprefixes['m']+'}den':
 				me.add_child(OMathDenominator.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}fPr':
+				for el in element.iterchildren():
+					if el.tag == '{'+docx.nsprefixes['m']+'}type':
+						me.set_frac_type(el.attrib['{'+docx.nsprefixes['m']+'}val'])
 		return me
 
 class OMathNumerator(types.OMathNumerator):

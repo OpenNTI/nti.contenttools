@@ -55,6 +55,12 @@ def omath_fraction_rendered(self):
 	"""
 	to render <m:f> element
 	"""
+	if self.frac_type == u'lin':
+		return u'%s/%s' %(self.children[0].render(), self.children[1].render())
+	elif self.frac_type == u'skw':
+		return u'^%s/_%s' %(self.children[0].render(), self.children[1].render())
+	elif self.frac_type == u'noBar':
+		return u'{%s \\choose %s}' %(self.children[0].render(), self.children[1].render())
 	return u'\\frac{%s}{%s}' %(self.children[0].render(), self.children[1].render())
 
 

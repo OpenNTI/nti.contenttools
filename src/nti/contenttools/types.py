@@ -302,7 +302,11 @@ class OMathRun(DocumentStructureNode):
 	pass
 
 class OMathFrac(DocumentStructureNode):
-	pass
+	def __init__(self,frac_type= None):
+		self.frac_type = frac_type
+		
+	def set_frac_type(self, frac_type):
+		self.frac_type = frac_type
 
 class OMathNumerator(DocumentStructureNode):
 	pass
