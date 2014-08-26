@@ -13,6 +13,7 @@ from nti.contenttools.docx.omath import OMathDPr
 from nti.contenttools.docx.omath import OMathFName
 from nti.contenttools.docx.omath import OMathMatrix
 from nti.contenttools.docx.omath import OMathNaryPr
+from nti.contenttools.unicode_to_latex import _replace_unicode_with_latex_tag
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -20,7 +21,7 @@ def omath_basic_rendered(self):
 	result = u''
 	for child in self.children:
 		result = result + child.render()
-	return u''+result
+	return result
 
 def omath_rendered(self):
 	"""
@@ -281,3 +282,35 @@ def omath_spre_rendered(self):
 		logger.warn('Unhandled <m:sPre> render, number of children = %s', self.children)
 		return u''
 
+def omath_box_rendered(self):
+	"""
+	to render <m:box>
+	"""
+	return omath_basic_rendered(self)
+
+def omath_groupchr_rendered(self):
+	"""
+	to render <m:groupChr>
+	"""
+	if self.pos is not None:
+		groupChr = _replace_unicode_with_latex_tag(self.groupChr)
+		pos = self.pos
+		if pos == u'top':
+			return u'\\underset{%s}{%s}' %(self.children[0].render(), groupChr)
+		elif pos == u'bot':
+			return u'\\underset{%s}{%s}' %(groupChr,self.children[0].render())
+		else:
+			logger.warn('Unhandled <m:groupChr> element when groupChrPr have position %s', self.pos)
+			return u''
+	elif self.vertJc is not None:
+		groupChr = _replace_unicode_with_latex_tag(self.groupChr)
+		vertJc = self.vertJc
+		if vertJc == u'top':
+			return u'\\underset{%s}{%s}' %(self.children[0].render(), groupChr)
+		elif vertJc == u'bot':
+			return u'\\underset{%s}{%s}' %(groupChr,self.children[0].render())
+		else:
+			logger.warn('Unhandled <m:groupChr> having groupChrPr position %s', self.pos)
+			return u''
+	else:
+		logger.warn('Unhandled <m.groupChr> having groupChrPr position and vertJc None')
