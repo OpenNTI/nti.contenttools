@@ -449,6 +449,40 @@ class OMathSPre(types.OMathSPre):
 				logger.warn('Unhandled <m:sPre> element %s', element.tag)
 		return me
 
+class OMathBox(types.OMathBox):
+	@classmethod
+	def process(cls, mbox, doc):
+		me = cls()
+		for element in mbox.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}boxPr':
+				pass
+			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+			else:
+				logger.warn('Unhandled <m:box> element %s', element.tag)
+		return me
+
+class OMathGroupChr(types.OMathGroupChr):
+	@classmethod
+	def process(cls, mbox, doc):
+		me = cls()
+		val_att = '{'+docx.nsprefixes['m']+'}val'
+		for element in mbox.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}groupChrPr':
+				for el in element.iterchildren():
+					if el.tag == '{'+docx.nsprefixes['m']+'}chr':
+						me.set_groupChr(el.attrib[val_att])
+					if el.tag == '{'+docx.nsprefixes['m']+'}vertJc':
+						me.set_vertJc(el.attrib[val_att])
+					if el.tag == '{'+docx.nsprefixes['m']+'}pos':
+						me.set_pos(el.attrib[val_att])
+			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+			else:
+				logger.warn('Unhandled <m:box> element %s', element.tag)
+		return me
+
+
 class OMathElement(object):
 	@classmethod
 	def create_child(cls,element,doc):
@@ -487,6 +521,12 @@ class OMathElement(object):
 			return(OMathEqArr.process(element,doc))
 		elif element.tag == '{'+docx.nsprefixes['m']+'}sPre':
 			return(OMathSPre.process(element,doc))
+		elif element.tag == '{'+docx.nsprefixes['m']+'}box':
+			return(OMathBox.process(element,doc))
+		elif element.tag == '{'+docx.nsprefixes['m']+'}groupChr':
+			return(OMathGroupChr.process(element,doc))
+		elif element.tag == '{'+docx.nsprefixes['m']+'}argPr':
+			logger.info('found %s', element.tag)
 		else:
 			logger.warn('Unhandled omath element %s', element.tag)
 			return None

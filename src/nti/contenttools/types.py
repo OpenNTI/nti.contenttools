@@ -436,4 +436,21 @@ class OMathEqArr(DocumentStructureNode):
 class OMathSPre(DocumentStructureNode):
 	pass
 
+class OMathBox(DocumentStructureNode):
+	pass
+
+class OMathGroupChr(DocumentStructureNode):
+	def __init__(self, groupChr=None, pos=None, vertJc=None):
+		self.groupChr = groupChr
+		self.pos = pos
+		self.vertJc = vertJc
+
+	def set_groupChr(self, groupChr):
+		self.groupChr = groupChr
+
+	def set_pos(self, pos):
+		self.pos = pos
+
+	def set_vertJc(self, vertJc):
+		self.vertJc = vertJc
 
