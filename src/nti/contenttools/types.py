@@ -425,3 +425,7 @@ class OMathFName(DocumentStructureNode):
 class OMathEqArr(DocumentStructureNode):
 	pass
 
+class OMathSPre(DocumentStructureNode):
+	pass
+
+

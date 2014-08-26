@@ -247,3 +247,14 @@ def omath_eqarr_rendered(self):
 	to render <m:eqArr>
 	"""
 	return omath_basic_rendered(self)
+
+def omath_spre_rendered(self):
+	"""
+	to render <m:sPre>
+	"""
+	if len(self.children) == 3:
+		return u'{^%s_%s}%s' %(self.children[0].render(), self.children[1].render(), self.children[2].render())
+	else:
+		logger.warn('Unhandled <m:sPre> render, number of children = %s', self.children)
+		return u''
+

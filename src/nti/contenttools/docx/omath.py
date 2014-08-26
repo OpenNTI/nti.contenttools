@@ -425,6 +425,23 @@ class OMathEqArr(types.OMathEqArr):
 				logger.warn('Unhandled <m:eqArr> element %s', element.tag)
 		return me
 
+class OMathSPre(types.OMathSPre):
+	@classmethod
+	def process(cls, mspre, doc):
+		me = cls()
+		for element in mspre.iterchildren():
+			if element.tag == '{'+docx.nsprefixes['m']+'}sPrePr':
+				pass
+			elif element.tag == '{'+docx.nsprefixes['m']+'}sub':
+				me.add_child(OMathSub.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}sup':
+				me.add_child(OMathSup.process(element, doc))
+			elif element.tag == '{'+docx.nsprefixes['m']+'}e':
+				me.add_child(OMathBase.process(element, doc))
+			else:
+				logger.warn('Unhandled <m:sPre> element %s', element.tag)
+		return me
+
 class OMathElement(object):
 	@classmethod
 	def create_child(cls,element,doc):
@@ -450,7 +467,7 @@ class OMathElement(object):
 			if element.text:
 				return types.TextNode(element.text, type_text='omath')
 		elif element.tag == '{'+docx.nsprefixes['m']+'}ctrlPr':
-			pass
+			pass	
 		elif element.tag == '{'+docx.nsprefixes['m']+'}bar':
 			return(OMathBar.process(element,doc))
 		elif element.tag == '{'+docx.nsprefixes['m']+'}acc':
@@ -460,8 +477,9 @@ class OMathElement(object):
 		elif element.tag == '{'+docx.nsprefixes['m']+'}func':
 			return(OMathFunc.process(element,doc))
 		elif element.tag == '{'+docx.nsprefixes['m']+'}eqArr':
-			logger.info ("found %s", element.tag)
 			return(OMathEqArr.process(element,doc))
+		elif element.tag == '{'+docx.nsprefixes['m']+'}sPre':
+			return(OMathSPre.process(element,doc))
 		else:
 			logger.warn('Unhandled omath element %s', element.tag)
 			return None
