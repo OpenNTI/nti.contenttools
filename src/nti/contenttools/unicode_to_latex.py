@@ -964,8 +964,8 @@ unicode_to_latex = {
         u"\u22BA": "\\intercal ",
         u"\u22BB": "\\veebar ",
         u"\u22BE": "\\rightanglearc ",
-        u"\u22C0": "\\ElsevierGlyph{22C0}",
-        u"\u22C1": "\\ElsevierGlyph{22C1}",
+        u"\u22C0": "\\bigwedge", #"\\ElsevierGlyph{22C0}"
+        u"\u22C1": "\\bigvee", #"\\ElsevierGlyph{22C1}"
         u"\u22C2": "\\bigcap ",
         u"\u22C3": "\\bigcup ",
         u"\u22C4": "\\diamond ",
