@@ -37,31 +37,42 @@ class Paragraph( types.Paragraph ):
 	
 		me = cls()
 		fields = []
+		doc_main_prefix = docx.nsprefixes['w']
+		r_el = '{%s}r' %(doc_main_prefix)
+		del_el = '{%s}del' %(doc_main_prefix)
+		ins_el = '{%s}ins' %(doc_main_prefix)
+		hyperlink_el = '{%s}hyperlink' %(doc_main_prefix)
+		pPr_el = '{%s}pPr' %(doc_main_prefix)
+
+		doc_math_prefix = docx.nsprefixes['m']
+		oMath_el = '{%s}oMath' %(doc_math_prefix)
+		oMathPara_el = '{%s}oMathPara' %(doc_math_prefix)
+
 		# Scan the elements in the paragraph and extract information
 		for element in paragraph.iterchildren():
 				# Process Text Runs
-				if element.tag == '{'+docx.nsprefixes['w']+'}r':
+				if element.tag == r_el:
 					me.add_child(Run.process(element, doc, fields = fields, rels = rels))
 				# Process 'Deleted' Text Runs
-				elif element.tag == '{'+docx.nsprefixes['w']+'}del':
+				elif element.tag == del_el:
 					me.add_child(Del.process(element, doc, fields = fields, rels = rels))
 				# Process 'Inserted' Text Runs
-				elif element.tag == '{'+docx.nsprefixes['w']+'}ins':
+				elif element.tag == ins_el:
 					me.add_child(Ins.process(element, doc, fields = fields, rels = rels))
 				# Look for hyperlinks
-				elif (element.tag == '{'+docx.nsprefixes['w']+'}hyperlink'):
+				elif element.tag == hyperlink_el:
 					me.add_child(Hyperlink.process(element, doc, rels = rels))
 				# Paragraph Properties
-				elif element.tag == '{'+docx.nsprefixes['w']+'}pPr':
+				elif element.tag == pPr_el:
 					me.process_properties( element, doc, rels=rels )
 				# Skip elements in IGNORED_TAGS
 				elif element.tag in IGNORED_TAGS:
 					pass
 
 				#handling math equations
-				elif element.tag in '{'+docx.nsprefixes['m']+'}oMath':
+				elif element.tag == oMath_el:
 					me.add_child(OMath.process(element,doc))
-				elif element.tag in '{'+docx.nsprefixes['m']+'}oMathPara':
+				elif element.tag == oMathPara_el:
 					me.add_child(OMathPara.process(element,doc))
 
 				# We did not handle the element
@@ -90,20 +101,28 @@ class Paragraph( types.Paragraph ):
 		return me
 
 	def process_properties( self, properties, doc, rels=None ):
+		doc_main_prefix = docx.nsprefixes['w']
+		pStyle_el = '{%s}pStyle' %(doc_main_prefix)
+		rPr_el = '{%s}rPr' %(doc_main_prefix)
+		numPr_el = '{%s}numPr' %(doc_main_prefix)
+		widowControl_el = '{%s}widowControl' %(doc_main_prefix)
+		att_val = '{%s}val' %(doc_main_prefix)
+
+
 		for element in properties.iterchildren():
 			# Look for Paragraph Styles
-			if element.tag == '{'+docx.nsprefixes['w']+'}pStyle':
-				self.addStyle(element.attrib['{'+docx.nsprefixes['w']+'}val'])
+			if element.tag == pStyle_el:
+				self.addStyle(element.attrib[att_val])
 			# We don't care about the paragraph mark character in LaTeX so ignore formattingi it.
-			elif element.tag == '{'+docx.nsprefixes['w']+'}rPr':
+			elif element.tag == rPr_el:
 				pass
 			# Look for numbering levels
-			elif (element.tag == '{'+docx.nsprefixes['w']+'}numPr'):
+			elif element.tag == numPr_el:
 				self.numbering = process_numbering( element, doc )
 			# Skip elements in IGNORED_TAGS
 			elif element.tag in IGNORED_TAGS:
 				pass
-			elif element.tag == '{'+docx.nsprefixes['w']+'}widowControl':
+			elif element.tag == widowControl_el:
 				logger.info('found widowControl property')
 			else:
 				logger.warn('Unhandled paragraph property: %s' % element.tag)
@@ -126,13 +145,17 @@ class Newline( types.Note ):
 
 
 def process_numbering( element, doc ):
+	doc_main_prefix = docx.nsprefixes['w']
+	numId_el = '{%s}numId' %(doc_main_prefix)
+	ilvl_el = '{%s}ilvl' %(doc_main_prefix)
+	att_val = '{%s}val' %(doc_main_prefix)
 	numId = ''
 	ilvl = 0
 	for sub_element in element.iterchildren():
-		if (sub_element.tag == '{'+docx.nsprefixes['w']+'}numId'):
-			numId = sub_element.attrib['{'+docx.nsprefixes['w']+'}val']
-		elif (sub_element.tag == '{'+docx.nsprefixes['w']+'}ilvl'):
-			ilvl = int(sub_element.attrib['{'+docx.nsprefixes['w']+'}val'])
+		if (sub_element.tag == numId_el):
+			numId = sub_element.attrib[att_val]
+		elif (sub_element.tag == ilvl_el):
+			ilvl = int(sub_element.attrib[att_val])
 
 	if numId in doc.numbering_collection:
 		if ilvl < len(doc.numbering_collection[numId]):
@@ -177,26 +200,27 @@ class Note( types.Note ):
 	@classmethod
 	def process(cls, note, doc):
 		rels = None
-		
+		doc_main_prefix = docx.nsprefixes['w']
+		id_el = '{%s}id' %(doc_main_prefix)
 		# Retrieve the endnote Id Number
-		id = note.attrib['{'+docx.nsprefixes['w']+'}id']
+		id = note.attrib[id_el]
 
 		me = cls()
-		if (note.tag == '{'+docx.nsprefixes['w']+'}footnoteReference'):
+		if (note.tag == '{%s}footnoteReference' %(doc_main_prefix)):
 			me.notes = doc.footnotes
 			me.rels = doc.footnote_relationships
 			me.type = 'footnote'
-		elif (note.tag == '{'+docx.nsprefixes['w']+'}endnoteReference'):
+		elif (note.tag == '{%s}endnoteReference' %(doc_main_prefix)):
 			me.notes = doc.endnotes
 			me.rels = doc.endnote_relationships
 			me.type = 'endnote'
-		
+		p_el = '{%s}p' %(doc_main_prefix)
 		# Retrieve the endnote text
 		for note in me.notes.iterchildren():
-			if note.attrib['{'+docx.nsprefixes['w']+'}id'] == id:
+			if note.attrib[id_el] == id:
 				for element in note.iterchildren():
 					# Process paragraphs found in the note
-					if element.tag == '{'+docx.nsprefixes['w']+'}p':
+					if element.tag == p_el:
 						me.add_child(Paragraph.process(element, doc, rels = me.rels))
 
 		return me
@@ -212,21 +236,28 @@ class Hyperlink( types.Hyperlink ):
 			rels = doc.relationships
 
 		me = cls()
+		doc_rels_prefix = docx.nsprefixes['r']
+		id_el = '{%s}id' %(doc_rels_prefix)
 		#check first if node.attrib.keys() has '{'+docx.nsprefixes['r']+'}id'
-		if '{'+docx.nsprefixes['r']+'}id' in node.attrib.keys():
+		if id_el in node.attrib.keys():
 			rId = node.attrib['{'+docx.nsprefixes['r']+'}id']
 			rel_type, me.target = relationshipProperties(rId, doc, rels)
 		else:
 			pass
+
+		doc_main_prefix = docx.nsprefixes['w']
+		fnref_el = '{%s}footnoteReference' %(doc_main_prefix)	
+		enref_el = '{%s}endnoteReference' %(doc_main_prefix)
+		r_el = '{%s}r' %(doc_main_prefix)	
 		for element in node.iterchildren():
 			# Look for footnotes
-			if (element.tag == '{'+docx.nsprefixes['w']+'}footnoteReference'):
+			if (element.tag == fnref_el):
 				me.add_child(Note.process(element, doc))
 			# Look for endnotes
-			elif (element.tag == '{'+docx.nsprefixes['w']+'}endnoteReference'):
+			elif (element.tag == enref_el):
 				me.add_child(Note.process(element, doc))
 			# Look for embedded runs
-			if (element.tag == '{'+docx.nsprefixes['w']+'}r'):
+			if (element.tag == r_el):
 				me.add_child(Run.process(element, doc, rels = rels))
 
 		return me
