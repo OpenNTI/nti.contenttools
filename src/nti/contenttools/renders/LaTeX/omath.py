@@ -8,7 +8,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from IPython.core.debugger import Tracer
+#from IPython.core.debugger import Tracer
 from nti.contenttools.docx.omath import OMathDPr
 from nti.contenttools.docx.omath import OMathFName
 from nti.contenttools.docx.omath import OMathMatrix
@@ -57,9 +57,9 @@ def omath_fraction_rendered(self):
 	to render <m:f> element
 	"""
 	if self.frac_type == u'lin':
-		return u'%s/%s' %(self.children[0].render(), self.children[1].render())
+		return u'{%s}/{%s}' %(self.children[0].render(), self.children[1].render())
 	elif self.frac_type == u'skw':
-		return u'^%s/_%s' %(self.children[0].render(), self.children[1].render())
+		return u'{^{%s}}/_{%s}' %(self.children[0].render(), self.children[1].render())
 	elif self.frac_type == u'noBar':
 		return u'{%s \\choose %s}' %(self.children[0].render(), self.children[1].render())
 	return u'\\frac{%s}{%s}' %(self.children[0].render(), self.children[1].render())
@@ -146,10 +146,10 @@ def omath_nary_rendered(self):
 	elif len(self.children) == 4:
 		if isinstance(self.children[0], OMathNaryPr):
 			if self.children[0].chrVal is not None:
-				return u'%s_{%s}^{%s}%s' %(self.children[0].render(), self.children[1].render(), self.children[2].render(), \
+				return u'%s_{%s}^{%s} %s' %(self.children[0].render(), self.children[1].render(), self.children[2].render(), \
 					self.children[3].render())
 			else :
-				return u'\\int_{%s}^{%s}%s' %(self.children[1].render(), self.children[2].render(), self.children[3].render())
+				return u'\\int_{%s}^{%s} %s' %(self.children[1].render(), self.children[2].render(), self.children[3].render())
 
 
 def omath_nary_pr_rendered(self):
@@ -208,13 +208,43 @@ def omath_bar_rendered(self):
 	"""
 	to render <m:bar>
 	"""
-	return u'\\bar{%s}' %(self.children[0].render())
+
+	if self.pos == 'top':
+		return u'\\overline{%s}' %(self.children[0].render())
+	else:
+		return u'\\underline{%s}' %(self.children[0].render())
+	
+
 
 def omath_acc_rendered(self):
 	"""
 	to render <m:acc>
 	"""
-	return u'\\hat{%s}' %(self.children[0].render())
+	if self.accChr is not None:
+		accChr =self.accChr
+		if accChr == u'\u0300': 
+			return u'\\grave{%s}' %(self.children[0].render())
+		elif accChr == u'\u0301': 
+			return u'\\acute{%s}' %(self.children[0].render())
+		elif accChr == u'\u0302': 
+			return u'\\hat{%s}' %(self.children[0].render())
+		elif accChr == u'\u0303': 
+			return u'\\tilde{%s}' %(self.children[0].render())
+		elif accChr == u'\u0304':
+			return u'\\bar{%s}' %(self.children[0].render())
+		elif accChr == u'\u0306':
+			return u'\\breve{%s}' %(self.children[0].render())
+		elif accChr == u'\u0307':
+			return u'\\dot{%s}' %(self.children[0].render())
+		elif accChr == u'\u0308':
+			return u'\\ddot{%s}' %(self.children[0].render())
+		elif accChr == u'\u030C':
+			return u'\\check{%s}' %(self.children[0].render())
+		else:
+			logger.warn('Unhandled accent unicode render')
+			return u''
+	else:
+		return u'\\hat{%s}' %(self.children[0].render())
 
 def omath_matrix_rendered(self):
 	"""

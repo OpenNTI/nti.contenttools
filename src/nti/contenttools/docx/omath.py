@@ -6,7 +6,7 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-#from IPython.core.debugger import Tracer
+from IPython.core.debugger import Tracer
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -356,11 +356,15 @@ class OMathBar(types.OMathBar):
 		doc_math_prefix = docx.nsprefixes['m']
 		e_el = '{%s}e' %(doc_math_prefix)
 		barPr_el = '{%s}barPr' %(doc_math_prefix)
+		pos_el = '{%s}pos' %(doc_math_prefix)
+		att_val = '{%s}val' %(doc_math_prefix)
 		for element in mbar.iterchildren():
 			if element.tag == e_el:
 				me.add_child(OMathBase.process(element, doc))
 			elif element.tag == barPr_el:
-				pass
+				for el in element.iterchildren():
+					if el.tag == pos_el:
+						me.set_bar_pos(el.attrib[att_val])
 			else:
 				logger.warn('Unhandled <m:bar> element %s', element.tag)
 		return me
@@ -372,11 +376,15 @@ class OMathAcc(types.OMathAcc):
 		doc_math_prefix = docx.nsprefixes['m']
 		e_el = '{%s}e' %(doc_math_prefix)
 		accPr_el = '{%s}accPr' %(doc_math_prefix)
+		chr_el = '{%s}chr' %(doc_math_prefix)
+		att_val = '{%s}val' %(doc_math_prefix)
 		for element in macc.iterchildren():
 			if element.tag == e_el:
 				me.add_child(OMathBase.process(element, doc))
 			elif element.tag == accPr_el:
-				pass
+				for el in element.iterchildren():
+					if el.tag == chr_el:
+						me.set_acc_chr(el.attrib[att_val])
 			else:
 				logger.warn('Unhandled <m:bar> element %s', element.tag)
 		return me
