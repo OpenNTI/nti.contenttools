@@ -109,7 +109,8 @@ class Document( DocumentStructureNode ):
 						  'ulem',
 						  'ntilatexmacros',
 						  'ntiassessment',
-						  'amsmath']
+						  'amsmath',
+						  'amssymb']
 
 class Body( DocumentStructureNode ):
 	pass
@@ -373,10 +374,18 @@ class OMathLimLow(DocumentStructureNode):
 	pass
 
 class OMathBar(DocumentStructureNode):
-	pass
+	def __init__(self, pos=None):
+		self.pos = pos
+
+	def set_bar_pos(self, pos):
+		self.pos = pos
 
 class OMathAcc(DocumentStructureNode):
-	pass
+	def __init__(self, accChr=None):
+		self.accChr = accChr
+
+	def set_acc_chr(self, accChr):
+		self.accChr = accChr
 
 class OMathPara(DocumentStructureNode):
 	pass
