@@ -8,7 +8,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-#from IPython.core.debugger import Tracer
+from IPython.core.debugger import Tracer
 from nti.contenttools.docx.omath import OMathDPr
 from nti.contenttools.docx.omath import OMathFName
 from nti.contenttools.docx.omath import OMathMatrix
@@ -240,6 +240,16 @@ def omath_acc_rendered(self):
 			return u'\\ddot{%s}' %(self.children[0].render())
 		elif accChr == u'\u030C':
 			return u'\\check{%s}' %(self.children[0].render())
+		elif accChr == u'\u2190' or accChr == u'\u20d6':
+			return u'\\overleftarrow{%s}' %(self.children[0].render())
+		elif accChr == u'\u2192' or accChr == u'\u20d7':
+			return u'\\overrightarrow{%s}' %(self.children[0].render())
+		elif accChr == u'\u20e1':
+			return u'\\overleftrightarrow{%s}' %(self.children[0].render())
+		elif accChr == u'\u20d0':
+			return u'\\overset{\\leftharpoonup}{%s}' %(self.children[0].render())
+		elif accChr == u'\u20d1':
+			return u'\\overset{\\rightharpoonup}{%s}' %(self.children[0].render())
 		else:
 			logger.warn('Unhandled accent unicode render')
 			return u''
@@ -325,9 +335,15 @@ def omath_groupchr_rendered(self):
 		groupChr = _replace_unicode_with_latex_tag(self.groupChr)
 		pos = self.pos
 		if pos == u'top':
-			return u'\\underset{%s}{%s}' %(self.children[0].render(), groupChr)
+			if self.groupChr == u'\u23de':
+				return u'\\overbrace{%s}' %(self.children[0].render())	
+			else:
+				return u'\\underset{%s}{%s}' %(self.children[0].render(), groupChr)
 		elif pos == u'bot':
-			return u'\\underset{%s}{%s}' %(groupChr,self.children[0].render())
+			if self.groupChr == u'\u23df':
+				return u'\\underbrace{%s}' %(self.children[0].render())	
+			else:
+				return u'\\underset{%s}{%s}' %(groupChr,self.children[0].render())
 		else:
 			logger.warn('Unhandled <m:groupChr> element when groupChrPr have position %s', self.pos)
 			return u''
@@ -342,10 +358,10 @@ def omath_groupchr_rendered(self):
 			logger.warn('Unhandled <m:groupChr> having groupChrPr position %s', self.pos)
 			return u''
 	else:
-		logger.warn('Unhandled <m.groupChr> having groupChrPr position and vertJc None')
+		return u'\\underbrace{%s}' %(self.children[0].render())	
 
 def omath_limupp_rendered(self):
 	"""
 	to render <m:limUpp>
 	"""
-	return u'\\underset{%s}{%s}' %(self.children[0].render(), self.children[1].render())
+	return u'\\overset{%s}{%s}' %(self.children[1].render(), self.children[0].render())

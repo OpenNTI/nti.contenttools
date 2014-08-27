@@ -110,7 +110,7 @@ class Document( DocumentStructureNode ):
 						  'ntilatexmacros',
 						  'ntiassessment',
 						  'amsmath',
-						  'amssymb']
+						  'mathabx']
 
 class Body( DocumentStructureNode ):
 	pass
