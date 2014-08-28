@@ -466,4 +466,6 @@ class OMathGroupChr(DocumentStructureNode):
 class OMathLimUpp(DocumentStructureNode):
 	pass
 
+class OMathBorderBox(DocumentStructureNode):
+	pass
 

@@ -607,6 +607,23 @@ class OMathLimUpp(types.OMathLimUpp):
 				logger.warn('Unhandled <m:limUpp> element %s', element.tag)
 		return me
 
+class OMathBorderBox(types.OMathBorderBox):
+	@classmethod
+	def process(cls, mbdrbox, doc):
+		me =cls()
+		doc_math_prefix = docx.nsprefixes['m']
+		e_el = '{%s}e' %(doc_math_prefix)
+		borderBoxPr_el = '{%s}borderBoxPr' %(doc_math_prefix)
+		for element in mbdrbox.iterchildren():
+			if element.tag == e_el:
+				me.add_child(OMathBase.process(element, doc))
+			elif element.tag == borderBoxPr_el:
+				pass
+			else:
+				logger.warn('Unhandled <m:borderBox> element %s', element.tag)
+		return me
+
+
 class OMathElement(object):
 	@classmethod
 	def create_child(cls,element,doc):
@@ -654,6 +671,8 @@ class OMathElement(object):
 			logger.info('found %s', element.tag)
 		elif element.tag == '{%s}limUpp' %(doc_math_prefix):
 			return(OMathLimUpp.process(element,doc))
+		elif element.tag == '{%s}borderBox' %(doc_math_prefix):
+			return(OMathBorderBox.process(element,doc))
 		else:
 			logger.warn('Unhandled omath element %s', element.tag)
 			return None
