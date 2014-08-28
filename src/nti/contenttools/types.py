@@ -109,7 +109,8 @@ class Document( DocumentStructureNode ):
 						  'ulem',
 						  'ntilatexmacros',
 						  'ntiassessment',
-						  'amsmath']
+						  'amsmath',
+						  'stmaryrd']
 
 class Body( DocumentStructureNode ):
 	pass
