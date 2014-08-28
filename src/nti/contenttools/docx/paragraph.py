@@ -192,40 +192,6 @@ def process_numbering( element, doc ):
 	return el
 
 
-class Note( types.Note ):
-	notes = None
-	rels = None
-	type = ''
-
-	@classmethod
-	def process(cls, note, doc):
-		rels = None
-		doc_main_prefix = docx.nsprefixes['w']
-		id_el = '{%s}id' %(doc_main_prefix)
-		# Retrieve the endnote Id Number
-		id = note.attrib[id_el]
-
-		me = cls()
-		if (note.tag == '{%s}footnoteReference' %(doc_main_prefix)):
-			me.notes = doc.footnotes
-			me.rels = doc.footnote_relationships
-			me.type = 'footnote'
-		elif (note.tag == '{%s}endnoteReference' %(doc_main_prefix)):
-			me.notes = doc.endnotes
-			me.rels = doc.endnote_relationships
-			me.type = 'endnote'
-		p_el = '{%s}p' %(doc_main_prefix)
-		# Retrieve the endnote text
-		for note in me.notes.iterchildren():
-			if note.attrib[id_el] == id:
-				for element in note.iterchildren():
-					# Process paragraphs found in the note
-					if element.tag == p_el:
-						me.add_child(Paragraph.process(element, doc, rels = me.rels))
-
-		return me
-
-
 class Hyperlink( types.Hyperlink ):
 
 	@classmethod
@@ -298,31 +264,39 @@ class Image( types.Image ):
 	@classmethod
 	def process( cls, image, doc, rels=None ):
 		me = cls()
+		drawing_el = '{%s}drawing' %(docx.nsprefixes['w'])
+		blipFill_el = '{%s}blipFill' %(docx.nsprefixes['pic'])
+		inline_el = '{%s}inline' %(docx.nsprefixes['wp'])
 		# Iterate through the image properties and process
 		for element in image.iter():
 			# Search for Image Properties, contained in blipFill
-			if element.tag == '{'+docx.nsprefixes['pic']+'}blipFill':
-						me.process_properties( element, doc, rels )
-			elif element.tag == '{'+docx.nsprefixes['wp']+'}inline':
-						me.process_properties( element, doc, rels )
-				
+			if element.tag == blipFill_el:
+				me.process_properties( element, doc, rels )
+			elif element.tag == inline_el:
+				me.process_properties( element, doc, rels )
+			elif element.tag == drawing_el:
+				me.process_properties(element, doc, rels)
+			else:
+				logger.warn('Unhandled image element %s', element.tag)
 			return me
 
 	def process_properties( self, properties, doc, rels=None ):
 		# Retrieve the Image rId and filename
+		blip_el = '{%s}blip' %(docx.nsprefixes['a'])
+		embed_att = '{%s}embed' %(docx.nsprefixes['r'])
+		ext_el = '{%s}ext' % docx.nsprefixes['a']
 		for element in properties.iter():
-			if element.tag == '{'+docx.nsprefixes['a']+'}blip':
-				id = element.attrib['{'+docx.nsprefixes['r']+'}embed']
+			if element.tag == blip_el:
+				id = element.attrib[embed_att]
 				self.type, self.target = relationshipProperties(id, doc, rels)
 				doc.image_list.append(os.path.basename(self.target))
-			elif element.tag == '{'+docx.nsprefixes['a']+'}ext':
+			elif element.tag == ext_el:
 				# Convert EMU to inches and then to pixels.
 				# 1 inch = 914400 EMU, 72 pixels = 1 inch 
 				if 'cy' in element.attrib:
 					self.height = int(float(element.attrib['cy']) / 914400 * 72)
 				if 'cx' in element.attrib:
 					self.width = int(float(element.attrib['cx']) / 914400 * 72)
-
 		# Set the image path
 		self.path = os.path.join( doc.image_dir , os.path.splitext( os.path.basename(self.target) )[0] )
 
