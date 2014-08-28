@@ -13,6 +13,7 @@ from nti.contenttools.docx.omath import OMathDPr
 from nti.contenttools.docx.omath import OMathFName
 from nti.contenttools.docx.omath import OMathMatrix
 from nti.contenttools.docx.omath import OMathNaryPr
+from nti.contenttools.docx.omath import OMathEqArr
 from nti.contenttools.unicode_to_latex import _replace_unicode_with_latex_tag
 
 logger = __import__('logging').getLogger(__name__)
@@ -20,6 +21,12 @@ logger = __import__('logging').getLogger(__name__)
 def omath_basic_rendered(self):
 	result = u''
 	for child in self.children:
+		result = result + child.render()
+	return result
+
+def delimiter_child_rendered(children_list):
+	result = u''
+	for child in children_list:
 		result = result + child.render()
 	return result
 
@@ -31,6 +38,11 @@ def omath_rendered(self):
 	global endMatrixBorder
 	begMatrixBorder = None
 	endMatrixBorder = None
+
+	global begEqArrBorder
+	global endEqArrBorder
+	begEqArrBorder = None
+	endEqArrBorder = None
 
 	body = u''
 	for child in self.children:
@@ -164,17 +176,26 @@ def omath_delimiter_rendered(self):
 	"""
 	if isinstance (self.children[0],OMathDPr):
 		if self.children[0].begChr is None:
-			return u'%s' %(self.children[1].render())
+			children_num = len(self.children)
+			result = delimiter_child_rendered(self.children[1:children_num])
+			if u'choose' in result:
+				return u'%s' %(result)
+			else:
+				return u'(%s)' %(result)
 		elif self.children[0].begChr is not None and isinstance(self.children[1].children[0], OMathMatrix):
 			#if it is a matrix
 			check_matrix_border(self.children[0].begChr, self.children[0].endChr)
 			return u'%s' %(self.children[1].render())
-		elif len(self.children) == 2 and self.children[0].begChr is not None :
-			logger.info('begChr is not none')
-			return u'%s%s%s' %(self.children[0].children[0].render(),self.children[1].render(),self.children[0].children[1].render())
+		elif self.children[0].begChr is not None and isinstance(self.children[1].children[0], OMathEqArr):
+			#if it is an equation array
+			check_equation_arr_border(self.children[0].begChr, self.children[0].endChr)
+			return u'%s' %(self.children[1].render())
 		else:
-			logger.warn ('Unhandled <m:d> render, children are %s', self.children)
-			return u''		
+			children_num = len(self.children)
+			result = delimiter_child_rendered(self.children[1:children_num])
+			begChr = _replace_unicode_with_latex_tag(self.children[0].begChr)
+			endChr = _replace_unicode_with_latex_tag(self.children[0].endChr)
+			return u'%s%s%s' %(begChr,result,endChr)
 	else:
 		return omath_basic_rendered(self)
 
@@ -186,6 +207,15 @@ def check_matrix_border(begChr, endChr):
 	global endMatrixBorder
 	begMatrixBorder = begChr
 	endMatrixBorder = endChr
+
+
+begEqArrBorder = None
+endEqArrBorder = None
+def check_equation_arr_border(begChr, endChr):
+	global begEqArrBorder
+	global endEqArrBorder
+	begEqArrBorder = begChr
+	endEqArrBorder = endChr
 
 def omath_dpr_rendered(self):
 	"""
@@ -299,8 +329,18 @@ def omath_eqarr_rendered(self):
 	for child in self.children:
 		result.append(child.render())
 		result.append(u' \\\\\n')
+	body = u'\\begin{array}{lr}\n'+ u''.join(result) +u'\\end{array}'
 	if self.rowSpace == 1:
-		return u'\\begin{array}{l}\n'+ u''.join(result) +u'\\end{array}'
+		if begEqArrBorder is None and endEqArrBorder is None:
+			return body
+		else:	
+			if begEqArrBorder == u'{' and endEqArrBorder == u'':
+				return u'\\left \\{ %s \\right.' %(body)
+			if begEqArrBorder == u'' and endEqArrBorder == u'}':
+				return u'\\left. %s \\right \\}' %(body)
+			else:
+				logger.warn('Unhandled equation array element render')
+				return u''
 	else:
 		number_of_space = self.rowSpace
 		count_space = 0
