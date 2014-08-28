@@ -31,6 +31,12 @@ def _subparagraph( arg ):
 def _subsubparagraph( arg ):
     return _command_renderer( 'subsubparagraph', arg )
 
+def _abstract( arg ):
+    return _command_renderer( 'abstract', arg )
+
+def _author( arg ):
+    return _command_renderer( 'author', arg )
+
 def paragraph_renderer(self):
     STYLES = { 'Heading1': _chapter,
                'Heading2': _section,
@@ -38,7 +44,11 @@ def paragraph_renderer(self):
                'Heading4': _subsubsection,
                'Heading5': _paragraph,
                'Heading6': _subparagraph,
-               'Heading7': _subsubparagraph}
+               'Heading7': _subsubparagraph,
+               'Section': _section,
+               'Subsection': _subsection,
+               'Abstract' : _abstract,
+               'Authors': _author}
 
     result = base_renderer(self)
 
@@ -47,7 +57,7 @@ def paragraph_renderer(self):
         if style in STYLES.keys():
             result = STYLES[style](result)
         else:
-            print('Unhandled paragraph style: %s' % style)
+            logger.warn('Unhandled paragraph style: %s' % style)
 
     if result:
         result = result + u'\n\n'
