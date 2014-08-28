@@ -175,11 +175,14 @@ def process_numbering( element, doc ):
 	fmt_list = [ 'decimal', 'lowerLetter', 'upperLetter', 'lowerRoman', 'upperRoman' ]
 	if numId in doc.numbering:
 		numbering = doc.numbering[numId]
-		if numbering.levels[str(ilvl)].format in fmt_list:
-			el = types.OrderedList()
-			el.format = numbering.levels[str(ilvl)].format
+		if len(numbering.levels) > 0:
+			if numbering.levels[str(ilvl)].format in fmt_list:
+				el = types.OrderedList()
+				el.format = numbering.levels[str(ilvl)].format
+			else:
+				el = types.UnorderedList()
 		else:
-			el = types.UnorderedList()
+			el = types.UnorderedList()	
 	else:
 		el = types.UnorderedList()
 
