@@ -405,3 +405,9 @@ def omath_limupp_rendered(self):
 	to render <m:limUpp>
 	"""
 	return u'\\overset{%s}{%s}' %(self.children[1].render(), self.children[0].render())
+
+def omath_bdr_box_rendered(self):
+	"""
+	to render <m:borderBox>
+	"""
+	return u"\\boxed {%s}" %(omath_basic_rendered(self))
