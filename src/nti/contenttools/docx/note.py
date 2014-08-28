@@ -1,26 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: run.py 48020 2014-08-25 23:13:34Z carlos.sanchez $
+.. $Id$
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-from IPython.core.debugger import Tracer
+# from IPython.core.debugger import Tracer
 
 logger = __import__('logging').getLogger(__name__)
 
-import os
-import urllib
-import urlparse
+from ..types import Note
 
 from . import properties as docx
-from .. import types
 
-class Note( types.Note ):
-	notes = None
-	rels = None
+class Note(Note):	
 	type = ''
+	rels = None
+	notes = None
 
 	@classmethod
 	def process(cls, note, doc):
