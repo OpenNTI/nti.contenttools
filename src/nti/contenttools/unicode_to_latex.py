@@ -828,6 +828,7 @@ unicode_to_latex = {
         u"\u2233": "\\ElsevierGlyph{2233}",
         u"\u2234": "\\therefore ",
         u"\u2235": "\\because ",
+        u"\u2236": ":",
         u"\u2237": "\\Colon ",
         u"\u2238": "\\ElsevierGlyph{2238}",
         u"\u223A": "\\mathbin{{:}\\!\\!{-}\\!\\!{:}}",
