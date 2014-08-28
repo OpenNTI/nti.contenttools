@@ -17,6 +17,7 @@ import urlparse
 from . import properties as docx
 from .. import types
 from .ignored_tags import IGNORED_TAGS
+from .note import Note
 
 class Run( types.Run ):
 
@@ -40,6 +41,7 @@ class Run( types.Run ):
 					if element.text:
 						me.add_child( types.TextNode(element.text) )
 				elif element.tag == '{'+docx.nsprefixes['w']+'}drawing':
+					from .paragraph import Image
 					me.add_child( Image.process(element, doc, rels=rels ) )
 					pass
 				# Find 'deleted' text
@@ -71,6 +73,7 @@ class Run( types.Run ):
 									fields.pop()
 							else:
 								elems.append(fields.pop())
+								from .paragraph import processComplexField
 								me.add_child( processComplexField( elems, doc, rels = rels ) )
 					elif 'separate' in type:
 						# This node was used to separate the field "command" from the result. It does not seem
@@ -91,6 +94,7 @@ class Run( types.Run ):
 					pass
 				# Look for carrage returns
 				elif (element.tag == '{'+docx.nsprefixes['w']+'}br'):
+					from .paragraph import Newline
 					me.add_child( Newline() )
 				# Look for other runs embedded in this run, process recursively
 				elif (element.tag == '{'+docx.nsprefixes['w']+'}r'):
