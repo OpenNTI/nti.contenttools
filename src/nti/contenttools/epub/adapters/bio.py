@@ -393,6 +393,8 @@ class Item( types.Item ):
         for sub_el in element:
             if sub_el.tag == 'ul':
                 me.add_child(_process_ul_elements(sub_el, epub))
+            elif sub_el.tag == 'a':
+                me.add_child(_process_a_elements(sub_el, epub))
             else:
                 me.add_child(Run.process(sub_el, epub))
         return me
@@ -1003,26 +1005,6 @@ def _process_sup_elements( element, epub ):
     return Run.process(element, epub, ['sup'])
 
 def _process_a_elements( element, epub ):
-    for child in element:
-        if child.tag == 'img':
-            el = Run()
-            el.add_child(Image.process(child, epub))
-            return el
-        elif child.tag == 'span':
-            el = Run.process(child, epub)
-            return el
-        elif child.tag == 'sup':
-            el = Run.process(child, epub, ['sup'])
-            return el
-        elif child.tag == 'sub':
-            el = Run.process(child, epub, ['sub'])
-            return el
-        elif child.tag == 'br':
-            el = Run()
-            el.add_child(types.Newline())
-        else:
-            logger.warn ("Unhandled child under 'a' element :%s", child.tag)
-
     if 'href' in element.attrib.keys():
         el = None
         if element.tail:
