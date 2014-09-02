@@ -37,6 +37,7 @@ def _abstract( arg ):
 def _author( arg ):
     return _command_renderer( 'author', arg )
 
+
 def paragraph_renderer(self):
     STYLES = { 'Heading1': _chapter,
                'Heading2': _section,
@@ -50,19 +51,21 @@ def paragraph_renderer(self):
                'Abstract' : _abstract,
                'Authors': _author}
 
+    IGNORED_STYLES = ['ListParagraph', 'Subtitle', 'NormalWeb']
+
     result = base_renderer(self)
 
-    #Tracer()()
     for style in self.styles:
         if style in STYLES.keys():
             result = STYLES[style](result)
+        elif style in IGNORED_STYLES:
+            pass
         else:
             logger.warn('Unhandled paragraph style: %s' % style)
 
     if result:
         result = result + u'\n\n'
 
-    
 
     return result
 

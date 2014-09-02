@@ -58,10 +58,11 @@ def main():
         os.mkdir( args.output )
 
     epub = EPUBFile(args.inputfile)
-    logger.info('epub type: %s', type(epub))
-    logger.info('epub.title: %s', epub.title)
-    logger.info('epub.manifest: %s', epub.manifest)
-    logger.info('epub.spine: %s', epub.spine)
+    #logger.info('epub type: %s', type(epub))
+    #logger.info('epub.title: %s', epub.title)
+    #logger.info('epub.manifest: %s', epub.manifest)
+    #logger.info('epub.spine: %s', epub.spine)
+    logger.info ('Number of spine %s', len(epub.spine))
     if epub.title:
         outputfile = os.path.join(args.output, _title_escape(epub.title)+'.tex')
     else:

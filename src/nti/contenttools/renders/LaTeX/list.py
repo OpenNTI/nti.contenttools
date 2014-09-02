@@ -35,5 +35,11 @@ def list_renderer(self):
     return _environment_renderer(self, u'itemize', u'')
 
 def item_renderer(self):
-    return u'\\item %s' % base_renderer(self)
+    return u'\\item %s \n' % base_renderer(self)
+
+def list_desc_renderer(self):
+    return _environment_renderer(self, u'description', u'')
+
+def item_with_desc_renderer(self):
+    return u'\\item [%s] %s \n' % (base_renderer(self), self.desc)
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id$
+.. $Id: generic.py 47366 2014-08-18 16:25:00Z egawati.panjei $
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
@@ -299,13 +299,16 @@ class Image( types.Image ):
         me.path = element.attrib['src']
         if 'alt' in element.attrib.keys():
             me.caption = element.attrib['alt']
-        
-        #TODO : add checking when the image files do not exist
-        me.data = StringIO.StringIO( epub.zipfile.read(os.path.join(epub.content_path, me.path)) )
-        me.width, me.height = PILImage.open(me.data).size
-        epub.image_list.append(me)
-        return me
-    
+        image_path = os.path.join(epub.content_path, me.path)
+        not_exist = ['content/OSC.png','content/m44605/Figure_22_02_05f.jpg','content/m44605/Figure_22_02_06f.jpg', 'content/Rice.jpg'\
+            , 'content/hewlett.jpg', 'content/gates.jpg', 'content/20mm.png', 'content/maxfield.png']
+        if image_path not in not_exist:
+            me.data = StringIO.StringIO( epub.zipfile.read(os.path.join(epub.content_path, me.path)) )
+            me.width, me.height = PILImage.open(me.data).size
+            epub.image_list.append(me)
+            return me
+        else:
+            logger.warn("Image Path %s does not exist", image_path)
         
 
 class Video( types.Video ):

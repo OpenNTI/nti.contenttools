@@ -10,7 +10,7 @@ logger = __import__('logging').getLogger(__name__)
 
 from .base import base_renderer
 
-### from IPython.core.debugger import Tracer
+from IPython.core.debugger import Tracer
 
 def table_renderer(self):
     caption = u''
@@ -60,6 +60,12 @@ def table_cell_renderer(self):
         result = base_renderer(self)
     return result
 
+def basic_renderer(self):
+    body = u''
+    for child in self.children:
+        body = body + child.render()
+    return body
+
 def table_html_renderer(self):
     number_of_col = self.number_of_col
     count_col = 0
@@ -68,11 +74,17 @@ def table_html_renderer(self):
         #by default we use 'l' as caption, however we can modify this code later
         string_col = string_col + u' l '
         count_col = count_col + 1
-    body = u''
-    for child in self.children:
-        body = body + child.render()
-    result = u'\\begin{table}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
-    return result % (string_col, body)
+    
+    body = base_renderer(self)
+    
+    if self.caption is None :
+        result = u'\\begin{table}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
+        return result % (string_col, body)
+    else:
+        caption = self.caption
+        result = u'\\begin{table}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
+        return result % (caption, string_col, body)
+    
 
 def table_row_html_renderer(self):
     result = []
@@ -81,5 +93,18 @@ def table_row_html_renderer(self):
     return u' & '.join(result) + u'\\\\\n'
 
 def table_cell_html_renderer(self):
+    result = base_renderer(self)
+    return result
+
+
+def tbody_html_renderer(self):
+    result = base_renderer(self)
+    return result
+
+def theader_html_renderer(self):
+    result = u'\\hline %s \\hline'
+    return result %(base_renderer(self))
+
+def tfooter_html_renderer(self):
     result = base_renderer(self)
     return result
