@@ -198,6 +198,10 @@ class List( DocumentStructureNode ):
 		self.start = start
 		self.format = fmt
 
+class DescriptionList(List):
+	pass
+
+
 class UnorderedList( List ):
 	pass
 
@@ -208,12 +212,23 @@ class OrderedList( List ):
 class Item( DocumentStructureNode ):
 	pass
 
+class ItemWithDesc( Item ):
+	def __init__(self, desc=''):
+		self.desc = desc
+
+	def set_description(self, desc):
+		self.desc = desc
+
 class Table(DocumentStructureNode):
-	def __init__(self, number_of_col=0):
+	def __init__(self, number_of_col=0, caption=None):
 		self.number_of_col = number_of_col
+		self.caption = caption
 
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
+
+	def set_caption(self, caption):
+		self.caption = caption
 
 class Row(DocumentStructureNode):
 	def __init__(self, number_of_col=0):
@@ -226,6 +241,20 @@ class Cell (DocumentStructureNode):
 	pass
 
 class TBody(DocumentStructureNode):
+	def __init__(self, number_of_col=0):
+		self.number_of_col = number_of_col
+		
+	def set_number_of_col(self, number_of_col):
+		self.number_of_col = number_of_col
+
+class THead(DocumentStructureNode):
+	def __init__(self, number_of_col=0):
+		self.number_of_col = number_of_col
+		
+	def set_number_of_col(self, number_of_col):
+		self.number_of_col = number_of_col
+
+class TFoot(DocumentStructureNode):
 	def __init__(self, number_of_col=0):
 		self.number_of_col = number_of_col
 		
@@ -267,7 +296,6 @@ class Mtable(DocumentStructureNode):
 		
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
-
 
 class Mtr(DocumentStructureNode):
 	def __init__(self, number_of_col=0):
@@ -469,4 +497,5 @@ class OMathLimUpp(DocumentStructureNode):
 
 class OMathBorderBox(DocumentStructureNode):
 	pass
+
 
