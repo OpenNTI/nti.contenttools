@@ -8,7 +8,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-#from IPython.core.debugger import Tracer
+from IPython.core.debugger import Tracer
 
 import os
 import shutil
@@ -166,7 +166,8 @@ class EPUBFile( object ):
         if self.image_list == []:
             logger.info ("NO IMAGE FOUND")
         for image in self.image_list:
-            path = os.path.join( output_dir, image.path )
+            new_path = 'images/%s' %(image.path)
+            path = os.path.join( output_dir, new_path )
             if not os.path.exists(os.path.dirname(path)):
                 os.mkdir(os.path.dirname(path))
             image.data.seek(0)
