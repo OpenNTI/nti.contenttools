@@ -1026,7 +1026,6 @@ def _process_p_elements( element, epub ):
     return el
 
 def _process_section_elements(element, epub):
-    Tracer()()
     el = Paragraph.process(element, epub)
     return el
 

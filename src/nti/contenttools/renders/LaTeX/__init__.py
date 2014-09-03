@@ -27,22 +27,22 @@ from .math import *
 from .omath import*
 
 def note_renderer(self):
-    return u'\\footnote{%s}' % base_renderer(self)
+    return u'\\footnote{%s} ' % base_renderer(self)
 
 def hyperlink_renderer(self):
     result = u''
     if self.type == 'Normal':
-        result = u'\\href{%s}{%s}' % (self.target, base_renderer(self))
+        result = u'\\href{%s}{%s} ' % (self.target, base_renderer(self))
     elif self.type == 'YouTube':
-        result = u'\\ntiincludevideo{%s}' % self.target
+        result = u'\\ntiincludevideo{%s} ' % self.target
     elif self.type == 'Thumbnail':
-        result = u'\\href{%s}{%s}' % (self.target, base_renderer(self))
+        result = u'\\href{%s}{%s} ' % (self.target, base_renderer(self))
     elif self.type == 'Pageref':
-        result = u'\\pageref{%s}' % self.target
+        result = u'\\pageref{%s} ' % self.target
     return result
 
 def label_renderer(self):
-    return u'\\label{%s}' % self.name
+    return u'\\label{%s} ' % self.name
 
 def sidebar_renderer(self):
     body = base_renderer(self)
