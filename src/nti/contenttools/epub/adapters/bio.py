@@ -329,6 +329,43 @@ class Video( types.Video ):
         epub.video_list.append(me)
         return me
 
+class OrderedList( types.OrderedList ):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        if 'type' in element.attrib:
+            numbering_type = element.attrib['type']
+            me.start = 1
+            if numbering_type == u'1':
+                me.format = 'decimal'
+            elif numbering_type == u'a':
+                me.format = 'lowerLetter'
+            elif numbering_type == u'A':
+                me.format = 'upperLetter'
+            elif numbering_type == u'i':
+                me.format = 'lowerRoman'
+            elif numbering_type == u'I':
+                me.format = 'upperRoman'
+            else:
+                logger.warn("UNHANDLED OrderedList numbering format type %s", numbering_type)
+
+        for child in element:
+            el = None
+            if child.tag == 'li':
+                el = Item.process(child, epub)
+            else:
+                logger.info('OrderedList child %s',child.tag)
+                el = Item()
+
+            if isinstance(el, types.Item) or isinstance(el, types.List):
+                me.add_child( el )
+            else:
+                if len(me.children) == 0:
+                    me.add_child( Item() )
+                me.children[-1].add_child( el )
+
+        return me
+
 class UnorderedList( types.UnorderedList ):
 
     @classmethod
@@ -700,7 +737,7 @@ class Mtable(types.Mtable):
             if element.text.isspace():
                 pass
             else:
-                me.add_child(types.TextNode(element.text))
+                me.add_child(types.TextNode(element.text, type_text = 'omath'))
 
         for child in element:
             if child.tag == 'mtr':
@@ -724,7 +761,7 @@ class Mtr(types.Mtr):
             if element.text.isspace():
                 pass
             else:
-                me.add_child(types.TextNode(element.text))
+                me.add_child(types.TextNode(element.text, type_text = 'omath'))
 
         for child in element:
             if child.tag == 'mtd':
@@ -753,7 +790,7 @@ class Mfrac (types.Mfrac):
             if element.text.isspace():
                 pass
             else:
-                me.add_child(types.TextNode(element.text))
+                me.add_child(types.TextNode(element.text, type_text = 'omath'))
 
         for child in element:
             if child.tag == 'mrow':
@@ -827,7 +864,7 @@ class MathRun(types.MathRun):
             if element.text.isspace():
                 pass
             else:
-                me.add_child(types.TextNode(element.text))
+                me.add_child(types.TextNode(element.text, type_text = 'omath'))
         
         for child in element:
             if child.tag == 'mi':
@@ -1106,7 +1143,7 @@ def _process_big_elements(element, epub):
     return Run.process(element, epub)
 
 def _process_ol_elements(element, epub):
-    return UnorderedList.process(element, epub)
+    return OrderedList.process(element, epub)
 
 def _process_table_elements(element, epub):
     return Table.process(element,epub)
