@@ -9,6 +9,7 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 from .base import base_renderer, _environment_renderer
+from IPython.core.debugger import Tracer
 
 def ordered_list_renderer(self):
     optional = u''
@@ -41,5 +42,15 @@ def list_desc_renderer(self):
     return _environment_renderer(self, u'description', u'')
 
 def item_with_desc_renderer(self):
-    return u'\\item [%s] %s \n' % (base_renderer(self), self.desc)
+    return base_renderer(self)
+    
+def dt_renderer(self):
+    result = []
+    for child in self.desc:
+        result.append(child.render())
+    desc =  u''.join(result)
+    return u'\\item [%s] %s \n' % (base_renderer(self), desc)
+
+def dd_renderer(self):
+    return base_renderer(self)
 
