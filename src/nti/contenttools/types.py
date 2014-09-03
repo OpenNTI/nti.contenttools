@@ -213,11 +213,18 @@ class Item( DocumentStructureNode ):
 	pass
 
 class ItemWithDesc( Item ):
-	def __init__(self, desc=''):
+	pass
+	
+class DT(DocumentStructureNode):
+	def __init__(self, desc=None):
 		self.desc = desc
 
 	def set_description(self, desc):
 		self.desc = desc
+
+
+class DD(DocumentStructureNode):
+	pass
 
 class Table(DocumentStructureNode):
 	def __init__(self, number_of_col=0, caption=None):

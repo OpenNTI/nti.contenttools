@@ -139,7 +139,10 @@ class Paragraph( types.Paragraph ):
             elif child.tag == 'math':
                 me.add_child(_process_math_elements(child, epub))
             else:
-                logger.warn('on Paragraph.process >> UNHANDLED  CHILD : %s', child)
+                if isinstance(child,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled Paragraph child: %s.',child.tag)
 
         if element.tail:
             me.add_child( types.TextNode( element.tail.replace('\r', '' ) ) )
@@ -358,45 +361,110 @@ class DescriptionList( types.DescriptionList ):
     @classmethod
     def process(cls, element, epub):
         me = cls()
-
-        for child in element:
-            if child.tag == 'dt':
-                el = ItemWithDesc.process(child, epub)
-            elif child.tag == 'dd':
-                if child.text:
-                    el.set_description(child.text.rstrip())
-                me.add_child(el)
-                el = None
-            elif child.tag == 'a':
-                pass
-            else:
-                logger.warn('Unhandled Description List child %s',child)
+        me.add_child(ItemWithDesc.process(element, epub))
         return me
 
 class ItemWithDesc( types.ItemWithDesc ):
-
     @classmethod
     def process(cls, element, epub):
-        me = None
-        child = Run.process(element, epub)
-        if isinstance(child, types.List):
-            me = child
-        else:
-            me = cls()
-            me.add_child( child )
+        me = cls()
+        count_child = -1
+        for child in element:
+            if child.tag == 'dt':
+                el = DT.process(child, epub)
+                me.add_child(el)
+                count_child = count_child + 1
+            elif child.tag == 'dd':
+                if me.children[count_child].desc == None:
+                    desc = []
+                    _dd = DD.process(child, epub)
+                    desc.append(_dd)
+                    me.children[count_child].set_description(desc)
+                else:
+                    desc = me.children[count_child].desc
+                    _dd = DD.process(child, epub)
+                    desc.append(_dd)
+                    me.children[count_child].set_description(desc)
+            elif child.tag == 'a':
+                if me.children[count_child].desc == None:
+                    desc = []
+                    _a = _process_a_elements(child, epub)
+                    desc.append(_a)
+                    me.children[count_child].set_description(desc)
+                else:
+                    desc = me.children[count_child].desc
+                    _a = _process_a_elements(child, epub)
+                    desc.append(_a)
+                    me.children[count_child].set_description(desc)
+            else:
+                logger.warn('UNHANDLED <dl> element : %s', child.tag)
+        return me
+
+class DT(types.DT):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        if element.text:
+            if element.text.isspace():
+                pass
+            else:
+                new_el_text = element.text.rstrip() + u' '
+                me.add_child(types.TextNode(new_el_text))
+        for sub_el in element:
+            if sub_el.tag == 'p':
+                me.add_child(_process_p_elements(sub_el, epub))
+            elif sub_el.tag == 'img':
+                me.add_child(Image.process(sub_el, epub))
+            elif sub_el.tag ==  'span':
+                me.add_child(_process_span_elements(sub_el, epub))
+            elif sub_el.tag ==  'sub':
+                me.add_child(_process_sub_elements(sub_el, epub))
+            elif sub_el.tag ==  'sup':
+                me.add_child(_process_sup_elements(sub_el, epub))
+            else:
+                logger.info('Unhandled <dt> element %s', sub_el.tag)
+        return me
+
+class DD(types.DD):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        if element.text:
+            if element.text.isspace():
+                pass
+            else:
+                new_el_text = element.text.rstrip() + u' '
+                me.add_child(types.TextNode(new_el_text))
+        for sub_el in element:
+            if sub_el.tag == 'p':
+                me.add_child(_process_p_elements(sub_el, epub))
+            else:
+                logger.info('Unhandled <dd> element %s', sub_el.tag)
         return me
 
 class Item( types.Item ):
     @classmethod
     def process(cls, element, epub):
         me = cls()
+        if element.text:
+            if element.text.isspace():
+                pass
+            else:
+                new_el_text = element.text.rstrip() + u' '
+                me.add_child(types.TextNode(new_el_text))
         for sub_el in element:
             if sub_el.tag == 'ul':
                 me.add_child(_process_ul_elements(sub_el, epub))
             elif sub_el.tag == 'a':
                 me.add_child(_process_a_elements(sub_el, epub))
+            elif sub_el.tag == 'p':
+                me.add_child(_process_p_elements(sub_el, epub))
+            elif sub_el.tag == 'span':
+                me.add_child(_process_span_elements(sub_el, epub))
+            elif sub_el.tag == 'div':
+                me.add_child(_process_div_elements(sub_el, epub))
             else:
-                me.add_child(Run.process(sub_el, epub))
+                logger.info('Unhandled item child %s', sub_el.tag)
         return me
 
 class Table(types.Table):
