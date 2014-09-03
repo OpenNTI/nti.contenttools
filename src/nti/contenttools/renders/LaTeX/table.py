@@ -102,7 +102,7 @@ def tbody_html_renderer(self):
     return result
 
 def theader_html_renderer(self):
-    result = u'\\hline %s \\hline'
+    result = u'\\hline %s \\hline\n'
     return result %(base_renderer(self))
 
 def tfooter_html_renderer(self):
