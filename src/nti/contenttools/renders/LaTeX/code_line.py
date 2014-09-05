@@ -11,4 +11,6 @@ logger = __import__('logging').getLogger(__name__)
 from .base import base_renderer
 
 def code_line_rendered(self):
-	return u'\\begin{lstlistings} %s \\end{lstlistings}' %(base_renderer(self))
+	
+	#return u'\\begin{lstlisting} %s \\end{lstlisting}' %(base_renderer(self))
+	return u'\\begin{verbatim} %s \\end{verbatim}' %(base_renderer(self))

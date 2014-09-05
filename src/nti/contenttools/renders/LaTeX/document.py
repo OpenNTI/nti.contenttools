@@ -20,7 +20,7 @@ def document_renderer(self):
         output = output + _author( self.author )
     output = output + base_renderer(self)
     return output
-
+    
 def _document_class( docclass, options='' ):
     if options:
         options = u'[%s]' % options

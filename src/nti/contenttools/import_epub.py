@@ -7,7 +7,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
-#from IPython.core.debugger import Tracer
+from IPython.core.debugger import Tracer
 
 import os
 import codecs
@@ -57,21 +57,29 @@ def main():
     if not os.path.exists( args.output ):
         os.mkdir( args.output )
 
-    epub = EPUBFile(args.inputfile)
-    #logger.info('epub type: %s', type(epub))
-    #logger.info('epub.title: %s', epub.title)
-    #logger.info('epub.manifest: %s', epub.manifest)
-    #logger.info('epub.spine: %s', epub.spine)
+    epub = EPUBFile(args.inputfile)    
     logger.info ('Number of spine %s', len(epub.spine))
     if epub.title:
         outputfile = os.path.join(args.output, _title_escape(epub.title)+'.tex')
     else:
         outputfile = os.path.join(args.output, _title_escape(os.path.splitext(inputfile)[0])+'.tex')
 
-    #Tracer()()
 
     with codecs.open( outputfile, 'w', 'utf-8' ) as fp:
         fp.write( epub.render() )
+
+    document = epub.document
+    
+    #since document only has one body
+    body = document.children[0]
+    body_child = 0
+    for child in body:
+        #write each body child into different latex file
+        #we use this format : page_1.tex
+        outputfile = os.path.join(args.output, 'file_'+str(body_child)+'.tex')
+        with codecs.open( outputfile, 'w', 'utf-8' ) as fp:
+            fp.write(epub.render_body_child(body_child))
+        body_child = body_child + 1
 
     epub.get_media(args.output)
 
