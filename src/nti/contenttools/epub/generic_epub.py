@@ -122,7 +122,7 @@ class EPUBFile( object ):
             self.author = self.metadata['creator']
 
         docfrags = []
-        doc_body = types.Body()
+        doc_body = types.EPUBBody()
         # Create a special parser for dealing with the content files
         parser = XHTMLParser(load_dtd=True,dtd_validation=True)
         logger.info('SPINE: %s',self.spine)
@@ -154,8 +154,10 @@ class EPUBFile( object ):
         self.document.author = self.author
 
     def render(self):
-        #Tracer()()
         return self.document.render()
+
+    def render_body_child(self, body_child):
+        return self.document.children[0].children[body_child].render() 
 
     def get_media(self, output_dir='.'):
         self.get_images(output_dir)

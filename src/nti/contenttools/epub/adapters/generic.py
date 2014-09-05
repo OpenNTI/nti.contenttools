@@ -22,7 +22,10 @@ from PIL import Image as PILImage
 from urlparse import urlparse
 
 from lxml import etree
+
 from lxml.html import HtmlComment
+
+
 
 class Chapter( types.Chapter ):
 

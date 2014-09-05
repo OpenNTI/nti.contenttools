@@ -117,6 +117,9 @@ class Document( DocumentStructureNode ):
 class Body( DocumentStructureNode ):
 	pass
 
+class EPUBBody(DocumentStructureNode):
+	pass
+
 class Chapter( DocumentStructureNode ):
 
 	def __init__( self, suppressed=False ):
