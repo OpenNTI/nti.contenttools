@@ -123,13 +123,9 @@ class Run( types.Run ):
 					pass
 
 				elif element.tag == AlternateContent_el:
-					for el in element.iterchildren():
-						if el.tag == Choice_el:
-							choice_el_child = process_choice_el(el,doc)
-							if choice_el_child is not None:
-								me.add_child(choice_el_child)
-							else:
-								pass
+					from .alternate_content import AlternateContent
+					me.add_child(AlternateContent.process(element, doc))
+					
 				# We did not handle the element
 				else:
 					logger.warn('Did not handle run element: %s', element.tag)
@@ -187,12 +183,8 @@ class Run( types.Run ):
 			else:
 				logger.warn('Unhandled run property: %s' % element.tag)
 
-def process_choice_el(el,doc):
-	doc_main_prefix = docx.nsprefixes['w']
-	drawing_el = '{%s}drawing' %(doc_main_prefix)
-	for child in el:
-		if child.tag == drawing_el:
-			from paragraph import Image
-			image_child = Image.process(child, doc)
-			return image_child
-	return None
+
+
+
+
+
