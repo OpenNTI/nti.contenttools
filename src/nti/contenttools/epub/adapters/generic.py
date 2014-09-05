@@ -303,9 +303,8 @@ class Image( types.Image ):
         if 'alt' in element.attrib.keys():
             me.caption = element.attrib['alt']
         image_path = os.path.join(epub.content_path, me.path)
-        not_exist = ['content/m50257/fig-ch04_17_02.png']
-        if image_path not in not_exist:
-            me.data = StringIO.StringIO( epub.zipfile.read(os.path.join(epub.content_path, me.path)) )
+        if image_path in epub.zipfile.namelist():
+            me.data = StringIO.StringIO( epub.zipfile.read(image_path) )
             me.width, me.height = PILImage.open(me.data).size
             epub.image_list.append(me)
             return me
