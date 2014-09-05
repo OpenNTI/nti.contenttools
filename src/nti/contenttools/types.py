@@ -505,4 +505,11 @@ class OMathLimUpp(DocumentStructureNode):
 class OMathBorderBox(DocumentStructureNode):
 	pass
 
+class CodeLine(DocumentStructureNode):
+	pass
 
+class AlternateContent(DocumentStructureNode):
+	pass
+
+class TextBoxContent(DocumentStructureNode):
+	pass
