@@ -26,9 +26,9 @@ def _image_renderer(self, command):
         command = u'includegraphics'
 
     #to make sure we always keep images under images dir (especially when we work on Epub)
-    #new_path = 'images/%s' %(self.path)
-    #return u'\\%s[%s]{%s}' % (command, params, new_path)
-    return u'\\%s[%s]{%s}' % (command, params, self.path)
+    new_path = 'images/%s' %(self.path)
+    return u'\\%s[%s]{%s}' % (command, params, new_path)
+    #return u'\\%s[%s]{%s}' % (command, params, self.path)
 
 def image_annotation_renderer(self):
     return _image_renderer(self, 'ntiincludeannotationgraphics')

@@ -22,7 +22,6 @@ from PIL import Image as PILImage
 from urlparse import urlparse
 
 from lxml import etree
-
 from lxml.html import HtmlComment
 
 class Chapter( types.Chapter ):
@@ -220,8 +219,8 @@ class Run( types.Run ):
                 me.add_child(_process_math_elements(child, epub))
             elif child.tag == 'dl':
                 me.add_child(_process_dl_elements(child, epub))
-            elif child.tag == 'li':
-                logger.info('FOUND li under Run')
+            elif child.tag == 'code':
+                me.add_child(_process_code_elements(child, epub))
             else:
                 if isinstance(child,HtmlComment):
                     pass
@@ -479,6 +478,8 @@ class DD(types.DD):
         for sub_el in element:
             if sub_el.tag == 'p':
                 me.add_child(_process_p_elements(sub_el, epub))
+            elif sub_el.tag == 'div':
+                me.add_child(_process_div_elements(sub_el, epub))
             else:
                 if isinstance(sub_el,HtmlComment):
                     pass
@@ -507,6 +508,16 @@ class Item( types.Item ):
                 me.add_child(_process_span_elements(sub_el, epub))
             elif sub_el.tag == 'div':
                 me.add_child(_process_div_elements(sub_el, epub))
+            elif sub_el.tag == 'sub':
+                me.add_child(_process_sub_elements(sub_el, epub))
+            elif sub_el.tag == 'sup':
+                me.add_child(_process_sup_elements(sub_el, epub))
+            elif sub_el.tag == 'table':
+                me.add_child(_process_table_elements(sub_el, epub))
+            elif sub_el.tag == 'br':
+                me.add_child( types.Newline())
+                if sub_el.tail:
+                    me.add_child(types.TextNode(sub_el.tail))
             else:
                 if isinstance(sub_el,HtmlComment):
                     pass
@@ -679,6 +690,8 @@ class Cell(types.Cell):
                 me.add_child(_process_sup_elements(child, epub ))
             elif child.tag == 'em':
                 me.add_child(_process_em_elements(child, epub))
+            elif child.tag == 'table':
+                me.add_child(_process_table_elements(child, epub))
             else:
                 if isinstance(child,HtmlComment):
                     pass
@@ -712,6 +725,10 @@ class CodeLine(types.CodeLine):
                 me.add_child(_process_kbd_elements(child, epub))
             elif child.tag == 'var':
                 me.add_child(_process_var_elements(child, epub))
+            elif child.tag == 'span':
+                me.add_child(_process_span_elements(child, epub))
+            elif child.tag == 'sup':
+                me.add_child(_process_sup_elements(child, epub))
             else:
                 logger.warn('Unhandled <code> element : %s', child.tag)
         return me
