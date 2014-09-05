@@ -111,7 +111,8 @@ class Document( DocumentStructureNode ):
 						  'ntiassessment',
 						  'amsmath',
 						  'stmaryrd',
-						  'enumitem']
+						  'enumitem',
+						  'listings']
 
 class Body( DocumentStructureNode ):
 	pass
