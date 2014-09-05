@@ -25,6 +25,8 @@ from .sectioning import *
 from .table import *
 from .math import *
 from .omath import*
+from .code_line import*
+from .alternate_content import*
 
 def note_renderer(self):
     return u'\\footnote{%s} ' % base_renderer(self)
@@ -155,3 +157,7 @@ types.OMathGroupChr.render = omath_groupchr_rendered
 types.OMathLimUpp.render = omath_limupp_rendered
 types.OMathBorderBox.render = omath_bdr_box_rendered
 
+types.CodeLine.render = code_line_rendered
+
+types.AlternateContent.render = alternate_content_rendered
+types.TextBoxContent.render = text_box_content_rendered
