@@ -434,7 +434,10 @@ class ItemWithDesc( types.ItemWithDesc ):
                     desc.append(_a)
                     me.children[count_child].set_description(desc)
             else:
-                logger.warn('UNHANDLED <dl> element : %s', child.tag)
+                if isinstance(child,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled <dl> element child: %s.',child.tag)
         return me
 
 class DT(types.DT):
@@ -459,7 +462,10 @@ class DT(types.DT):
             elif sub_el.tag ==  'sup':
                 me.add_child(_process_sup_elements(sub_el, epub))
             else:
-                logger.info('Unhandled <dt> element %s', sub_el.tag)
+                if isinstance(sub_el,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled <dt> child: %s.',sub_el.tag)
         return me
 
 class DD(types.DD):
@@ -476,7 +482,10 @@ class DD(types.DD):
             if sub_el.tag == 'p':
                 me.add_child(_process_p_elements(sub_el, epub))
             else:
-                logger.info('Unhandled <dd> element %s', sub_el.tag)
+                if isinstance(sub_el,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled <dd> child: %s.',sub_el.tag)
         return me
 
 class Item( types.Item ):
@@ -501,7 +510,10 @@ class Item( types.Item ):
             elif sub_el.tag == 'div':
                 me.add_child(_process_div_elements(sub_el, epub))
             else:
-                logger.info('Unhandled item child %s', sub_el.tag)
+                if isinstance(sub_el,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled item child: %s.',sub_el.tag)
         return me
 
 class Table(types.Table):
@@ -526,6 +538,7 @@ class Table(types.Table):
                 me.add_child(Row.process(child, epub))
             elif child.tag == 'thead':
                 me.add_child(THead.process(child, epub))
+                number_of_col = me.children[count_child].number_of_col
             elif child.tag == 'tfoot':
                 me.add_child(TFoot.process(child, epub))
             elif child.tag == 'caption':
@@ -534,7 +547,10 @@ class Table(types.Table):
                     logger.info("Table caption = %s", me.caption)
                 count_child = count_child - 1
             else:
-                logger.warn("UNHANDLED child under TABLE element %s", child.tag)
+                if isinstance(child,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled table child: %s.',child.tag)
                 count_child = count_child - 1
             count_child = count_child + 1
 
@@ -556,10 +572,12 @@ class TBody(types.TBody):
             if child.tag == 'tr':
                 me.add_child(Row.process(child, epub))
                 number_of_col = me.children[count_child].number_of_col
+                count_child = count_child + 1
             else:
-                logger.warn("UNHANDLED child under tbody element %s", child.tag)
-                count_child = count_child - 1
-            count_child = count_child + 1
+                if isinstance(child,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled <tbody> child: %s.',child.tag)
         me.set_number_of_col(number_of_col)
         return me
 
@@ -573,10 +591,12 @@ class THead(types.THead):
             if child.tag == 'tr':
                 me.add_child(Row.process(child, epub))
                 number_of_col = me.children[count_child].number_of_col
+                count_child = count_child + 1
             else:
-                logger.warn("UNHANDLED child under thead element %s", child.tag)
-                count_child = count_child - 1
-            count_child = count_child + 1
+                if isinstance(child,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled <thead> child: %s.',child.tag)
         me.set_number_of_col(number_of_col)
         return me
 
@@ -590,10 +610,12 @@ class TFoot(types.TFoot):
             if child.tag == 'tr':
                 me.add_child(Row.process(child, epub))
                 number_of_col = me.children[count_child].number_of_col
+                count_child = count_child + 1
             else:
-                logger.warn("UNHANDLED child under tfoot element %s", child.tag)
-                count_child = count_child - 1
-            count_child = count_child + 1
+                if isinstance(child,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled <tfoot> child: %s.',child.tag)
         me.set_number_of_col(number_of_col)
         return me
 
@@ -612,7 +634,10 @@ class Row (types.Row):
                 me.add_child(Cell.process(child, epub))
                 number_of_col = number_of_col + 1
             else:
-                logger.warn("UNHANDLED child under TABLE:tr element %s: ", child.tag)
+                if isinstance(child,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled <tr> child: %s.',child.tag)
         me.set_number_of_col(number_of_col)
         return me
 
@@ -654,8 +679,13 @@ class Cell(types.Cell):
                 me.add_child(_process_div_elements(child, epub))
             elif child.tag == 'sup':
                 me.add_child(_process_sup_elements(child, epub ))
+            elif child.tag == 'em':
+                me.add_child(_process_em_elements(child, epub))
             else:
-                logger.warn("UNHANDLED child under table cell element %s", child.tag)
+                if isinstance(child,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled <td> child: %s.',child.tag)
         return me
 
 class Math(types.Math):
@@ -1131,7 +1161,7 @@ def _process_a_elements( element, epub ):
     return el
 
 def _process_em_elements(element, epub):
-    return Run.process(element, epub, ['italic', 'bold'])
+    return Run.process(element, epub, ['italic'])
 
 def _process_q_elements(element, epub):
     return Run.process(element, epub, ['bold'])
