@@ -20,7 +20,7 @@ from lxml.html import html5parser, XHTMLParser
 from tempfile import mkdtemp
 from zipfile import ZipFile
 
-from .adapters import stat as Adapter
+from .adapters import generic as Adapter
 from .. import types
 
 from nti.contenttools.renders import LaTeX

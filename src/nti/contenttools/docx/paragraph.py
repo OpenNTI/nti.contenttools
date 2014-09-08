@@ -258,7 +258,7 @@ class Hyperlink( types.Hyperlink ):
 			self.type = 'Normal'
 
 
-class Image( types.Image ):
+class Image( types.DocxImage ):
 	target = ''
 	type = ''
 	height = 0

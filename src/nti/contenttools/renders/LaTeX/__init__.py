@@ -90,11 +90,15 @@ types.Hyperlink.render = hyperlink_renderer
 types.Label.render = label_renderer
 types.Sidebar.render = sidebar_renderer
 types.BlockQuote.render = blockquote_renderer
+
 Table.render = table_renderer
 Table.Row.render = table_row_renderer
 Table.Row.Cell.render = table_cell_renderer
+
 types.Image.render = image_annotation_renderer
+types.DocxImage.render = docx_image_annotation_renderer
 types.Video.render = video_renderer
+
 NAQuestion.render = question_renderer
 NAQuestionPart.render = question_part_renderer
 NAQChoices.render = choices_renderer

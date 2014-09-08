@@ -10,6 +10,25 @@ logger = __import__('logging').getLogger(__name__)
 from IPython.core.debugger import Tracer
 
 def _image_renderer(self, command):
+    params, command = set_image_params_and_command(self,command)
+    #to make sure we always keep images under images dir (especially when we work on Epub)
+    new_path = 'images/%s' %(self.path)
+    return u'\\%s[%s]{%s}' % (command, params, new_path)
+
+def image_annotation_renderer(self):
+    return _image_renderer(self, 'ntiincludeannotationgraphics')
+
+def image_noannotation_renderer(self):
+    return _image_renderer(self, 'ntiincludenoannotationgraphics')
+
+def docx_image_annotation_renderer(self):
+    return docx_image_renderer(self, 'ntiincludeannotationgraphics')
+
+def docx_image_renderer(self, command):
+    params, command = set_image_params_and_command(self,command)
+    return u'\\%s[%s]{%s}' % (command, params, self.path)
+
+def set_image_params_and_command(self, command):
     width = self.width
     height = self.height
 
@@ -25,13 +44,4 @@ def _image_renderer(self, command):
     if self.width < threshold or self.height < threshold:
         command = u'includegraphics'
 
-    #to make sure we always keep images under images dir (especially when we work on Epub)
-    new_path = 'images/%s' %(self.path)
-    return u'\\%s[%s]{%s}' % (command, params, new_path)
-    #return u'\\%s[%s]{%s}' % (command, params, self.path)
-
-def image_annotation_renderer(self):
-    return _image_renderer(self, 'ntiincludeannotationgraphics')
-
-def image_noannotation_renderer(self):
-    return _image_renderer(self, 'ntiincludenoannotationgraphics')
+    return params, command
