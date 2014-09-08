@@ -67,6 +67,7 @@ def video_renderer(self):
 
 types.Document.render = document_renderer
 types.Body.render = body_renderer
+types.EPUBBody.render = epub_body_renderer
 types.Chapter.render = chapter_renderer
 types.Section.render = section_renderer
 types.SubSection.render = subsection_renderer
