@@ -122,7 +122,7 @@ class EPUBFile( object ):
             self.author = self.metadata['creator']
 
         docfrags = []
-        doc_body = types.EPUBBody()
+        doc_body = types.Body()
         # Create a special parser for dealing with the content files
         parser = XHTMLParser(load_dtd=True,dtd_validation=True)
         logger.info('SPINE: %s',self.spine)
