@@ -184,6 +184,9 @@ class Image( DocumentStructureNode ):
 		self.width = 0
 		self.height = 0
 
+class DocxImage( Image ):
+	pass
+
 class Video( DocumentStructureNode ):
 
 	def __init__(self, path=''):
