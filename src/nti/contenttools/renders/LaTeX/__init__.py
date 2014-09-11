@@ -27,6 +27,7 @@ from .math import *
 from .omath import*
 from .code_line import*
 from .alternate_content import*
+from .note_interactive import*
 
 def note_renderer(self):
     return u'\\footnote{%s} ' % base_renderer(self)
@@ -166,3 +167,5 @@ types.CodeLine.render = code_line_rendered
 
 types.AlternateContent.render = alternate_content_rendered
 types.TextBoxContent.render = text_box_content_rendered
+
+types.NoteInteractive.render = note_interactive_rendered

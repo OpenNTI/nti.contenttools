@@ -7,7 +7,6 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
-from IPython.core.debugger import Tracer
 
 def _image_renderer(self, command):
     params, command = set_image_params_and_command(self,command)
@@ -45,3 +44,7 @@ def set_image_params_and_command(self, command):
         command = u'includegraphics'
 
     return params, command
+
+def figure_rendered(self, command):
+    return u'\\begin{figure}\n%s\n\\caption{%s}\n\\label{%s}\n\\end{figure}\n'\
+         %(image_annotation_renderer(self), self.caption, self.label)
