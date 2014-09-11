@@ -520,3 +520,34 @@ class AlternateContent(DocumentStructureNode):
 
 class TextBoxContent(DocumentStructureNode):
 	pass
+
+class NoteInteractive(DocumentStructureNode):
+	def __init__(self, image_path='', label='', link='', caption='', notes=''):
+		self.image_path = image_path
+		self.label = label
+		self.link = link
+		self.caption = caption
+		self.notes = notes
+
+	def set_image_path(self,image_path):
+		self.image_path = image_path
+
+	def set_label(self, label):
+		self.label = label
+
+	def set_link(self, link):
+		self.link = link
+
+	def set_caption(self, caption):
+		self.caption = caption
+
+	def set_notes(self, notes):
+		self.notes = notes
+
+class NoteInteractiveImage(DocumentStructureNode):
+	def __init__(self, path=''):
+		super( NoteInteractiveImage, self ).__init__()
+		self.path = u''
+		self.caption = u''
+
+
