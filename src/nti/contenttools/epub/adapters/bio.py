@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: generic.py 47366 2014-08-18 16:25:00Z egawati.panjei $
+.. $Id: bio.py 47366 2014-08-18 16:25:00Z egawati.panjei $
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
@@ -138,6 +138,8 @@ class Paragraph( types.Paragraph ):
                 me.add_child(_process_big_elements(child, epub))
             elif child.tag == 'math':
                 me.add_child(_process_math_elements(child, epub))
+            elif child.tag == 'code':
+                me.add_child(CodeLine.process(child, epub))
             else:
                 if isinstance(child,HtmlComment):
                     pass
@@ -220,8 +222,8 @@ class Run( types.Run ):
                 me.add_child(_process_math_elements(child, epub))
             elif child.tag == 'dl':
                 me.add_child(_process_dl_elements(child, epub))
-            elif child.tag == 'li':
-                logger.info('FOUND li under Run')
+            elif child.tag == 'code':
+                me.add_child(_process_code_elements(child, epub))
             else:
                 if isinstance(child,HtmlComment):
                     pass
@@ -294,7 +296,111 @@ class BlockQuote( types.BlockQuote ):
         me.add_child( Paragraph.process( element, epub ) )
         return me
 
-class Image( types.Image ):
+class NoteInteractive(types.NoteInteractive):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        el = None
+        notes = u''
+        if 'id' in element.attrib.keys():
+            me.set_label('test')
+        for child in element:
+            if child.tag == 'div':
+                class_ = u''    
+                if 'class' in child.attrib.keys():
+                    class_ = child.attrib['class']
+
+                if class_ in ['title']:
+                    caption = _process_div_elements(child,epub)
+                    me.set_caption(caption.children[0].children[0])
+                elif class_ in ['body']:
+                    for sub_el in child:
+                        if sub_el.tag == 'div' and sub_el.attrib['class'] == 'mediaobject':
+                            path = process_img_note_interactive(sub_el, epub)
+                            me.set_image_path(path)
+                        elif sub_el.tag == 'p':
+                            el, link, note = process_link_interactive(sub_el, epub)
+                            notes = notes + note
+                            me.set_notes(notes)
+                            if link is not None:
+                                me.set_link(link)
+                        else:
+                            logger.warn('Unhandled element of note interactive under div class body : %s', sub_el.attrib['class'])
+                else:
+                    logger.warn('Unhandled note interactiv div class %s',class_)
+            else:
+                logger.warn('Unhandled note interactive element %s', child.tag)
+        if me.link is None:
+            logger.warn('Link is empty')
+            logger.warn('notes : %s', me.notes)
+        else:
+            logger.info('Link :%s', me.link)
+            logger.info('notes : %s', me.notes)
+        return me
+
+def process_img_note_interactive(element, epub):
+    path = u''
+    for child in element:
+        if child.tag == 'img':
+            path = NoteInteractiveImage.process(child, epub)
+    return path
+
+class NoteInteractiveImage(types.NoteInteractiveImage):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.path = element.attrib['src']
+        if 'alt' in element.attrib.keys():
+            me.caption = element.attrib['alt']
+        image_path = os.path.join(epub.content_path, me.path)
+        if image_path in epub.zipfile.namelist():
+            me.data = StringIO.StringIO( epub.zipfile.read(image_path))
+            me.width, me.height = PILImage.open(me.data).size
+            epub.image_list.append(me)
+            return me.path
+        else:
+            logger.warn("Note Interactive Image Path %s does not exist", image_path)
+
+def process_link_interactive(element, epub):
+    link = None
+    notes = u''
+    el = _process_p_elements(element,epub)
+    for sub_el in el:
+        if isinstance(sub_el, types.Run):
+            temp, note = process_run_interactive(sub_el, epub)
+            if temp is not None:
+                link = temp
+            notes = notes + note
+        elif isinstance(sub_el, types.Hyperlink):
+            link = sub_el.target
+            if isinstance(sub_el.children[0], types.Run):
+                temp, note = process_run_interactive(sub_el, epub)
+                notes = notes + note
+            else:
+                notes = notes + sub_el.children[0]
+        else:
+            notes = notes + sub_el
+    return el, link, notes
+
+def process_run_interactive(element, epub):
+    link = None
+    notes = u''
+    for child in element:
+        if isinstance(child, types.Hyperlink):
+            link = child.target
+            if isinstance(child.children[0], types.Run):
+                temp, note = process_run_interactive(child, epub)
+                notes = notes + note
+            else:
+                notes = notes + child.children[0]
+        elif isinstance(child, types.Run):
+            link, note = process_run_interactive(child, epub)
+            notes = notes + note
+        else:
+            notes = notes + child
+    return link, notes
+
+class Image(types.Image ):
 
     @classmethod
     def process(cls, element, epub):
@@ -303,10 +409,8 @@ class Image( types.Image ):
         if 'alt' in element.attrib.keys():
             me.caption = element.attrib['alt']
         image_path = os.path.join(epub.content_path, me.path)
-        not_exist = ['content/OSC.png','content/m44605/Figure_22_02_05f.jpg','content/m44605/Figure_22_02_06f.jpg', 'content/Rice.jpg'\
-            , 'content/hewlett.jpg', 'content/gates.jpg', 'content/20mm.png', 'content/maxfield.png']
-        if image_path not in not_exist:
-            me.data = StringIO.StringIO( epub.zipfile.read(os.path.join(epub.content_path, me.path)) )
+        if image_path in epub.zipfile.namelist():
+            me.data = StringIO.StringIO( epub.zipfile.read(image_path) )
             me.width, me.height = PILImage.open(me.data).size
             epub.image_list.append(me)
             return me
@@ -481,6 +585,8 @@ class DD(types.DD):
         for sub_el in element:
             if sub_el.tag == 'p':
                 me.add_child(_process_p_elements(sub_el, epub))
+            elif sub_el.tag == 'div':
+                me.add_child(_process_div_elements(sub_el, epub))
             else:
                 if isinstance(sub_el,HtmlComment):
                     pass
@@ -509,6 +615,16 @@ class Item( types.Item ):
                 me.add_child(_process_span_elements(sub_el, epub))
             elif sub_el.tag == 'div':
                 me.add_child(_process_div_elements(sub_el, epub))
+            elif sub_el.tag == 'sub':
+                me.add_child(_process_sub_elements(sub_el, epub))
+            elif sub_el.tag == 'sup':
+                me.add_child(_process_sup_elements(sub_el, epub))
+            elif sub_el.tag == 'table':
+                me.add_child(_process_table_elements(sub_el, epub))
+            elif sub_el.tag == 'br':
+                me.add_child( types.Newline())
+                if sub_el.tail:
+                    me.add_child(types.TextNode(sub_el.tail))
             else:
                 if isinstance(sub_el,HtmlComment):
                     pass
@@ -681,12 +797,49 @@ class Cell(types.Cell):
                 me.add_child(_process_sup_elements(child, epub ))
             elif child.tag == 'em':
                 me.add_child(_process_em_elements(child, epub))
+            elif child.tag == 'table':
+                me.add_child(_process_table_elements(child, epub))
             else:
                 if isinstance(child,HtmlComment):
                     pass
                 else:
                     logger.warn('Unhandled <td> child: %s.',child.tag)
         return me
+
+class CodeLine(types.CodeLine):
+    @classmethod
+    def process(cls, element, epub):
+        #logger.info("CHECK cell element")
+        me = cls()
+        if element.text:
+            if element.text.isspace():
+                pass
+            else:
+                new_el_text = element.text.rstrip() + u' '
+                me.add_child(types.TextNode(new_el_text))
+        for child in element.iterchildren():
+            if child.tag == 'em':
+                me.add_child(_process_em_elements(child, epub))
+            elif child.tag == 'strong':
+                me.add_child(_process_strong_elements(child, epub))
+            elif child.tag == 'dfn':
+                me.add_child(_process_dfn_elements(child, epub))
+            elif child.tag == 'code':
+                me.add_child(_process_code_elements(child, epub))
+            elif child.tag == 'samp':
+                me.add_child(_process_samp_elements(child, epub))
+            elif child.tag == 'kbd':
+                me.add_child(_process_kbd_elements(child, epub))
+            elif child.tag == 'var':
+                me.add_child(_process_var_elements(child, epub))
+            elif child.tag == 'span':
+                me.add_child(_process_span_elements(child, epub))
+            elif child.tag == 'sup':
+                me.add_child(_process_sup_elements(child, epub))
+            else:
+                logger.warn('Unhandled <code> element : %s', child.tag)
+        return me
+
 
 class Math(types.Math):
     @classmethod
@@ -1080,11 +1233,15 @@ def _consolidate_lists( list = [] ):
     return new_list
 
 def _process_div_elements( element, epub ):
-    #logger.info ('check element atrribute of body: %s', element.attrib.keys())
-    #logger.info ('type: ',type(element))
-    #class_ = u''
-    #el = None
-    el = Run.process(element, epub)
+    class_ = u''
+    if 'class' in element.attrib.keys():
+        class_ = element.attrib['class']
+
+    el = None
+    if class_ in ['note interactive']:
+        el = NoteInteractive.process(element, epub)
+    else:
+        el = Run.process(element, epub)
     return el
 
 
@@ -1160,11 +1317,29 @@ def _process_a_elements( element, epub ):
                 el = Label.process(element, epub)
     return el
 
+def _process_strong_elements(element, epub):
+    return Run.process(element, epub, ['bold'])
+
 def _process_em_elements(element, epub):
     return Run.process(element, epub, ['italic'])
 
 def _process_q_elements(element, epub):
     return Run.process(element, epub, ['bold'])
+
+def _process_dfn_elements(child, epub):
+    return Run.process(element, epub, 'italic')
+
+def _process_code_elements(element, epub):
+    return CodeLine.process(element,epub)
+
+def _process_samp_elements(element, epub):
+    return Run.process(element, epub)
+
+def _process_kbd_elements(element, epub):
+    return Run.process(element,epub)
+
+def _process_var_elements(element, epub):
+    return Run.process(element, epub, ['italic']) 
 
 def _process_hr_elements(element, epub):
     return Run.process(element, epub)
@@ -1189,9 +1364,6 @@ def _process_tr_elements(element, epub):
 
 def _process_td_elements(element, epub):
     return Cell.process(element, epub)
-
-def _process_strong_elements(element, epub):
-    return Run.process(element, epub, ['bold'])
 
 def _process_nav_elements(element, epub):
     return Run.process(element, epub)
