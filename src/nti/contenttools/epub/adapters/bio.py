@@ -324,6 +324,9 @@ class NoteInteractive(types.NoteInteractive):
                             me.set_notes(notes)
                             if link is not None:
                                 me.set_link(link)
+                        elif sub_el.tag == 'div' and sub_el.attrib['class'] == 'itemsizedlist':
+                            path = process_img_note_interactive(sub_el, epub)
+                            me.set_image_path(path)    
                         else:
                             logger.warn('Unhandled element of note interactive under div class body : %s', sub_el.attrib['class'])
                 else:
@@ -333,9 +336,7 @@ class NoteInteractive(types.NoteInteractive):
         if me.link is None:
             logger.warn('Link is empty')
             logger.warn('notes : %s', me.notes)
-        else:
-            logger.info('Link :%s', me.link)
-            logger.info('notes : %s', me.notes)
+        
         return me
 
 def process_img_note_interactive(element, epub):
@@ -416,7 +417,35 @@ class Image(types.Image ):
             return me
         else:
             logger.warn("Image Path %s does not exist", image_path)
-        
+
+class Figure(types.Figure):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        for child in element:
+            if child.tag == 'div' and child.attrib['class'] == 'caption':
+                me.set_caption(process_caption_figure(child, epub))
+            elif child.tag == 'div' and child.attrib['class'] == 'title':
+                me.set_label(process_title_figure(child, epub))
+            elif child.tag == 'div' and child.attrib['class'] == 'body':
+                me.add_child(process_body_figure(child, epub))
+            elif child.tag == 'table':
+                me.add_child(_process_table_elements(child, epub))
+            else:
+                logger.warn('Unhandled FIGURE child %s', child)
+        return me
+
+def process_caption_figure (element, epub):
+    el = _process_div_elements(element, epub)
+    return el
+
+def process_title_figure (element, epub):
+    el = _process_div_elements(element, epub)
+    return el
+
+def process_body_figure (element, epub):
+    el = _process_div_elements(element, epub)
+    return el   
 
 class Video( types.Video ):
 
@@ -1240,6 +1269,8 @@ def _process_div_elements( element, epub ):
     el = None
     if class_ in ['note interactive']:
         el = NoteInteractive.process(element, epub)
+    elif class_ in ['figure', 'figure splash']:
+        el = Figure.process(element, epub)
     else:
         el = Run.process(element, epub)
     return el
