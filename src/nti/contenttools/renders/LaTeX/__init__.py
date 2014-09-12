@@ -28,6 +28,7 @@ from .omath import*
 from .code_line import*
 from .alternate_content import*
 from .note_interactive import*
+from .glossary import *
 
 def note_renderer(self):
     return u'\\footnote{%s} ' % base_renderer(self)
@@ -164,10 +165,13 @@ types.OMathLimUpp.render = omath_limupp_rendered
 types.OMathBorderBox.render = omath_bdr_box_rendered
 
 types.CodeLine.render = code_line_rendered
-
 types.AlternateContent.render = alternate_content_rendered
 types.TextBoxContent.render = text_box_content_rendered
-
 types.NoteInteractive.render = note_interactive_rendered
-
 types.Figure.render = figure_rendered
+
+types.Glossary.render = glossary_renderer
+types.GlossaryList.render = glossary_list_renderer
+types.GlossaryItem.render = glossary_item_renderer
+types.GlossaryDT.render = glossary_dt_renderer
+types.GlossaryDD.render = glossary_dd_renderer

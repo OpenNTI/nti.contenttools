@@ -28,7 +28,7 @@ class _Node( object ):
 		self.children.remove( child )
 		child.__parent__ = None
 
-	def render( self ):
+	def render( self):
 		result = u''
 
 		if not hasattr(self, 'children'):
@@ -561,4 +561,30 @@ class Figure(DocumentStructureNode):
 	def set_label(self, label):
 		self.label = label
 
+class Glossary(DocumentStructureNode):
+	def __init__(self, title = None, filename=None):
+		self.title = title
+		self.filename = filename
 
+	def set_title(self, title):
+		self.title = title
+
+	def set_filename(self, filename):
+		self.filename = filename
+
+
+class GlossaryList(DocumentStructureNode):
+	pass
+
+class GlossaryItem(DocumentStructureNode):
+	pass
+	
+class GlossaryDT(DocumentStructureNode):
+	def __init__(self, desc=None):
+		self.desc = desc
+
+	def set_description(self, desc):
+		self.desc = desc
+
+class GlossaryDD(DocumentStructureNode):
+	pass

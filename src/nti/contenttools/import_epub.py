@@ -14,8 +14,8 @@ import codecs
 import argparse
 import logging
 from zope.exceptions import log as ze_log
-
-from .epub.generic_epub import EPUBFile
+from . import types
+from .epub.openstax_epub import EPUBFile
 
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
@@ -75,11 +75,15 @@ def main():
     body_child = 0
     for child in body:
         #write each body child into different latex file
-        #we use this format : page_1.tex
+        #we use this format : file_1.tex
         outputfile = os.path.join(args.output, 'file_'+str(body_child)+'.tex')
+        glossary_file = os.path.join(args.output, 'file_'+str(body_child)+'.json')
+        logger.info('------------')
+        logger.info(outputfile)
         with codecs.open( outputfile, 'w', 'utf-8' ) as fp:
-            fp.write(epub.render_body_child(body_child))
+            fp.write(epub.render_body_child(body_child, glossary_file))
         body_child = body_child + 1
+        logger.info('------------')
 
     epub.get_media(args.output)
 
