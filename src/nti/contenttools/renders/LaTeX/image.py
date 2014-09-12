@@ -6,7 +6,11 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
+from IPython.core.debugger import Tracer
+
 logger = __import__('logging').getLogger(__name__)
+from .base import base_renderer
+from ... import types
 
 def _image_renderer(self, command):
     params, command = set_image_params_and_command(self,command)
@@ -45,6 +49,26 @@ def set_image_params_and_command(self, command):
 
     return params, command
 
-def figure_rendered(self, command):
+def base_figured_rendered(info):
+    result = []
+    for child in info:
+        result.append(child.render())
+    return u''.join(result)
+
+def figure_rendered(self):
+    
+    if self.caption is not None:
+        caption = base_renderer(self.caption)
+    else:
+        logger.info("caption for figure is empty")
+        caption = self.caption
+    
+    if self.label is not None:
+        label = base_renderer(self.label)
+    else:
+        logger.info("label for figure is empty")
+        label = self.label
+
     return u'\\begin{figure}\n%s\n\\caption{%s}\n\\label{%s}\n\\end{figure}\n'\
-         %(image_annotation_renderer(self), self.caption, self.label)
+         %(base_renderer(self), caption, label)
+

@@ -522,7 +522,7 @@ class TextBoxContent(DocumentStructureNode):
 	pass
 
 class NoteInteractive(DocumentStructureNode):
-	def __init__(self, image_path='', label='', link='', caption='', notes=''):
+	def __init__(self, image_path='', label='', link=None, caption='', notes=''):
 		self.image_path = image_path
 		self.label = label
 		self.link = link
@@ -549,5 +549,16 @@ class NoteInteractiveImage(DocumentStructureNode):
 		super( NoteInteractiveImage, self ).__init__()
 		self.path = u''
 		self.caption = u''
+
+class Figure(DocumentStructureNode):
+	def __init__(self, caption = None, label = None):
+		self.caption = caption
+		self.label = label
+
+	def set_caption(self, caption):
+		self.caption = caption
+
+	def set_label(self, label):
+		self.label = label
 
 

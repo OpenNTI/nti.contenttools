@@ -169,3 +169,5 @@ types.AlternateContent.render = alternate_content_rendered
 types.TextBoxContent.render = text_box_content_rendered
 
 types.NoteInteractive.render = note_interactive_rendered
+
+types.Figure.render = figure_rendered
