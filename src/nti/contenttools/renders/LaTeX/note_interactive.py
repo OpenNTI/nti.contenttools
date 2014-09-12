@@ -10,5 +10,5 @@ logger = __import__('logging').getLogger(__name__)
 
 def note_interactive_rendered(self):
 	new_image_path = u'images/%s' %(self.image_path)
-	return u'\n\\begin{nticard}{%s}<creator=Carpe Noctum>\n\\label{%s}\n\\caption{%s}\n\\includegraphics{%s}\n%s\n\\end{nticard}\n'\
+	return u'\n\\begin{nticard}{%s}\n\\label{%s}\n\\caption{%s}\n\\includegraphics{%s}\n%s\n\\end{nticard}\n'\
 	 	%(self.link, self.label, self.caption, new_image_path, self.notes)
