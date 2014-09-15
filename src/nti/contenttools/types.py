@@ -562,15 +562,19 @@ class Figure(DocumentStructureNode):
 		self.label = label
 
 class Glossary(DocumentStructureNode):
-	def __init__(self, title = None, filename=None):
+	def __init__(self, title = None, filename=None, glossary_dict=None):
 		self.title = title
 		self.filename = filename
+		self.glossary_dict = glossary_dict
 
 	def set_title(self, title):
 		self.title = title
 
 	def set_filename(self, filename):
 		self.filename = filename
+
+	def set_glossary_dict(self, glossary_dict):
+		self.glossary_dict = glossary_dict
 
 
 class GlossaryList(DocumentStructureNode):

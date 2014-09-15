@@ -155,14 +155,15 @@ class EPUBFile( object ):
     def render(self):
         return self.document.render()
 
-    def render_body_child(self, body_child, glossary_file = None):
+    def render_body_child(self, body_child):
         body_element = self.document.children[0].children[body_child]
+        glossary_dict = None
+        tex_content = body_element.render()
         if isinstance(body_element, types.Run):
             child_num = self.check_glossary_element(body_element)
             if child_num > -1:
-                body_element.children[child_num].set_filename(glossary_file)
-                logger.info("FOUND Glossary, ready to write it to %s",glossary_file)
-        return body_element.render() 
+                glossary_dict = body_element.children[child_num].glossary_dict
+        return tex_content, glossary_dict 
 
     def check_glossary_element(self, element):
         child_num = 0

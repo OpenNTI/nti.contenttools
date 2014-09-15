@@ -88,7 +88,7 @@ def process_txbx_el(element, doc):
 	el = None
 	for child in element:
 		if child.tag == txbx_content_el:
-			el = TextBoxContent.process(child, doc)
+			el = Sidebar.process(child, doc)
 		else:
 			logger.warn('Unhandled txbxContent element child %s', child.tag)
 	return el
@@ -105,4 +105,15 @@ class TextBoxContent(types.TextBoxContent):
 				me.add_child(Paragraph.process(child,doc))
 		return me
 
-
+class Sidebar(types.Sidebar):
+	@classmethod
+	def process(cls, element, doc):
+		me = cls ()
+		doc_main_prefix = docx.nsprefixes['w']
+		p_el = '{%s}p' %(doc_main_prefix)
+		from .paragraph import Paragraph
+		for child in element.iterchildren():
+			if child.tag == p_el:
+				me.add_child(Paragraph.process(child,doc))
+		me.title = u''
+		return me
