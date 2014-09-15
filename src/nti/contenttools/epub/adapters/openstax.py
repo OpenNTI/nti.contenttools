@@ -25,7 +25,7 @@ from lxml import etree
 
 from lxml.html import HtmlComment
 
-
+from . import glossary
 
 class Chapter( types.Chapter ):
 
@@ -1271,6 +1271,8 @@ def _process_div_elements( element, epub ):
         el = NoteInteractive.process(element, epub)
     elif class_ in ['figure', 'figure splash', "figure   "]:
         el = Figure.process(element, epub)
+    elif class_ in ['glossary']:
+        el = glossary.Glossary.process(element, epub)
     else:
         el = Run.process(element, epub)
     return el
