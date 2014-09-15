@@ -17,6 +17,9 @@ from zope.exceptions import log as ze_log
 from . import types
 from .epub.openstax_epub import EPUBFile
 
+import simplejson as json
+from collections import OrderedDict
+
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
 def _parse_args():
@@ -73,20 +76,37 @@ def main():
     #since document only has one body
     body = document.children[0]
     body_child = 0
+    glossary_file = os.path.join(args.output, 'glossary.json')
+    global_glossary = {}
     for child in body:
         #write each body child into different latex file
         #we use this format : file_1.tex
         outputfile = os.path.join(args.output, 'file_'+str(body_child)+'.tex')
-        glossary_file = os.path.join(args.output, 'file_'+str(body_child)+'.json')
         logger.info('------------')
         logger.info(outputfile)
+        tex_content, glossary_dict = epub.render_body_child(body_child)
         with codecs.open( outputfile, 'w', 'utf-8' ) as fp:
-            fp.write(epub.render_body_child(body_child, glossary_file))
+            fp.write(tex_content)
+        if glossary_dict is not None:
+            global_glossary.update(glossary_dict)
         body_child = body_child + 1
         logger.info('------------')
 
+    #clean global glossary
+    glossary = clean_global_glossary(global_glossary)
+    #save glossary to json
+
+    glossary_json = json.dumps(glossary, sort_keys=True, indent=4 * ' ')
+    with codecs.open( glossary_file, 'w', 'utf-8' ) as fp:
+        fp.write(glossary_json)
     epub.get_media(args.output)
 
+def clean_global_glossary(glossary):
+    for key in glossary.keys():
+        value = glossary[key]
+        new_value = value.rstrip('\n')
+        glossary[key] = new_value
+    return glossary
 
 if __name__ == '__main__': # pragma: no cover
     main()

@@ -3,6 +3,7 @@
 """
 .. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
@@ -10,21 +11,16 @@ from IPython.core.debugger import Tracer
 
 logger = __import__('logging').getLogger(__name__)
 from .base import base_renderer
-from ... import types
-import os
-import codecs
 
-import simplejson as json
 
 def glossary_renderer(self):
 	result = glossary_list_renderer(self)
 	trim_result = extract_list(result)
+	logger.info('found glossary')
 	glossary_dict = dict(trim_result)
-	glossary_json = json.dumps(glossary_dict)
-	logger.info("FOUND Glossary, ready to write it to %s",self.filename)
-	with codecs.open(self.filename, 'w', 'utf-8' ) as fp:
-		fp.write(glossary_json)
-	return u'\\textbf{Glossary}'
+	self.set_glossary_dict(glossary_dict)
+	return u''
+
 
 def glossary_list_renderer(self):
 	result = glossary_item_renderer(self)
