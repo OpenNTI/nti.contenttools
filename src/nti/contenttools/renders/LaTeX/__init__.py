@@ -74,6 +74,8 @@ types.Chapter.render = chapter_renderer
 types.Section.render = section_renderer
 types.SubSection.render = subsection_renderer
 types.SubSubSection.render = subsubsection_renderer
+types.SubSubSubSection.render = subsubsubsection_renderer
+types.SubSubSubSubSection.render = subsubsubsubsection_renderer
 types.Paragraph.render = paragraph_renderer
 types.Run.render = run_renderer
 

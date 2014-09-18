@@ -62,6 +62,22 @@ class SubSubSection( types.SubSubSection ):
         me.add_child( Run.process(element, epub) )
         return me
 
+class SubSubSubSection( types.SubSubSection ):
+
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.add_child( Run.process(element, epub) )
+        return me
+
+class SubSubSubSubSection( types.SubSubSection ):
+
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.add_child( Run.process(element, epub) )
+        return me
+
 
 class Paragraph( types.Paragraph ):
 
@@ -1123,15 +1139,13 @@ class MathRun(types.MathRun):
 
 def adapt( fragment, epub, label ):
     els = _process_fragment( fragment, epub )
-    # Make sure that each section object have a Label child
-    if els and (isinstance(els[0], Section)):
+    if els and isinstance(els[0], Section):
         label_el = Label()
         label_el.name = label
-        els[0].add_child( label_el )
+        els[0].set_label( label_el )
 
     for el in els:
         _fix_hyperlinks( el, epub.manifest )
-
     return els
 
 def _fix_hyperlinks( element, manifest ):
@@ -1182,7 +1196,43 @@ def _process_fragment( fragment, epub ):
         else:
             logger.warn('on process_fragment UNHANDLED BODY CHILD: %s >> %s',element.tag, element )
     
-    el = _consolidate_lists(el)
+    """
+    new_el = []
+    for i in xrange(len(el)):
+        if (i+1 < len(el)) and type(el[i]) == type(el[i+1]):
+            if type(el[i]) == Chapter or type(el[i]) == Section:
+                el[i].add_child( types.TextNode(': ') )
+                for child in el[i+1].children:
+                    el[i].add_child( child )
+                el[i+1] = el[i]
+            else:
+                new_el.append(el[i])
+        else:
+            new_el.append(el[i])
+    el = new_el
+    """
+
+
+    # If the chapter or section title was not parsed out of the text, then extract it from the document head.
+    # Maybe we should do this all of the time.
+    chapter = Chapter()
+    chapter.suppressed = True
+    chapter.set_title(_get_title(head))
+    logger.info('el %s', el)
+    if len(el) == 0:
+        el.append(chapter)
+        logger.info('found spine without body child')
+    elif el[0] is None:
+        logger.info("we just pass this part")
+    elif not ( (isinstance(el[0], Chapter) or isinstance(el[0], Section)) ):
+        section = Section()
+        section.suppressed = True
+        section.set_title(_get_title(head))
+        el.insert(0,section)
+        #spine id416082, htmltoc, id416082
+
+    # Consolidate list elements
+    el = _consolidate_lists( el )
     return el
 
 def _get_title( head ):
@@ -1248,17 +1298,37 @@ def _process_div_elements( element, epub ):
             el.set_title(element.attrib['title'])
         if 'id' in element.attrib.keys():
             el.set_label(Label.process(element, epub))
-    elif class_ in ['preface module', 'part', 'colophon', 'colophon end-of-book-references', 'colophon end-of-book-solutions', 'index']:
+    elif class_ in ['preface module', 'colophon', 'colophon end-of-book-references', 'colophon end-of-book-solutions', 'index']:
         el = Section.process(element, epub)
         el.suppressed = True
         if 'title' in element.attrib.keys():
             el.set_title(element.attrib['title'])
         if 'id' in element.attrib.keys():
             el.set_label(Label.process(element, epub))
-        Tracer()()
-    elif id_ in ['cover-image']:
+    elif class_ in ['toc'] and u'body' in element.getparent().__str__():
         el = Section.process(element, epub)
         el.suppressed = True
+        if 'title' in element.attrib.keys():
+            el.set_title(element.attrib['title'])
+        if 'id' in element.attrib.keys():
+            el.set_label(Label.process(element, epub))
+    elif id_ in ['cover-image']:
+        el = Section.process(element, epub)
+        el.title = 'Cover'
+        el.suppressed = True
+        logger.info('found cover image')
+    elif class_ in ['cnx-eoc summary', 'cnx-eoc art-exercise', 'cnx-eoc multiple-choice', 'cnx-eoc free-response', 'cnx-eoc cnx-solutions']:
+        el = Run()
+        num_child = 0
+        for child in element.getchildren():
+            if num_child == 0 :
+                el.add_child(SubSection.process(element.getchildren()[num_child], epub))
+            else:
+                el.add_child(types.Newline())
+                el.add_child(Run.process(element.getchildren()[num_child], epub))
+            num_child = num_child + 1
+    elif class_ in ['part']:
+        pass
     else:
         el = Run.process(element, epub)
     return el
@@ -1276,13 +1346,13 @@ def _process_h1_elements( element, epub ):
     return SubSection.process(element, epub)
 
 def _process_h2_elements( element, epub ):
-    return SubSubSection.process(element, epub)
+    return SubSection.process(element, epub)
 
 def _process_h3_elements( element, epub ):
-    return Paragraph.process(element, epub, ['Heading3'])
+    return Paragraph.process(element, epub, ['Heading4'])
 
 def _process_h4_elements( element, epub ):
-    return Paragraph.process(element, epub, ['Heading4'])
+    return Paragraph.process(element, epub, ['Heading5'])
 
 def _process_h5_elements( element, epub ):
     return Paragraph.process(element, epub, ['Heading5'])
