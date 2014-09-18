@@ -78,8 +78,6 @@ class GlossaryDT(types.GlossaryDT):
         for sub_el in element:
             if sub_el.tag == 'p':
                 me.add_child(_process_p_elements(sub_el, epub))
-            elif sub_el.tag == 'img':
-                me.add_child(Image.process(sub_el, epub))
             elif sub_el.tag ==  'span':
                 me.add_child(_process_span_elements(sub_el, epub))
             elif sub_el.tag ==  'sub':

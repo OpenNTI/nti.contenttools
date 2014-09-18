@@ -9,21 +9,46 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 from .base import base_renderer, _command_renderer
+from IPython.core.debugger import Tracer
 
+"""
 def chapter_renderer(self):
     if self.suppressed:
         return _command_renderer('chaptertitlesuppressed', base_renderer(self).strip() ) + u'\n'
     else:
         return _command_renderer('chapter', base_renderer(self).strip() ) + u'\n'
+"""
 
+"""
 def section_renderer(self):
     if self.suppressed:
         return _command_renderer('sectiontitlesuppressed', base_renderer(self).strip() ) + u'\n'
     else:
         return _command_renderer('section', base_renderer(self).strip() ) + u'\n'
+"""
 
 def subsection_renderer(self):
     return _command_renderer('subsection', base_renderer(self).strip() ) + u'\n'
 
 def subsubsection_renderer(self):
     return _command_renderer('subsubsection', base_renderer(self).strip() ) + u'\n'
+
+def chapter_renderer(self):
+    title = self.title
+    label = None
+    if self.label is not None:
+        label = self.label.render()
+    if self.suppressed:
+        return u'\\chaptertitlesuppressed{%s%s}%s' %(title, label, base_renderer(self))
+    else:
+        return u'\\chapter{%s%s}%s' %(title, label, base_renderer(self))
+
+def section_renderer(self):
+    title = self.title
+    label = None
+    if self.label is not None:
+        label = self.label.render()
+    if self.suppressed:
+        return u'\\sectiontitlesuppressed{%s%s}%s' %(title, label, base_renderer(self))
+    else:
+        return u'\\section{%s%s}%s' %(title, label, base_renderer(self))

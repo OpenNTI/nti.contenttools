@@ -122,15 +122,31 @@ class EPUBBody(DocumentStructureNode):
 
 class Chapter( DocumentStructureNode ):
 
-	def __init__( self, suppressed=False ):
+	def __init__( self, suppressed=False, title=None, label=None ):
 		super( Chapter, self ).__init__()
 		self.suppressed = suppressed
+		self.title = title
+		self.label = label
+
+	def set_title(self, title):
+		self.title = title
+
+	def set_label(self, label):
+		self.label = label
 
 class Section( DocumentStructureNode ):
 
-	def __init__( self, suppressed=False ):
+	def __init__( self, suppressed=False, label = None, title = None):
 		super( Section, self ).__init__()
 		self.suppressed = suppressed
+		self.title = title
+		self.label = label
+
+	def set_title(self, title):
+		self.title = title
+
+	def set_label(self, label):
+		self.label = label
 
 class SubSection( DocumentStructureNode ):
 	pass
