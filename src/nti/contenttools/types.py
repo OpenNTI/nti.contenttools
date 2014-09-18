@@ -154,6 +154,12 @@ class SubSection( DocumentStructureNode ):
 class SubSubSection( DocumentStructureNode ):
 	pass
 
+class SubSubSubSection( DocumentStructureNode ):
+	pass
+
+class SubSubSubSubSection( DocumentStructureNode ):
+	pass
+
 class Paragraph( DocumentStructureNode ):
 	pass
 

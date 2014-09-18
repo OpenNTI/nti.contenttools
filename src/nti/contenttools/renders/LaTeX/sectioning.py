@@ -33,21 +33,42 @@ def subsection_renderer(self):
 def subsubsection_renderer(self):
     return _command_renderer('subsubsection', base_renderer(self).strip() ) + u'\n'
 
+def subsubsubsection_renderer(self):
+    return _command_renderer('subsubsubsection', base_renderer(self).strip() ) + u'\n'
+
+def subsubsubsubsection_renderer(self):
+    return _command_renderer('subsubsubsubsection', base_renderer(self).strip() ) + u'\n'
+
 def chapter_renderer(self):
-    title = self.title
-    label = None
-    if self.label is not None:
+    
+    if self.title is None:
+        title = u''
+    else:
+        title = self.title
+
+    label = u''
+    if isinstance(self.label, str):
+        label = u'\\label{%s}' % (self.label)
+    elif self.label is not None:
         label = self.label.render()
+
     if self.suppressed:
         return u'\\chaptertitlesuppressed{%s%s}%s' %(title, label, base_renderer(self))
     else:
         return u'\\chapter{%s%s}%s' %(title, label, base_renderer(self))
 
 def section_renderer(self):
-    title = self.title
-    label = None
-    if self.label is not None:
+    if self.title is None:
+        title = u''
+    else:
+        title = self.title
+
+    label = u''
+    if isinstance(self.label, str):
+        label = u'\\label{%s}' % (self.label)
+    elif self.label is not None:
         label = self.label.render()
+        
     if self.suppressed:
         return u'\\sectiontitlesuppressed{%s%s}%s' %(title, label, base_renderer(self))
     else:

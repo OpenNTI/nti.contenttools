@@ -125,27 +125,29 @@ class EPUBFile( object ):
         # Create a special parser for dealing with the content files
         parser = XHTMLParser(load_dtd=True,dtd_validation=True)
         logger.info('SPINE: %s',self.spine)
+        check_item = False
         for item in self.spine:
             logger.info('---------------------------------')
             logger.info('SPINE ITEM >> %s', item)
             logger.info('>>')
-            docfragment = html.fromstring(self.zipfile.read(self.content_path+'/'+self.manifest[item]['href']))
-            logger.info("%s %s %s %s %s %s %s %s", \
-                docfragment.tag, \
-                docfragment.prefix, \
-                docfragment.base, \
-                docfragment.attrib, \
-                docfragment.nsmap, \
-                docfragment.sourceline, \
-                docfragment.tail, \
-                docfragment.text)
-            for child in Adapter.adapt( docfragment, self, item ):
-                doc_body.add_child(child)
+            if item == u'id416082' and not check_item:
+                docfragment = html.fromstring(self.zipfile.read(self.content_path+'/'+self.manifest[item]['href']))
+                check_item = True
+                for child in Adapter.adapt( docfragment, self, item ):
+                    doc_body.add_child(child)
+            elif item == u'id416082' and check_item:
+                logger.info ('found spine %s more than once',item)
+            elif item in ['htmltoc', 'id903065',]:
+                logger.info('found htmltoc or index Glossary')
+            else:
+                docfragment = html.fromstring(self.zipfile.read(self.content_path+'/'+self.manifest[item]['href']))
+                for child in Adapter.adapt( docfragment, self, item ):
+                    doc_body.add_child(child)
             logger.info('---------------------------------')
 
         # Remove the first child of the body if it is a Chapter or Section object
-        if isinstance(doc_body.children[0], types.Chapter) or isinstance(doc_body.children[0], types.Section):
-            doc_body.children.pop(0)
+        #if isinstance(doc_body.children[0], types.Chapter) or isinstance(doc_body.children[0], types.Section):
+        #    doc_body.children.pop(0)
 
         self.document = types.Document()
         self.document.add_child(doc_body)
