@@ -25,7 +25,7 @@ from lxml import etree
 
 from lxml.html import HtmlComment
 
-
+from . import glossary
 
 class Chapter( types.Chapter ):
 
@@ -1123,7 +1123,6 @@ class MathRun(types.MathRun):
 
 def adapt( fragment, epub, label ):
     els = _process_fragment( fragment, epub )
-
     # Make sure that each chapter and section object have a Label child
     if els and (isinstance(els[0], Chapter) or isinstance(els[0], Section)):
         label_el = Label()
@@ -1191,6 +1190,7 @@ def _process_fragment( fragment, epub ):
         else:
             logger.warn('on process_fragment UNHANDLED BODY CHILD: %s >> %s',element.tag, element )
     # Consolidate multi-line chapter or section titles
+    Tracer()()
     new_el = []
     for i in xrange(len(el)):
         if (i+1 < len(el)) and type(el[i]) == type(el[i+1]):
@@ -1218,7 +1218,6 @@ def _process_fragment( fragment, epub ):
         #logger.info('el.insert works')
         el.insert(0,chapter)
     el = _consolidate_lists( el )
-
     return el
 
 def _get_title( head ):
@@ -1269,8 +1268,10 @@ def _process_div_elements( element, epub ):
     el = None
     if class_ in ['note interactive']:
         el = NoteInteractive.process(element, epub)
-    elif class_ in ['figure', 'figure splash']:
+    elif class_ in ['figure', 'figure splash', "figure   ", "figure  ","figure span-all", "figure "]:
         el = Figure.process(element, epub)
+    elif class_ in ['glossary']:
+        el = glossary.Glossary.process(element, epub)
     else:
         el = Run.process(element, epub)
     return el
