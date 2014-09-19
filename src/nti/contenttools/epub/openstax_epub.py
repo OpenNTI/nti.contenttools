@@ -161,10 +161,14 @@ class EPUBFile( object ):
         body_element = self.document.children[0].children[body_child]
         glossary_dict = None
         tex_content = body_element.render()
-        if isinstance(body_element, types.Run):
-            child_num = self.check_glossary_element(body_element)
-            if child_num > -1:
-                glossary_dict = body_element.children[child_num].glossary_dict
+        if isinstance(body_element, types.Chapter):
+            if len(body_element.children) == 0:
+                pass
+            elif isinstance(body_element.children[0], types.Run):
+                run_element = body_element.children[0]
+                child_num = self.check_glossary_element(run_element)
+                if child_num > -1:
+                    glossary_dict = run_element.children[child_num].glossary_dict
         return tex_content, glossary_dict 
 
     def check_glossary_element(self, element):
