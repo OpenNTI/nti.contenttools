@@ -32,13 +32,22 @@ def docx_image_renderer(self, command):
     return u'\\%s[%s]{%s}' % (command, params, self.path)
 
 def set_image_params_and_command(self, command):
+    check_table, image_in_a_row = check_image_in_table(self)
     width = self.width
     height = self.height
 
-    if self.width > 600:
-        if self.height != 0:
-            height = int(float(600.0 / self.width) * self.height)
-        width = 600
+    if check_table :
+        logger.info('Image is inside table')
+        logger.info('there are %s images in a row', image_in_a_row)
+        width = 600/image_in_a_row
+        if self.width > width:
+            if self.height != 0:
+                height = int(float(width / self.width) * self.height)
+    else: 
+        if self.width > 600:
+            if self.height != 0:
+                height = int(float(600.0 / self.width) * self.height)
+            width = 600
 
     params = 'width=%spx,height=%spx' % (width, height)
 
@@ -71,4 +80,21 @@ def figure_rendered(self):
 
     return u'\\begin{figure}\n%s\n\\caption{%s}\n\\label{%s}\n\\end{figure}\n'\
          %(base_renderer(self), caption, label)
+
+def check_image_in_table(self):
+    """
+    check if image is located inside table
+    """
+    parent = self.__parent__
+    while parent is not None:
+        if isinstance(parent,types.Cell):
+            if isinstance(parent.__parent__, types.Row):
+                return True, parent.__parent__.number_of_col
+        else:
+            parent = parent.__parent__
+    return False, 0
+
+
+
+
 
