@@ -110,7 +110,6 @@ class Document( DocumentStructureNode ):
 						  'ntilatexmacros',
 						  'ntiassessment',
 						  'amsmath',
-						  'stmaryrd',
 						  'enumitem',
 						  'listings']
 
@@ -616,9 +615,10 @@ class GlossaryDD(DocumentStructureNode):
 	pass
 
 class Exercise(DocumentStructureNode):
-	def __init__(self, problem =  None, solution = None):
+	def __init__(self, problem =  None, solution = None, label=None):
 		self.problem = problem
 		self.solution = solution
+		self.label = label
 
 	def set_problem(self, problem):
 		self.problem = problem
@@ -626,9 +626,15 @@ class Exercise(DocumentStructureNode):
 	def set_solution(self, solution):
 		self.solution = solution
 
+	def set_label(self, label):
+		self.label = label
+
 class Problem (DocumentStructureNode):
-	def __init__(self, question = None, problem_type = None, solution=None):
+	def __init__(self, question = None, problem_type = None, solution=None, label=None):
 		self.question = question
+		self.problem_type = problem_type
+		self.solution = solution
+		self.label = label
 
 	def set_question(self, question):
 		self.question = question
@@ -638,6 +644,9 @@ class Problem (DocumentStructureNode):
 
 	def set_solution(self, solution):
 		self.solution = solution
+
+	def set_label(self, label):
+		self.label = label
 
 class Solution (DocumentStructureNode):
 	def __init__(self, solution = None):
@@ -665,6 +674,9 @@ class ExerciseSection(DocumentStructureNode):
 	pass
 
 class ExerciseElement(DocumentStructureNode):
+	pass
+
+class ExerciseDiv(DocumentStructureNode):
 	pass
 
 
