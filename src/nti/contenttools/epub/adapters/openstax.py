@@ -1317,7 +1317,7 @@ def _process_div_elements( element, epub ):
         el.title = 'Cover'
         el.suppressed = True
         logger.info('found cover image')
-    elif class_ in ['cnx-eoc summary', 'cnx-eoc art-exercise', 'cnx-eoc free-response']:
+    elif class_ in ['cnx-eoc summary', 'cnx-eoc art-exercise', 'cnx-eoc free-response', 'cnx-eoc short-answer', 'cnx-eoc section-summary', 'cnx-eoc further-research', 'cnx-eoc references']:
         el = Run()
         num_child = 0
         for child in element.getchildren():
@@ -1330,7 +1330,7 @@ def _process_div_elements( element, epub ):
             num_child = num_child + 1
     elif class_ in ['part']:
         pass
-    elif class_ in ['cnx-eoc multiple-choice']:
+    elif class_ in ['cnx-eoc multiple-choice', 'cnx-eoc section-quiz']:
         from .exercise import ChapterExercise
         el = ChapterExercise.process(element, epub)
     elif class_ in ['solution labeled']:

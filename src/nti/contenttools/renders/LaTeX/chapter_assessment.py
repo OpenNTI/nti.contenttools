@@ -54,8 +54,6 @@ def process_free_response(self):
 	pass
 
 def process_multiple_choice(self):
-	logger.info('process multiple_choice')
-	logger.info('number of children %s', len(self.children))
 	choices = None
 	if len(self.children) == 1:
 		choices = self.children[0].render()
@@ -80,7 +78,9 @@ def process_multiple_choice(self):
 	return u'\\begin{naqmultiplechoicepart}\n%s\n\\begin{naqchoices}\n%s\\end{naqchoices}\n\\end{naqmultiplechoicepart}\n' % (question,item_body)
 
 def get_multiple_choice_sol(self):
-	solution = self.solution.render()
+	solution = u''
+	if self.solution is not None:
+		solution = self.solution.render()
 	solution = solution.rstrip()
 	if solution == 1 or solution == 'A' or solution == 'a':
 		return 0
@@ -94,6 +94,8 @@ def get_multiple_choice_sol(self):
 		return 4
 	elif solution == 6 or solution == 'F' or solution == 'f':
 		return 5
+	elif solution == u'':
+		logger.info('No solution')
 	else:
 		logger.warn('Unhandled solution for multiple choices : %s', solution)
 
