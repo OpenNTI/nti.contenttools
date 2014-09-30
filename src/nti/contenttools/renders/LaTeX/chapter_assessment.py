@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: chapter_assessment.py 49377 2014-09-15 20:49:09Z egawati.panjei $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-from IPython.core.debugger import Tracer
-
 logger = __import__('logging').getLogger(__name__)
+
 from .base import base_renderer
 
 """
@@ -17,7 +16,6 @@ module to render exercise found in each chapter of openstax epub
 """
 
 def chapter_exercise_renderer(self):
-	Tracer()()
 	return base_renderer(self)
 
 def exercise_section_renderer(self):
@@ -34,7 +32,6 @@ def problem_renderer(self):
 	render types.Problem
 	possible problem_type : 'free_response', 'multiple_choice', and 'ordering'
 	"""
-	Tracer()()
 	problem_body = u''
 	if self.solution == None:
 		if self.__parent__.solution is not None:
