@@ -29,7 +29,7 @@ def _process_exercise_div(element, epub):
 	if class_ in ['title']:
 		el = SubSection.process(element, epub)
 	elif class_ in ['section empty']:
-		pass
+		el = Run.process(element, epub)
 	elif class_ in ['section']:
 		el = ExerciseSection.process(element, epub)
 	else:
@@ -63,8 +63,7 @@ def _process_exercise(element, epub):
 	if 'class' in element.attrib.keys():
 		class_ = element.attrib['class']
 	el = None
-	if class_ in ['exercise']:
-		logger.info('found exercise tag')
+	if class_ in ['exercise', 'exercise section-quiz']:
 		el = ExerciseElement.process(element, epub)
 	else:
 		if isinstance(element,HtmlComment):
@@ -132,7 +131,6 @@ class Exercise(types.Exercise):
 		me = cls()
 		for child in element:
 			if child.tag == 'div' and child.attrib['class'] == 'problem':
-				logger.info('found problem tag')
 				problem = Problem.process(child, epub)
 				me.set_problem(problem)
 			elif child.tag == 'div' and child.attrib['class'] in ['solution labeled', 'solution']:

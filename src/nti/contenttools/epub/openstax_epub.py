@@ -130,12 +130,12 @@ class EPUBFile( object ):
             logger.info('---------------------------------')
             logger.info('SPINE ITEM >> %s', item)
             logger.info('>>')
-            if item == u'id416082' and not check_item:
+            if item in [u'id416082', u'id504556'] and not check_item:
                 docfragment = html.fromstring(self.zipfile.read(self.content_path+'/'+self.manifest[item]['href']))
                 check_item = True
                 for child in Adapter.adapt( docfragment, self, item ):
                     doc_body.add_child(child)
-            elif item == u'id416082' and check_item:
+            elif item in [u'id416082', u'id504556'] and check_item:
                 logger.info ('found spine %s more than once',item)
             elif item in ['htmltoc', 'id903065',]:
                 logger.info('found htmltoc or index Glossary')
@@ -169,6 +169,7 @@ class EPUBFile( object ):
                 child_num = self.check_glossary_element(run_element)
                 if child_num > -1:
                     glossary_dict = run_element.children[child_num].glossary_dict
+                    logger.info('found Glossary')
         return tex_content, glossary_dict 
 
     def check_glossary_element(self, element):
