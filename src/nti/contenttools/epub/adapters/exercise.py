@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from IPython.core.debugger import Tracer
+
 from ... import types
 
 from lxml.html import HtmlComment
@@ -27,7 +29,7 @@ def _process_exercise_div(element, epub):
 	if class_ in ['title']:
 		el = SubSection.process(element, epub)
 	elif class_ in ['section empty']:
-		el = Run.process(element, epub)
+		pass
 	elif class_ in ['section']:
 		el = ExerciseSection.process(element, epub)
 	else:
@@ -45,9 +47,9 @@ def _process_exercise_section(element, epub):
 
 	el = None
 	if class_ in ['title']:
-		el = Run.process(element, epub)
+		pass
 	elif class_ in ['body']:
-		el = _process_exercise(element, epub)
+		el = ExerciseDiv.process(element, epub)
 	else:
 		if isinstance(element,HtmlComment):
 			pass
@@ -57,18 +59,18 @@ def _process_exercise_section(element, epub):
 
 def _process_exercise(element, epub):
 	el = None
-	for child in element:
-		class_ = u''
-		if 'class' in child.attrib.keys():
-			class_ = child.attrib['class']
-		el = None
-		if class_ in ['exercise']:
-			el = ExerciseElement.process(child, epub)
+	class_ = u''
+	if 'class' in element.attrib.keys():
+		class_ = element.attrib['class']
+	el = None
+	if class_ in ['exercise']:
+		logger.info('found exercise tag')
+		el = ExerciseElement.process(element, epub)
+	else:
+		if isinstance(element,HtmlComment):
+			pass
 		else:
-			if isinstance(child,HtmlComment):
-				pass
-			else:
-				logger.warn('Unhanled exercise: %s',child.tag)
+			logger.warn('Unhanled exercise: %s',element.tag)
 	return el
 
 def _process_exercise_element(element, epub):
@@ -79,7 +81,7 @@ def _process_exercise_element(element, epub):
 
 	el = None
 	if class_ in ['title']:
-		el = Run.process(element, epub)
+		pass
 	elif class_ in ['body']:
 		el = Exercise.process(element, epub)
 	else:
@@ -95,6 +97,14 @@ class ExerciseElement(types.ExerciseElement):
 		me = cls()
 		for child in element:
 			me.add_child(_process_exercise_element(child, epub))
+		return me
+
+class ExerciseDiv(types.ExerciseDiv):
+	@classmethod
+	def process(cls, element, epub):
+		me = cls()
+		for child in element:
+			me.add_child(_process_exercise(child, epub))
 		return me
 
 class ExerciseSection(types.ExerciseSection):
@@ -122,9 +132,9 @@ class Exercise(types.Exercise):
 		me = cls()
 		for child in element:
 			if child.tag == 'div' and child.attrib['class'] == 'problem':
+				logger.info('found problem tag')
 				problem = Problem.process(child, epub)
 				me.set_problem(problem)
-				logger.info('found div problem')
 			elif child.tag == 'div' and child.attrib['class'] in ['solution labeled', 'solution']:
 				solution = Solution.process(child, epub)
 				me.set_solution(solution)
@@ -148,6 +158,9 @@ class Problem(types.Problem):
 			elif child.tag == 'p':
 				question  = Paragraph.process(child, epub)
 				me.set_question(question)
+			elif child.tag == 'span':
+				label = child.attrib['id']
+				me.set_label(label)
 			elif child.tag == 'div' and child.attrib['class'] in ['solution labeled', 'solution']:
 				solution = Solution.process(child, epub)
 				me.set_solution(solution)
@@ -168,18 +181,19 @@ class MultipleChoices(types.MultipleChoices):
 		for child in element:
 			if child.tag == 'ol' :
 				me.set_choices(_process_multiple_choice_items(child, epub))
+			elif child.tag == 'span':
+				pass
 			else:
 				logger.warn('Unhandled multiple choice tag %s', child.tag)
 		return me
 
 def _process_multiple_choice_items (element, epub):
-	from .openstax import Item
+	from .openstax import Run
 	result = []
 	for child in element:
 		if child.tag == 'li' :
-			item = Item.process(child, epub)
+			item = Run.process(child, epub)
 			result.append(item)
-			logger.info('found multiple choice item')
 		else:
 			logger.warn("Unhandled multiple choice item %s", child.tag)
 	return result
@@ -196,3 +210,4 @@ class Solution(types.Solution):
 				solution = Run.process(child, epub)
 				me.set_solution(solution)
 		return me
+

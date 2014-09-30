@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from IPython.core.debugger import Tracer
+
 from .base import base_renderer
 
 """
@@ -25,7 +27,11 @@ def exercise_element_renderer(self):
 	return base_renderer(self)
 
 def exercise_renderer(self):
-	pass
+	if self.solution is not None:
+		if self.problem.solution is None:
+			self.problem.set_solution(self.solution)
+	problem = self.problem.render()
+	return u'\n%s\n' %(problem)
 
 def problem_renderer(self):
 	"""
@@ -33,9 +39,6 @@ def problem_renderer(self):
 	possible problem_type : 'free_response', 'multiple_choice', and 'ordering'
 	"""
 	problem_body = u''
-	if self.solution == None:
-		if self.__parent__.solution is not None:
-			self.solution = self.__parent__.solution
 	if self.problem_type == 'free_response':
 		pass
 	elif self.problem_type == 'multiple_choice':
@@ -43,9 +46,11 @@ def problem_renderer(self):
 	elif self.problem_type == 'ordering':
 		pass
 
-	return u'\\begin{naquestion}\n\\label{ }\n%s\n%s\\end{naquestion}\n' %(self.question, problem_body)
+	label = self.label
 
-def process_free_response_question(self):
+	return u'\\begin{naquestion}\n\\label{%s}\n%s\\end{naquestion}\n' %(label, problem_body)
+
+def process_free_response(self):
 	pass
 
 def process_multiple_choice(self):
@@ -69,10 +74,14 @@ def process_multiple_choice(self):
 		logger.warn('we need to make sure that choices var is a list')
 
 	item_body = u''.join(item_rendered)
-	return u'\\begin{naqmultiplechoicepart}\n\\begin{naqchoices}\n%s\\end{naqchoices}\n\\end{naqmultiplechoicepart}\n' % (item_body)
+	question = self.question.render()
+	question = question.rstrip()
+
+	return u'\\begin{naqmultiplechoicepart}\n%s\n\\begin{naqchoices}\n%s\\end{naqchoices}\n\\end{naqmultiplechoicepart}\n' % (question,item_body)
 
 def get_multiple_choice_sol(self):
-	solution = self.solution
+	solution = self.solution.render()
+	solution = solution.rstrip()
 	if solution == 1 or solution == 'A' or solution == 'a':
 		return 0
 	elif solution == 2 or solution == 'B' or solution == 'b':
@@ -89,6 +98,7 @@ def get_multiple_choice_sol(self):
 		logger.warn('Unhandled solution for multiple choices : %s', solution)
 
 def set_multiple_choice_tag(item, solution_check):
+	item = item.rstrip()
 	if solution_check:
 		return u'\\naqchoice [1] %s \n' %(item)
 	else:
@@ -98,7 +108,7 @@ def process_ordering(self):
 	pass
 
 def solution_renderer(self):
-	return base_renderer(self)
+	return base_renderer(self.solution)
 
 def multiple_choice_renderer(self):
 	items = self.choices
