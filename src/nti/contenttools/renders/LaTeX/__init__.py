@@ -28,6 +28,7 @@ from .omath import*
 from .code_line import*
 from .alternate_content import*
 from .note_interactive import*
+from .chapter_assessment import *
 from .glossary import *
 
 def note_renderer(self):
@@ -177,3 +178,11 @@ types.GlossaryList.render = glossary_list_renderer
 types.GlossaryItem.render = glossary_item_renderer
 types.GlossaryDT.render = glossary_dt_renderer
 types.GlossaryDD.render = glossary_dd_renderer
+
+types.ChapterExercise.render = chapter_exercise_renderer
+types.ExerciseSection.render = exercise_section_renderer
+types.ExerciseElement.render = exercise_element_renderer
+types.Exercise.render = exercise_renderer
+types.Problem.render = problem_renderer
+types.Solution.render = solution_renderer
+types.MultipleChoices.render = multiple_choice_renderer

@@ -614,3 +614,60 @@ class GlossaryDT(DocumentStructureNode):
 
 class GlossaryDD(DocumentStructureNode):
 	pass
+
+class Exercise(DocumentStructureNode):
+	def __init__(self, problem =  None, solution = None):
+		self.problem = problem
+		self.solution = solution
+
+	def set_problem(self, problem):
+		self.problem = problem
+
+	def set_solution(self, solution):
+		self.solution = solution
+
+class Problem (DocumentStructureNode):
+	def __init__(self, question = None, problem_type = None, solution=None):
+		self.question = question
+
+	def set_question(self, question):
+		self.question = question
+
+	def set_problem_type(self, problem_type):
+		self.problem_type = problem_type
+
+	def set_solution(self, solution):
+		self.solution = solution
+
+class Solution (DocumentStructureNode):
+	def __init__(self, solution = None):
+		self.solution = solution
+
+	def set_solution(self, solution):
+		self.solution = solution
+
+
+class MultipleChoices(DocumentStructureNode):
+	def __init__(self, solution=None, choices=None):
+		self.solution = solution
+		self.choices = choices
+
+	def set_solution(self, solution):
+		self.solution = solution
+
+	def set_choices(self, choices):
+		self.choices = choices
+
+class ChapterExercise(DocumentStructureNode):
+	pass
+
+class ExerciseSection(DocumentStructureNode):
+	pass
+
+class ExerciseElement(DocumentStructureNode):
+	pass
+
+
+
+
+
