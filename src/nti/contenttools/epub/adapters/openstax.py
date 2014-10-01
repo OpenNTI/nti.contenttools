@@ -278,7 +278,9 @@ class Label( types.Label ):
     @classmethod
     def process(cls, label, epub ):
         me = cls()
-        me.name = label.attrib['id']
+        label = label.attrib['id']
+        label = label.replace(" ", "_")
+        me.name = label
         return me
 
 
@@ -319,7 +321,9 @@ class NoteInteractive(types.NoteInteractive):
         el = None
         notes = u''
         if 'id' in element.attrib.keys():
-            me.set_label('test')
+            label = element.attrib['id']
+            label = label.replace(" ", "_")
+            me.set_label(label)
         for child in element:
             if child.tag == 'div':
                 class_ = u''    
@@ -1317,7 +1321,8 @@ def _process_div_elements( element, epub ):
         el.title = 'Cover'
         el.suppressed = True
         logger.info('found cover image')
-    elif class_ in ['cnx-eoc summary', 'cnx-eoc art-exercise', 'cnx-eoc free-response', 'cnx-eoc short-answer', 'cnx-eoc section-summary', 'cnx-eoc further-research', 'cnx-eoc references']:
+    elif class_ in ['cnx-eoc summary', 'cnx-eoc art-exercise', 'cnx-eoc free-response', 'cnx-eoc short-answer', 'cnx-eoc section-summary', \
+                        'cnx-eoc further-research', 'cnx-eoc references', 'cnx-eoc conceptual-questions', 'cnx-eoc problems-exercises', ]:
         el = Run()
         num_child = 0
         for child in element.getchildren():
@@ -1337,6 +1342,10 @@ def _process_div_elements( element, epub ):
         pass
     elif class_ in ['cnx-eoc cnx-solutions']:
         pass
+    elif class_ in ['note sociology-careers', 'note sociology-policy-debate', 'note sociology-big-picture', 'note sociology-real-world',\
+                        'note sociological-research', ]:
+        from .note import OpenstaxNote
+        el = OpenstaxNote.process(element, epub)
     else:
         el = Run.process(element, epub)
     return el

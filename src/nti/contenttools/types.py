@@ -679,7 +679,18 @@ class ExerciseElement(DocumentStructureNode):
 class ExerciseDiv(DocumentStructureNode):
 	pass
 
+class Example(DocumentStructureNode):
+	pass
 
+class OpenstaxNote (DocumentStructureNode):
+	def __init__(self, title=None, body=None):
+		self.title = title
+		self.body = body
 
+	def set_title(self, title):
+		self.title = title
+
+	def set_body(self, body):
+		self.body = body
 
 
