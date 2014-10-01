@@ -30,6 +30,7 @@ from .alternate_content import*
 from .note_interactive import*
 from .chapter_assessment import *
 from .glossary import *
+from .note import *
 
 def note_renderer(self):
     return u'\\footnote{%s} ' % base_renderer(self)
@@ -186,3 +187,5 @@ types.Exercise.render = exercise_renderer
 types.Problem.render = problem_renderer
 types.Solution.render = solution_renderer
 types.MultipleChoices.render = multiple_choice_renderer
+
+types.OpenstaxNote.render = openstax_note_renderer
