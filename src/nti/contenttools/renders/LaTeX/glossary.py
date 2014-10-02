@@ -50,3 +50,7 @@ def extract_list(list_of_list):
 			return extract_list(child)
 		else:
 			return child
+
+def glossary_term_renderer(self):
+	item = base_renderer(self)
+	return u'\\ntiglossaryentry{\\textbf{%s}}{definition} ' % (item)

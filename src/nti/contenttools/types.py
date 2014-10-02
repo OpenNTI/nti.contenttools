@@ -614,6 +614,9 @@ class GlossaryDT(DocumentStructureNode):
 class GlossaryDD(DocumentStructureNode):
 	pass
 
+class GlossaryTerm(DocumentStructureNode):
+	pass
+
 class Exercise(DocumentStructureNode):
 	def __init__(self, problem =  None, solution = None, label=None):
 		self.problem = problem

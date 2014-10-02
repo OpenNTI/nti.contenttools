@@ -18,26 +18,33 @@ module to render exercise found in each chapter of openstax epub
 """
 
 def chapter_exercise_renderer(self):
+	"""
+	to render types.ChapterExercise
+	"""
 	return base_renderer(self)
 
 def exercise_section_renderer(self):
+	"""
+	to render types.ExerciseSection
+	"""
 	return base_renderer(self)
 
 def exercise_element_renderer(self):
+	"""
+	to render types.ExerciseElement
+	"""
 	return base_renderer(self)
 
 def exercise_check_renderer(self):
-	child_rendered = base_renderer(self)
-	if isinstance(self.children[0], types.Exercise): 
-		if self.children[0] is not None:
-			self.set_solution(self.children[0].solution)
-
-	solution = base_renderer(self.solution)
-	return u''
-
-
+	"""
+	to render types.ExerciseCheck
+	"""
+	return base_renderer(self)
 
 def exercise_renderer(self):
+	"""
+	to render types.Exercise
+	"""
 	if self.solution is not None:
 		if self.problem.solution is None:
 			self.problem.set_solution(self.solution)

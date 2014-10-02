@@ -179,6 +179,7 @@ types.GlossaryList.render = glossary_list_renderer
 types.GlossaryItem.render = glossary_item_renderer
 types.GlossaryDT.render = glossary_dt_renderer
 types.GlossaryDD.render = glossary_dd_renderer
+types.GlossaryTerm.render = glossary_term_renderer
 
 types.ChapterExercise.render = chapter_exercise_renderer
 types.ExerciseSection.render = exercise_section_renderer

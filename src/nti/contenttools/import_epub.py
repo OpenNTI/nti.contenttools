@@ -16,6 +16,7 @@ import logging
 from zope.exceptions import log as ze_log
 from . import types
 from .epub.openstax_epub import EPUBFile
+from .glossary import glossary_check
 
 import simplejson as json
 from collections import OrderedDict
@@ -89,6 +90,7 @@ def main():
             fp.write(tex_content)
         if glossary_dict is not None:
             global_glossary.update(glossary_dict)
+            glossary_check.process_glossary(glossary_dict, outputfile)
         body_child = body_child + 1
         logger.info('------------')
 
