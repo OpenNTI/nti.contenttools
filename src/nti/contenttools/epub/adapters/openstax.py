@@ -1352,7 +1352,7 @@ def _process_div_elements( element, epub ):
     elif class_ in ['exercise labeled check-understanding']:
         from .exercise import ExerciseCheck
         title = u'Check your understanding'
-        problem_type = 'free-response'
+        problem_type = 'free_response'
         el = ExerciseCheck.process(element, epub, problem_type, title)
     else:
         el = Run.process(element, epub)
@@ -1435,6 +1435,14 @@ def _process_strong_elements(element, epub):
     return Run.process(element, epub, ['bold'])
 
 def _process_em_elements(element, epub):
+    class_ = u''
+    if 'class' in element.attrib.keys():
+        class_ = element.attrib['class']
+
+    if class_ in ['glossterm']:
+        from .glossary import GlossaryTerm
+        return GlossaryTerm.process(element, epub)
+
     return Run.process(element, epub, ['italic'])
 
 def _process_q_elements(element, epub):

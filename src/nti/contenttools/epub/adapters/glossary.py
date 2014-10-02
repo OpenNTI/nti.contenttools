@@ -113,3 +113,12 @@ class GlossaryDD(types.GlossaryDD):
                 else:
                     logger.warn('Unhandled Glossary <dd> child: %s.',sub_el.tag)
         return me
+
+class GlossaryTerm(types.GlossaryTerm):
+    @classmethod
+    def process(cls, element, epub):
+        from .openstax import Run
+        me = cls()
+        for child in element:
+            me.add_child(Run.process(child, epub))
+        return me
