@@ -26,32 +26,104 @@ def exercise_section_renderer(self):
 def exercise_element_renderer(self):
 	return base_renderer(self)
 
+def exercise_check_renderer(self):
+	child_rendered = base_renderer(self)
+	if isinstance(self.children[0], types.Exercise): 
+		if self.children[0] is not None:
+			self.set_solution(self.children[0].solution)
+
+	solution = base_renderer(self.solution)
+	return u''
+
+
+
 def exercise_renderer(self):
 	if self.solution is not None:
 		if self.problem.solution is None:
 			self.problem.set_solution(self.solution)
+			self.problem.solution.set_problem_type(self.problem.problem_type)
 	problem = self.problem.render()
 	return u'\n%s\n' %(problem)
 
 def problem_renderer(self):
 	"""
 	render types.Problem
-	possible problem_type : 'free_response', 'multiple_choice', and 'ordering'
+	possible problem_type : 'free_response', 'multiple_choice', 'ordering', 'essay'
 	"""
 	problem_body = u''
 	if self.problem_type == 'free_response':
-		pass
+		problem_body = free_response_renderer(self)
 	elif self.problem_type == 'multiple_choice':
 		problem_body = process_multiple_choice(self)
 	elif self.problem_type == 'ordering':
 		pass
-
+	elif self.problem_type == 'essay':
+		problem_body = essay_renderer(self)
 	label = self.label
 
 	return u'\\begin{naquestion}\n\\label{%s}\n%s\\end{naquestion}\n' %(label, problem_body)
 
-def process_free_response(self):
-	pass
+
+def free_response_renderer(self):
+	"""
+	render free response question
+	"""
+	if len(self.children) > 0 :
+		list_of_sol = process_free_response_solution(self)
+		return process_multiple_question(self, list_of_sol)
+	else:	
+		free_response_question = self.question.render()
+		solution = self.solution.render()
+		return set_free_response_tag(free_response_question, solution)
+
+def process_free_response_solution(self):
+	"""
+	render multiple free_response solution
+	"""
+	solution = self.solution
+	result = []
+	if isinstance(solution.children[0], types.Run) and len (solution.children[0].children) > 0:
+		solutions_list = solution.children[0].children
+		for item in solution_list:
+			result.append(item.render())
+	return result
+
+def process_multiple_question(self, list_of_sol):
+	"""
+	used when free response has more than one question (point)
+	"""
+	points = None
+	result = []
+	index = 0
+	if len(self.children) == 1 :
+		if isinstance(self.children[0], types.MultipleChoices) :
+			points = multiple_choice_renderer(self)
+			for item in points:
+				result.append(set_free_response_tag(item))
+	join_result = u''.join(result)
+	return join_result
+				
+
+def set_free_response_tag(question, solution):
+	question = question.rstrip()
+	solution_temp = []
+	solution_temp.append(solution)
+	solution_tag = set_solution_tag(solution_list)
+	return u'\\begin{naqfreeresponsepart}\n%s\n%s\\end{naqfreeresponsepart}\n' %(question, solution_temp)
+
+def set_solution_tag(solution_list):
+	result = []
+	for item in solution_list:
+		string = u'\\naqsolution [1] %s\n' %(item)
+		result.append(string)
+	join_result = u''.join(result)
+	return u'\\begin{naqsolutions}\n%s\\end{naqsolutions}\n' %(join_result)
+
+def essay_renderer(self):
+	essay_question = self.question.render()
+	essay_question = essay_question.rstrip()
+	return u'\\begin{naqessaypart}\n%s\n\\end{naqessaypart}'
+
 
 def process_multiple_choice(self):
 	choices = None
@@ -110,7 +182,12 @@ def process_ordering(self):
 	pass
 
 def solution_renderer(self):
-	return base_renderer(self.solution)
+	if self.problem_type == 'multiple_choice':
+		return base_renderer(self.solution)
+
+def solve_multiple_solution(solution):
+	pass
+
 
 def multiple_choice_renderer(self):
 	items = self.choices

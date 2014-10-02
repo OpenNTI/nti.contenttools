@@ -1337,15 +1337,23 @@ def _process_div_elements( element, epub ):
         pass
     elif class_ in ['cnx-eoc multiple-choice', 'cnx-eoc section-quiz']:
         from .exercise import ChapterExercise
-        el = ChapterExercise.process(element, epub)
+        problem_type = 'multiple_choice'
+        el = ChapterExercise.process(element, epub, problem_type)
     elif class_ in ['solution labeled']:
         pass
     elif class_ in ['cnx-eoc cnx-solutions']:
         pass
     elif class_ in ['note sociology-careers', 'note sociology-policy-debate', 'note sociology-big-picture', 'note sociology-real-world',\
-                        'note sociological-research', ]:
+                        'note sociological-research', 'note', 'example']:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
+    elif class_ in ['exercise problems-exercises']:
+        pass
+    elif class_ in ['exercise labeled check-understanding']:
+        from .exercise import ExerciseCheck
+        title = u'Check your understanding'
+        problem_type = 'free-response'
+        el = ExerciseCheck.process(element, epub, problem_type, title)
     else:
         el = Run.process(element, epub)
     return el

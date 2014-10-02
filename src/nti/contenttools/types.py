@@ -649,11 +649,19 @@ class Problem (DocumentStructureNode):
 		self.label = label
 
 class Solution (DocumentStructureNode):
-	def __init__(self, solution = None):
+	def __init__(self, solution = None, label = None, problem_type = None):
 		self.solution = solution
+		self.label = label
+		self.problem_type = problem_type
 
 	def set_solution(self, solution):
 		self.solution = solution
+
+	def set_label(self, label):
+		self.label = label
+
+	def set_problem_type(self, problem_type):
+		self.problem_type = problem_type
 
 
 class MultipleChoices(DocumentStructureNode):
@@ -682,6 +690,17 @@ class ExerciseDiv(DocumentStructureNode):
 class Example(DocumentStructureNode):
 	pass
 
+class ExerciseCheck(DocumentStructureNode):
+	def __init__(self, title=None, solution=None):
+		self.title = title
+		self.solution = solution
+
+	def set_title(self, title):
+		self.title = title
+
+	def set_solution(self,solution):
+		self.solution =solution
+
 class OpenstaxNote (DocumentStructureNode):
 	def __init__(self, title=None, body=None):
 		self.title = title
@@ -692,5 +711,7 @@ class OpenstaxNote (DocumentStructureNode):
 
 	def set_body(self, body):
 		self.body = body
+
+
 
 
