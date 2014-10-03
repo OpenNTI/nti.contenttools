@@ -129,7 +129,7 @@ def set_solution_tag(solution_list):
 def essay_renderer(self):
 	essay_question = self.question.render()
 	essay_question = essay_question.rstrip()
-	return u'\\begin{naqessaypart}\n%s\n\\end{naqessaypart}'
+	return u'\\begin{naqessaypart}\n%s\n\\end{naqessaypart}' %(essay_question)
 
 
 def process_multiple_choice(self):
@@ -174,7 +174,7 @@ def get_multiple_choice_sol(self):
 	elif solution == 6 or solution == 'F' or solution == 'f':
 		return 5
 	elif solution == u'':
-		logger.info('No solution')
+		logger.warn('No solution')
 	else:
 		logger.warn('Unhandled solution for multiple choices : %s', solution)
 
