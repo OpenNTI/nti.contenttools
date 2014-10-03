@@ -111,7 +111,8 @@ class Document( DocumentStructureNode ):
 						  'ntiassessment',
 						  'amsmath',
 						  'enumitem',
-						  'listings']
+						  'listings',
+						  'ntiglossary']
 
 class Body( DocumentStructureNode ):
 	pass
@@ -148,7 +149,10 @@ class Section( DocumentStructureNode ):
 		self.label = label
 
 class SubSection( DocumentStructureNode ):
-	pass
+	def __init__( self, label = None, title = None):
+		super( SubSection, self ).__init__()
+		self.title = title
+		self.label = label
 
 class SubSubSection( DocumentStructureNode ):
 	pass
