@@ -37,8 +37,6 @@ def set_image_params_and_command(self, command):
     height = self.height
 
     if check_table :
-        logger.info('Image is inside table')
-        logger.info('there are %s images in a row', image_in_a_row)
         width = 600/image_in_a_row
         if self.width > width:
             if self.height != 0:
@@ -72,11 +70,18 @@ def figure_rendered(self):
         logger.info("caption for figure is empty")
         caption = self.caption
     
+    """
     if self.label is not None:
         label = base_renderer(self.label)
+        label  = label.rstrip()
+        label = label.replace(u' ', u'_')
     else:
         logger.info("label for figure is empty")
         label = self.label
+        label  = label.rstrip()
+        label = label.replace(u' ', u'_')
+    """
+    label = self.label
 
     return u'\\begin{figure}\n%s\n\\caption{%s}\n\\label{%s}\n\\end{figure}\n'\
          %(base_renderer(self), caption, label)
