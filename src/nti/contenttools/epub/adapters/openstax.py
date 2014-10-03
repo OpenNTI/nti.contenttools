@@ -335,7 +335,7 @@ class NoteInteractive(types.NoteInteractive):
                     me.set_caption(caption.children[0].children[0])
                 elif class_ in ['body']:
                     for sub_el in child:
-                        if sub_el.tag == 'div' and sub_el.attrib['class'] == 'mediaobject':
+                        if sub_el.tag == 'div' and sub_el.attrib['class'] == 'object':
                             path = process_img_note_interactive(sub_el, epub)
                             me.set_image_path(path)
                         elif sub_el.tag == 'p':
@@ -442,11 +442,13 @@ class Figure(types.Figure):
     @classmethod
     def process(cls, element, epub):
         me = cls()
+        me.set_label(element.attrib['id'])
         for child in element:
             if child.tag == 'div' and child.attrib['class'] == 'caption':
                 me.set_caption(process_caption_figure(child, epub))
             elif child.tag == 'div' and child.attrib['class'] == 'title':
-                me.set_label(process_title_figure(child, epub))
+                #me.set_label(process_title_figure(child, epub))
+                pass
             elif child.tag == 'div' and child.attrib['class'] == 'body':
                 me.add_child(process_body_figure(child, epub))
             elif child.tag == 'table':
@@ -1321,7 +1323,7 @@ def _process_div_elements( element, epub ):
         el.title = 'Cover'
         el.suppressed = True
         logger.info('found cover image')
-    elif class_ in ['cnx-eoc summary', 'cnx-eoc art-exercise', 'cnx-eoc free-response', 'cnx-eoc short-answer', 'cnx-eoc section-summary', \
+    elif class_ in ['cnx-eoc summary', 'cnx-eoc art-exercise', 'cnx-eoc free-response', 'cnx-eoc section-summary', 'cnx-eoc short-answer',\
                         'cnx-eoc further-research', 'cnx-eoc references', 'cnx-eoc conceptual-questions', 'cnx-eoc problems-exercises', ]:
         el = Run()
         num_child = 0
@@ -1334,21 +1336,19 @@ def _process_div_elements( element, epub ):
                 el.add_child(Run.process(element.getchildren()[num_child], epub))
             num_child = num_child + 1
     elif class_ in ['part']:
-        pass
+        logger.info('found part')
     elif class_ in ['cnx-eoc multiple-choice', 'cnx-eoc section-quiz']:
         from .exercise import ChapterExercise
         problem_type = 'multiple_choice'
         el = ChapterExercise.process(element, epub, problem_type)
-    elif class_ in ['solution labeled']:
-        pass
     elif class_ in ['cnx-eoc cnx-solutions']:
-        pass
+        logger.info('found cnx-solutions')
     elif class_ in ['note sociology-careers', 'note sociology-policy-debate', 'note sociology-big-picture', 'note sociology-real-world',\
-                        'note sociological-research', 'note', 'example']:
+                        'note sociological-research', 'note', 'example', 'note art-connection', 'note evolution', 'note career', ]:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
     elif class_ in ['exercise problems-exercises']:
-        pass
+        logger.info('found exercise problems-exercises')
     elif class_ in ['exercise labeled check-understanding']:
         from .exercise import ExerciseCheck
         title = u'Check your understanding'
@@ -1368,10 +1368,10 @@ def _process_section_elements(element, epub):
     return el
 
 def _process_h1_elements( element, epub ):
-    return SubSection.process(element, epub)
+    return Paragraph.process(element, epub, ['Subsection'])
 
 def _process_h2_elements( element, epub ):
-    return SubSection.process(element, epub)
+    return Paragraph.process(element, epub, ['Heading3'])
 
 def _process_h3_elements( element, epub ):
     return Paragraph.process(element, epub, ['Heading4'])
