@@ -1,24 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: equation_image.py 50369 2014-10-02 18:24:13Z egawati.panjei $
+this module is used to process equation images found in openstax book
+
+.. $Id$
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from IPython.core.debugger import Tracer
-
-from ... import types
-from lxml import etree
 from lxml.html import HtmlComment
 
-"""
-this module is used to process equation images found in openstax book
-"""
+from ... import types
 
 class EquationImage(types.EquationImage):
+
 	@classmethod
 	def process(cls, element, epub):
 		from .openstax import Run
@@ -33,5 +30,3 @@ class EquationImage(types.EquationImage):
 			else:
 				me.text = Run.process(child, epub)
 		return me
-		
-
