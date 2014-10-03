@@ -83,7 +83,7 @@ def figure_rendered(self):
     """
     label = self.label
 
-    return u'\\begin{figure}\n%s\n\\caption{%s}\n\\label{%s}\n\\end{figure}\n'\
+    return u'\\begin{figure}\n\\begin{center}\n%s\n\\caption{%s}\n\\label{%s}\n\\end{center}\n\\end{figure}\n'\
          %(base_renderer(self), caption, label)
 
 def check_image_in_table(self):

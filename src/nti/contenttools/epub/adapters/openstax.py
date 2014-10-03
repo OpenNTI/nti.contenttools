@@ -1350,10 +1350,11 @@ def _process_div_elements( element, epub ):
     elif class_ in ['exercise problems-exercises']:
         logger.info('found exercise problems-exercises')
     elif class_ in ['exercise labeled check-understanding']:
-        from .exercise import ExerciseCheck
-        title = u'Check your understanding'
-        problem_type = 'free_response'
-        el = ExerciseCheck.process(element, epub, problem_type, title)
+        from .note import OpenstaxNote
+        el = OpenstaxNote.process(element, epub)
+    elif class_ in ['equation']:
+        from .equation_image import EquationImage 
+        el = EquationImage.process(element, epub)
     else:
         el = Run.process(element, epub)
     return el
