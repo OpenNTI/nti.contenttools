@@ -63,7 +63,7 @@ def _process_exercise(element, epub, problem_type=None):
 	if 'class' in element.attrib.keys():
 		class_ = element.attrib['class']
 	el = None
-	if class_ in ['exercise', 'exercise section-quiz']:
+	if class_ in ['exercise', 'exercise section-quiz', 'exercise short-answer', 'exercise shortanswer', 'exercise shortanswers']:
 		el = ExerciseElement.process(element, epub, problem_type)
 	else:
 		if isinstance(element,HtmlComment):
@@ -105,7 +105,7 @@ class ExerciseCheck(types.ExerciseCheck):
 				if isinstance(child,HtmlComment):
 					pass
 				else:
-					logger.warn('Unhanled exercise process: %s', child.tag)
+					logger.warn('Unhanled exercise check: %s', child.tag)
 		return me
 
 class ExerciseElement(types.ExerciseElement):
@@ -151,7 +151,7 @@ class Exercise(types.Exercise):
 			if child.tag == 'div' and child.attrib['class'] == 'problem':
 				problem = Problem.process(child, epub, problem_type)
 				me.set_problem(problem)
-			elif child.tag == 'div' and child.attrib['class'] in ['solution labeled', 'solution']:
+			elif child.tag == 'div' and child.attrib['class'] in ['solution labeled', 'solution', 'solution labeled section-quiz']:
 				solution = Solution.process(child, epub)
 				me.set_solution(solution)
 			else:
