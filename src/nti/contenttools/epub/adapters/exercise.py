@@ -193,6 +193,7 @@ class Problem(types.Problem):
 			me.set_problem_type('ordering')
 		elif count_ordered_list == 0 and problem_type == 'essay':
 			me.set_problem_type('essay')
+		Tracer()()
 		return me
 
 class MultipleChoices(types.MultipleChoices):

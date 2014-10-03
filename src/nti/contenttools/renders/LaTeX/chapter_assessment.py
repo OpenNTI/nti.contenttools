@@ -12,6 +12,7 @@ logger = __import__('logging').getLogger(__name__)
 from IPython.core.debugger import Tracer
 
 from .base import base_renderer
+from ... import types
 
 """
 module to render exercise found in each chapter of openstax epub
@@ -87,8 +88,9 @@ def process_free_response_solution(self):
 	"""
 	render multiple free_response solution
 	"""
-	solution = self.solution
+	solution = self.solution.solution
 	result = []
+	Tracer()()
 	if isinstance(solution.children[0], types.Run) and len (solution.children[0].children) > 0:
 		solutions_list = solution.children[0].children
 		for item in solution_list:
@@ -102,11 +104,12 @@ def process_multiple_question(self, list_of_sol):
 	points = None
 	result = []
 	index = 0
+	question = self.question.render()
 	if len(self.children) == 1 :
 		if isinstance(self.children[0], types.MultipleChoices) :
-			points = multiple_choice_renderer(self)
+			points = multiple_choice_renderer(self.children[0])
 			for item in points:
-				result.append(set_free_response_tag(item))
+				result.append(set_free_response_tag(question, item))
 	join_result = u''.join(result)
 	return join_result
 				
@@ -115,8 +118,8 @@ def set_free_response_tag(question, solution):
 	question = question.rstrip()
 	solution_temp = []
 	solution_temp.append(solution)
-	solution_tag = set_solution_tag(solution_list)
-	return u'\\begin{naqfreeresponsepart}\n%s\n%s\\end{naqfreeresponsepart}\n' %(question, solution_temp)
+	solution_tag = set_solution_tag(solution_temp)
+	return u'\\begin{naqfreeresponsepart}\n%s\n%s\\end{naqfreeresponsepart}\n' %(question, solution_tag)
 
 def set_solution_tag(solution_list):
 	result = []

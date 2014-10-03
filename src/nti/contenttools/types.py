@@ -719,6 +719,12 @@ class OpenstaxNote (DocumentStructureNode):
 	def set_body(self, body):
 		self.body = body
 
+class EquationImage(DocumentStructureNode):
+	def __init__(self,label=None, image=None, text=None):
+		super(EquationImage, self).__init__()
+		self.label = label
+		self.image = image
+		self.text = text
 
 
 
