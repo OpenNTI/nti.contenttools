@@ -28,7 +28,19 @@ def section_renderer(self):
 """
 
 def subsection_renderer(self):
-    return _command_renderer('subsection', base_renderer(self).strip() ) + u'\n'
+    title = self.title
+    label = None
+    if isinstance(self.label, str):
+        label = u'\\label{%s}' % (self.label)
+    elif self.label is not None:
+        label = self.label.render()
+
+    if title is None or label is None:
+        return _command_renderer('subsection', base_renderer(self).strip() ) + u'\n'
+    else:
+        return u'\\subsection{%s %s}%s' %(title, label, base_renderer(self))
+
+    
 
 def subsubsection_renderer(self):
     return _command_renderer('subsubsection', base_renderer(self).strip() ) + u'\n'
