@@ -53,7 +53,7 @@ class SubSubSection( types.SubSubSection ):
 class Paragraph( types.Paragraph ):
 
 	@classmethod
-	def process(cls, element, epub, styles=[]):
+	def process(cls, element, epub, styles=()):
 		me = cls()
 		me.styles.extend(styles)
 		if 'id' in element.attrib.keys():
@@ -290,7 +290,7 @@ class Image( types.Image ):
 			me.caption = element.attrib['alt']
 		image_path = os.path.join(epub.content_path, me.path)
 		if image_path in epub.zipfile.namelist():
-			me.data = StringIO.StringIO( epub.zipfile.read(image_path) )
+			me.data = StringIO( epub.zipfile.read(image_path) )
 			me.width, me.height = PILImage.open(me.data).size
 			epub.image_list.append(me)
 			return me
@@ -305,7 +305,7 @@ class Video( types.Video ):
 		me.path = element.attrib['src']
 		me.caption = element.attrib['title']
 		me.thumbnail = element.attrib['poster']
-		me.thumbnaildata = StringIO.StringIO( epub.zipfile.read(os.path.join(epub.content_path, me.thumbnail)) )
+		me.thumbnaildata = StringIO( epub.zipfile.read(os.path.join(epub.content_path, me.thumbnail)) )
 		#me.width, me.height = PILImage.open(me.thumbnaildata).size
 		me.width, me.height = ( 640, 480 )
 		me.add_child( Run.process( element, epub ) )
@@ -1106,8 +1106,8 @@ def _get_title( head ):
 			title = element.text
 	return title
 
-def _consolidate_lists(data=None):
-	data = data or []
+def _consolidate_lists(data=()):
+
 	def pull_up_children( element ):
 		if isinstance(element, types.List):
 			for i in xrange(len(element.children)):
