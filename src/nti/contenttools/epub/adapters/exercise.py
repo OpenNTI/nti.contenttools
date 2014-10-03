@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
+used to process exercises found in each chapter of openstax epub
+
 .. $Id$
 """
 
@@ -9,18 +11,15 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from IPython.core.debugger import Tracer
+from lxml.html import HtmlComment
 
 from ... import types
 
-from lxml.html import HtmlComment
-
-"""
-used to process exercises found in each chapter of openstax epub
-"""
+from .openstax import Run
+from .openstax import SubSection
 
 def _process_exercise_div(element, epub, problem_type=None):
-	from .openstax import SubSection, Run
+	
 	class_ = u''
 	if 'class' in element.attrib.keys():
 		class_ = element.attrib['class']
@@ -40,7 +39,7 @@ def _process_exercise_div(element, epub, problem_type=None):
 	return el
 
 def _process_exercise_section(element, epub, problem_type = None):
-	from .openstax import Run
+	
 	class_ = u''
 	if 'class' in element.attrib.keys():
 		class_ = element.attrib['class']
@@ -58,7 +57,6 @@ def _process_exercise_section(element, epub, problem_type = None):
 	return el
 
 def _process_exercise(element, epub, problem_type=None):
-	el = None
 	class_ = u''
 	if 'class' in element.attrib.keys():
 		class_ = element.attrib['class']
@@ -73,7 +71,6 @@ def _process_exercise(element, epub, problem_type=None):
 	return el
 
 def _process_exercise_element(element, epub, problem_type=None):
-	from .openstax import Run
 	class_ = u''
 	if 'class' in element.attrib.keys():
 		class_ = element.attrib['class']
@@ -91,9 +88,9 @@ def _process_exercise_element(element, epub, problem_type=None):
 	return el
 
 class ExerciseCheck(types.ExerciseCheck):
+	
 	@classmethod
 	def process(cls, element, epub, problem_type = None, title = u''):
-		from .openstax import Run
 		me = cls()
 		me.set_title(title)
 		for child in element:
@@ -109,6 +106,7 @@ class ExerciseCheck(types.ExerciseCheck):
 		return me
 
 class ExerciseElement(types.ExerciseElement):
+
 	@classmethod
 	def process(cls, element, epub, problem_type=None):
 		me = cls()
@@ -117,6 +115,7 @@ class ExerciseElement(types.ExerciseElement):
 		return me
 
 class ExerciseDiv(types.ExerciseDiv):
+
 	@classmethod
 	def process(cls, element, epub, problem_type=None):
 		me = cls()
@@ -125,6 +124,7 @@ class ExerciseDiv(types.ExerciseDiv):
 		return me
 
 class ExerciseSection(types.ExerciseSection):
+
 	@classmethod
 	def process(cls, element, epub, problem_type=None):
 		me = cls()
@@ -133,6 +133,7 @@ class ExerciseSection(types.ExerciseSection):
 		return me
 
 class ChapterExercise(types.ChapterExercise):
+
 	@classmethod
 	def process(cls, element, epub, problem_type=None):
 		me = cls()
@@ -141,11 +142,10 @@ class ChapterExercise(types.ChapterExercise):
 				me.add_child(_process_exercise_div(child, epub, problem_type))
 		return me
 
-
 class Exercise(types.Exercise):
+
 	@classmethod
 	def process(cls, element, epub, problem_type=None):
-		from .openstax import Run
 		me = cls()
 		for child in element:
 			if child.tag == 'div' and child.attrib['class'] == 'problem':
@@ -161,10 +161,12 @@ class Exercise(types.Exercise):
 					logger.warn('Unhanled exercise process: %s', child.tag)
 		return me
 
+from .openstax import Paragraph
+		
 class Problem(types.Problem):
+
 	@classmethod
 	def process(cls, element, epub, problem_type = None):
-		from .openstax import Paragraph
 		me = cls()
 		count_ordered_list = 0 
 		for child in element:
@@ -193,10 +195,10 @@ class Problem(types.Problem):
 			me.set_problem_type('ordering')
 		elif count_ordered_list == 0 and problem_type == 'essay':
 			me.set_problem_type('essay')
-		Tracer()()
 		return me
 
 class MultipleChoices(types.MultipleChoices):
+
 	@classmethod
 	def process(cls, element, epub):
 		me = cls()
@@ -210,7 +212,6 @@ class MultipleChoices(types.MultipleChoices):
 		return me
 
 def _process_multiple_choice_items (element, epub):
-	from .openstax import Run
 	result = []
 	for child in element:
 		if child.tag == 'li' :
@@ -221,9 +222,9 @@ def _process_multiple_choice_items (element, epub):
 	return result
 
 class Solution(types.Solution):
+
 	@classmethod
 	def process(cls, element, epub):
-		from .openstax import Run
 		me = cls()
 		me.set_label(element.attrib['id'])
 		for child in element:
@@ -233,4 +234,3 @@ class Solution(types.Solution):
 				solution = Run.process(child, epub)
 				me.set_solution(solution)
 		return me
-
