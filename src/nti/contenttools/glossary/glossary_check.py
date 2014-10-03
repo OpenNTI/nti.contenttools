@@ -11,20 +11,68 @@ from IPython.core.debugger import Tracer
 
 import os
 import codecs
+import re
 
 def process_glossary(glossary_dict, filename):
         content = get_file_content(filename)
         content = content.decode('utf-8')
+        pattern = None
         for key in glossary_dict.keys():
                 key_text =key.rstrip()
-                search_text = u'\\ntiglossaryentry{\\textbf{%s}}{definition}' % (key_text)
                 definition = glossary_dict[key].rstrip()
-                new_text = u'\\ntiglossaryentry{\\textbf{%s}}{%s}' % (key_text, definition)
-                logger.info(new_text)
-                content = content.replace(search_text, new_text)
+                content = add_definition(key_text, definition, content)
+
+
+                #if the glossary term located in the beginning of a sentence
+                cap_key = key_text.capitalize()
+                content = add_definition(cap_key, definition, content)
+
+                #if the glossary term has textit tag
+                italic_key = u'\\textit{%s}' %(key_text)
+                content = add_definition(italic_key, definition, content)
+
+                #if the glossary term is singular but listed as a plural word in the glossary dict
+                single_key = plural_to_single_word(key_text)
+                content = add_definition(single_key, definition, content)
+
+                #if the glossary term is plural but listed as a single word in the glossary dict
+                plural_key = single_to_plural_word(key_text)
+                content = add_definition(plural_key, definition, content)
+                plural_key = single_to_plural_word(cap_key)
+                content = add_definition(plural_key, definition, content)
+                plural_key = single_to_plural_word(italic_key)
+                content = add_definition(plural_key, definition, content)
+
         new_content = content
         replace_file_content(filename, new_content)
 
+def single_to_plural_word(word):
+        end_char = ['ch', 'x', 's']
+        length = len(word)
+        if word[length-1] in end_char:
+                return word + u'es'
+        elif word[length-2:length-1] in end_char:
+                return word + u'es'
+        else:
+                return word + u's'
+
+def plural_to_single_word(word):
+        length = len(word)
+        end_char = ['ch', 'x', 's']
+        if word[length-2:length-1] == 'es' and word[length-1] in end_char:
+                return word[0:length-3]
+        elif word[length-2:length-1] == 'es' and word[length-2:length-1] in end_char:
+                return word[0:length-3]
+        elif word[length-1] == 's':
+                return word[0:length-2]
+        else:
+                return word
+
+def add_definition(key, definition, content):
+        search_text = u'\\ntiglossaryentry{\\textbf{%s}}{definition}' % (key)
+        new_text = u'\\ntiglossaryentry{\\textbf{%s}}{%s}' % (key, definition)
+        new_content = content.replace(search_text, new_text)
+        return new_content
 
 def get_file_content(filename):
         file_str = u''
