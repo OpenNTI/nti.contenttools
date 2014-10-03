@@ -36,7 +36,8 @@ def list_renderer(self):
     return _environment_renderer(self, u'itemize', u'')
 
 def item_renderer(self):
-    return u'\\item %s \n' % base_renderer(self)
+    desc = base_renderer(self).rstrip()
+    return u'\\item %s \n' % desc
 
 def list_desc_renderer(self):
     return _environment_renderer(self, u'description', u'')
