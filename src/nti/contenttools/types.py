@@ -208,6 +208,7 @@ class Image( DocumentStructureNode ):
 		self.caption = u''
 		self.width = 0
 		self.height = 0
+		self.equation_image = False
 
 class DocxImage( Image ):
 	pass
@@ -697,6 +698,13 @@ class ExerciseDiv(DocumentStructureNode):
 class Example(DocumentStructureNode):
 	pass
 
+class ProblemExercise(DocumentStructureNode):
+	def __init__(self,title=None, problem_type=None, label=None):
+		super(ProblemExercise, self).__init__()
+		self.title = title
+		self.problem_type = problem_type
+		self.label = label
+
 class ExerciseCheck(DocumentStructureNode):
 	def __init__(self, title=None, solution=None):
 		self.title = title
@@ -708,16 +716,23 @@ class ExerciseCheck(DocumentStructureNode):
 	def set_solution(self,solution):
 		self.solution =solution
 
+class EndOfChapterSolution(DocumentStructureNode):
+	pass
+
 class OpenstaxNote (DocumentStructureNode):
-	def __init__(self, title=None, body=None):
+	def __init__(self, title=None, body=None, label=None):
 		self.title = title
 		self.body = body
+		self.label = label
 
 	def set_title(self, title):
 		self.title = title
 
 	def set_body(self, body):
 		self.body = body
+
+	def set_label(self, label):
+		self.label = label
 
 class EquationImage(DocumentStructureNode):
 	def __init__(self,label=None, image=None, text=None):
