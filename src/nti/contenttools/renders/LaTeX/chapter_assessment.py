@@ -42,6 +42,19 @@ def exercise_check_renderer(self):
 	"""
 	return base_renderer(self)
 
+def problem_exercise_renderer(self):
+	"""
+	to render types.ProblemExercise
+	"""
+	body = base_renderer(self)
+	title = self.title.render()
+	label = self.label
+	if label is not None:
+		return u'\\newline \\textbf{\\label{%s}%s} \\newline %s\n' %(label, title, body)
+	else:
+		return u'\\newline %s \\newline %s\n' %(title, body)
+
+
 def exercise_renderer(self):
 	"""
 	to render types.Exercise
@@ -67,10 +80,21 @@ def problem_renderer(self):
 		pass
 	elif self.problem_type == 'essay':
 		problem_body = essay_renderer(self)
+	elif self.problem_type == 'problem_exercise':
+		problem_body = get_question(self.question)
 	label = self.label
 
-	return u'\\begin{naquestion}\n\\label{%s}\n%s\\end{naquestion}\n' %(label, problem_body)
+	if self.problem_type == 'problem_exercise':
+		return u'%s\n' %(problem_body)
+	else:
+		return u'\\begin{naquestion}\n\\label{%s}\n%s\\end{naquestion}\n' %(label, problem_body)
 
+def get_question(questions):
+	list_of_question = []
+	for question in questions:
+		list_of_question.append(question.render().rstrip())
+	result = u''.join(list_of_question)
+	return result
 
 def free_response_renderer(self):
 	"""
@@ -80,7 +104,7 @@ def free_response_renderer(self):
 		list_of_sol = process_free_response_solution(self)
 		return process_multiple_question(self, list_of_sol)
 	else:	
-		free_response_question = self.question.render()
+		free_response_question = get_question(self.question)
 		solution = self.solution.render()
 		return set_free_response_tag(free_response_question, solution)
 
@@ -90,7 +114,6 @@ def process_free_response_solution(self):
 	"""
 	solution = self.solution.solution
 	result = []
-	Tracer()()
 	if isinstance(solution.children[0], types.Run) and len (solution.children[0].children) > 0:
 		solutions_list = solution.children[0].children
 		for item in solution_list:
@@ -104,7 +127,7 @@ def process_multiple_question(self, list_of_sol):
 	points = None
 	result = []
 	index = 0
-	question = self.question.render()
+	question = get_question(self.question)
 	if len(self.children) == 1 :
 		if isinstance(self.children[0], types.MultipleChoices) :
 			points = multiple_choice_renderer(self.children[0])
@@ -130,7 +153,7 @@ def set_solution_tag(solution_list):
 	return u'\\begin{naqsolutions}\n%s\\end{naqsolutions}\n' %(join_result)
 
 def essay_renderer(self):
-	essay_question = self.question.render()
+	essay_question = get_question(self.question)
 	essay_question = essay_question.rstrip()
 	return u'\\begin{naqessaypart}\n%s\n\\end{naqessaypart}' %(essay_question)
 
@@ -154,7 +177,7 @@ def process_multiple_choice(self):
 		logger.warn('we need to make sure that choices var is a list')
 
 	item_body = u''.join(item_rendered)
-	question = self.question.render()
+	question = get_question(self.question)
 	question = question.rstrip()
 
 	return u'\\begin{naqmultiplechoicepart}\n%s\n\\begin{naqchoices}\n%s\\end{naqchoices}\n\\end{naqmultiplechoicepart}\n' % (question,item_body)
@@ -187,9 +210,6 @@ def set_multiple_choice_tag(item, solution_check):
 		return u'\\naqchoice [1] %s \n' %(item)
 	else:
 		return u'\\naqchoice %s \n' %(item) 
-
-def process_ordering(self):
-	pass
 
 def solution_renderer(self):
 	if self.problem_type == 'multiple_choice':
