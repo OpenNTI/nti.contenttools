@@ -54,6 +54,10 @@ def set_image_params_and_command(self, command):
     if self.width < threshold or self.height < threshold:
         command = u'includegraphics'
 
+    #make sure if image is an equation image, the command will be 'includegraphics'
+    if self.equation_image == True:
+        command = u'includegraphics'
+
     return params, command
 
 def base_figured_rendered(info):
@@ -70,17 +74,6 @@ def figure_rendered(self):
         logger.info("caption for figure is empty")
         caption = self.caption
     
-    """
-    if self.label is not None:
-        label = base_renderer(self.label)
-        label  = label.rstrip()
-        label = label.replace(u' ', u'_')
-    else:
-        logger.info("label for figure is empty")
-        label = self.label
-        label  = label.rstrip()
-        label = label.replace(u' ', u'_')
-    """
     label = self.label
 
     return u'\\begin{figure}\n\\begin{center}\n%s\n\\caption{%s}\n\\label{%s}\n\\end{center}\n\\end{figure}\n'\
