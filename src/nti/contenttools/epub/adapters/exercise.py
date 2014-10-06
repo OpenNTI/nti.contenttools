@@ -17,6 +17,7 @@ from ... import types
 
 from .openstax import Run
 from .openstax import SubSection
+from IPython.core.debugger import Tracer
 
 def _process_exercise_div(element, epub, problem_type=None):
 	
@@ -61,13 +62,15 @@ def _process_exercise(element, epub, problem_type=None):
 	if 'class' in element.attrib.keys():
 		class_ = element.attrib['class']
 	el = None
-	if class_ in ['exercise', 'exercise section-quiz', 'exercise short-answer', 'exercise shortanswer', 'exercise shortanswers']:
+	if class_ in ['exercise', 'exercise section-quiz', 'exercise short-answer', 'exercise shortanswer', \
+					'exercise shortanswers']:
 		el = ExerciseElement.process(element, epub, problem_type)
 	else:
 		if isinstance(element,HtmlComment):
 			pass
 		else:
 			logger.warn('Unhanled exercise: %s',element.tag)
+			logger.info(element.attrib)
 	return el
 
 def _process_exercise_element(element, epub, problem_type=None):
@@ -151,14 +154,20 @@ class Exercise(types.Exercise):
 			if child.tag == 'div' and child.attrib['class'] == 'problem':
 				problem = Problem.process(child, epub, problem_type)
 				me.set_problem(problem)
-			elif child.tag == 'div' and child.attrib['class'] in ['solution labeled', 'solution', 'solution labeled section-quiz']:
-				solution = Solution.process(child, epub)
-				me.set_solution(solution)
+			elif child.tag == 'div' and child.attrib['class'] in ['solution labeled', 'solution', 'solution labeled section-quiz',\
+																	 'solution problems-exercises', 'solution problem-exercises',\
+																	 'solution conceptual-questions']:
+				if problem_type == 'problem_exercise':
+					pass
+				else:
+					solution = Solution.process(child, epub)
+					me.set_solution(solution)
 			else:
 				if isinstance(child,HtmlComment):
 					pass
 				else:
 					logger.warn('Unhanled exercise process: %s', child.tag)
+					logger.warn(child.attrib)
 		return me
 
 from .openstax import Paragraph
@@ -169,13 +178,15 @@ class Problem(types.Problem):
 	def process(cls, element, epub, problem_type = None):
 		me = cls()
 		count_ordered_list = 0 
+		list_of_question = []
 		for child in element:
 			if child.tag == 'div' and child.attrib['class'] == 'orderedlist':
 				me.add_child(MultipleChoices.process(child, epub))
 				count_ordered_list = count_ordered_list + 1
 			elif child.tag == 'p':
 				question  = Paragraph.process(child, epub)
-				me.set_question(question)
+				list_of_question.append(question)
+				me.set_question(list_of_question)
 			elif child.tag == 'span':
 				label = child.attrib['id']
 				me.set_label(label)
@@ -191,10 +202,12 @@ class Problem(types.Problem):
 			me.set_problem_type('free_response')
 		elif count_ordered_list == 1 and problem_type == 'multiple_choice':
 			me.set_problem_type('multiple_choice')
-		elif count_ordered_list == 2:
+		elif count_ordered_list == 2 and problem_type == 'ordering':
 			me.set_problem_type('ordering')
 		elif count_ordered_list == 0 and problem_type == 'essay':
 			me.set_problem_type('essay')
+		elif problem_type == 'problem_exercise':
+			me.set_problem_type('problem_exercise')
 		return me
 
 class MultipleChoices(types.MultipleChoices):
@@ -222,7 +235,6 @@ def _process_multiple_choice_items (element, epub):
 	return result
 
 class Solution(types.Solution):
-
 	@classmethod
 	def process(cls, element, epub):
 		me = cls()
@@ -234,3 +246,29 @@ class Solution(types.Solution):
 				solution = Run.process(child, epub)
 				me.set_solution(solution)
 		return me
+
+def process_problem_exercise(element, epub, problem_type) :
+	"""
+	process div class='exercise problem-exercise' 
+	"""
+	el = ProblemExercise.process(element, epub, problem_type)
+	id_ = u''
+	if 'id' in element.attrib.keys():
+		id_ = element.attrib['id']
+		el.label = id_
+	return el
+
+class ProblemExercise(types.ProblemExercise):
+	@classmethod
+	def process(cls, element, epub, problem_type=None):
+		me=cls()
+		for child in element:
+			class_ =u''
+			if 'class' in child.attrib.keys():
+				class_ = child.attrib['class']
+			if child.tag == 'div' and class_ == 'title':
+				me.title = Run.process(child, epub)
+			elif child.tag == 'div' and class_ == 'body':
+				me.add_child(Exercise.process(child, epub, problem_type))
+		return me
+
