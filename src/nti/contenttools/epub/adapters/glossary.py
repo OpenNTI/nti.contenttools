@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
+used to process glossary found in openstax epub
+
 .. $Id$
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -63,15 +65,14 @@ class GlossaryItem( types.GlossaryItem ):
 					logger.warn('Unhandled <dl> element child: %s.',child.tag)
 		return me
 
-from .openstax import _process_p_elements
-from .openstax import _process_sub_elements 
-from .openstax import _process_sup_elements
-from .openstax import _process_span_elements
 
 class GlossaryDT(types.GlossaryDT):
-
 	@classmethod
 	def process(cls, element, epub):
+		from .openstax import _process_p_elements
+		from .openstax import _process_sub_elements 
+		from .openstax import _process_sup_elements
+		from .openstax import _process_span_elements
 		me = cls()
 		if element.text:
 			if element.text.isspace():
@@ -95,12 +96,13 @@ class GlossaryDT(types.GlossaryDT):
 					logger.warn('Unhandled Glossary <dt> child: %s.',sub_el.tag)
 		return me
 
-from .openstax import _process_div_elements
+
 
 class GlossaryDD(types.GlossaryDD):
-
 	@classmethod
 	def process(cls, element, epub):
+		from .openstax import _process_p_elements
+		from .openstax import _process_div_elements
 		me = cls()
 		if element.text:
 			if element.text.isspace():
@@ -120,12 +122,11 @@ class GlossaryDD(types.GlossaryDD):
 					logger.warn('Unhandled Glossary <dd> child: %s.',sub_el.tag)
 		return me
 
-from .openstax import Run
 
 class GlossaryTerm(types.GlossaryTerm):
-
 	@classmethod
-	def process(cls, element, epub):		
+	def process(cls, element, epub):
+		from .openstax import Run		
 		me = cls()
 		for child in element:
 			me.add_child(Run.process(child, epub))
