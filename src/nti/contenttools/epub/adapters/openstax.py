@@ -1324,7 +1324,8 @@ def _process_div_elements( element, epub ):
         el.suppressed = True
         logger.info('found cover image')
     elif class_ in ['cnx-eoc summary', 'cnx-eoc art-exercise', 'cnx-eoc free-response', 'cnx-eoc section-summary', 'cnx-eoc short-answer',\
-                        'cnx-eoc further-research', 'cnx-eoc references', 'cnx-eoc conceptual-questions', 'cnx-eoc problems-exercises', ]:
+                        'cnx-eoc further-research', 'cnx-eoc references', 'cnx-eoc conceptual-questions', 'cnx-eoc problems-exercises',\
+                        'cnx-eoc cnx-solutions' ]:
         el = Run()
         num_child = 0
         for child in element.getchildren():
@@ -1341,14 +1342,15 @@ def _process_div_elements( element, epub ):
         from .exercise import ChapterExercise
         problem_type = 'multiple_choice'
         el = ChapterExercise.process(element, epub, problem_type)
-    elif class_ in ['cnx-eoc cnx-solutions']:
-        logger.info('found cnx-solutions')
     elif class_ in ['note sociology-careers', 'note sociology-policy-debate', 'note sociology-big-picture', 'note sociology-real-world',\
                         'note sociological-research', 'note', 'example', 'note art-connection', 'note evolution', 'note career', ]:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
-    elif class_ in ['exercise problems-exercises']:
-        logger.info('found exercise problems-exercises')
+    elif class_ in ['exercise problems-exercises', 'exercise conceptual-questions']:
+        from .exercise import process_problem_exercise
+        problem_type = 'problem_exercise'
+        el = process_problem_exercise(element, epub, problem_type)
+        logger.info('found %s', problem_type)
     elif class_ in ['exercise labeled check-understanding']:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
