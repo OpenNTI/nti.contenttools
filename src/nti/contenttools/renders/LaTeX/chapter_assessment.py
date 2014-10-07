@@ -50,7 +50,7 @@ def problem_exercise_renderer(self):
 	title = self.title.render()
 	label = self.label
 	if label is not None:
-		return u'\\newline \\textbf{\\label{%s}%s} \\newline %s\n' %(label, title, body)
+		return u'\\newline \\\paragraph{\\label{%s} %s } \\newline %s\n' %(label, title, body)
 	else:
 		return u'\\newline %s \\newline %s\n' %(title, body)
 
