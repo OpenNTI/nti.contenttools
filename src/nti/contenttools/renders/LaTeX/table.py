@@ -80,6 +80,7 @@ def table_html_renderer(self):
     if self.label is not None and self.caption is not None:
         label = self.label
         caption = self.caption.render()
+        caption = caption.replace(label+'.', '')
         result = u'\\begin{table}\n\\label{%s}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
         return result % (label, caption, string_col, body)
     elif self.label is not None and self.caption is None:
@@ -94,7 +95,6 @@ def table_html_renderer(self):
         result = u'\\begin{table}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
         return result % (string_col, body)
         
-
 def table_row_html_renderer(self):
     result = []
     for child in self.children:
