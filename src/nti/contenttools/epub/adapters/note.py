@@ -21,9 +21,9 @@ class OpenstaxNote (types.OpenstaxNote):
 		from . openstax import Run
 		me = cls()
 		id_ = u''
-        if 'id' in element.attrib.keys():
-            id_ = element.attrib['id']
-            me.set_label(id_)
+		if 'id' in element.attrib.keys() :
+			id_ = element.attrib['id']
+			me.set_label(id_)
 		for child in element:
 			if child.tag  == 'div' and child.attrib['class'] == 'title':
 				title = Run.process(child, epub)

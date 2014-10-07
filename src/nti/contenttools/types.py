@@ -260,15 +260,19 @@ class DD(DocumentStructureNode):
 	pass
 
 class Table(DocumentStructureNode):
-	def __init__(self, number_of_col=0, caption=None):
+	def __init__(self, number_of_col=0, caption=None, label=None):
 		self.number_of_col = number_of_col
 		self.caption = caption
+		self.label = label
 
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
 
 	def set_caption(self, caption):
 		self.caption = caption
+
+	def set_label(self, label):
+		self.label = label
 
 class Row(DocumentStructureNode):
 	def __init__(self, number_of_col=0):

@@ -156,7 +156,7 @@ class Exercise(types.Exercise):
 				me.set_problem(problem)
 			elif child.tag == 'div' and child.attrib['class'] in ['solution labeled', 'solution', 'solution labeled section-quiz',\
 																	 'solution problems-exercises', 'solution problem-exercises',\
-																	 'solution conceptual-questions']:
+																	 'solution conceptual-questions', 'solution problmes-exercises']:
 				if problem_type == 'problem_exercise':
 					pass
 				else:
