@@ -17,4 +17,7 @@ def openstax_note_renderer(self):
 	logger.debug("found note sidebar")
 	title = self.title.render()
 	body = self.body.render()
-	return u'\n\\begin{sidebar}{%s}\n%s\n\\end{sidebar}\n' %(title, body)
+	if self.label is None:
+		return u'\n\\begin{sidebar}{%s}\n%s\n\\end{sidebar}\n' %(title, body)
+	elif isinstance(self.label, str):
+		return u'\n\\begin{sidebar}{%s}\\label{%s}\n%s\n\\end{sidebar}\n' %(title, self.label, body)
