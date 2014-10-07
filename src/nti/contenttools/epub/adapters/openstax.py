@@ -1322,8 +1322,7 @@ def _process_div_elements( element, epub ):
         el.suppressed = True
         logger.info('found cover image')
     elif class_ in ['cnx-eoc summary', 'cnx-eoc art-exercise', 'cnx-eoc free-response', 'cnx-eoc section-summary', 'cnx-eoc short-answer',\
-                        'cnx-eoc further-research', 'cnx-eoc references', 'cnx-eoc conceptual-questions', 'cnx-eoc problems-exercises',\
-                        'cnx-eoc cnx-solutions' ]:
+                        'cnx-eoc further-research', 'cnx-eoc references', 'cnx-eoc conceptual-questions', 'cnx-eoc problems-exercises']:
         el = Run()
         num_child = 0
         for child in element.getchildren():
@@ -1356,9 +1355,47 @@ def _process_div_elements( element, epub ):
         el = EquationImage.process(element, epub)
     elif class_ in ['table']:
         el = _process_openstax_table(element, epub)
+    elif class_ in ['cnx-eoc cnx-solutions']:
+        el = _process_cnx_solution(element, epub)
     else:
         el = Run.process(element, epub)
     return el
+
+def _process_cnx_solution(element, epub):
+    el = Run()
+    for child in element:
+        if child.tag == 'div' and child.attrib['class'] == 'title':
+            el.add_child(types.Newline())
+            el.add_child(SubSection.process(child, epub))
+        elif child.tag == 'div' and child.attrib['class'] in ['solution', 'solution problmes-exercises', 'solution problems-exercises', 'solution problem-exercises', 'solution conceptual-questions']:
+            el.add_child(EndOfChapterSolution.process(child, epub))
+        else:
+            if isinstance(child, HtmlComment):
+                pass
+            else:
+                logger.warn('Unhandled _process_cnx_solution element: %s', child.tag)
+    return el
+
+class EndOfChapterSolution(types.EndOfChapterSolution):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        id_ = u''
+        if 'id' in element.attrib.keys():
+            id_ = element.attrib['id']
+            me.label = id_
+        for child in element:
+            if child.tag == 'div' and child.attrib['class'] == 'title':
+                me.title = Run.process(child, epub)
+            elif child.tag == 'div' and child.attrib['class'] == 'body':
+                me.body = Run.process(child, epub)
+            else:
+                if isinstance(child, HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled EndOfChapterSolution element : %s', child.tag)
+        return me
+
 
 def _process_openstax_table(element, epub):
     id_ = u''
