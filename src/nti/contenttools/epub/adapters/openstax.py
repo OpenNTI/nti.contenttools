@@ -1401,7 +1401,20 @@ def _process_h7_elements( element, epub ):
     return Paragraph.process(element, epub, ['Heading7'])
 
 def _process_span_elements( element, epub ):
+    class_ = u''
+    if 'class' in element.attrib.keys():
+        class_ = element.attrib['class']
+    if class_ == 'inlinemediaobject':
+        return _process_inline_media_object(element, epub)
     return Run.process(element, epub)
+
+def _process_inline_media_object(element, epub):
+    el = None
+    for child in element:
+        if child.tag == 'img':
+            el = Image.process(child, epub)
+            el.inline_image = True
+            return el
 
 def _process_ul_elements( element, epub ):
     return UnorderedList.process(element, epub)
