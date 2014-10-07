@@ -709,9 +709,8 @@ class Table(types.Table):
             elif child.tag == 'tfoot':
                 me.add_child(TFoot.process(child, epub))
             elif child.tag == 'caption':
-                if child.text:
-                    me.set_caption(child.text)
-                    logger.info("Table caption = %s", me.caption)
+                caption = Run.process(child, epub)
+                me.set_caption(caption)
                 count_child = count_child - 1
             else:
                 if isinstance(child,HtmlComment):
@@ -720,7 +719,6 @@ class Table(types.Table):
                     logger.warn('Unhandled table child: %s.',child.tag)
                 count_child = count_child - 1
             count_child = count_child + 1
-
         me.set_number_of_col(number_of_col)
         return me
 
@@ -1350,17 +1348,28 @@ def _process_div_elements( element, epub ):
         from .exercise import process_problem_exercise
         problem_type = 'problem_exercise'
         el = process_problem_exercise(element, epub, problem_type)
-        logger.info('found %s', problem_type)
     elif class_ in ['exercise labeled check-understanding']:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
     elif class_ in ['equation']:
         from .equation_image import EquationImage 
         el = EquationImage.process(element, epub)
+    elif class_ in ['table']:
+        el = _process_openstax_table(element, epub)
     else:
         el = Run.process(element, epub)
     return el
 
+def _process_openstax_table(element, epub):
+    id_ = u''
+    if 'id' in element.attrib.keys():
+        id_ = element.attrib['id']
+    el = None
+    for child in element:
+        if child.tag == 'table':
+            el = Table.process(child, epub)
+            el.set_label(id_)
+    return el
 
 def _process_p_elements( element, epub ):
     el = Paragraph.process(element, epub)

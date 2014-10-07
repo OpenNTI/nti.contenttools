@@ -76,15 +76,24 @@ def table_html_renderer(self):
         count_col = count_col + 1
     
     body = base_renderer(self)
-    
-    if self.caption is None :
-        result = u'\\begin{table}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
-        return result % (string_col, body)
-    else:
-        caption = self.caption
+
+    if self.label is not None and self.caption is not None:
+        label = self.label
+        caption = self.caption.render()
+        result = u'\\begin{table}\n\\label{%s}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
+        return result % (label, caption, string_col, body)
+    elif self.label is not None and self.caption is None:
+        label = self.label
+        result = u'\\begin{table}\n\\label{%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
+        return result % (label, string_col, body)
+    elif self.label is None and self.caption is not None:
+        caption = self.caption.render()
         result = u'\\begin{table}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
         return result % (caption, string_col, body)
-    
+    elif self.label is None and self.caption is None :
+        result = u'\\begin{table}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
+        return result % (string_col, body)
+        
 
 def table_row_html_renderer(self):
     result = []
