@@ -186,7 +186,6 @@ class Problem(types.Problem):
 			elif child.tag == 'p':
 				question  = Paragraph.process(child, epub)
 				list_of_question.append(question)
-				me.set_question(list_of_question)
 			elif child.tag == 'span':
 				label = child.attrib['id']
 				me.set_label(label)
@@ -194,8 +193,13 @@ class Problem(types.Problem):
 				solution = Solution.process(child, epub)
 				me.set_solution(solution)
 				logger.info('found solution inside problem')
+			elif child.tag == 'div' and child.attrib['class'] in ['equation']:
+				from .equation_image import EquationImage 
+				question = EquationImage.process(child, epub)
+				list_of_question.append(question)
 			else:
 				pass
+		me.set_question(list_of_question)
 		if count_ordered_list == 0 and problem_type == 'free_response':
 			me.set_problem_type('free_response')
 		elif count_ordered_list == 1 and problem_type == 'free_response':
