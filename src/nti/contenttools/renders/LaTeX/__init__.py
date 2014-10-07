@@ -45,7 +45,8 @@ def hyperlink_renderer(self):
     elif self.type == 'Thumbnail':
         result = u'\\href{%s}{%s} ' % (self.target, base_renderer(self))
     elif self.type == 'Pageref':
-        result = u'\\pageref{%s} ' % self.target
+        #result = u'\\pageref{%s} ' % self.target
+        result = u'\\ntiidref{%s} ' % self.target
     return result
 
 def label_renderer(self):

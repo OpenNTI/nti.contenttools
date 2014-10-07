@@ -54,8 +54,8 @@ def set_image_params_and_command(self, command):
     if self.width < threshold or self.height < threshold:
         command = u'includegraphics'
 
-    #make sure if image is an equation image, the command will be 'includegraphics'
-    if self.equation_image == True:
+    #make sure if image is an equation image or inline_image, the command will be 'includegraphics'
+    if self.equation_image == True or self.inline_image == True:
         command = u'includegraphics'
 
     return params, command
@@ -76,7 +76,7 @@ def figure_rendered(self):
     
     label = self.label
 
-    return u'\\begin{figure}\n\\begin{center}\n%s\n\\caption{%s}\n\\label{%s}\n\\end{center}\n\\end{figure}\n'\
+    return u'\\begin{figure}\n\\begin{center}\n%s\n\\caption{%s}\n\\label{%s}\n\\end{center}\n\\end{figure}\n\n'\
          %(base_renderer(self), caption, label)
 
 def check_image_in_table(self):
