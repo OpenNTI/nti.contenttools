@@ -226,3 +226,13 @@ def multiple_choice_renderer(self):
 		rendered_item = item.render()
 		result.append(rendered_item)
 	return result
+
+def chapter_solution_renderer(self):
+	label = self.label
+	title = self.title.render().rstrip()
+	body = self.body.render().rstrip()
+	return u'\\newline \\\paragraph{\\label{%s} %s } \\newline %s\n' %(label, title, body)
+
+
+
+

@@ -722,7 +722,12 @@ class ExerciseCheck(DocumentStructureNode):
 		self.solution =solution
 
 class EndOfChapterSolution(DocumentStructureNode):
-	pass
+	def __init__(self,label=None, title=None, body=None):
+		super(EndOfChapterSolution, self).__init__
+		self.label = label
+		self.title = title
+		self.body = body
+
 
 class OpenstaxNote (DocumentStructureNode):
 	def __init__(self, title=None, body=None, label=None):
