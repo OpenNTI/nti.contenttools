@@ -19,13 +19,16 @@ class EquationImage(types.EquationImage):
 
 	@classmethod
 	def process(cls, element, epub):
-		from .openstax import Run
+		from .openstax import Run, _process_inline_media_object
 		me = cls()
 		for child in element:
 			if child.tag == 'span' and child.attrib['class'] == 'label':
 				me.label = Run.process(child, epub)
-			elif child.tag == 'div' and child.attrib['class'] == 'mediaobject':
+			elif child.tag == 'div' and child.attrib['class'] in ['mediaobject']:
 				me.image = Run.process(child, epub)
+				me.image = set_equation_image(me.image)
+			elif child.tag == 'span' and child.attrib['class'] == 'inlinemediaobject':
+				me.image = _process_inline_media_object(child, epub)
 				me.image = set_equation_image(me.image)
 			elif isinstance(child, HtmlComment):
 				pass
