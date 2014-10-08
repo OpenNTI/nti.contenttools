@@ -18,6 +18,6 @@ def openstax_note_renderer(self):
 	title = self.title.render()
 	body = self.body.render()
 	if self.label is None:
-		return u'\n\\begin{sidebar}{%s}\n%s\n\\end{sidebar}\n' %(title, body)
+		return u'\n\\begin{sidebar}{%s}\n%s\n\\end{sidebar}\n\\newline ' %(title, body)
 	elif isinstance(self.label, str):
-		return u'\n\\begin{sidebar}{%s}\\label{%s}\n%s\n\\end{sidebar}\n' %(title, self.label, body)
+		return u'\n\\begin{sidebar}{%s}\\label{%s}\n%s\n\\end{sidebar}\n\\newline ' %(title, self.label, body)

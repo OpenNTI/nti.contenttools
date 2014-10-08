@@ -198,6 +198,7 @@ class Problem(types.Problem):
 				question = EquationImage.process(child, epub)
 				list_of_question.append(question)
 			else:
+				#logger.warn('Unhanled problem child %s', child.tag)
 				pass
 		me.set_question(list_of_question)
 		if count_ordered_list == 0 and problem_type == 'free_response':
