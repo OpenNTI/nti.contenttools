@@ -164,7 +164,6 @@ class Paragraph( types.Paragraph ):
 
         if element.tail:
             me.add_child( types.TextNode( element.tail.replace('\r', '' ) ) )
-
         return me
 
 
@@ -1446,12 +1445,26 @@ def _process_span_elements( element, epub ):
     return Run.process(element, epub)
 
 def _process_inline_media_object(element, epub):
-    el = None
+    el = Run()
+    if element.text:
+        if element.text.isspace():
+            pass
+        else:
+            new_el_text = element.text.rstrip() + u' '
+            el.add_child( types.TextNode(new_el_text))
+
     for child in element:
         if child.tag == 'img':
-            el = Image.process(child, epub)
-            el.inline_image = True
-            return el
+            image = Image.process(child, epub)
+            image.inline_image = True
+            el.add_child(image)
+        else:
+            el.add_child(Run.process(child, epub))
+
+    if element.tail:
+        el.add_child( types.TextNode( element.tail.replace('\r', '' ) ) )
+
+    return el
 
 def _process_ul_elements( element, epub ):
     return UnorderedList.process(element, epub)
