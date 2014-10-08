@@ -38,7 +38,9 @@ def run_renderer(self):
                'strike': _strikeout,
                'sub': _subscript,
                'underline': _uline,
-               'sup': _superscript}
+               'sup': _superscript,
+               'subscript': _subscript,
+               'superscript': _superscript}
 
     result = base_renderer(self)
 
@@ -46,6 +48,6 @@ def run_renderer(self):
         if style in STYLES.keys():
             result = STYLES[style](result)
         else:
-            print('Unhandled run style: %s' % style)
+            logger.info('Unhandled run style: %s' % style)
 
     return result

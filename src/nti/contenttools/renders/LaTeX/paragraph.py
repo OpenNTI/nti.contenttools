@@ -51,7 +51,7 @@ def paragraph_renderer(self):
                'Abstract' : _abstract,
                'Authors': _author}
 
-    IGNORED_STYLES = ['ListParagraph', 'Subtitle', 'NormalWeb']
+    IGNORED_STYLES = ['ListParagraph', 'Subtitle', 'NormalWeb', 'DefaultParagraphFont']
 
     result = base_renderer(self)
 

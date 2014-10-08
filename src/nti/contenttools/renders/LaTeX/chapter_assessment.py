@@ -46,11 +46,11 @@ def problem_exercise_renderer(self):
 	"""
 	to render types.ProblemExercise
 	"""
-	body = base_renderer(self)
-	title = self.title.render()
+	body = base_renderer(self).rstrip()
+	title = self.title.render().rstrip()
 	label = self.label
 	if label is not None:
-		return u'\\newline \\\paragraph{\\label{%s} %s } \\newline %s\n' %(label, title, body)
+		return u'\\newline \\paragraph{\\label{%s} %s }\n%s\n' %(label, title, body)
 	else:
 		return u'\\newline %s \\newline %s\n' %(title, body)
 
@@ -93,6 +93,7 @@ def get_question(questions):
 	list_of_question = []
 	for question in questions:
 		list_of_question.append(question.render().rstrip())
+		list_of_question.append('\n\\newline ')
 	result = u''.join(list_of_question)
 	return result
 
@@ -231,7 +232,7 @@ def chapter_solution_renderer(self):
 	label = self.label
 	title = self.title.render().rstrip()
 	body = self.body.render().rstrip()
-	return u'\\newline \\\paragraph{\\label{%s} %s } \\newline %s\n' %(label, title, body)
+	return u'\n\\newline \\paragraph{\\label{%s} %s}\n%s\n' %(label, title, body)
 
 
 
