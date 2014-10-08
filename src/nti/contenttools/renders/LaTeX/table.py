@@ -80,7 +80,9 @@ def table_html_renderer(self):
     if self.label is not None and self.caption is not None:
         label = self.label
         caption = self.caption.render()
-        caption = caption.replace(label+'.', '')
+        #TODO: the text_label only works for openstax epub, we need to modify line 84-85 if we work on different publisher
+        text_label = self.caption.children[0].render() + self.caption.children[1].children[0].render()
+        caption = caption.replace(text_label, u'')
         result = u'\\begin{table}\n\\label{%s}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
         return result % (label, caption, string_col, body)
     elif self.label is not None and self.caption is None:
@@ -102,7 +104,7 @@ def table_row_html_renderer(self):
     return u' & '.join(result) + u'\\\\\n'
 
 def table_cell_html_renderer(self):
-    result = base_renderer(self)
+    result = base_renderer(self).rstrip()
     return result
 
 
