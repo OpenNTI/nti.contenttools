@@ -52,6 +52,8 @@ class Table( _DocxStructureElement ):
                     me.add_child( cls.Cell.process( element, doc, rels=rels ) )
                 elif element.tag == '{'+docx.nsprefixes['w']+'}trPr':
                     me.process_properties( element )
+                elif element.tag == '{'+docx.nsprefixes['w']+'}tblPrEx':
+                    pass
                 else:
                     logger.warn('Did not handle table row element: %s' % element.tag)
             return me

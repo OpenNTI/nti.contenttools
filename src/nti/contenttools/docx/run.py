@@ -148,35 +148,58 @@ class Run( types.Run ):
 			return me
 
 	def process_properties( self, properties, doc, rels=None ):
+		doc_main_prefix = docx.nsprefixes['w']
+		att_val = '{%s}val' %(doc_main_prefix)
+		rStyle = '{%s}rStyle' %(doc_main_prefix)
+		b = '{%s}b' %(doc_main_prefix)
+		bCs = '{%s}bCs' %(doc_main_prefix)
+		color = '{%s}color' %(doc_main_prefix)
+		i = '{%s}i' %(doc_main_prefix)
+		iCs = '{%s}iCs' %(doc_main_prefix)
+		strike = '{%s}strike' %(doc_main_prefix)
+		u = '{%s}u' %(doc_main_prefix)
+		rFonts = '{%s}rFonts' %(doc_main_prefix)
+		sz = '{%s}sz' %(doc_main_prefix)
+		szCs = '{%s}szCs' %(doc_main_prefix)
+		w = '{%s}w' %(doc_main_prefix)
+		vertAlign = '{%s}vertAlign' %(doc_main_prefix)
+		position = '{%s}position' %(doc_main_prefix)
+
 		for element in properties.iterchildren():
-			if element.tag == '{'+docx.nsprefixes['w']+'}rStyle':
-				self.addStyle(element.attrib['{'+docx.nsprefixes['w']+'}val'])
-			elif element.tag == '{'+docx.nsprefixes['w']+'}b':
+			if element.tag == rStyle:
+				self.addStyle(element.attrib[att_val])
+			elif element.tag == b:
 				self.addStyle('bold')
 			# Ignore bold complex script specification
-			elif element.tag == '{'+docx.nsprefixes['w']+'}bCs':
+			elif element.tag == bCs:
 				pass
 			# Ignore run content color specification
-			elif element.tag == '{'+docx.nsprefixes['w']+'}color':
+			elif element.tag == color:
 				pass
-			elif element.tag == '{'+docx.nsprefixes['w']+'}i':
+			elif element.tag == i:
 				self.addStyle('italic')
 			# Ignore italic  complex script specification
-			elif element.tag == '{'+docx.nsprefixes['w']+'}iCs':
+			elif element.tag == iCs:
 				pass
-			elif element.tag == '{'+docx.nsprefixes['w']+'}strike':
+			elif element.tag == strike:
 				self.addStyle('strike')
-			elif element.tag == '{'+docx.nsprefixes['w']+'}u':
+			elif element.tag == u:
 				self.addStyle('underline')
 			# Ignore run level font specifications
-			elif element.tag == '{'+docx.nsprefixes['w']+'}rFonts':
+			elif element.tag == rFonts:
 				pass
 			# Ignore run level font size specifications
-			elif element.tag == '{'+docx.nsprefixes['w']+'}sz':
+			elif element.tag == sz:
 				pass
 			# Ignore run level complex script font size specifications
-			elif element.tag == '{'+docx.nsprefixes['w']+'}szCs':
+			elif element.tag == szCs:
 				pass
+			elif element.tag == w:
+				pass
+			elif element.tag == position:
+				pass
+			elif element.tag == vertAlign:
+				self.addStyle(element.attrib[att_val])
 			# Skip elements in IGNORED_TAGS
 			elif element.tag in IGNORED_TAGS:
 				pass

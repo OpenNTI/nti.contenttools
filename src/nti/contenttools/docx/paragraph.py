@@ -123,7 +123,8 @@ class Paragraph( types.Paragraph ):
 			elif element.tag in IGNORED_TAGS:
 				pass
 			elif element.tag == widowControl_el:
-				logger.info('found widowControl property')
+				#logger.info('found widowControl property')
+				pass
 			else:
 				logger.warn('Unhandled paragraph property: %s' % element.tag)
 
