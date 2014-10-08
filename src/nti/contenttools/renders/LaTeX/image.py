@@ -37,10 +37,11 @@ def set_image_params_and_command(self, command):
     height = self.height
 
     if check_table :
-        width = 600/image_in_a_row
-        if self.width > width:
+        width_cell = 600/image_in_a_row
+        if self.width > width_cell:
             if self.height != 0:
-                height = int(float(width / self.width) * self.height)
+                height = int(float(width_cell / self.width) * self.height)
+            width = width_cell
     else: 
         if self.width > 600:
             if self.height != 0:
@@ -67,16 +68,21 @@ def base_figured_rendered(info):
     return u''.join(result)
 
 def figure_rendered(self):
-    
+    caption = u''
     if self.caption is not None:
         caption = base_renderer(self.caption)
     else:
         logger.info("caption for figure is empty")
-        caption = self.caption
+        #caption = None
+        caption = u' '
     
     label = self.label
 
-    return u'\\begin{figure}\n\\begin{center}\n%s\n\\caption{%s}\n\\label{%s}\n\\end{center}\n\\end{figure}\n\n'\
+    if caption is None:
+        return u'\\begin{figure}\n\\begin{center}\n%s\n\\label{%s}\n\\end{center}\n\\end{figure}\n\n'\
+         %(base_renderer(self), label)
+    else:
+        return u'\\begin{figure}\n\\begin{center}\n%s\n\\caption{%s}\n\\label{%s}\n\\end{center}\n\\end{figure}\n\n'\
          %(base_renderer(self), caption, label)
 
 def check_image_in_table(self):
