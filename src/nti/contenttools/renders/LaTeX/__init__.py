@@ -198,4 +198,6 @@ types.OpenstaxNote.render = openstax_note_renderer
 
 types.EquationImage.render = equation_image_renderer
 
+def register():
+    pass
 
