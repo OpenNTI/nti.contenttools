@@ -70,9 +70,15 @@ def table_html_renderer(self):
     number_of_col = self.number_of_col
     count_col = 0
     string_col = u''
+    border = self.border
+    if border:
+        string_col = u'|'
     while count_col < number_of_col:
         #by default we use 'l' as caption, however we can modify this code later
-        string_col = string_col + u' l '
+        if border:
+            string_col = string_col + u' l |' 
+        else:
+            string_col = string_col = u' l '
         count_col = count_col + 1
     
     body = base_renderer(self)
@@ -101,7 +107,10 @@ def table_row_html_renderer(self):
     result = []
     for child in self.children:
         result.append(child.render())
-    return u' & '.join(result) + u'\\\\\n'
+    if self.border:
+        return u' & '.join(result) + u'\\\\ \hline\n' 
+    else :
+        return u' & '.join(result) + u'\\\\\n'
 
 def table_cell_html_renderer(self):
     result = base_renderer(self).rstrip()
