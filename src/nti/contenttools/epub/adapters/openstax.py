@@ -1341,7 +1341,8 @@ def _process_div_elements( element, epub ):
         el.suppressed = True
         logger.info('found cover image')
     elif class_ in ['cnx-eoc summary', 'cnx-eoc art-exercise', 'cnx-eoc free-response', 'cnx-eoc section-summary', 'cnx-eoc short-answer',\
-                        'cnx-eoc further-research', 'cnx-eoc references', 'cnx-eoc conceptual-questions', 'cnx-eoc problems-exercises']:
+                        'cnx-eoc further-research', 'cnx-eoc references', 'cnx-eoc conceptual-questions', 'cnx-eoc problems-exercises',\
+                        'cnx-eoc practice', 'cnx-eoc bring-together-homework']:
         el = Run()
         num_child = 0
         for child in element.getchildren():
@@ -1362,7 +1363,7 @@ def _process_div_elements( element, epub ):
                         'note sociological-research', 'note', 'example', 'note art-connection', 'note evolution', 'note career', ]:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
-    elif class_ in ['exercise problems-exercises', 'exercise conceptual-questions']:
+    elif class_ in ['exercise problems-exercises', 'exercise conceptual-questions', 'exercise']:
         from .exercise import process_problem_exercise
         problem_type = 'problem_exercise'
         el = process_problem_exercise(element, epub, problem_type)

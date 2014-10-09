@@ -89,11 +89,11 @@ def table_html_renderer(self):
         #TODO: the text_label only works for openstax epub, we need to modify line 84-85 if we work on different publisher
         text_label = self.caption.children[0].render() + self.caption.children[1].children[0].render()
         caption = caption.replace(text_label, u'')
-        result = u'\\begin{table}\n\\label{%s}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
+        result = u'\\begin{table}\n\\label{%s}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n\\newline '
         return result % (label, caption, string_col, body)
     elif self.label is not None and self.caption is None:
         label = self.label
-        result = u'\\begin{table}\n\\label{%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
+        result = u'\\begin{table}\n\\label{%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n\\newline '
         return result % (label, string_col, body)
     elif self.label is None and self.caption is not None:
         caption = self.caption.render()
