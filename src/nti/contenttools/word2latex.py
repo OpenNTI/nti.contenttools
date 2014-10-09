@@ -19,6 +19,9 @@ from .docx.read import DocxFile
 
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
+#we need this import so that each type will be rendered to latex like we want it to be
+from nti.contenttools.renders import LaTeX
+
 def _parse_args():
 	arg_parser = argparse.ArgumentParser( description="NTI DOCX Converter" )
 	arg_parser.add_argument( 'inputfile', help="The DOCX file" )
