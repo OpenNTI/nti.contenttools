@@ -35,7 +35,7 @@ def set_image_params_and_command(self, command):
     check_table, image_in_a_row = check_image_in_table(self)
     width = self.width
     height = self.height
-    MAX_WIDTH = 600.0
+    MAX_WIDTH = 600.0 #600 is the maximum width of images in the platform (webapp)
 
     if check_table :
         width_cell = MAX_WIDTH/image_in_a_row
