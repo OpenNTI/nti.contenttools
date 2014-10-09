@@ -10,14 +10,14 @@ logger = __import__('logging').getLogger(__name__)
 
 import os
 import codecs
-import argparse
 import logging
+import argparse
+
 from zope.exceptions import log as ze_log
 
-DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
-
 from .docx.read import DocxFile
-from nti.contenttools.renders import LaTeX
+
+DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
 def _parse_args():
 	arg_parser = argparse.ArgumentParser( description="NTI DOCX Converter" )
@@ -27,14 +27,13 @@ def _parse_args():
 	return arg_parser.parse_args()
 
 def _configure_logging(level='INFO'):
-    numeric_level = getattr(logging, level.upper(), None)
-    numeric_level = logging.INFO if not isinstance(numeric_level, int) else numeric_level
-    logging.basicConfig(level=numeric_level)
-    logging.root.handlers[0].setFormatter(ze_log.Formatter(DEFAULT_FORMAT_STRING))
+	numeric_level = getattr(logging, level.upper(), None)
+	numeric_level = logging.INFO if not isinstance(numeric_level, int) else numeric_level
+	logging.basicConfig(level=numeric_level)
+	logging.root.handlers[0].setFormatter(ze_log.Formatter(DEFAULT_FORMAT_STRING))
 
 def _setup_configs():
-    # logging
-    _configure_logging()
+	_configure_logging()
 
 def _title_escape( title ):
 	return title.replace(' ', '_').replace('-','_').replace(':','_')
@@ -59,9 +58,12 @@ def main():
 
 	docxFile = DocxFile( inputfile )
 	if docxFile.title:
-		outputfile = os.path.join(args.output, _title_escape(docxFile.title)+'.tex')
+		name = _title_escape(docxFile.title) + '.tex'
+		outputfile = os.path.join(args.output, name)
 	else:
-		outputfile = os.path.join(args.output, _title_escape(os.path.splitext(os.path.basename(inputfile))[0])+'.tex')
+		name = _title_escape(os.path.splitext(os.path.basename(inputfile))[0]) + '.tex'
+		outputfile = os.path.join(args.output, name)
+		
 	with codecs.open( outputfile, 'w', 'utf-8' ) as fp:
 		fp.write( docxFile.render() )
 
@@ -71,5 +73,5 @@ def main():
 	
 	logger.info('Conversion successful, output written to ' + outputfile)
 
-if __name__ == '__main__': # pragma: no cover
+if __name__ == '__main__':
 	main()
