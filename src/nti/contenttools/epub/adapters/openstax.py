@@ -694,14 +694,28 @@ class Table(types.Table):
             else:
                 new_el_text = element.text.rstrip() + u' '
                 me.add_child(types.TextNode(new_el_text))
+        style_ = u''
+        if 'style' in element.attrib.keys():
+            style_ = element.attrib['style']
+
+        if style_ in ['border: 1px solid;', 'border: 1px solid; '] :
+            me.set_border(True)
+
         for child in element:
             if child.tag == 'colgroup':
                 me.add_child(_process_colgroup_elements(child, epub))
             elif child.tag == 'tbody':
-                me.add_child(_process_tbody_elements(child, epub))
+                if me.border:
+                    border = True
+                    me.add_child(_process_tbody_elements(child, epub, border))
+                else:
+                    me.add_child(_process_tbody_elements(child, epub))
                 number_of_col = me.children[count_child].number_of_col
             elif child.tag == 'tr':
-                me.add_child(Row.process(child, epub))
+                if me.border:
+                    me.add_child(Row.process(child,epub, me.border))
+                else:
+                    me.add_child(Row.process(child, epub))
             elif child.tag == 'thead':
                 me.add_child(THead.process(child, epub))
                 number_of_col = me.children[count_child].number_of_col
@@ -723,8 +737,9 @@ class Table(types.Table):
 
 class TBody(types.TBody):
     @classmethod
-    def process(cls, element, epub):
+    def process(cls, element, epub, border=False):
         me = cls()
+        me.set_border(border)
         number_of_col = 0 
         count_child = -1
         if element.text:
@@ -734,7 +749,10 @@ class TBody(types.TBody):
                 me.add_child(types.TextNode(element.text))
         for child in element:
             if child.tag == 'tr':
-                me.add_child(Row.process(child, epub))
+                if me.border:
+                    me.add_child(Row.process(child, epub, me.border))
+                else:
+                    me.add_child(Row.process(child, epub))
                 number_of_col = me.children[count_child].number_of_col
                 count_child = count_child + 1
             else:
@@ -745,15 +763,16 @@ class TBody(types.TBody):
         me.set_number_of_col(number_of_col)
         return me
 
-class THead(types.THead):
+class THead(types.THead):  
     @classmethod
-    def process(cls, element, epub):
+    def process(cls, element, epub, border=False):
         me = cls()
+        me.set_border(border)
         number_of_col = 0 
         count_child = -1
         for child in element:
             if child.tag == 'tr':
-                me.add_child(Row.process(child, epub))
+                me.add_child(Row.process(child, epub, border))
                 number_of_col = me.children[count_child].number_of_col
                 count_child = count_child + 1
             else:
@@ -785,8 +804,9 @@ class TFoot(types.TFoot):
 
 class Row (types.Row):
     @classmethod
-    def process(cls, element, epub):
+    def process(cls, element, epub, border=False):
         me = cls()
+        me.set_border(border)
         number_of_col = 0
         if element.text:
             if element.text.isspace():
@@ -1553,8 +1573,8 @@ def _process_table_elements(element, epub):
 def _process_colgroup_elements(element, epub):
     pass
 
-def _process_tbody_elements(element, epub):
-    return TBody.process(element, epub)
+def _process_tbody_elements(element, epub, border=False):
+    return TBody.process(element, epub, border)
 
 def _process_tr_elements(element, epub):
     return Row.process(element, epub)

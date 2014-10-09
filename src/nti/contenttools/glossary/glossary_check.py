@@ -32,7 +32,7 @@ def process_glossary(glossary_dict, filename):
                 lower_key = capital_to_lower_case(key_text)
                 content = add_definition(lower_key, definition, content)
                 #incase lower key located in the beginning of a sentence
-                b_lower_key = lower_key.capitalize
+                b_lower_key = lower_key.capitalize()
                 content = add_definition(b_lower_key, definition, content)
 
 

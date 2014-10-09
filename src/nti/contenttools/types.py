@@ -261,10 +261,11 @@ class DD(DocumentStructureNode):
 	pass
 
 class Table(DocumentStructureNode):
-	def __init__(self, number_of_col=0, caption=None, label=None):
+	def __init__(self, number_of_col=0, caption=None, label=None, border=False):
 		self.number_of_col = number_of_col
 		self.caption = caption
 		self.label = label
+		self.border = border
 
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
@@ -275,29 +276,47 @@ class Table(DocumentStructureNode):
 	def set_label(self, label):
 		self.label = label
 
+	def set_border(self, border):
+		self.border = border
+
 class Row(DocumentStructureNode):
-	def __init__(self, number_of_col=0):
+	def __init__(self, number_of_col=0, border = False):
 		self.number_of_col = number_of_col
+		self.border = border
 		
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
+
+	def set_border(self, border):
+		self.border = border
 
 class Cell (DocumentStructureNode):
-	pass
+	def __init__(self, border=False):
+		self.border = border
+
+	def set_border(self, border):
+		self.border = border
 
 class TBody(DocumentStructureNode):
-	def __init__(self, number_of_col=0):
+	def __init__(self, number_of_col=0, border=False):
+		self.number_of_col = number_of_col
+		self.border = border
+		
+	def set_number_of_col(self, number_of_col):
+		self.number_of_col = number_of_col
+
+	def set_border(self, border):
+		self.border = border
+
+class THead(DocumentStructureNode):
+	def __init__(self, number_of_col=0, border=False):
 		self.number_of_col = number_of_col
 		
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
 
-class THead(DocumentStructureNode):
-	def __init__(self, number_of_col=0):
-		self.number_of_col = number_of_col
-		
-	def set_number_of_col(self, number_of_col):
-		self.number_of_col = number_of_col
+	def set_border(self, border):
+		self.border = border
 
 class TFoot(DocumentStructureNode):
 	def __init__(self, number_of_col=0):
