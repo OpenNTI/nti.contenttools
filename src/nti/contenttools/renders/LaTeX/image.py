@@ -35,18 +35,19 @@ def set_image_params_and_command(self, command):
     check_table, image_in_a_row = check_image_in_table(self)
     width = self.width
     height = self.height
+    MAX_WIDTH = 600.0
 
     if check_table :
-        width_cell = 600/image_in_a_row
+        width_cell = MAX_WIDTH/image_in_a_row
         if self.width > width_cell:
             if self.height != 0:
                 height = int(float(width_cell / self.width) * self.height)
             width = width_cell
     else: 
-        if self.width > 600:
+        if self.width > MAX_WIDTH:
             if self.height != 0:
-                height = int(float(600.0 / self.width) * self.height)
-            width = 600
+                height = int(float(MAX_WIDTH / self.width) * self.height)
+            width = MAX_WIDTH
 
     params = 'width=%spx,height=%spx' % (width, height)
 
