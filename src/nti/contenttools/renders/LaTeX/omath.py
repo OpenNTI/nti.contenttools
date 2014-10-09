@@ -280,6 +280,8 @@ def omath_acc_rendered(self):
 			return u'\\overset{\\leftharpoonup}{%s}' %(self.children[0].render())
 		elif accChr == u'\u20d1':
 			return u'\\overset{\\rightharpoonup}{%s}' %(self.children[0].render())
+		elif accChr == u'\u0305':
+			return u'\\overline{%s}' %(self.children[0].render())
 		else:
 			logger.warn('Unhandled accent unicode render')
 			return u''
