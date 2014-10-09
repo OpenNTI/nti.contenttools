@@ -68,7 +68,7 @@ def capital_to_lower_case(text):
         words = text.split()
         result = []
         for word in words:
-                result.append(word.lower)
+                result.append(word.lower())
         new_text = u' '.join(result)
         return new_text
 

@@ -137,8 +137,9 @@ class EPUBFile( object ):
                     doc_body.add_child(child)
             elif item in [u'id416082', u'id504556', 'id505853'] and check_item:
                 logger.info ('found spine %s more than once',item)
-            elif item in ['htmltoc', 'id903065',]:
-                logger.info('found htmltoc or index Glossary')
+            elif item in ['htmltoc', 'id903065','id4497651', 'id4497666']:
+                #TODO we can specify the list of spine item that we do not need in command line
+                logger.info('found htmltoc or index Glossary or things we do not want to put it the latex files')
             else:
                 docfragment = html.fromstring(self.zipfile.read(self.content_path+'/'+self.manifest[item]['href']))
                 for child in Adapter.adapt( docfragment, self, item ):
