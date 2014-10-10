@@ -156,6 +156,8 @@ class Paragraph( types.Paragraph ):
                 me.add_child(_process_math_elements(child, epub))
             elif child.tag == 'code':
                 me.add_child(CodeLine.process(child, epub))
+            elif child.tag == 'table':
+                me.add_child(_process_table_elements(child, epub))
             else:
                 if isinstance(child,HtmlComment):
                     pass
@@ -334,7 +336,7 @@ class NoteInteractive(types.NoteInteractive):
                     me.set_caption(caption.children[0].children[0])
                 elif class_ in ['body']:
                     for sub_el in child:
-                        if sub_el.tag == 'div' and sub_el.attrib['class'] == 'object':
+                        if sub_el.tag == 'div' and sub_el.attrib['class'] in ['object', 'mediaobject']:
                             path = process_img_note_interactive(sub_el, epub)
                             me.set_image_path(path)
                         elif sub_el.tag == 'p':
@@ -345,9 +347,11 @@ class NoteInteractive(types.NoteInteractive):
                                 me.set_link(link)
                         elif sub_el.tag == 'div' and sub_el.attrib['class'] == 'itemsizedlist':
                             path = process_img_note_interactive(sub_el, epub)
-                            me.set_image_path(path)    
+                            me.set_image_path(path)
+                            Tracer()()    
                         else:
-                            logger.warn('Unhandled element of note interactive under div class body : %s', sub_el.attrib['class'])
+                            logger.warn('Unhandled element of note interactive under div class body : %s', sub_el.tag)
+                            logger.warn(sub_el.attrib)
                 else:
                     logger.warn('Unhandled note interactiv div class %s',class_)
             else:
@@ -355,7 +359,6 @@ class NoteInteractive(types.NoteInteractive):
         if me.link is None:
             logger.warn('Link is empty')
             logger.warn('notes : %s', me.notes)
-        
         return me
 
 def process_img_note_interactive(element, epub):
@@ -1387,13 +1390,16 @@ def _process_cnx_solution(element, epub):
         if child.tag == 'div' and child.attrib['class'] == 'title':
             el.add_child(types.Newline())
             el.add_child(SubSection.process(child, epub))
-        elif child.tag == 'div' and child.attrib['class'] in ['solution', 'solution problmes-exercises', 'solution problems-exercises', 'solution problem-exercises', 'solution conceptual-questions']:
+        elif child.tag == 'div' and child.attrib['class'] in ['solution', 'solution problmes-exercises', 'solution problems-exercises',\
+                                                                'solution problem-exercises', 'solution conceptual-questions',\
+                                                                 'solution labeled']:
             el.add_child(EndOfChapterSolution.process(child, epub))
         else:
             if isinstance(child, HtmlComment):
                 pass
             else:
                 logger.warn('Unhandled _process_cnx_solution element: %s', child.tag)
+                logger.warn(child.attrib)
     return el
 
 class EndOfChapterSolution(types.EndOfChapterSolution):
