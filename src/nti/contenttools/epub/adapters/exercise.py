@@ -156,7 +156,9 @@ class Exercise(types.Exercise):
 				me.set_problem(problem)
 			elif child.tag == 'div' and child.attrib['class'] in ['solution labeled', 'solution', 'solution labeled section-quiz',\
 																	 'solution problems-exercises', 'solution problem-exercises',\
-																	 'solution conceptual-questions', 'solution problmes-exercises']:
+																	 'solution conceptual-questions', 'solution problmes-exercises',\
+																	 'solution labeled solutions', 'solution solutions', 'solution finger',\
+																	 ]:
 				if problem_type == 'problem_exercise':
 					pass
 				else:
@@ -171,6 +173,8 @@ class Exercise(types.Exercise):
 		return me
 
 from .openstax import Paragraph
+from .openstax import Table
+from .openstax import Run
 		
 class Problem(types.Problem):
 
@@ -197,9 +201,17 @@ class Problem(types.Problem):
 				from .equation_image import EquationImage 
 				question = EquationImage.process(child, epub)
 				list_of_question.append(question)
+			elif child.tag == 'table' and child.attrib['class'] in ['simplelist',]:
+				question = Table.process(child, epub)
+				list_of_question.append(question)
+			elif child.tag == 'div' and child.attrib['class'] in ['table', 'figure', 'itemizedlist', 'note Hint',\
+																	 'note statistics calculator', 'note Note', 'note']:
+				question = Paragraph.process(child, epub)
+				list_of_question.append(question)
 			else:
-				#logger.warn('Unhanled problem child %s', child.tag)
-				pass
+				logger.warn('Unhanled problem child %s', child.tag)
+				logger.warn(child.attrib)
+
 		me.set_question(list_of_question)
 		if count_ordered_list == 0 and problem_type == 'free_response':
 			me.set_problem_type('free_response')
@@ -227,6 +239,7 @@ class MultipleChoices(types.MultipleChoices):
 				pass
 			else:
 				logger.warn('Unhandled multiple choice tag %s', child.tag)
+				logger.warn(child.attrib)
 		return me
 
 def _process_multiple_choice_items (element, epub):
