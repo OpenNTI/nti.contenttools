@@ -49,8 +49,10 @@ def problem_exercise_renderer(self):
 	body = base_renderer(self).rstrip()
 	title = self.title.render().rstrip()
 	label = self.label
-	if label is not None:
+	if label is not None and self.problem_type == 'problem_exercise':
 		return u'\\newline \\paragraph{\\label{%s} %s }\n%s\n' %(label, title, body)
+	elif label is not None and self.problem_type == 'problem_exercise_example':
+		return u'\\newline \\label{%s} %s\n%s\n' %(label, title, body)
 	else:
 		return u'\\newline %s \\newline %s\n' %(title, body)
 

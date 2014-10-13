@@ -285,6 +285,7 @@ class ProblemExercise(types.ProblemExercise):
 	@classmethod
 	def process(cls, element, epub, problem_type=None):
 		me=cls()
+		me.problem_type = problem_type
 		for child in element:
 			class_ =u''
 			if 'class' in child.attrib.keys():
