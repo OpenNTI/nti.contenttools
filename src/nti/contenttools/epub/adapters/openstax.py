@@ -1363,10 +1363,11 @@ def _process_div_elements( element, epub ):
         problem_type = 'multiple_choice'
         el = ChapterExercise.process(element, epub, problem_type)
     elif class_ in ['note sociology-careers', 'note sociology-policy-debate', 'note sociology-big-picture', 'note sociology-real-world',\
-                        'note sociological-research', 'note', 'example', 'note art-connection', 'note evolution', 'note career', ]:
+                        'note sociological-research', 'note', 'note art-connection', 'note evolution', 'note career', ]:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
-    elif class_ in ['exercise problems-exercises', 'exercise conceptual-questions', 'exercise']:
+    elif class_ in ['exercise problems-exercises', 'exercise conceptual-questions',]:
+        # do not add class_ in 'exercise' when rendering Biology book
         from .exercise import process_problem_exercise
         problem_type = 'problem_exercise'
         el = process_problem_exercise(element, epub, problem_type)
@@ -1374,15 +1375,21 @@ def _process_div_elements( element, epub ):
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
     elif class_ in ['equation']:
-        from .equation_image import EquationImage 
+        from .equation_image import EquationImage
         el = EquationImage.process(element, epub)
     elif class_ in ['table']:
         el = _process_openstax_table(element, epub)
     elif class_ in ['cnx-eoc cnx-solutions']:
         el = _process_cnx_solution(element, epub)
+    elif class_ in ['example']:
+        el = _process_openstax_example_note(element,epub)
     else:
         el = Run.process(element, epub)
     return el
+
+def _process_openstax_example_note(element, epub):
+    from .note import OpenstaxExampleNote
+    return OpenstaxExampleNote.process(element, epub)
 
 def _process_cnx_solution(element, epub):
     el = Run()
