@@ -130,12 +130,12 @@ class EPUBFile( object ):
             logger.info('---------------------------------')
             logger.info('SPINE ITEM >> %s', item)
             logger.info('>>')
-            if item in [u'id416082', u'id504556', 'id505853'] and not check_item:
+            if item in [u'id416082', u'id504556', 'id505853', 'id267295'] and not check_item:
                 docfragment = html.fromstring(self.zipfile.read(self.content_path+'/'+self.manifest[item]['href']))
                 check_item = True
                 for child in Adapter.adapt( docfragment, self, item ):
                     doc_body.add_child(child)
-            elif item in [u'id416082', u'id504556', 'id505853'] and check_item:
+            elif item in [u'id416082', u'id504556', 'id505853', 'id267295'] and check_item:
                 logger.info ('found spine %s more than once',item)
             elif item in ['htmltoc', 'id903065','id4497651', 'id4497666']:
                 #TODO we can specify the list of spine item that we do not need in command line
