@@ -149,6 +149,7 @@ class Exercise(types.Exercise):
 
 	@classmethod
 	def process(cls, element, epub, problem_type=None):
+		from .openstax import Paragraph
 		me = cls()
 		for child in element:
 			if child.tag == 'div' and child.attrib['class'] == 'problem':
@@ -161,6 +162,10 @@ class Exercise(types.Exercise):
 																	 ]:
 				if problem_type == 'problem_exercise':
 					pass
+				elif problem_type == 'problem_exercise_example':
+					logger.info('Process solution for example exercise')
+					solution = Paragraph.process(child,epub)
+					me.set_solution(solution)
 				else:
 					solution = Solution.process(child, epub)
 					me.set_solution(solution)
@@ -223,8 +228,8 @@ class Problem(types.Problem):
 			me.set_problem_type('ordering')
 		elif count_ordered_list == 0 and problem_type == 'essay':
 			me.set_problem_type('essay')
-		elif problem_type == 'problem_exercise':
-			me.set_problem_type('problem_exercise')
+		elif problem_type in['problem_exercise', 'problem_exercise_example']:
+			me.set_problem_type(problem_type)
 		return me
 
 class MultipleChoices(types.MultipleChoices):
@@ -267,7 +272,7 @@ class Solution(types.Solution):
 
 def process_problem_exercise(element, epub, problem_type) :
 	"""
-	process div class='exercise problem-exercise' 
+	process div class='exercise problem-exercise' , div class='exercise' (under div class="example") 
 	"""
 	el = ProblemExercise.process(element, epub, problem_type)
 	id_ = u''

@@ -62,7 +62,10 @@ def exercise_renderer(self):
 	if self.solution is not None:
 		if self.problem.solution is None:
 			self.problem.set_solution(self.solution)
-			self.problem.solution.set_problem_type(self.problem.problem_type)
+			if isinstance(self.problem.solution, types.Paragraph):
+				pass
+			else:
+				self.problem.solution.set_problem_type(self.problem.problem_type)
 	problem = self.problem.render()
 	return u'\n%s\n' %(problem)
 
@@ -82,10 +85,15 @@ def problem_renderer(self):
 		problem_body = essay_renderer(self)
 	elif self.problem_type == 'problem_exercise':
 		problem_body = get_question(self.question)
+	elif self.problem_type == 'problem_exercise_example':
+		problem_body = get_question(self.question)
 	label = self.label
 
 	if self.problem_type == 'problem_exercise':
 		return u'%s\n' %(problem_body)
+	elif self.problem_type == 'problem_exercise_example':
+		solution = self.solution.render()
+		return u'%s\n%s\n' %(problem_body, solution) 
 	else:
 		return u'\\begin{naquestion}\n\\label{%s}\n%s\\end{naquestion}\n' %(label, problem_body)
 
