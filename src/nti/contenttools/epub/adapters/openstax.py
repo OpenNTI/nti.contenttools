@@ -1366,7 +1366,7 @@ def _process_div_elements( element, epub ):
                         'note sociological-research', 'note', 'note art-connection', 'note evolution', 'note career', ]:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
-    elif class_ in ['exercise problems-exercises', 'exercise conceptual-questions',]:
+    elif class_ in ['exercise problems-exercises', 'exercise conceptual-questions','exercise']:
         # do not add class_ in 'exercise' when rendering Biology book
         from .exercise import process_problem_exercise
         problem_type = 'problem_exercise'
@@ -1382,6 +1382,8 @@ def _process_div_elements( element, epub ):
     elif class_ in ['cnx-eoc cnx-solutions']:
         el = _process_cnx_solution(element, epub)
     elif class_ in ['example']:
+        el = _process_openstax_example_note(element,epub)
+    elif class_ in ['note statistics try', 'note statistics collab']:
         el = _process_openstax_example_note(element,epub)
     else:
         el = Run.process(element, epub)

@@ -163,7 +163,7 @@ class Exercise(types.Exercise):
 				if problem_type == 'problem_exercise':
 					pass
 				elif problem_type == 'problem_exercise_example':
-					logger.info('Process solution for example exercise')
+					#logger.info('Process solution for example exercise')
 					solution = Paragraph.process(child,epub)
 					me.set_solution(solution)
 				else:
@@ -189,7 +189,7 @@ class Problem(types.Problem):
 		count_ordered_list = 0 
 		list_of_question = []
 		for child in element:
-			if child.tag == 'div' and child.attrib['class'] == 'orderedlist':
+			if child.tag == 'div' and child.attrib['class'] == 'orderedlist' and problem_type == 'multiple_choice':
 				me.add_child(MultipleChoices.process(child, epub))
 				count_ordered_list = count_ordered_list + 1
 			elif child.tag == 'p':
@@ -210,7 +210,7 @@ class Problem(types.Problem):
 				question = Table.process(child, epub)
 				list_of_question.append(question)
 			elif child.tag == 'div' and child.attrib['class'] in ['table', 'figure', 'itemizedlist', 'note Hint',\
-																	 'note statistics calculator', 'note Note', 'note']:
+																	 'note statistics calculator', 'note Note', 'note', 'orderedlist']:
 				question = Paragraph.process(child, epub)
 				list_of_question.append(question)
 			else:

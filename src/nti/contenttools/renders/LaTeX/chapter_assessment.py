@@ -94,8 +94,11 @@ def problem_renderer(self):
 	if self.problem_type == 'problem_exercise':
 		return u'%s\n' %(problem_body)
 	elif self.problem_type == 'problem_exercise_example':
-		solution = self.solution.render()
-		return u'%s\n%s\n' %(problem_body, solution) 
+		if self.solution is None:
+			return u'%s\n' %(problem_body)
+		else:
+			solution = self.solution.render()
+			return u'%s\n%s\n' %(problem_body, solution) 
 	else:
 		return u'\\begin{naquestion}\n\\label{%s}\n%s\\end{naquestion}\n' %(label, problem_body)
 

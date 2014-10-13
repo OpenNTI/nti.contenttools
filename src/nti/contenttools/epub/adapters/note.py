@@ -9,6 +9,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
+from IPython.core.debugger import Tracer
 
 from ... import types
 
@@ -62,23 +63,40 @@ class OpenstaxExampleNote (types.OpenstaxExampleNote):
 class OpenstaxExampleNoteBody(types.OpenstaxExampleNoteBody):
 	@classmethod
 	def process(cls, element, epub):
-		from .openstax import Run, Table
+		from .openstax import Run, Table, Figure, Paragraph, _process_openstax_table, _process_span_elements
+		from .equation_image import EquationImage
 		from .exercise import process_problem_exercise
 		me = cls()
 		for child in element:
 			class_ = u''
 			if 'class' in child.attrib.keys():
 				class_ = child.attrib['class']
-			if child.tag == 'div' and class_ == 'exercise':
+			if child.tag == 'div' and class_ in ['exercise', 'exercise labeled']:
 				problem_type = 'problem_exercise_example'
 				el = process_problem_exercise(child, epub, problem_type)
 				me.add_child(el)
 			elif child.tag == 'table':
 				el = Table.process(child, epub)
 				me.add_child(el)
-			else:
-				el = Run.process(child, epub)
+			elif child.tag == 'div' and class_ == 'figure':
+				el = Figure.process(child, epub)
 				me.add_child(el)
+			elif child.tag == 'p':
+				me.add_child(Paragraph.process(child, epub))
+			elif child.tag == 'div' and class_ == 'table':
+				me.add_child(_process_openstax_table(child, epub))
+			elif child.tag == 'div' and class_ in ['note', 'itemizedlist', 'orderedlist', 'title', 'mediaobject',\
+													 'note statistics calculator', 'note finger', 'note Reminder']:
+				me.add_child(Paragraph.process(child, epub))
+			elif child.tag == 'div' and class_ in ['equation']:
+				el = EquationImage.process(child, epub)
+				me.add_child(el)
+			elif child.tag == 'span':
+				el = _process_span_elements(child, epub)
+				me.add_child(el)
+			else:
+				logger.warn('Unhandled OpenstaxExampleNoteBody %s', child.attrib)
+				logger.warn(child.tag)
 		return me
 
 
