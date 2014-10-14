@@ -66,6 +66,8 @@ def exercise_renderer(self):
 			self.problem.set_solution(self.solution)
 			if isinstance(self.problem.solution, types.Paragraph):
 				pass
+			elif isinstance(self.problem.solution, list):
+				pass
 			else:
 				self.problem.solution.set_problem_type(self.problem.problem_type)
 	problem = self.problem.render()
@@ -96,11 +98,23 @@ def problem_renderer(self):
 	elif self.problem_type == 'problem_exercise_example':
 		if self.solution is None:
 			return u'%s\n' %(problem_body)
+		elif isinstance(self.solution, list):
+			solution = get_solution(self.solution)
+			Tracer()()
+			return u'%s\n%s\n' %(problem_body, solution) 
 		else:
 			solution = self.solution.render()
 			return u'%s\n%s\n' %(problem_body, solution) 
 	else:
 		return u'\\begin{naquestion}\n\\label{%s}\n%s\\end{naquestion}\n' %(label, problem_body)
+
+def get_solution(solutions):
+	list_of_sol = []
+	for solution in solutions:
+		list_of_sol.append(solution.render().rstrip())
+		list_of_sol.append('\n\\newline')
+	result = u''.join(list_of_sol)
+	return result
 
 def get_question(questions):
 	list_of_question = []

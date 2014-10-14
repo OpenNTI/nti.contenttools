@@ -151,6 +151,7 @@ class Exercise(types.Exercise):
 	def process(cls, element, epub, problem_type=None):
 		from .openstax import Paragraph
 		me = cls()
+		solution_list = []
 		for child in element:
 			if child.tag == 'div' and child.attrib['class'] == 'problem':
 				problem = Problem.process(child, epub, problem_type)
@@ -165,7 +166,8 @@ class Exercise(types.Exercise):
 				elif problem_type == 'problem_exercise_example':
 					#logger.info('Process solution for example exercise')
 					solution = Paragraph.process(child,epub)
-					me.set_solution(solution)
+					solution_list.append(solution)
+					me.set_solution(solution_list)
 				else:
 					solution = Solution.process(child, epub)
 					me.set_solution(solution)
