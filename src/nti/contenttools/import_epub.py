@@ -77,6 +77,8 @@ def main():
 	body = document.children[0]
 	glossary_file = os.path.join(args.output, 'glossary.json')
 
+	start_attribution = 10
+
 	for _ in body:
 		# write each body child into different latex file
 		# we use this format : file_1.tex
@@ -91,6 +93,10 @@ def main():
 			glossary_check.process_glossary(glossary_dict, outputfile)
 		body_child = body_child + 1
 		logger.info('------------')
+		if body_child > start_attribution :
+			appended_text = u'\\subsection{Attribution}\n\\textbf{Download for free at : \\href{ http://cnx.org/content/col11407/latest}{Openstax Introduction To Sociology}}'
+			with codecs.open(outputfile, 'a') as f:
+				f.write(appended_text)
 
 	# clean global glossary
 	glossary = clean_global_glossary(global_glossary)
