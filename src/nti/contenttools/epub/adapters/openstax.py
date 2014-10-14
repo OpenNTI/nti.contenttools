@@ -1385,6 +1385,10 @@ def _process_div_elements( element, epub ):
         el = _process_openstax_example_note(element,epub)
     elif class_ in ['note statistics try', 'note statistics collab']:
         el = _process_openstax_example_note(element,epub)
+    elif class_ in ['note statistics calculator']:
+        from .note import OpenstaxNote
+        el = OpenstaxNote.process(element, epub)
+        el.set_title(types.TextNode(u'Statistics calculator'))
     else:
         el = Run.process(element, epub)
     return el
