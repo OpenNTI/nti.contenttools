@@ -776,8 +776,6 @@ class EquationImage(DocumentStructureNode):
 		self.image = image
 		self.text = text
 
-class OpenstaxCalculator(DocumentStructureNode):
-	pass
 
 
 
