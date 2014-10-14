@@ -1389,6 +1389,9 @@ def _process_div_elements( element, epub ):
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
         el.set_title(types.TextNode(u'Statistics calculator'))
+    elif class_ in ['title']:
+        el = Run.process(element, epub)
+        el.add_child(types.TextNode('\n\\newline'))
     else:
         el = Run.process(element, epub)
     return el
