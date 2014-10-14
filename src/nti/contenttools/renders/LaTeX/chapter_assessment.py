@@ -111,7 +111,7 @@ def get_solution(solutions):
 	list_of_sol = []
 	for solution in solutions:
 		list_of_sol.append(solution.render().rstrip())
-		list_of_sol.append('\n\\newline')
+		list_of_sol.append('\n\\newline ')
 	result = u''.join(list_of_sol)
 	return result
 
