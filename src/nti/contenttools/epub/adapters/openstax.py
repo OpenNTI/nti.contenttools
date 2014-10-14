@@ -1380,7 +1380,9 @@ def _process_div_elements( element, epub ):
     elif class_ in ['table']:
         el = _process_openstax_table(element, epub)
     elif class_ in ['cnx-eoc cnx-solutions']:
-        el = _process_cnx_solution(element, epub)
+        #el = _process_cnx_solution(element, epub)
+        #just pass this part if we work on Sociology Book
+        pass
     elif class_ in ['example']:
         el = _process_openstax_example_note(element,epub)
     elif class_ in ['note statistics try', 'note statistics collab']:
@@ -1391,7 +1393,7 @@ def _process_div_elements( element, epub ):
         el.set_title(types.TextNode(u'Statistics calculator'))
     elif class_ in ['title']:
         el = Run.process(element, epub)
-        el.add_child(types.TextNode('\n\\newline'))
+        el.add_child(types.TextNode('\n\\newline '))
     else:
         el = Run.process(element, epub)
     return el
@@ -1408,7 +1410,7 @@ def _process_cnx_solution(element, epub):
             el.add_child(SubSection.process(child, epub))
         elif child.tag == 'div' and child.attrib['class'] in ['solution', 'solution problmes-exercises', 'solution problems-exercises',\
                                                                 'solution problem-exercises', 'solution conceptual-questions',\
-                                                                 'solution labeled']:
+                                                                 'solution labeled', 'solution labeled section-quiz']:
             el.add_child(EndOfChapterSolution.process(child, epub))
         else:
             if isinstance(child, HtmlComment):
