@@ -100,7 +100,6 @@ def problem_renderer(self):
 			return u'%s\n' %(problem_body)
 		elif isinstance(self.solution, list):
 			solution = get_solution(self.solution)
-			Tracer()()
 			return u'%s\n%s\n' %(problem_body, solution) 
 		else:
 			solution = self.solution.render()
