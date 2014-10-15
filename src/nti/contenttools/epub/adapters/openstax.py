@@ -333,7 +333,8 @@ class NoteInteractive(types.NoteInteractive):
 
                 if class_ in ['title']:
                     caption = _process_div_elements(child,epub)
-                    me.set_caption(caption.children[0].children[0])
+                    #me.set_caption(caption.children[0].children[0])
+                    me.set_caption(caption)
                 elif class_ in ['body']:
                     for sub_el in child:
                         if sub_el.tag == 'div' and sub_el.attrib['class'] in ['object', 'mediaobject']:
@@ -347,8 +348,7 @@ class NoteInteractive(types.NoteInteractive):
                                 me.set_link(link)
                         elif sub_el.tag == 'div' and sub_el.attrib['class'] == 'itemsizedlist':
                             path = process_img_note_interactive(sub_el, epub)
-                            me.set_image_path(path)
-                            Tracer()()    
+                            me.set_image_path(path)    
                         else:
                             logger.warn('Unhandled element of note interactive under div class body : %s', sub_el.tag)
                             logger.warn(sub_el.attrib)
@@ -359,7 +359,11 @@ class NoteInteractive(types.NoteInteractive):
         if me.link is None:
             logger.warn('Link is empty')
             logger.warn('notes : %s', me.notes)
-        return me
+        if me.image_path == u'' or me.image_path is None:
+            logger.warn('image path is none')
+            return u''
+        else:
+            return me
 
 def process_img_note_interactive(element, epub):
     path = u''
@@ -420,7 +424,10 @@ def process_run_interactive(element, epub):
             link, note = process_run_interactive(child, epub)
             notes = notes + note
         else:
-            notes = notes + child
+            if isinstance(child, unicode):
+                notes = notes + child
+            else:
+                logger.warn('Unhandled process_run_interactive %s', child)
     return link, notes
 
 class Image(types.Image ):
@@ -1311,7 +1318,7 @@ def _process_div_elements( element, epub ):
         id_ = element.attrib['id']
 
     el = None
-    if class_ in ['note interactive']:
+    if class_ in ['note interactive', 'note anatomy interactive', 'note anatomy interactive um']:
         el = NoteInteractive.process(element, epub)
     elif class_ in ['figure', 'figure splash', "figure   ", "figure  ","figure span-all", "figure "]:
         el = Figure.process(element, epub)
@@ -1345,7 +1352,7 @@ def _process_div_elements( element, epub ):
         logger.info('found cover image')
     elif class_ in ['cnx-eoc summary', 'cnx-eoc art-exercise', 'cnx-eoc free-response', 'cnx-eoc section-summary', 'cnx-eoc short-answer',\
                         'cnx-eoc further-research', 'cnx-eoc references', 'cnx-eoc conceptual-questions', 'cnx-eoc problems-exercises',\
-                        'cnx-eoc practice', 'cnx-eoc bring-together-homework']:
+                        'cnx-eoc practice', 'cnx-eoc bring-together-homework', 'cnx-eoc interactive-exercise', ]:
         el = Run()
         num_child = 0
         for child in element.getchildren():
@@ -1363,11 +1370,12 @@ def _process_div_elements( element, epub ):
         problem_type = 'multiple_choice'
         el = ChapterExercise.process(element, epub, problem_type)
     elif class_ in ['note sociology-careers', 'note sociology-policy-debate', 'note sociology-big-picture', 'note sociology-real-world',\
-                        'note sociological-research', 'note', 'note art-connection', 'note evolution', 'note career', ]:
+                        'note sociological-research', 'note', 'note art-connection', 'note evolution', 'note career', 'note chapter-objectives',\
+                        'note anatomy disorders', 'note anatomy aging', 'note anatomy everyday', 'note anatomy homeostatic', 'note anatomy career',\
+                        ]:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
     elif class_ in ['exercise problems-exercises', 'exercise conceptual-questions','exercise']:
-        # do not add class_ in 'exercise' when rendering Biology book
         from .exercise import process_problem_exercise
         problem_type = 'problem_exercise'
         el = process_problem_exercise(element, epub, problem_type)
@@ -1380,9 +1388,9 @@ def _process_div_elements( element, epub ):
     elif class_ in ['table']:
         el = _process_openstax_table(element, epub)
     elif class_ in ['cnx-eoc cnx-solutions']:
-        #el = _process_cnx_solution(element, epub)
+        el = _process_cnx_solution(element, epub)
         #just pass this part if we work on Sociology Book
-        pass
+        #pass
     elif class_ in ['example']:
         el = _process_openstax_example_note(element,epub)
     elif class_ in ['note statistics try', 'note statistics collab']:
