@@ -213,7 +213,7 @@ def get_multiple_choice_sol(self):
 	solution = u''
 	if self.solution is not None:
 		solution = self.solution.render()
-	solution = solution.rstrip()
+	solution = solution.rstrip().lstrip()
 	if solution == 1 or solution == 'A' or solution == 'a':
 		return 0
 	elif solution == 2 or solution == 'B' or solution == 'b':
