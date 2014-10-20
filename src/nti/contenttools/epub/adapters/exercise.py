@@ -36,7 +36,7 @@ def _process_exercise_div(element, epub, problem_type=None):
 		if isinstance(element,HtmlComment):
 			pass
 		else:
-			logger.warn('Unhanled exercise div: %s', element.tag)
+			logger.warn('Unhandled exercise div: %s', element.tag)
 	return el
 
 def _process_exercise_section(element, epub, problem_type = None):
@@ -54,7 +54,7 @@ def _process_exercise_section(element, epub, problem_type = None):
 		if isinstance(element,HtmlComment):
 			pass
 		else:
-			logger.warn('Unhanled exercise section: %s', class_)
+			logger.warn('Unhandled exercise section: %s', class_)
 	return el
 
 def _process_exercise(element, epub, problem_type=None):
@@ -69,7 +69,7 @@ def _process_exercise(element, epub, problem_type=None):
 		if isinstance(element,HtmlComment):
 			pass
 		else:
-			logger.warn('Unhanled exercise: %s',element.tag)
+			logger.warn('Unhandled exercise: %s',element.tag)
 			logger.info(element.attrib)
 	return el
 
@@ -87,7 +87,7 @@ def _process_exercise_element(element, epub, problem_type=None):
 		if isinstance(element,HtmlComment):
 			pass
 		else:
-			logger.warn('Unhanled exercise element: %s', element.tag)
+			logger.warn('Unhandled exercise element: %s', element.tag)
 	return el
 
 class ExerciseCheck(types.ExerciseCheck):
@@ -105,7 +105,7 @@ class ExerciseCheck(types.ExerciseCheck):
 				if isinstance(child,HtmlComment):
 					pass
 				else:
-					logger.warn('Unhanled exercise check: %s', child.tag)
+					logger.warn('Unhandled exercise check: %s', child.tag)
 		return me
 
 class ExerciseElement(types.ExerciseElement):
@@ -175,7 +175,7 @@ class Exercise(types.Exercise):
 				if isinstance(child,HtmlComment):
 					pass
 				else:
-					logger.warn('Unhanled exercise process: %s', child.tag)
+					logger.warn('Unhandled exercise process: %s', child.tag)
 					logger.warn(child.attrib)
 		return me
 
@@ -212,11 +212,12 @@ class Problem(types.Problem):
 				question = Table.process(child, epub)
 				list_of_question.append(question)
 			elif child.tag == 'div' and child.attrib['class'] in ['table', 'figure', 'itemizedlist', 'note Hint',\
-																	 'note statistics calculator', 'note Note', 'note', 'orderedlist']:
+																	 'note statistics calculator', 'note Note', 'note',\
+																	 'orderedlist', 'orderedlist lower-alpha']:
 				question = Paragraph.process(child, epub)
 				list_of_question.append(question)
 			else:
-				logger.warn('Unhanled problem child %s', child.tag)
+				logger.warn('Unhandled problem child %s', child.tag)
 				logger.warn(child.attrib)
 
 		me.set_question(list_of_question)
