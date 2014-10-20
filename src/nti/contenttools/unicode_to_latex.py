@@ -18,18 +18,27 @@ def _replace_unicode_with_latex_tag(text):
                 new_text = new_text.replace(text, unicode_to_latex[text])
         return new_text
 
+
 def _replace_multi_char(text):
         #this is useful when text is a part of equation contain more than one unicode char
         new_text = text
-        for string in list(new_text):
-                if string in unicode_to_latex.keys():
-                        new_text = new_text.replace(string, unicode_to_latex[string])
+        token_dict = {}
+        index = 0
+        for string in list(text):
+                if string in token_dict.keys():
+                        pass
+                else:
+                        token_dict.update({string:index})
+                        if string in unicode_to_latex.keys():
+                                new_text = new_text.replace(string, unicode_to_latex[string])
+                index = index + 1 
         return new_text
+
 
 
 unicode_to_latex = {
         u"\u0023": "\\# ",
-        u"$": "\\$ ",
+        u"\u0024": "\\$",
         u"\u0025": "\\% ",
         u"\u0026": "& ",
         u"\u0027": "\\textquotesingle ",
@@ -95,7 +104,7 @@ unicode_to_latex = {
         u"\u00D4": "\\^{O}",
         u"\u00D5": "\\~{O}",
         u"\u00D6": "\\\"{O}",
-        u"\u00D7": "\\texttimes ",
+        u"\u00D7": "\\times ",
         u"\u00D8": "\\O ",
         u"\u00D9": "\\`{U}",
         u"\u00DA": "\\'{U}",
