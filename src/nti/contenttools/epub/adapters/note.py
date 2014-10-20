@@ -12,6 +12,7 @@ logger = __import__('logging').getLogger(__name__)
 from IPython.core.debugger import Tracer
 
 from ... import types
+from lxml.html import HtmlComment
 
 """
 used to process note found in each chapter of openstax epub
@@ -32,8 +33,11 @@ class OpenstaxNote (types.OpenstaxNote):
 			elif child.tag == 'div' and child.attrib['class'] == 'body':
 				body = Run.process(child, epub)
 				me.set_body(body)
+			elif isinstance(child, HtmlComment):
+				pass
 			else:
 				logger.warn('Unhandled OpenstaxNote element %s', child.attrib)
+				Tracer()()
 		return me
 
 class OpenstaxExampleNote (types.OpenstaxExampleNote):
@@ -93,6 +97,9 @@ class OpenstaxExampleNoteBody(types.OpenstaxExampleNoteBody):
 				me.add_child(el)
 			elif child.tag == 'span':
 				el = _process_span_elements(child, epub)
+				me.add_child(el)
+			elif child.tag == 'div' and class_ in ['orderedlist stepwise']:
+				el = Run.process(child, epub)
 				me.add_child(el)
 			else:
 				logger.warn('Unhandled OpenstaxExampleNoteBody %s', child.attrib)
