@@ -1352,7 +1352,7 @@ def _process_div_elements( element, epub ):
         logger.info('found cover image')
     elif class_ in ['cnx-eoc summary', 'cnx-eoc art-exercise', 'cnx-eoc free-response', 'cnx-eoc section-summary', 'cnx-eoc short-answer',\
                         'cnx-eoc further-research', 'cnx-eoc references', 'cnx-eoc conceptual-questions', 'cnx-eoc problems-exercises',\
-                        'cnx-eoc practice', 'cnx-eoc bring-together-homework', 'cnx-eoc interactive-exercise', 'nx-eoc self-check-questions',\
+                        'cnx-eoc practice', 'cnx-eoc bring-together-homework', 'cnx-eoc interactive-exercise', 'cnx-eoc self-check-questions',\
                         'cnx-eoc review-questions', 'cnx-eoc critical-thinking']:
         el = Run()
         num_child = 0
@@ -1373,7 +1373,8 @@ def _process_div_elements( element, epub ):
     elif class_ in ['note sociology-careers', 'note sociology-policy-debate', 'note sociology-big-picture', 'note sociology-real-world',\
                         'note sociological-research', 'note', 'note art-connection', 'note evolution', 'note career', 'note chapter-objectives',\
                         'note anatomy disorders', 'note anatomy aging', 'note anatomy everyday', 'note anatomy homeostatic', 'note anatomy career',\
-                        'note economics bringhome','note economics chapter-objectives', 'note economics clearup']:
+                        'note economics bringhome','note economics chapter-objectives', 'note economics clearup', 'note economics workout',\
+                        'note economics linkup']:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
     elif class_ in ['exercise problems-exercises', 'exercise conceptual-questions','exercise']:
