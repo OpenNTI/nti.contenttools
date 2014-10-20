@@ -126,5 +126,5 @@ def theader_html_renderer(self):
     return result %(base_renderer(self))
 
 def tfooter_html_renderer(self):
-    result = base_renderer(self)
-    return result
+    result = u'\\hline %s \\hline\n'
+    return result %(base_renderer(self))
