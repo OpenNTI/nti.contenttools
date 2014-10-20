@@ -1373,8 +1373,7 @@ def _process_div_elements( element, epub ):
     elif class_ in ['note sociology-careers', 'note sociology-policy-debate', 'note sociology-big-picture', 'note sociology-real-world',\
                         'note sociological-research', 'note', 'note art-connection', 'note evolution', 'note career', 'note chapter-objectives',\
                         'note anatomy disorders', 'note anatomy aging', 'note anatomy everyday', 'note anatomy homeostatic', 'note anatomy career',\
-                        'note economics bringhome','note economics chapter-objectives', 'note economics clearup', 'note economics workout',\
-                        'note economics linkup']:
+                        'note economics bringhome','note economics chapter-objectives', 'note economics clearup', 'note economics workout']:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
     elif class_ in ['exercise problems-exercises', 'exercise conceptual-questions','exercise']:
