@@ -78,8 +78,11 @@ def table_html_renderer(self):
         if border:
             string_col = string_col + u' l |' 
         else:
-            string_col = string_col = u' l '
+            string_col = string_col + u' l '
         count_col = count_col + 1
+
+    if self.number_of_col == 0:
+        string_col = u' l '
     
     body = base_renderer(self)
 
@@ -99,9 +102,12 @@ def table_html_renderer(self):
         caption = self.caption.render()
         result = u'\\begin{table}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
         return result % (caption, string_col, body)
-    elif self.label is None and self.caption is None :
+    elif self.label is None and self.caption is None and self.type_ is None:
         result = u'\\begin{table}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
         return result % (string_col, body)
+    elif self.type_== u'simplelist':
+        result = u'\n%s\n\\newline '
+        return result %(body)
         
 def table_row_html_renderer(self):
     result = []
@@ -109,6 +115,8 @@ def table_row_html_renderer(self):
         result.append(child.render())
     if self.border:
         return u' & '.join(result) + u'\\\\ \hline\n' 
+    elif self.type_ == u'simplelist':
+        return u''.join(result) + u'\\\\\n'
     else :
         return u' & '.join(result) + u'\\\\\n'
 
