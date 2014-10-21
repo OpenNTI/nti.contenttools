@@ -711,6 +711,12 @@ class Table(types.Table):
         if style_ in ['border: 1px solid;', 'border: 1px solid; '] :
             me.set_border(True)
 
+        class_ = u''
+        if 'class' in element.attrib.keys():
+            class_ = element.attrib['class']
+        if class_ in ['simplelist']:
+            me.set_type(u'simplelist')
+
         for child in element:
             if child.tag == 'colgroup':
                 me.add_child(_process_colgroup_elements(child, epub))
@@ -724,6 +730,8 @@ class Table(types.Table):
             elif child.tag == 'tr':
                 if me.border:
                     me.add_child(Row.process(child,epub, me.border))
+                elif me.type_ == u'simplelist':
+                    me.add_child(Row.process(child, epub, me.border, me.type_))
                 else:
                     me.add_child(Row.process(child, epub))
             elif child.tag == 'thead':
@@ -814,9 +822,10 @@ class TFoot(types.TFoot):
 
 class Row (types.Row):
     @classmethod
-    def process(cls, element, epub, border=False):
+    def process(cls, element, epub, border=False, type_ = None):
         me = cls()
         me.set_border(border)
+        me.set_type(type_)
         number_of_col = 0
         if element.text:
             if element.text.isspace():
@@ -1403,9 +1412,26 @@ def _process_div_elements( element, epub ):
     elif class_ in ['title']:
         el = Run.process(element, epub)
         el.add_child(types.TextNode('\n\\newline '))
+    elif id_ in ['book-attribution']:
+        el = OpenstaxAttributions.process(element, epub)
     else:
         el = Run.process(element, epub)
     return el
+
+class OpenstaxAttributions(types.OpenstaxAttributions):
+     @classmethod
+     def process(cls, element, epub):
+        me = cls()
+        for child in element:
+            if child.tag == 'h1':
+                me.add_child(_process_h1_elements(child, epub))
+            elif child.tag == 'p':
+                pass
+            elif child.tag == 'table':
+                me.add_child(_process_table_elements(child, epub))
+            else:
+                logger.warn('Unhandled book book-attribution element %s', child.tag)
+        return me
 
 def _process_openstax_example_note(element, epub):
     from .note import OpenstaxExampleNote
