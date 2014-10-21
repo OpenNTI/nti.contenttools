@@ -36,3 +36,6 @@ def openstax_example_note_renderer(self):
 
 def openstax_ex_note_body_renderer(self):
 	return base_renderer(self)
+
+def openstax_attribution_renderer(self):
+	return base_renderer(self)
