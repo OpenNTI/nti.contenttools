@@ -39,3 +39,6 @@ def openstax_ex_note_body_renderer(self):
 
 def openstax_attribution_renderer(self):
 	return base_renderer(self)
+
+def openstax_title_renderer(self):
+	return u'\\textbf{%s} \\newline\n' %(base_renderer(self))
