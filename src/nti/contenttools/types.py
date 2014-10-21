@@ -261,11 +261,12 @@ class DD(DocumentStructureNode):
 	pass
 
 class Table(DocumentStructureNode):
-	def __init__(self, number_of_col=0, caption=None, label=None, border=False):
+	def __init__(self, number_of_col=0, caption=None, label=None, border=False, type_=None ):
 		self.number_of_col = number_of_col
 		self.caption = caption
 		self.label = label
 		self.border = border
+		self.type_ = type_
 
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
@@ -279,16 +280,23 @@ class Table(DocumentStructureNode):
 	def set_border(self, border):
 		self.border = border
 
+	def set_type(self, type_):
+		self.type_ = type_
+
 class Row(DocumentStructureNode):
-	def __init__(self, number_of_col=0, border = False):
+	def __init__(self, number_of_col=0, border = False, type_=None):
 		self.number_of_col = number_of_col
 		self.border = border
+		self.type_ = type_
 		
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
 
 	def set_border(self, border):
 		self.border = border
+
+	def set_type(self, type_):
+		self.type_ = type_
 
 class Cell (DocumentStructureNode):
 	def __init__(self, border=False):
@@ -776,6 +784,7 @@ class EquationImage(DocumentStructureNode):
 		self.image = image
 		self.text = text
 
-
+class OpenstaxAttributions(DocumentStructureNode):
+	pass
 
 
