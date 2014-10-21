@@ -199,6 +199,7 @@ types.OpenstaxExampleNote.render = openstax_example_note_renderer
 types.OpenstaxExampleNoteBody.render = openstax_ex_note_body_renderer
 
 types.EquationImage.render = equation_image_renderer
+types.OpenstaxAttributions.render = openstax_attribution_renderer
 
 def register():
     pass
