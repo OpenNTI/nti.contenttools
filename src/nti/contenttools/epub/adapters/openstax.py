@@ -1410,13 +1410,20 @@ def _process_div_elements( element, epub ):
         el = OpenstaxNote.process(element, epub)
         el.set_title(types.TextNode(u'Statistics calculator'))
     elif class_ in ['title']:
-        el = Run.process(element, epub)
-        el.add_child(types.TextNode('\n\\newline '))
+        el = OpenstaxTitle.process(element, epub)
+        #el.add_child(types.TextNode('\n\\newline '))
     elif id_ in ['book-attribution']:
         el = OpenstaxAttributions.process(element, epub)
     else:
         el = Run.process(element, epub)
     return el
+
+class OpenstaxTitle(types.OpenstaxTitle):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        me.add_child(Run.process(element, epub))
+        return me
 
 class OpenstaxAttributions(types.OpenstaxAttributions):
      @classmethod
