@@ -787,4 +787,6 @@ class EquationImage(DocumentStructureNode):
 class OpenstaxAttributions(DocumentStructureNode):
 	pass
 
+class OpenstaxTitle(DocumentStructureNode):
+	pass
 
