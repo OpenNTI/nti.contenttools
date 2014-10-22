@@ -732,7 +732,7 @@ class Table(types.Table):
                 else:
                     me.add_child(Row.process(child, epub))
             elif child.tag == 'thead':
-                me.add_child(THead.process(child, epub, border))
+                me.add_child(THead.process(child, epub, me.border))
             elif child.tag == 'tfoot':
                 me.add_child(TFoot.process(child, epub))
             elif child.tag == 'caption':
@@ -1374,7 +1374,7 @@ def _process_div_elements( element, epub ):
     elif class_ in ['note sociology-careers', 'note sociology-policy-debate', 'note sociology-big-picture', 'note sociology-real-world',\
                         'note sociological-research', 'note', 'note art-connection', 'note evolution', 'note career', 'note chapter-objectives',\
                         'note anatomy disorders', 'note anatomy aging', 'note anatomy everyday', 'note anatomy homeostatic', 'note anatomy career',\
-                        'note economics bringhome','note economics chapter-objectives', 'note economics clearup', 'note economics workout']:
+                        'note economics bringhome','note economics chapter-objectives', 'note economics clearup', 'note economics workout', 'note Hint']:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
     elif class_ in ['exercise problems-exercises', 'exercise conceptual-questions','exercise']:
@@ -1395,7 +1395,7 @@ def _process_div_elements( element, epub ):
         #pass
     elif class_ in ['example']:
         el = _process_openstax_example_note(element,epub)
-    elif class_ in ['note statistics try', 'note statistics collab']:
+    elif class_ in ['note statistics try', 'note statistics collab', 'note statistics try finger']:
         el = _process_openstax_example_note(element,epub)
     elif class_ in ['note statistics calculator']:
         from .note import OpenstaxNote
