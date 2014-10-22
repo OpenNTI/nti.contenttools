@@ -196,7 +196,7 @@ types.EndOfChapterSolution.render = chapter_solution_renderer
 
 types.OpenstaxNote.render = openstax_note_renderer
 types.OpenstaxExampleNote.render = openstax_example_note_renderer
-types.OpenstaxExampleNoteBody.render = openstax_ex_note_body_renderer
+types.OpenstaxNoteBody.render = openstax_ex_note_body_renderer
 
 types.EquationImage.render = equation_image_renderer
 types.OpenstaxAttributions.render = openstax_attribution_renderer
