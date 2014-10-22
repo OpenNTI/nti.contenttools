@@ -37,6 +37,10 @@ def set_image_params_and_command(self, command):
     height = self.height
     MAX_WIDTH = 600.0 #600 is the maximum width of images in the platform (webapp)
 
+    check_sidebar = check_image_in_sidebar(self)
+    if check_sidebar:
+        MAX_WIDTH = 500 #500 is the maximum width of an image if it is located inside a sidebar
+
     if check_table :
         width_cell = MAX_WIDTH/image_in_a_row
         if self.width > width_cell:
@@ -99,7 +103,17 @@ def check_image_in_table(self):
             parent = parent.__parent__
     return False, 0
 
-
-
+def check_image_in_sidebar(self):
+    """
+    check if image is located inside sidebar
+    """
+    parent = self.__parent__
+    sidebar = [types.Sidebar, types.OpenstaxNote, types.OpenstaxExampleNote, types.OpenstaxNoteBody]
+    while parent is not None:
+        for type_ in sidebar:
+            if isinstance(parent,type_):
+                return True
+        parent = parent.__parent__
+    return False
 
 
