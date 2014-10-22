@@ -31,7 +31,7 @@ class OpenstaxNote (types.OpenstaxNote):
 				title = Run.process(child, epub)
 				me.set_title(title)
 			elif child.tag == 'div' and child.attrib['class'] == 'body':
-				body = Run.process(child, epub)
+				body = OpenstaxNoteBody.process(child, epub)
 				me.set_body(body)
 			elif isinstance(child, HtmlComment):
 				pass
@@ -58,13 +58,13 @@ class OpenstaxExampleNote (types.OpenstaxExampleNote):
 				if title is None:
 					title = Run.process(child, epub)
 			elif child.tag == 'div' and child.attrib['class'] == 'body':
-				me.set_body(OpenstaxExampleNoteBody.process(child, epub))
+				me.set_body(OpenstaxNoteBody.process(child, epub))
 			else:
 				logger.warn('Unhandled OpenstaxExampleNote element %s', child.attrib)
 		me.set_title(title)
 		return me
 
-class OpenstaxExampleNoteBody(types.OpenstaxExampleNoteBody):
+class OpenstaxNoteBody(types.OpenstaxNoteBody):
 	@classmethod
 	def process(cls, element, epub):
 		from .openstax import Run, Table, Figure, Paragraph, _process_openstax_table, _process_span_elements
@@ -75,7 +75,7 @@ class OpenstaxExampleNoteBody(types.OpenstaxExampleNoteBody):
 			class_ = u''
 			if 'class' in child.attrib.keys():
 				class_ = child.attrib['class']
-			if child.tag == 'div' and class_ in ['exercise', 'exercise labeled']:
+			if child.tag == 'div' and class_ in ['exercise', 'exercise labeled', 'exercise finger']:
 				problem_type = 'problem_exercise_example'
 				el = process_problem_exercise(child, epub, problem_type)
 				me.add_child(el)
@@ -102,7 +102,7 @@ class OpenstaxExampleNoteBody(types.OpenstaxExampleNoteBody):
 				el = Run.process(child, epub)
 				me.add_child(el)
 			else:
-				logger.warn('Unhandled OpenstaxExampleNoteBody %s', child.attrib)
+				logger.warn('Unhandled OpenstaxNoteBody %s', child.attrib)
 				logger.warn(child.tag)
 		return me
 
