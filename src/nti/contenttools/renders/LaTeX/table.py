@@ -9,6 +9,7 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 from .base import base_renderer
+from ... import types
 
 from IPython.core.debugger import Tracer
 
@@ -67,25 +68,65 @@ def basic_renderer(self):
     return body
 
 def table_html_renderer(self):
-    number_of_col = self.number_of_col
-    count_col = 0
-    string_col = u''
+    set_number_of_table_col(self)
+    number_of_col_header = self.number_of_col_header
+    number_of_col_body = self.number_of_col_body
     border = self.border
+    string_col = u''
+    multicolumn = False
+    if number_of_col_header == 0 and number_of_col_body > 0:
+        string_col = get_string_col(number_of_col_body, border)
+    elif number_of_col_body == number_of_col_header:
+        string_col = get_string_col(number_of_col_header, border)
+    else:
+        string_col = get_string_col(number_of_col_body, border)
+        multicolumn = True
+    result = process_table_html(self, string_col, multicolumn)
+    return result
+
+def set_number_of_table_col(self):
+    header_index = find_table_child(types.THead, self)
+    if header_index is not None:
+        self.set_number_of_col_header(self.children[header_index].number_of_col)
+    
+    body_index = find_table_child(types.TBody, self)
+    if body_index is not None:
+        self.set_number_of_col_body(self.children[body_index].number_of_col)
+
+def find_table_child(type_, me):
+    list_ = me.children
+    for index, child in enumerate(list_):
+        if isinstance(child, type_):
+            return index
+    return None
+
+def get_string_col(number_of_col,border):
+    string_col = u''
+    count_col = 0
     if border:
         string_col = u'|'
     while count_col < number_of_col:
-        #by default we use 'l' as caption, however we can modify this code later
+        #by default we use 'l' as alignment, however we can modify this code later
         if border:
             string_col = string_col + u' l |' 
         else:
             string_col = string_col + u' l '
         count_col = count_col + 1
 
-    if self.number_of_col == 0 and self.border:
+    if number_of_col == 0 and border:
         string_col = u'| l |'
-    elif self.number_of_col == 0 and self.border == False:
+    elif number_of_col == 0 and not border:
         string_col = u' l '
-    
+
+    return string_col
+
+def get_multicolumn_string(number_of_col, border, header):
+    if border:
+        return u'\\multicolumn{%s}{| l |}{%s}' %(number_of_col,header.render())
+    else:
+        return u'\\multicolumn{%s}{ l }{%s}' %(number_of_col, header.render())
+
+def process_table_html(self, string_col, multicolumn):
     body = base_renderer(self)
 
     if self.label is not None and self.caption is not None:
@@ -94,22 +135,23 @@ def table_html_renderer(self):
         #TODO: the text_label only works for openstax epub, we need to modify line 84-85 if we work on different publisher
         text_label = self.caption.children[0].render() + self.caption.children[1].children[0].render()
         caption = caption.replace(text_label, u'')
-        result = u'\\begin{table}\n\\label{%s}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\\newline\n'
+        result = u'\n\\begin{table}\n\\label{%s}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\\newline\n'
         return result % (label, caption, string_col, body)
     elif self.label is not None and self.caption is None:
         label = self.label
-        result = u'\\begin{table}\n\\label{%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\\newline\n'
+        result = u'\n\\begin{table}\n\\label{%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\\newline\n'
         return result % (label, string_col, body)
     elif self.label is None and self.caption is not None:
         caption = self.caption.render()
-        result = u'\\begin{table}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
+        result = u'\n\\begin{table}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
         return result % (caption, string_col, body)
     elif self.label is None and self.caption is None and self.type_ is None:
-        result = u'\\begin{table}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
+        result = u'\n\\begin{table}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
         return result % (string_col, body)
     elif self.type_== u'simplelist':
         result = u'\n%s\n\\newline '
         return result %(body)
+
         
 def table_row_html_renderer(self):
     result = []
@@ -140,3 +182,5 @@ def theader_html_renderer(self):
 def tfooter_html_renderer(self):
     result = u'\\hline %s \\hline\n'
     return result %(base_renderer(self))
+
+u'|l|l|l|l|l|l|l|'
