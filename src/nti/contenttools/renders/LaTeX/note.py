@@ -16,11 +16,11 @@ module to render note found in each chapter of openstax epub
 
 def openstax_note_renderer(self):
 	title = self.title.render()
-	body = self.body.render()
+	body = self.body.render().rstrip()
 	if self.label is None:
-		return u'\n\\begin{sidebar}{%s}\n%s\n\\end{sidebar}\n\\newline ' %(title, body)
+		return u'\n\\begin{sidebar}{%s}\n%s\n\\end{sidebar}\\newline\n' %(title, body)
 	elif isinstance(self.label, str):
-		return u'\n\\begin{sidebar}{%s}\\label{%s}\n%s\n\\end{sidebar}\n\\newline ' %(title, self.label, body)
+		return u'\n\\begin{sidebar}{%s}\\label{%s}\n%s\n\\end{sidebar}\\newline\n' %(title, self.label, body)
 
 def openstax_example_note_renderer(self):
 	title = None
@@ -28,11 +28,11 @@ def openstax_example_note_renderer(self):
 		title = self.title
 	else:
 		title = self.title.render()
-	body = self.body.render()
+	body = self.body.render().rstrip()
 	if self.label is None:
-		return u'\n\\begin{sidebar}{%s}\n%s\n\\end{sidebar}\n\\newline ' %(title, body)
+		return u'\n\\begin{sidebar}{%s}\n%s\n\\end{sidebar}\\newline\n' %(title, body)
 	elif isinstance(self.label, str):
-		return u'\n\\begin{sidebar}{%s}\\label{%s}\n%s\n\\end{sidebar}\n\\newline ' %(title, self.label, body)
+		return u'\n\\begin{sidebar}{%s}\\label{%s}\n%s\n\\end{sidebar}\\newline\n' %(title, self.label, body)
 
 def openstax_ex_note_body_renderer(self):
 	return base_renderer(self)
