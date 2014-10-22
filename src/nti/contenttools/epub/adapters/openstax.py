@@ -696,8 +696,6 @@ class Table(types.Table):
     @classmethod
     def process(cls, element, epub):
         me = cls()
-        count_child = -1
-        number_of_col = 0
         if element.text:
             if element.text.isspace():
                 pass
@@ -726,7 +724,6 @@ class Table(types.Table):
                     me.add_child(_process_tbody_elements(child, epub, border))
                 else:
                     me.add_child(_process_tbody_elements(child, epub))
-                number_of_col = me.children[count_child].number_of_col
             elif child.tag == 'tr':
                 if me.border:
                     me.add_child(Row.process(child,epub, me.border))
@@ -736,21 +733,16 @@ class Table(types.Table):
                     me.add_child(Row.process(child, epub))
             elif child.tag == 'thead':
                 me.add_child(THead.process(child, epub))
-                number_of_col = me.children[count_child].number_of_col
             elif child.tag == 'tfoot':
                 me.add_child(TFoot.process(child, epub))
             elif child.tag == 'caption':
                 caption = Run.process(child, epub)
                 me.set_caption(caption)
-                count_child = count_child - 1
             else:
                 if isinstance(child,HtmlComment):
                     pass
                 else:
                     logger.warn('Unhandled table child: %s.',child.tag)
-                count_child = count_child - 1
-            count_child = count_child + 1
-        me.set_number_of_col(number_of_col)
         return me
 
 class TBody(types.TBody):
