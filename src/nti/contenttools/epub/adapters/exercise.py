@@ -182,6 +182,7 @@ class Exercise(types.Exercise):
 from .openstax import Paragraph
 from .openstax import Table
 from .openstax import Run
+from .openstax import OpenstaxTitle
 		
 class Problem(types.Problem):
 
@@ -215,6 +216,9 @@ class Problem(types.Problem):
 																	 'note statistics calculator', 'note Note', 'note',\
 																	 'orderedlist', 'orderedlist lower-alpha']:
 				question = Paragraph.process(child, epub)
+				list_of_question.append(question)
+			elif child.tag == 'div' and child.attrib['class'] in ['title']:
+				question = OpenstaxTitle.process(element, epub)
 				list_of_question.append(question)
 			else:
 				logger.warn('Unhandled problem child %s', child.tag)

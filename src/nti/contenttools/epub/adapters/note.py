@@ -13,6 +13,7 @@ from IPython.core.debugger import Tracer
 
 from ... import types
 from lxml.html import HtmlComment
+from .exercise import Problem
 
 """
 used to process note found in each chapter of openstax epub
@@ -79,10 +80,17 @@ class OpenstaxNoteBody(types.OpenstaxNoteBody):
 				problem_type = 'problem_exercise_example'
 				el = process_problem_exercise(child, epub, problem_type)
 				me.add_child(el)
+			elif child.tag == 'div' and class_ in ['problem']:
+				problem_type = 'problem_exercise_example'
+				el = Problem.process(child, epub, problem_type)
+				me.add_child(el)
+			elif child.tag == 'div' and class_ in ['solution', 'solution labeled', 'solution check-understanding']:
+				el = Paragraph.process(child, epub)
+				me.add_child(el)
 			elif child.tag == 'table':
 				el = Table.process(child, epub)
 				me.add_child(el)
-			elif child.tag == 'div' and class_ == 'figure':
+			elif child.tag == 'div' and class_ in ['figure', 'figure splash', "figure   ", "figure  ","figure span-all", "figure "]:
 				el = Figure.process(child, epub)
 				me.add_child(el)
 			elif child.tag == 'p':
@@ -101,6 +109,8 @@ class OpenstaxNoteBody(types.OpenstaxNoteBody):
 			elif child.tag == 'div' and class_ in ['orderedlist stepwise']:
 				el = Run.process(child, epub)
 				me.add_child(el)
+			elif isinstance(child, HtmlComment):
+				pass
 			else:
 				logger.warn('Unhandled OpenstaxNoteBody %s', child.attrib)
 				logger.warn(child.tag)
