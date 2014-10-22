@@ -778,7 +778,7 @@ class OpenstaxNote (DocumentStructureNode):
 class OpenstaxExampleNote(OpenstaxNote):
 	pass
 
-class OpenstaxExampleNoteBody(DocumentStructureNode):
+class OpenstaxNoteBody(DocumentStructureNode):
 	pass
 
 class EquationImage(DocumentStructureNode):
