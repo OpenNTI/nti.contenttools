@@ -732,7 +732,7 @@ class Table(types.Table):
                 else:
                     me.add_child(Row.process(child, epub))
             elif child.tag == 'thead':
-                me.add_child(THead.process(child, epub))
+                me.add_child(THead.process(child, epub, border))
             elif child.tag == 'tfoot':
                 me.add_child(TFoot.process(child, epub))
             elif child.tag == 'caption':
