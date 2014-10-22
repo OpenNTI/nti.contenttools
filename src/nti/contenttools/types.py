@@ -261,15 +261,19 @@ class DD(DocumentStructureNode):
 	pass
 
 class Table(DocumentStructureNode):
-	def __init__(self, number_of_col=0, caption=None, label=None, border=False, type_=None ):
-		self.number_of_col = number_of_col
+	def __init__(self, number_of_col_header=0, number_of_col_body=0, caption=None, label=None, border=False, type_=None ):
+		self.number_of_col_header = number_of_col_header
+		self.number_of_col_body = number_of_col_body
 		self.caption = caption
 		self.label = label
 		self.border = border
 		self.type_ = type_
 
-	def set_number_of_col(self, number_of_col):
-		self.number_of_col = number_of_col
+	def set_number_of_col_header(self, number_of_col_header):
+		self.number_of_col_header = number_of_col_header
+
+	def set_number_of_col_body(self, number_of_col_body):
+		self.number_of_col_body = number_of_col_body
 
 	def set_caption(self, caption):
 		self.caption = caption
