@@ -9,7 +9,7 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 from .base import base_renderer, _command_renderer
-from IPython.core.debugger import Tracer
+
 
 """
 def chapter_renderer(self):
