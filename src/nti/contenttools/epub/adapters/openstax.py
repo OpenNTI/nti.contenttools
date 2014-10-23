@@ -238,7 +238,8 @@ class Run( types.Run ):
             elif child.tag == 'math':
                 me.add_child(_process_math_elements(child, epub))
             elif child.tag == 'dl':
-                me.add_child(_process_dl_elements(child, epub))
+                type_ = 'with_new_line'
+                me.add_child(_process_dl_elements(child, epub, type_))
             elif child.tag == 'code':
                 me.add_child(_process_code_elements(child, epub))
             else:
@@ -433,9 +434,10 @@ def process_run_interactive(element, epub):
 class Image(types.Image ):
 
     @classmethod
-    def process(cls, element, epub):
+    def process(cls, element, epub, inline_image=False):
         me = cls()
         me.path = element.attrib['src']
+        me.inline_image = inline_image
         if 'alt' in element.attrib.keys():
             me.caption = element.attrib['alt']
         image_path = os.path.join(epub.content_path, me.path)
@@ -558,21 +560,21 @@ class UnorderedList( types.UnorderedList ):
         return me
 
 
-class DescriptionList( types.DescriptionList ):
+class DescriptionList( types.DescriptionList):
     @classmethod
-    def process(cls, element, epub):
+    def process(cls, element, epub, type_ = None):
         me = cls()
-        me.add_child(ItemWithDesc.process(element, epub))
+        me.add_child(ItemWithDesc.process(element, epub, type_))
         return me
 
 class ItemWithDesc( types.ItemWithDesc ):
     @classmethod
-    def process(cls, element, epub):
+    def process(cls, element, epub, type_=None):
         me = cls()
         count_child = -1
         for child in element:
             if child.tag == 'dt':
-                el = DT.process(child, epub)
+                el = DT.process(child, epub, type_)
                 me.add_child(el)
                 count_child = count_child + 1
             elif child.tag == 'dd':
@@ -606,8 +608,9 @@ class ItemWithDesc( types.ItemWithDesc ):
 
 class DT(types.DT):
     @classmethod
-    def process(cls, element, epub):
+    def process(cls, element, epub, type_=None):
         me = cls()
+        me.set_type(type_)
         if element.text:
             if element.text.isspace():
                 pass
@@ -618,7 +621,13 @@ class DT(types.DT):
             if sub_el.tag == 'p':
                 me.add_child(_process_p_elements(sub_el, epub))
             elif sub_el.tag == 'img':
-                me.add_child(Image.process(sub_el, epub))
+                inline_image = False
+                alt_ = u''
+                if 'alt' in sub_el.attrib.keys():
+                    alt_ = sub_el.attrib['alt']
+                if alt_ in ['OpenStax College Logo']:
+                    inline_image = True
+                me.add_child(Image.process(sub_el, epub, inline_image))
             elif sub_el.tag ==  'span':
                 me.add_child(_process_span_elements(sub_el, epub))
             elif sub_el.tag ==  'sub':
@@ -1549,8 +1558,8 @@ def _process_inline_media_object(element, epub):
 def _process_ul_elements( element, epub ):
     return UnorderedList.process(element, epub)
 
-def _process_dl_elements( element, epub ):
-    return DescriptionList.process(element, epub)
+def _process_dl_elements( element, epub, type_=None ):
+    return DescriptionList.process(element, epub, type_)
 
 def _process_b_elements( element, epub ):
     return Run.process(element, epub, ['bold'])
