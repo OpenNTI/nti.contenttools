@@ -250,11 +250,15 @@ class ItemWithDesc( Item ):
 	pass
 	
 class DT(DocumentStructureNode):
-	def __init__(self, desc=None):
+	def __init__(self, desc=None, type_=None):
 		self.desc = desc
+		self.type_ = type_
 
 	def set_description(self, desc):
 		self.desc = desc
+
+	def set_type(self, type_):
+		self.type_ = type_
 
 
 class DD(DocumentStructureNode):
