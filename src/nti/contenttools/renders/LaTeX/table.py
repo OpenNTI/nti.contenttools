@@ -131,10 +131,13 @@ def process_table_html(self, string_col, multicolumn):
 
     if self.label is not None and self.caption is not None:
         label = self.label
-        caption = self.caption.render()
-        #TODO: the text_label only works for openstax epub, we need to modify line 84-85 if we work on different publisher
-        text_label = self.caption.children[0].render() + self.caption.children[1].children[0].render()
-        caption = caption.replace(text_label, u'')
+        caption = self.caption.render().rstrip()
+        logger.info(caption)
+        #TODO: the text_label only works for openstax epub, we need to modify line 136-137 if we work on different publisher
+        text_label = self.caption.children[0].render() + self.caption.children[1].children[0].render().rstrip()
+        logger.info(text_label)
+        caption = caption.replace(text_label, u' ')
+        logger.info(caption)
         result = u'\n\\begin{table}\n\\label{%s}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\\newline\n'
         return result % (label, caption, string_col, body)
     elif self.label is not None and self.caption is None:
@@ -143,6 +146,12 @@ def process_table_html(self, string_col, multicolumn):
         return result % (label, string_col, body)
     elif self.label is None and self.caption is not None:
         caption = self.caption.render()
+        logger.info(caption)
+        #TODO: the text_label only works for openstax epub, we need to modify line 147-148 if we work on different publisher
+        text_label = self.caption.children[0].render() + self.caption.children[1].children[0].render()
+        logger.info(text_label)
+        caption = caption.replace(text_label, u'')
+        logger.info(caption)
         result = u'\n\\begin{table}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
         return result % (caption, string_col, body)
     elif self.label is None and self.caption is None and self.type_ is None:
