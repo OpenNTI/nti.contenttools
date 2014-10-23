@@ -49,10 +49,11 @@ def dt_renderer(self):
     for child in self.desc:
         result.append(child.render())
     desc =  u''.join(result)
+    item = base_renderer(self).rstrip()
     if self.type_ is None:
-        return u'\\item [%s] %s \n' % (base_renderer(self), desc)
+        return u'\\item [%s] %s \n' % (item, desc)
     else:
-        return u'\\item [%s] \\hfill \\\\\n%s \n' % (base_renderer(self), desc)
+        return u'\\item [%s] \\hfill \\\\\n%s \n' % (item, desc)
 
 def dd_renderer(self):
     return base_renderer(self)
