@@ -14,6 +14,6 @@ def code_line_rendered(self):
 	
 	#return u'\\begin{lstlisting} %s \\end{lstlisting}' %(base_renderer(self))
 	#return u'\\begin{verbatim} %s \\end{verbatim}' %(base_renderer(self))
-	if len(self.children) == 2:
-		return u'\\texttt{%s} %s ' %(self.children[0].render(), self.children[1].render())
+	#if len(self.children) == 2:
+	#	return u'\\texttt{%s} %s ' %(self.children[0].render(), self.children[1].render())
 	return u'\\texttt{%s} ' %(base_renderer(self))
