@@ -156,6 +156,8 @@ class Paragraph( types.Paragraph ):
                 me.add_child(_process_math_elements(child, epub))
             elif child.tag == 'code':
                 me.add_child(_process_code_elements(child, epub))
+                if child.tail:
+                    me.add_child(types.TextNode(child.tail))
             elif child.tag == 'table':
                 me.add_child(_process_table_elements(child, epub))
             else:
@@ -242,6 +244,8 @@ class Run( types.Run ):
                 me.add_child(_process_dl_elements(child, epub, type_))
             elif child.tag == 'code':
                 me.add_child(_process_code_elements(child, epub))
+                if child.tail:
+                    me.add_child(types.TextNode(child.tail))
             else:
                 if isinstance(child,HtmlComment):
                     pass
@@ -914,6 +918,8 @@ class CodeLine(types.CodeLine):
                 me.add_child(_process_dfn_elements(child, epub))
             elif child.tag == 'code':
                 me.add_child(_process_code_elements(child, epub))
+                if child.tail:
+                    me.add_child(types.TextNode(child.tail))
             elif child.tag == 'samp':
                 me.add_child(_process_samp_elements(child, epub))
             elif child.tag == 'kbd':
@@ -926,8 +932,8 @@ class CodeLine(types.CodeLine):
                 me.add_child(_process_sup_elements(child, epub))
             else:
                 logger.warn('Unhandled <code> element : %s', child.tag)
-        if element.tail:
-            me.add_child( types.TextNode( element.tail.replace('\r', '' ) ) )
+        #if element.tail:
+        #    me.add_child( types.TextNode( element.tail.replace('\r', '' ) ) )
         return me
 
 
