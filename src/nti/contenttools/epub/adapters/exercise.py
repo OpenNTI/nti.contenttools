@@ -183,6 +183,8 @@ from .openstax import Paragraph
 from .openstax import Table
 from .openstax import Run
 from .openstax import OpenstaxTitle
+from .openstax import Figure
+from .equation_image import EquationImage
 		
 class Problem(types.Problem):
 
@@ -205,17 +207,22 @@ class Problem(types.Problem):
 				solution = Solution.process(child, epub)
 				me.set_solution(solution)
 				logger.info('found solution inside problem')
-			elif child.tag == 'div' and child.attrib['class'] in ['equation']:
-				from .equation_image import EquationImage 
+			elif child.tag == 'div' and child.attrib['class'] in ['equation']: 
 				question = EquationImage.process(child, epub)
 				list_of_question.append(question)
 			elif child.tag == 'table' and child.attrib['class'] in ['simplelist',]:
 				question = Table.process(child, epub)
 				list_of_question.append(question)
-			elif child.tag == 'div' and child.attrib['class'] in ['table', 'figure', 'itemizedlist', 'note Hint',\
-																	 'note statistics calculator', 'note Note', 'note',\
-																	 'orderedlist', 'orderedlist lower-alpha']:
+			elif child.tag == 'div' and child.attrib['class'] in ['table','itemizedlist','orderedlist', 'orderedlist lower-alpha']:
 				question = Paragraph.process(child, epub)
+				list_of_question.append(question)
+			elif child.tag == 'div' and child.attrib['class'] in ['figure']:
+				question = Figure.process(child, epub)
+				list_of_question.append(question)
+			elif child.tag == 'div' and child.attrib['class'] in ['note statistics calculator', 'note Note',\
+																  'note', 'note Hint']:
+				from .note import OpenstaxNote
+				question = OpenstaxNote.process(child, epub)
 				list_of_question.append(question)
 			elif child.tag == 'div' and child.attrib['class'] in ['title']:
 				question = OpenstaxTitle.process(element, epub)
