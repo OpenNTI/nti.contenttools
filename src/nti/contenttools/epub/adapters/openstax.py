@@ -155,7 +155,7 @@ class Paragraph( types.Paragraph ):
             elif child.tag == 'math':
                 me.add_child(_process_math_elements(child, epub))
             elif child.tag == 'code':
-                me.add_child(CodeLine.process(child, epub))
+                me.add_child(_process_code_elements(child, epub))
             elif child.tag == 'table':
                 me.add_child(_process_table_elements(child, epub))
             else:
@@ -926,6 +926,8 @@ class CodeLine(types.CodeLine):
                 me.add_child(_process_sup_elements(child, epub))
             else:
                 logger.warn('Unhandled <code> element : %s', child.tag)
+        if element.tail:
+            me.add_child( types.TextNode( element.tail.replace('\r', '' ) ) )
         return me
 
 
