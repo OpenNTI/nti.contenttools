@@ -19,13 +19,28 @@ from zope.exceptions import log as ze_log
 from .glossary import glossary_check
 from .epub.openstax_epub import EPUBFile
 
+
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
 def _parse_args():
 	arg_parser = argparse.ArgumentParser( description="NTI EPUB Converter" )
-	arg_parser.add_argument( 'inputfile', help="The EPUB file" )
-	arg_parser.add_argument( '-o', '--output', default='output',
+	arg_parser.add_argument( 'inputfile', 
+							 help="The EPUB file" )
+	arg_parser.add_argument( '-o', '--output', 
+							 default='output',
 							 help="The output directory. The default is: %s" % 'output' )
+	arg_parser.add_argument( '-a', '--attribution', 
+							 default=None, 
+							 help="Attribution text")
+	arg_parser.add_argument( '-ah', '--atthref',
+							 default=None,
+							 help="Attribution link")
+	arg_parser.add_argument( '-i', '--indexatt', 
+							 default=1,
+							 help="File index to start writing attribution")
+	arg_parser.add_argument( '-s', '--skipspine',
+							 default=None,
+							 help="Epub spine id")
 	return arg_parser.parse_args()
 
 def _title_escape( title ):
@@ -48,6 +63,7 @@ def main():
 	_setup_configs()
 
 	inputfile = os.path.expanduser(args.inputfile)
+
 
 	# Verify the input file exists
 	if not os.path.exists( inputfile ):
@@ -77,7 +93,16 @@ def main():
 	body = document.children[0]
 	glossary_file = os.path.join(args.output, 'glossary.json')
 
-	start_attribution = 10
+	start_attribution = int(args.indexatt)
+	appended_text = u''
+	attribution = unicode(args.attribution)
+	atthref = unicode(args.attribution)
+	if attribution is not None and atthref is not  None:
+		appended_text = u'\\subsection{Attribution}\n\\textbf{%s \\href{%s}{%s}}' %(attribution, atthref, atthref)
+	elif attribution is not None and atthref is None:
+		appended_text = u'\\subsection{Attribution}\n\\textbf{%s}' %(attribution)
+	elif attribution is None and atthref is not None:
+		appended_text = u'\\subsection{Attribution}\n\\textbf{\\href{%s}{%s}}' %(atthref, atthref)
 
 	for _ in body:
 		# write each body child into different latex file
@@ -93,8 +118,10 @@ def main():
 			glossary_check.process_glossary(glossary_dict, outputfile)
 		body_child = body_child + 1
 		logger.info('------------')
-		if body_child > start_attribution :
-			appended_text = u'\\subsection{Attribution}\n\\textbf{Download for free at : \\href{ http://cnx.org/content/col11407/latest}{Openstax Introduction To Sociology}}'
+
+		#write required attribution in each chapter 
+		#appended_text (attribution text and link) can be different for each books
+		if body_child > start_attribution and attribution is not None:
 			with codecs.open(outputfile, 'a') as f:
 				f.write(appended_text)
 
