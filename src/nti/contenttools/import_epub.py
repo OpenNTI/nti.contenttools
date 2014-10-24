@@ -96,7 +96,7 @@ def main():
 	start_attribution = int(args.indexatt)
 	appended_text = u''
 	attribution = unicode(args.attribution)
-	atthref = unicode(args.attribution)
+	atthref = unicode(args.atthref)
 	if attribution is not None and atthref is not  None:
 		appended_text = u'\\subsection{Attribution}\n\\textbf{%s \\href{%s}{%s}}' %(attribution, atthref, atthref)
 	elif attribution is not None and atthref is None:
