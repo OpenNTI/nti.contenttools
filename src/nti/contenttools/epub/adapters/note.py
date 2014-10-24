@@ -68,7 +68,7 @@ class OpenstaxExampleNote (types.OpenstaxExampleNote):
 class OpenstaxNoteBody(types.OpenstaxNoteBody):
 	@classmethod
 	def process(cls, element, epub):
-		from .openstax import Run, Table, Figure, Paragraph, _process_openstax_table, _process_span_elements
+		from .openstax import Run, Table, Figure, Paragraph, _process_openstax_table, _process_span_elements, BlockQuote
 		from .equation_image import EquationImage
 		from .exercise import process_problem_exercise
 		me = cls()
@@ -108,6 +108,9 @@ class OpenstaxNoteBody(types.OpenstaxNoteBody):
 				me.add_child(el)
 			elif child.tag == 'div' and class_ in ['orderedlist stepwise']:
 				el = Run.process(child, epub)
+				me.add_child(el)
+			elif child.tag == 'div' and class_ in ['blockquote']:
+				el = BlockQuote.process(child, epub)
 				me.add_child(el)
 			elif isinstance(child, HtmlComment):
 				pass
