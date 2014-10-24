@@ -18,6 +18,7 @@ from zope.exceptions import log as ze_log
 
 from .glossary import glossary_check
 from .epub.openstax_epub import EPUBFile
+from .util import string_replacer
 
 
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
@@ -93,10 +94,15 @@ def main():
 	body = document.children[0]
 	glossary_file = os.path.join(args.output, 'glossary.json')
 
+	#to write attribution required on copyright terms
 	start_attribution = int(args.indexatt)
 	appended_text = u''
 	attribution = unicode(args.attribution)
 	atthref = unicode(args.atthref)
+	
+	#if attribute link contains percentage '%', it will always be like '\%'
+	atthref = string_replacer.modify_string(atthref, u'%', u'\\%')
+
 	if attribution is not None and atthref is not  None:
 		appended_text = u'\\subsection{Attribution}\n\\textbf{%s \\href{%s}{%s}}' %(attribution, atthref, atthref)
 	elif attribution is not None and atthref is None:
