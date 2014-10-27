@@ -7,7 +7,6 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
-
 from IPython.core.debugger import Tracer
 
 import os
@@ -126,29 +125,21 @@ class EPUBFile( object ):
         parser = XHTMLParser(load_dtd=True,dtd_validation=True)
         logger.info('SPINE: %s',self.spine)
         check_item = False
+        spine_dict = {}
         for item in self.spine:
             logger.info('---------------------------------')
             logger.info('SPINE ITEM >> %s', item)
             logger.info('>>')
-            if item in [u'id416082', u'id504556', 'id505853', 'id267295'] and not check_item:
-                docfragment = html.fromstring(self.zipfile.read(self.content_path+'/'+self.manifest[item]['href']))
-                check_item = True
-                for child in Adapter.adapt( docfragment, self, item ):
-                    doc_body.add_child(child)
-            elif item in [u'id416082', u'id504556', 'id505853', 'id267295'] and check_item:
-                logger.info ('found spine %s more than once',item)
-            elif item in ['htmltoc', 'id903065','id4497651', 'id4497666']:
-                #TODO we can specify the list of spine item that we do not need in command line
-                logger.info('found htmltoc or index Glossary or things we do not want to put it the latex files')
+            if item in spine_dict.keys():
+                spine_dict[item] = True
+            elif item in ['htmltoc']:
+                pass
             else:
+                spine_dict.update({item:check_item})
                 docfragment = html.fromstring(self.zipfile.read(self.content_path+'/'+self.manifest[item]['href']))
                 for child in Adapter.adapt( docfragment, self, item ):
                     doc_body.add_child(child)
             logger.info('---------------------------------')
-
-        # Remove the first child of the body if it is a Chapter or Section object
-        #if isinstance(doc_body.children[0], types.Chapter) or isinstance(doc_body.children[0], types.Section):
-        #    doc_body.children.pop(0)
 
         self.document = types.Document()
         self.document.add_child(doc_body)
@@ -174,11 +165,9 @@ class EPUBFile( object ):
         return tex_content, glossary_dict 
 
     def check_glossary_element(self, element):
-        child_num = 0
-        for child in element:
+        for child_num, child in enumerate(element):
             if isinstance(child, types.Glossary):
                 return child_num
-            child_num = child_num + 1
         return -1
 
     def get_media(self, output_dir='.'):
