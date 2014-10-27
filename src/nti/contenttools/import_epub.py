@@ -14,6 +14,8 @@ import logging
 import argparse
 import simplejson as json
 
+import __builtin__
+
 from zope.exceptions import log as ze_log
 
 from .glossary import glossary_check
@@ -89,10 +91,12 @@ def main():
 	document = epub.document
 	
 	# Since document only has one body
-	body_child = 0
 	global_glossary = {}
 	body = document.children[0]
 	glossary_file = os.path.join(args.output, 'glossary.json')
+
+	#create a txt file to store information about image's name and location used in nticard
+	__builtin__.nticard_images_filename = os.path.join(args.output, 'nticard_images.txt')
 
 	#to write attribution required on copyright terms
 	start_attribution = int(args.indexatt)
@@ -110,26 +114,34 @@ def main():
 	elif attribution is None and atthref is not None:
 		appended_text = u'\\subsection{Attribution}\n\\textbf{\\href{%s}{%s}}' %(atthref, atthref)
 
-	for _ in body:
+	for index_child, _ in enumerate(body):
+		# append file tex information to nticard_images_filename
+		if index_child == 0:
+			with codecs.open(__builtin__.nticard_images_filename, 'w', 'utf-8') as fp:
+				fp.write('file_'+str(index_child)+'.tex:\n')
+		else:
+			with codecs.open(__builtin__.nticard_images_filename, 'a', 'utf-8') as fp:
+				fp.write('file_'+str(index_child)+'.tex:\n')
+
 		# write each body child into different latex file
 		# we use this format : file_1.tex
-		outputfile = os.path.join(args.output, 'file_'+str(body_child)+'.tex')
+		outputfile = os.path.join(args.output, 'file_'+str(index_child)+'.tex')
 		logger.info('------------')
 		logger.info(outputfile)
-		tex_content, glossary_dict = epub.render_body_child(body_child)
+		tex_content, glossary_dict = epub.render_body_child(index_child)
 		with codecs.open( outputfile, 'w', 'utf-8' ) as fp:
 			fp.write(tex_content)
 		if glossary_dict is not None:
 			global_glossary.update(glossary_dict)
 			glossary_check.process_glossary(glossary_dict, outputfile)
-		body_child = body_child + 1
 		logger.info('------------')
 
 		#write required attribution in each chapter 
 		#appended_text (attribution text and link) can be different for each books
-		if body_child > start_attribution and attribution is not None:
+		if index_child > start_attribution and attribution is not None:
 			with codecs.open(outputfile, 'a') as f:
 				f.write(appended_text)
+
 
 	# clean global glossary
 	glossary = clean_global_glossary(global_glossary)
