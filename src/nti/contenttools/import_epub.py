@@ -7,14 +7,12 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
-
 import os
 import codecs
 import logging
 import argparse
 import simplejson as json
-
-import __builtin__
+import sys
 
 from zope.exceptions import log as ze_log
 
@@ -66,7 +64,7 @@ def main():
 	_setup_configs()
 
 	inputfile = os.path.expanduser(args.inputfile)
-
+	global_dict = {}
 
 	# Verify the input file exists
 	if not os.path.exists( inputfile ):
@@ -96,13 +94,17 @@ def main():
 	glossary_file = os.path.join(args.output, 'glossary.json')
 
 	#create a txt file to store information about image's name and location used in nticard
-	__builtin__.nticard_images_filename = os.path.join(args.output, 'nticard_images.txt')
+	global_dict.update({'nticard_images_filename': os.path.join(args.output, 'nticard_images.txt')})
+	module = sys.modules[__name__]
+	logger.info(module)
+	for name, value in global_dict.iteritems():
+		setattr(module, name, value)
 
 	#to write attribution required on copyright terms
 	start_attribution = int(args.indexatt)
 	appended_text = u''
-	attribution = unicode(args.attribution)
-	atthref = unicode(args.atthref)
+	attribution = args.attribution
+	atthref = args.atthref
 	
 	#if attribute link contains percentage '%', it will always be like '\%'
 	atthref = string_replacer.modify_string(atthref, u'%', u'\\%')
@@ -117,10 +119,10 @@ def main():
 	for index_child, _ in enumerate(body):
 		# append file tex information to nticard_images_filename
 		if index_child == 0:
-			with codecs.open(__builtin__.nticard_images_filename, 'w', 'utf-8') as fp:
+			with codecs.open(module.nticard_images_filename, 'w', 'utf-8') as fp:
 				fp.write('file_'+str(index_child)+'.tex:\n')
 		else:
-			with codecs.open(__builtin__.nticard_images_filename, 'a', 'utf-8') as fp:
+			with codecs.open(module.nticard_images_filename, 'a', 'utf-8') as fp:
 				fp.write('file_'+str(index_child)+'.tex:\n')
 
 		# write each body child into different latex file
