@@ -112,7 +112,9 @@ class Document( DocumentStructureNode ):
 						  'amsmath',
 						  'enumitem',
 						  'listings',
-						  'ntiglossary']
+						  'ntiglossary',
+						  'Tabbing',
+						  'textgreek']
 
 class Body( DocumentStructureNode ):
 	pass
