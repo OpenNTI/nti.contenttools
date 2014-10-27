@@ -10,12 +10,13 @@ logger = __import__('logging').getLogger(__name__)
 
 import codecs
 import os
-import __builtin__
+import nti.contenttools.import_epub
 
 def note_interactive_rendered(self):
 	new_image_path = u'images/%s' %(self.image_path)
 	#save image path infomation to file, in case content team wants to replace those images
-	with codecs.open(__builtin__.nticard_images_filename, 'a', 'utf-8') as fp:
+	nticard_images_filename = nti.contenttools.import_epub.nticard_images_filename
+	with codecs.open(nticard_images_filename, 'a', 'utf-8') as fp:
 		fp.write("%s\n" %new_image_path)
 	caption = self.caption.render().rstrip()
 	return u'\n\\begin{nticard}{%s}\n\\label{%s}\n\\caption{%s}\n\\includegraphics{%s}\n%s\n\\end{nticard}\n'\
