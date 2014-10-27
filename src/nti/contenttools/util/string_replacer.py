@@ -7,7 +7,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
-from IPython.core.debugger import Tracer
+
 
 def modify_string(text, old_char, new_char):
 	"""
@@ -30,6 +30,10 @@ def modify_string(text, old_char, new_char):
 				new_text = new_text[:temp_index]+ new_text[temp_index:i+1].replace(old_char, new_char) + new_text[i+1:]
 				temp_length = temp_length + new_char_length
 				temp_index = i+new_char_length
+		else:
+			new_text = new_text[:temp_index]+ new_text[temp_index:i+1].replace(old_char, new_char) + new_text[i+1:]
+			temp_length = temp_length + new_char_length
+			temp_index = i+new_char_length
 	return new_text
 
 def find(string, char):
