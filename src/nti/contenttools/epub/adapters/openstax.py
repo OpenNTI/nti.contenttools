@@ -1244,6 +1244,8 @@ def _process_fragment( fragment, epub ):
             el.append(_process_table_elements(element,epub))
         elif element.tag == 'nav':
             el.append(_process_nav_elements(element, epub))
+        elif isinstance(element, HtmlComment):
+            pass
         else:
             logger.warn('on process_fragment UNHANDLED BODY CHILD: %s >> %s',element.tag, element )
     
@@ -1336,7 +1338,8 @@ def _process_div_elements( element, epub ):
         id_ = element.attrib['id']
 
     el = None
-    if class_ in ['note interactive', 'note anatomy interactive', 'note anatomy interactive um', 'note economics linkup']:
+    if class_ in ['note interactive', 'note anatomy interactive', 'note anatomy interactive um', 'note economics linkup',\
+                    'note interactive non-majors']:
         el = NoteInteractive.process(element, epub)
     elif class_ in ['figure', 'figure splash', "figure   ", "figure  ","figure span-all", "figure "]:
         el = Figure.process(element, epub)
@@ -1392,7 +1395,8 @@ def _process_div_elements( element, epub ):
                         'note sociological-research', 'note', 'note art-connection', 'note evolution', 'note career', 'note chapter-objectives',\
                         'note anatomy disorders', 'note anatomy aging', 'note anatomy everyday', 'note anatomy homeostatic', 'note anatomy career',\
                         'note economics bringhome','note economics chapter-objectives', 'note economics clearup', 'note economics workout',\
-                        'note Hint', 'note finger']:
+                        'note Hint', 'note finger', 'note evolution non-majors', 'note career non-majors', 'note art-connection non-majors',\
+                        'note everyday non-majors']:
         from .note import OpenstaxNote
         el = OpenstaxNote.process(element, epub)
     elif class_ in ['exercise problems-exercises', 'exercise conceptual-questions','exercise']:
