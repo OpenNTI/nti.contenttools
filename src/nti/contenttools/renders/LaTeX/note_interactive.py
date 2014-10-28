@@ -10,7 +10,7 @@ logger = __import__('logging').getLogger(__name__)
 
 import codecs
 
-from nti.contenttools.import_epub import scoped_registry
+from nti.contenttools import scoped_registry
 
 def note_interactive_rendered(self):
 	new_image_path = u'images/%s' %(self.image_path)

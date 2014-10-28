@@ -8,3 +8,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import threading
+
+class ScopedRegistry(threading.local):
+	pass
+scoped_registry = ScopedRegistry()

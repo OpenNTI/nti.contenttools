@@ -17,6 +17,8 @@ import simplejson as json
 
 from zope.exceptions import log as ze_log
 
+from . import scoped_registry
+
 from .util import string_replacer
 
 from .glossary import glossary_check
@@ -24,10 +26,6 @@ from .glossary import glossary_check
 from .epub.openstax_epub import EPUBFile
 
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
-
-class ScopedRegistry(threading.local):
-	pass
-scoped_registry = ScopedRegistry()
 
 def _parse_args():
 	arg_parser = argparse.ArgumentParser( description="NTI EPUB Converter" )
@@ -107,7 +105,8 @@ def main():
 	atthref = args.atthref
 	
 	# if attribute link contains percentage '%', it will always be like '\%'
-	atthref = string_replacer.modify_string(atthref, u'%', u'\\%')
+	if atthref is not None:
+		atthref = string_replacer.modify_string(atthref, u'%', u'\\%')
 
 	if attribution is not None and atthref is not  None:
 		appended_text = u'\\subsection{Attribution}\n\\textbf{%s \\href{%s}{%s}}' %(attribution, atthref, atthref)
