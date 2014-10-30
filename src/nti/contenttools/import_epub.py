@@ -12,7 +12,6 @@ import os
 import codecs
 import logging
 import argparse
-import threading
 import simplejson as json
 
 from zope.exceptions import log as ze_log
