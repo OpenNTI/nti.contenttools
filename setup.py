@@ -10,6 +10,7 @@ entry_points = {
 	'console_scripts': [
 		'nti_import_docx = nti.contenttools.word2latex:main',
 		'nti_import_epub = nti.contenttools.import_epub:main',
+		'nti_glossary_finder = nti.contenttools.glossary_term_finder:main',
 	]
 }
 
