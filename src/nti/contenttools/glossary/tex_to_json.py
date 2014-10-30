@@ -9,16 +9,16 @@ for example:
 	glossary list can be written in form of: \\textbf{'key'}{'definition'}
 	or \\textif{'key'}{'definition'}, where key and definition can be any value
 	
-.. $Id: tex_to_json.py 52545 2014-10-30 19:43:24Z egawati.panjei $
+.. $Id$
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import re
 import codecs
 import simplejson as json
-import re
 
 def map_key_value_tex(content, pattern, open_token, close_token):
 	"""
@@ -40,7 +40,7 @@ def get_key(string, open_token, close_token, pattern):
 	new_pattern = u'\\%s' %(pattern)
 	if open_token is not None:
 		text_list =  string.split(open_token)
-		for i, substr in enumerate(text_list):
+		for _, substr in enumerate(text_list):
 			if new_pattern == substr:
 				pass
 			else:
@@ -67,19 +67,18 @@ def get_line_from_tex(filename):
 	"""
 	return list of line inside tex
 	"""
-	content = []
 	with codecs.open(filename) as fp:
-		content  = fp.readlines()
+		content = fp.readlines()
 	return content
 
 def main():
-    latex_files = (u'test.tex')
-    content = get_line_from_tex(latex_files)
-    pattern = u'textbf'
-    open_token = u'{'
-    close_token = u'}'
-    dictionary = map_key_value_tex(content, pattern, open_token, close_token)
-    dictionary_to_json(dictionary, u'glossary.json')
+	latex_files = (u'test.tex')
+	content = get_line_from_tex(latex_files)
+	pattern = u'textbf'
+	open_token = u'{'
+	close_token = u'}'
+	dictionary = map_key_value_tex(content, pattern, open_token, close_token)
+	dictionary_to_json(dictionary, u'glossary.json')
 
 if __name__ == '__main__': # pragma: no cover
-    main()
+	main()

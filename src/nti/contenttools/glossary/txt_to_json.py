@@ -6,7 +6,7 @@ assumption :
 	key-definition pair of each glossary term is in the same line
 	key and definition is separated using particular char (token)
 	
-.. $Id: tex_to_json.py 52545 2014-10-30 19:43:24Z egawati.panjei $
+.. $Id$
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
