@@ -14,10 +14,6 @@ entry_points = {
 	]
 }
 
-import platform
-py_impl = getattr(platform, 'python_implementation', lambda: None)
-IS_PYPY = py_impl() == 'PyPy'
-
 setup(
 	name='nti.contenttools',
 	version=VERSION,
