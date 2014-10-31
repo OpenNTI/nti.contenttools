@@ -6,8 +6,8 @@ if the glossary list is written in docx, convert it to latex using nti_import_do
 then use this module to convert to json
 user needs to determine what kind of pattern used to define the term key
 for example:
-	glossary list can be written in form of: \\textbf{'key'}{'definition'}
-	or \\textif{'key'}{'definition'}, where key and definition can be any value
+	glossary list can be written in form of: \\textbf{'key'} 'definition'
+	or \\textif{'key'}'definition', where key and definition can be any value
 	
 .. $Id$
 """
@@ -22,11 +22,23 @@ import simplejson as json
 
 def map_key_value_tex(content, pattern, open_token, close_token):
 	"""
-	Map strings found in a txt file to create pairs of dictionary key-value
+	Map strings found in a tex file to create pairs of dictionary key-value
 	"""
 	dictionary = {}
-	new_pattern = r'^\\%s%s.*%s' %(pattern, open_token, close_token)
+	pattern_list = []
+	for i, item in enumerate(pattern):
+		if len(pattern) == 1:
+			pattern_list.append(r'^\\'+item+open_token+u'.*'+close_token)
+		else:
+			if i == len(pattern) - 1:
+				str_token = close_token * len(pattern)
+				pattern_list.append(r'\\'+item+open_token+u'.*'+str_token)
+			else:
+				pattern_list.append(r'^\\'+item+open_token)
+	new_pattern = u''.join(pattern_list)
+	#new_pattern = r'^\\%s%s.*%s' %(pattern, open_token, close_token)
 	for item in content:
+		item = item.decode('utf-8') if isinstance(item, bytes) else item
 		string_match = find_string(item, new_pattern)
 		if string_match is not None:
 			index = string_match.span()
@@ -37,15 +49,18 @@ def map_key_value_tex(content, pattern, open_token, close_token):
 
 def get_key(string, open_token, close_token, pattern):
 	list_substr = []
-	new_pattern = u'\\%s' %(pattern)
+	pattern_list = []
+	for item in pattern:
+		pattern_list.append(u'\\'+item)
 	if open_token is not None:
 		text_list =  string.split(open_token)
 		for _, substr in enumerate(text_list):
-			if new_pattern == substr:
+			if substr.split(close_token)[0].rstrip().lstrip() in pattern_list:
 				pass
 			else:
-				list_substr.append(substr.split(close_token)[0].rstrip())
-	return u''.join(list_substr)
+				list_substr.append(substr.split(close_token)[0].rstrip().lstrip())
+				logger.info(substr.split(close_token)[0].rstrip().lstrip())
+	return u' '.join(list_substr)
 
 
 def dictionary_to_json(dictionary, json_file):
@@ -74,7 +89,7 @@ def get_line_from_tex(filename):
 def main():
 	latex_files = (u'test.tex')
 	content = get_line_from_tex(latex_files)
-	pattern = u'textbf'
+	pattern = [u'textbf']
 	open_token = u'{'
 	close_token = u'}'
 	dictionary = map_key_value_tex(content, pattern, open_token, close_token)
