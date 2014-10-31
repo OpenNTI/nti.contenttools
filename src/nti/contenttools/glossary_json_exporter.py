@@ -26,7 +26,7 @@ for example:
 	glossary in json file is needed when we run nti_glossary_finder, since it assumes we have the glossary in json file to be able to find and replace particular text with ntiglossary{'key'}{'definition'}
 	run this program using nti_glossary_exporter command
 
-.. $Id: glossary_json_exporter.py 52552 2014-10-30 20:06:42Z carlos.sanchez $
+.. $Id$
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
@@ -35,17 +35,16 @@ logger = __import__('logging').getLogger(__name__)
 
 import os
 import sys
+import codecs
 import logging
 import argparse
-import codecs
-import simplejson as json
 
 from zope.exceptions import log as ze_log
 
+from .docx.read import DocxFile
 from .glossary import tex_to_json
 from .glossary import txt_to_json
-from .docx.read import DocxFile
-from nti.contenttools.renders.LaTeX import register
+from .renders.LaTeX import register
 register()
 
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
@@ -146,15 +145,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-
-
-
-
-
-
-
-
-
-
-
-
