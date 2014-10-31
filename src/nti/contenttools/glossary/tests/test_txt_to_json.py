@@ -4,10 +4,15 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
+# disable: accessing protected members, too many methods
+# pylint: disable=W0212,R0904
+
 import unittest
+
 from nti.contenttools.glossary import txt_to_json
 
 class TestTxtToJson(unittest.TestCase):
+
 	def test_map_key_value(self):
 		content = [ 'afterload: force the ventricles must develop to effectively pump blood against the resistance in the vessels\n',
 		 			'artificial: pacemaker medical device that transmits electrical signals to the heart to ensure that it contracts and pumps blood to the body\n',
