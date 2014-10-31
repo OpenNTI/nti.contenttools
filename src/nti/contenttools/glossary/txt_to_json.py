@@ -22,15 +22,14 @@ def map_key_value(content, token):
 	dictionary = {}
 	token_length = len(token)
 	for item in content:
-		index = find(item, token)
-		if len(index) == 1:
-			key = item[:index[0]-1]
-			value = item[index[0]+token_length:].rstrip()
+		index = item.find(token)
+		if index > -1:
+			key = item[:index].rstrip().lstrip()
+			value = item[index+token_length+1:].rstrip().lstrip()
 			dictionary.update({key:value})
-		elif len(index) == 0:
-			pass
 		else:
-			print('Unhandled condition')
+			pass
+	print (dictionary)
 	return dictionary
 
 def find(string, char):
