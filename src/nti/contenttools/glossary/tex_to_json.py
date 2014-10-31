@@ -59,7 +59,6 @@ def get_key(string, open_token, close_token, pattern):
 				pass
 			else:
 				list_substr.append(substr.split(close_token)[0].rstrip().lstrip())
-				logger.info(substr.split(close_token)[0].rstrip().lstrip())
 	return u' '.join(list_substr)
 
 
