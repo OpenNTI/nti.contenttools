@@ -12,6 +12,7 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
+
 import codecs
 import simplejson as json
 
@@ -26,10 +27,7 @@ def map_key_value(content, token):
 		if index > -1:
 			key = item[:index].rstrip().lstrip()
 			value = item[index+token_length+1:].rstrip().lstrip()
-			dictionary.update({key:value})
-		else:
-			pass
-	print (dictionary)
+			dictionary[key] = value
 	return dictionary
 
 def find(string, char):
@@ -47,9 +45,8 @@ def dictionary_to_json(dictionary, json_file):
 		fp.write(dict_json)
 
 def get_content(filename):
-	content = []
 	with codecs.open(filename) as fp:
-		content  = fp.readlines()
+		content = fp.readlines()
 	return content
 
 def main():
@@ -58,4 +55,4 @@ def main():
 	dictionary_to_json(dictionary, 'glossary.json')
 
 if __name__ == '__main__': # pragma: no cover
-    main()
+	main()
