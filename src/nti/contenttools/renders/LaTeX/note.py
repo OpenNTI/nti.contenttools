@@ -15,8 +15,8 @@ module to render note found in each chapter of openstax epub
 """
 
 def openstax_note_renderer(self):
-	title = self.title.render()
-	body = self.body.render().rstrip()
+	title = self.title.render().rstrip()
+	body = self.body.render().rstrip().lstrip()
 	if self.label is None:
 		return u'\n\\begin{sidebar}{%s}\n%s\n\\end{sidebar}\\newline\n' %(title, body)
 	elif isinstance(self.label, str):
@@ -27,8 +27,8 @@ def openstax_example_note_renderer(self):
 	if isinstance(self.title, unicode):
 		title = self.title
 	else:
-		title = self.title.render()
-	body = self.body.render().rstrip()
+		title = self.title.render().rstrip()
+	body = self.body.render().rstrip().lstrip()
 	if self.label is None:
 		return u'\n\\begin{sidebar}{%s}\n%s\n\\end{sidebar}\\newline\n' %(title, body)
 	elif isinstance(self.label, str):
