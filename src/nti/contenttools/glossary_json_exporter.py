@@ -26,7 +26,7 @@ for example:
 	glossary in json file is needed when we run nti_glossary_finder, since it assumes we have the glossary in json file to be able to find and replace particular text with ntiglossary{'key'}{'definition'}
 	run this program using nti_glossary_exporter command
 
-.. $Id: glossary_term_finder.py 52552 2014-10-30 20:06:42Z carlos.sanchez $
+.. $Id: glossary_json_exporter.py 52552 2014-10-30 20:06:42Z carlos.sanchez $
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
@@ -59,7 +59,7 @@ def _parse_args():
 							 help="Output directory")
 	arg_parser.add_argument( '-dp', '--pattern', 
 							 default=None, 
-							 help="Use when exporting from docx. If glossary term is written as bold in docx use 'textbf', if it is italic use 'textit'")
+							 help="Use when exporting from docx. If glossary term is written as bold in docx use 'textbf', if it is italic use 'textit', if it is bold & italix use 'textbf, textit'")
 	arg_parser.add_argument( '-t' '--token',
 							 default=None,
 							 help ="Use when exporting from plain text")
@@ -76,6 +76,13 @@ def _configure_logging(level='INFO'):
 
 def _setup_configs():
 	_configure_logging()
+
+def set_pattern_as_list(pattern_str, delimiter):
+	pattern_list = pattern_str.split(delimiter)
+	for i, item in enumerate(pattern_list):
+		pattern_list[i] = item.rstrip().lstrip()
+	return pattern_list
+
 
 def main():
 	# Parse command line args
@@ -121,7 +128,7 @@ def main():
 		close_token = u'}'
 		pattern = [u'textbf']
 		if args.pattern is not None:
-			pattern = [args.pattern]
+			pattern = set_pattern_as_list(args.pattern, ',')
 			logger.info(args.pattern)
 		dictionary = tex_to_json.map_key_value_tex(content, pattern, open_token, close_token)
 		tex_to_json. dictionary_to_json(dictionary,json_file)
