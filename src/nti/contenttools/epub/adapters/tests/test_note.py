@@ -4,13 +4,20 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
+# disable: accessing protected members, too many methods
+# pylint: disable=W0212,R0904
+
 import unittest
+
 from lxml import html
-from nti.contenttools.epub.adapters.note import OpenstaxNote, OpenstaxExampleNote
+
 from nti.contenttools.renders.LaTeX import register
+from nti.contenttools.epub.adapters.note import OpenstaxNote
+
 register()
 
 class TestNote(unittest.TestCase):
+	
 	def test_openstax_note(self):
 		html_script = u'<div id="m42092-fs-id3166459" class="note">\
 		<div class="title">\
