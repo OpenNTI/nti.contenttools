@@ -8,9 +8,6 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from nti.monkey import gevent_patch_on_import
-gevent_patch_on_import.patch()
-
 try:
 	from gevent.local import local
 except ImportError:

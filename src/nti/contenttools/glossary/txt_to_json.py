@@ -11,6 +11,9 @@ assumption :
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
+from nti.monkey import gevent_patch_on_import
+gevent_patch_on_import.patch()
+
 logger = __import__('logging').getLogger(__name__)
 
 import codecs
