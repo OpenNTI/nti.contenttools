@@ -91,8 +91,9 @@ def main():
 
 	# replace text in the latex file
 	if search_text is not None:
-		glossary_check.process_glossary(glossary_dict, filename, unicode(search_text))
+		glossary_check.process_glossary(glossary_dict, filename, search_text)
+	else:
+		logger.warn ("Please provide search_text, for example 'textbf'")
 		
-if __name__ == '__main__': # pragma: no cover
+if __name__ == '__main__':
 	main()
-	sys.exit(0)
