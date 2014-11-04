@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-This module is useful to export glossary list written in plain or docx
+This module is useful to export glossary list written in plain text or docx
 for example:
 	in plain text the list of glossary may be written like the following:
 	--------

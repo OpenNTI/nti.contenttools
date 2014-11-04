@@ -39,7 +39,6 @@ def map_key_value_tex(content, pattern, open_token, close_token):
 			else:
 				pattern_list.append(r'^\\'+item+open_token)
 	new_pattern = u''.join(pattern_list)
-	#new_pattern = r'^\\%s%s.*%s' %(pattern, open_token, close_token)
 	for item in content:
 		item = item.decode('utf-8') if isinstance(item, bytes) else item
 		string_match = find_string(item, new_pattern)
@@ -62,7 +61,8 @@ def get_key(string, open_token, close_token, pattern):
 				pass
 			else:
 				list_substr.append(substr.split(close_token)[0].rstrip().lstrip())
-	return u' '.join(list_substr)
+	result = u' '.join(list_substr)
+	return result.rstrip()
 
 
 def dictionary_to_json(dictionary, json_file):
