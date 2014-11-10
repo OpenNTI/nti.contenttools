@@ -14,27 +14,30 @@ from . import properties as docx
 from .paragraph import Paragraph
 
 class Table( _DocxStructureElement ):
-
     @classmethod
-    def process( cls, table, doc, rels=None ):
+    def process( cls, table, doc, rels=None):
         me = cls()
         me.grid = []
         me.borders = {}
+        doc_main_prefix = docx.nsprefixes['w']
+        tblGrid_el = u'{%s}tblGrid' %(doc_main_prefix)
+        tblPr_el = u'{%s}tblPr' %(doc_main_prefix)
+        tr_el = u'{%s}tr' %(doc_main_prefix)
 
         if rels is None:
             rels = doc.relationships
 
         # Parse element and determine table properties
         for element in table.iterchildren():
-            if element.tag == '{'+docx.nsprefixes['w']+'}tblGrid':
-                logger.info('processing grid\n%s' % me.grid)
+            if element.tag == tblGrid_el:
                 me.process_grid( element )
-                logger.info(me.grid)
-            elif element.tag == '{'+docx.nsprefixes['w']+'}tblPr':
+            elif element.tag == tblPr_el:
                 me.process_properties( element, doc, rels=rels )
-            elif element.tag == '{'+docx.nsprefixes['w']+'}tr':
+            elif element.tag == tr_el:
                 me.add_child( cls.Row.process(element, doc, rels=rels ) )
             else:
+                if element.tag == jc_el:
+                    logger.warn('WRONG')
                 logger.warn('Did not handle table element: %s' % element.tag)
         return me
 
@@ -90,7 +93,6 @@ class Table( _DocxStructureElement ):
                         pass
                     elif element.tag == '{'+docx.nsprefixes['w']+'}gridSpan':
                         self.grid_span = int(element.attrib['{'+docx.nsprefixes['w']+'}val'])
-                        logger.info(self.grid_span)
                     elif element.tag == '{'+docx.nsprefixes['w']+'}headers':
                         pass
                     elif element.tag == '{'+docx.nsprefixes['w']+'}hideMark':
@@ -174,6 +176,14 @@ class Table( _DocxStructureElement ):
                     logger.warn('Did not handle row property element: %s' % element.tag)
 
     def process_properties( self, properties, doc, rels=None ):
+        doc_main_prefix = docx.nsprefixes['w']
+        att_val = u'{%s}val' %(doc_main_prefix)
+        shd_el = u'{%s}shd' %(doc_main_prefix)
+        jc_el = u'{%s}jc' %(doc_main_prefix)
+        tblCellMar_el = u'{%s}tblCellMar' %(doc_main_prefix)
+        tblLayout_el = u'{%s}tblLayout' %(doc_main_prefix)
+        tblpPr_el = u'{%s}tblpPr' %(doc_main_prefix)
+        self.alignment = None
         if rels is None:
             rels = doc.relationships
 
@@ -191,7 +201,18 @@ class Table( _DocxStructureElement ):
                 value = element.attrib['{'+docx.nsprefixes['w']+'}w'] 
                 units = element.attrib['{'+docx.nsprefixes['w']+'}type']
                 self.width = ( value, units )
+            elif element.tag == jc_el:
+                self.alignment = element.attrib[att_val]
+            elif element.tag == shd_el:
+                pass
+            elif element.tag == tblCellMar_el:
+                pass
+            elif element.tag == tblLayout_el:
+                pass
+            elif element.tag == tblpPr_el:
+                pass
             else:
+                logger.info(tblLayout_eltblLayout)
                 logger.warn('Did not handle table property element: %s' % element.tag)
 
     def process_grid( self, grid ):
@@ -205,5 +226,3 @@ class Table( _DocxStructureElement ):
                 pass
             else:
                 logger.warn('Did not handle table grid element: %s' % element.tag)
-
-        logger.info( self.grid )
