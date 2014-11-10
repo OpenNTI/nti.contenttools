@@ -21,16 +21,28 @@ def table_renderer(self):
     elif 'left' in self.borders.keys() and self.borders['left']['val'] not in ['nil', 'none']:
         colspec = u'|'
 
+    alignment = u''
+    if self.alignment in ['center']:
+        alignment = u' c '
+    elif self.alignment in ['left']:
+        alignment = u' l '
+    elif self.alignment in ['right']:
+        alignment = u' r '
+    elif self.alignment is None:
+        alignment = u' l '
+    else:
+        logger.warn('Unhandled alignment type : %s', self.alignment)
+
     for _ in xrange(len(self.grid)-1):
-        colspec = colspec + u' c '
+        colspec = colspec + alignment
         if 'insideV' in self.borders.keys() and self.borders['insideV']['val'] not in ['nil', 'none']:
             colspec = colspec + u'|'
     if 'end' in self.borders.keys() and self.borders['end']['val'] not in ['nil', 'none']:
-        colspec = colspec + u' c |'
+        colspec = colspec + alignment + u'|'
     elif 'right' in self.borders.keys() and self.borders['right']['val'] not in ['nil', 'none']:
-        colspec = colspec + u' c |'
+        colspec = colspec + alignment + u'|'
     else:
-        colspec = colspec + u' c '
+        colspec = colspec + alignment
 
     body = u''
     if 'top' in self.borders.keys() and self.borders['top']['val'] not in ['nil', 'none']:
