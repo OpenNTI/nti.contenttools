@@ -44,9 +44,13 @@ def run_renderer(self):
 
     result = base_renderer(self)
 
+    IGNORED_STYLE = [u'apple-converted-space', u'HTMLDefinition', u'cnxn-target']
+
     for style in self.styles:
         if style in STYLES.keys():
             result = STYLES[style](result)
+        elif style in IGNORED_STYLE :
+            pass
         else:
             logger.info('Unhandled run style: %s' % style)
 
