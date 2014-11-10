@@ -53,6 +53,33 @@ def process_anchor_el(element, doc):
 	main_image_prefix = docx.nsprefixes['a']
 	graphic_el = '{%s}graphic' %(main_image_prefix)
 	graphic_data_el = '{%s}graphicData' %(main_image_prefix) 
+
+	drawing_prefix = docx.nsprefixes['wpd']
+	sizeRelH = '{%s}sizeRelH' %(drawing_prefix)
+	sizeRelV = '{%s}sizeRelV' %(drawing_prefix)
+	simplePos = '{%s}simplePos' %(drawing_prefix)
+	positionH = '{%s}positionH' %(drawing_prefix)
+	positionV = '{%s}positionV' %(drawing_prefix)
+	extent = '{%s}extent' %(drawing_prefix)
+	effectExtent = '{%s}effectExtent' %(drawing_prefix)
+	wrapTopAndBottom = '{%s}wrapTopAndBottom' %(drawing_prefix)
+	IGNORED_CHILD_2010 = [sizeRelH, sizeRelV, simplePos, positionH, positionV, extent, effectExtent, wrapTopAndBottom]
+
+	drawing_prefix = docx.nsprefixes['wp']
+	sizeRelH_ = '{%s}sizeRelH' %(drawing_prefix)
+	sizeRelV_ = '{%s}sizeRelV' %(drawing_prefix)
+	simplePos_ = '{%s}simplePos' %(drawing_prefix)
+	positionH_ = '{%s}positionH' %(drawing_prefix)
+	positionV_ = '{%s}positionV' %(drawing_prefix)
+	extent_ = '{%s}extent' %(drawing_prefix)
+	effectExtent_ = '{%s}effectExtent' %(drawing_prefix)
+	wrapTopAndBottom_ = '{%s}wrapTopAndBottom' %(drawing_prefix)
+	wrapSquare_ = '{%s}wrapSquare' %(drawing_prefix)
+	docPr_ = '{%s}docPr' %(drawing_prefix)
+	cNvGraphicFramePr_ = '{%s}cNvGraphicFramePr' %(drawing_prefix)
+
+	IGNORED_CHILD_2006 = [sizeRelH_, sizeRelV_, simplePos_, positionH_, positionV_, extent_, effectExtent_, wrapTopAndBottom_, wrapSquare_, docPr_, cNvGraphicFramePr_]
+
 	el = None
 	for child in element.iterchildren():
 		if child.tag == graphic_el:
@@ -61,6 +88,10 @@ def process_anchor_el(element, doc):
 					el = process_graphic_data_el(sub_el, doc)
 				else:
 					logger.warn('Unhandled graphic element : %s', sub_el.tag)
+		elif child.tag in IGNORED_CHILD_2010:
+			pass
+		elif child.tag in IGNORED_CHILD_2006:
+			pass
 		else:
 			logger.warn('Unhandled anchor_el : %s', child.tag)
 	return el
@@ -69,12 +100,21 @@ def process_graphic_data_el(element, doc):
 	wps_prefix = docx.nsprefixes['wps']
 	wsp_el = '{%s}wsp' %(wps_prefix)
 	txbx_el = '{%s}txbx' %(wps_prefix)
+
+	cNvSpPr = '{%s}cNvSpPr' %(wps_prefix)
+	spPr = '{%s}spPr' %(wps_prefix)
+	bodyPr = '{%s}bodyPr' %(wps_prefix)
+
+	IGNORED_EL = [cNvSpPr, spPr, bodyPr]
+
 	el = None
 	for child in element:
 		if child.tag == wsp_el:
 			for sub_el in child.iterchildren():
 				if sub_el.tag == txbx_el:
 					el = process_txbx_el(sub_el, doc)
+				elif sub_el.tag in IGNORED_EL:
+					pass
 				else:
 					logger.warn('Unhandled wsp element %s', sub_el.tag)
 		else:
@@ -93,16 +133,19 @@ def process_txbx_el(element, doc):
 			logger.warn('Unhandled txbxContent element child %s', child.tag)
 	return el
 
+from .paragraph import Paragraph
+from .table import Table
 class TextBoxContent(types.TextBoxContent):
 	@classmethod
 	def process(cls, element, doc):
 		me = cls ()
 		doc_main_prefix = docx.nsprefixes['w']
 		p_el = '{%s}p' %(doc_main_prefix)
-		from .paragraph import Paragraph
 		for child in element.iterchildren():
 			if child.tag == p_el:
 				me.add_child(Paragraph.process(child,doc))
+			else:
+				logger.warn ('Unhandled TextBoxContent child element : %s', child.tag)
 		return me
 
 class Sidebar(types.Sidebar):
@@ -111,9 +154,11 @@ class Sidebar(types.Sidebar):
 		me = cls ()
 		doc_main_prefix = docx.nsprefixes['w']
 		p_el = '{%s}p' %(doc_main_prefix)
-		from .paragraph import Paragraph
+		tbl_el = '{%s}tbl' %(doc_main_prefix)
 		for child in element.iterchildren():
 			if child.tag == p_el:
 				me.add_child(Paragraph.process(child,doc))
+			elif child.tag == tbl_el:
+				me.add_child(Table.process(child, doc))
 		me.title = u''
 		return me
