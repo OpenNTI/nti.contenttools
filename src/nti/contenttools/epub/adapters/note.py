@@ -9,7 +9,6 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
-from IPython.core.debugger import Tracer
 
 from ... import types
 from lxml.html import HtmlComment
@@ -38,7 +37,6 @@ class OpenstaxNote (types.OpenstaxNote):
 				pass
 			else:
 				logger.warn('Unhandled OpenstaxNote element %s', child.attrib)
-				Tracer()()
 		return me
 
 class OpenstaxExampleNote (types.OpenstaxExampleNote):
