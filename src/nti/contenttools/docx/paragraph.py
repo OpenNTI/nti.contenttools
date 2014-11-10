@@ -107,7 +107,9 @@ class Paragraph( types.Paragraph ):
 		numPr_el = '{%s}numPr' %(doc_main_prefix)
 		widowControl_el = '{%s}widowControl' %(doc_main_prefix)
 		att_val = '{%s}val' %(doc_main_prefix)
+		textAlignment = '{%s}textAlignment' %(doc_main_prefix)
 
+		self.vert_alignment = u''
 
 		for element in properties.iterchildren():
 			# Look for Paragraph Styles
@@ -125,6 +127,8 @@ class Paragraph( types.Paragraph ):
 			elif element.tag == widowControl_el:
 				#logger.info('found widowControl property')
 				pass
+			elif element.tag == textAlignment:
+				self.vert_alignment = element.attrib[att_val]
 			else:
 				logger.warn('Unhandled paragraph property: %s' % element.tag)
 
