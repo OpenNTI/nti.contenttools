@@ -93,7 +93,9 @@ def main():
 	if search_text is not None:
 		glossary_check.process_glossary(glossary_dict, filename, search_text)
 	else:
-		logger.warn ("Please provide search_text, for example 'textbf'")
+		logger.info('Start finding glossary terms without specific pattern')
+		glossary_check.process_untoken_glossary(glossary_dict, filename)
+		logger.info('Finish searching glossary terms without specific pattern')
 		
 if __name__ == '__main__':
 	main()

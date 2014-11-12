@@ -10,6 +10,17 @@ logger = __import__('logging').getLogger(__name__)
 
 import codecs
 
+def process_untoken_glossary(glossary_dict, filename):
+	content = get_file_content(filename)
+	content = content.decode("utf-8") if isinstance(content, bytes) else content
+	for key in glossary_dict.keys():
+		key_text =key.rstrip()
+		definition = glossary_dict[key].rstrip()
+		search_text = u'%s' %(key)
+		new_text = u'\\ntiglossaryentry{%s}{%s}' % (key, definition)
+		content = content.replace(search_text, new_text)
+	replace_file_content(filename, content)
+
 def process_glossary(glossary_dict, filename, search_text=None):
 	content = get_file_content(filename)
 	content = content.decode("utf-8") if isinstance(content, bytes) else content
