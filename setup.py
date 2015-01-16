@@ -23,7 +23,7 @@ setup(
 	description="NTI Content Tools",
 	long_description=codecs.open('README.rst', encoding='utf-8').read(),
 	license='Proprietary',
-	keywords='content tool',
+	keywords='Content tools',
 	classifiers=[
 		'Intended Audience :: Developers',
 		'Natural Language :: English',
@@ -39,6 +39,7 @@ setup(
 	install_requires=[
 		'setuptools',
 		'nti.dataserver',
+		'nti.app.products.gradebook'
 	],
 	entry_points=entry_points
 )
