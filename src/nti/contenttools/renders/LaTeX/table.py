@@ -85,15 +85,13 @@ def table_html_renderer(self):
     number_of_col_body = self.number_of_col_body
     border = self.border
     string_col = u''
-    multicolumn = False
     if number_of_col_header == 0 and number_of_col_body > 0:
         string_col = get_string_col(number_of_col_body, border)
     elif number_of_col_body == number_of_col_header:
         string_col = get_string_col(number_of_col_header, border)
     else:
         string_col = get_string_col(number_of_col_body, border)
-        multicolumn = True
-    result = process_table_html(self, string_col, multicolumn)
+    result = process_table_html(self, string_col)
     return result
 
 def set_number_of_table_col(self):
@@ -113,32 +111,18 @@ def find_table_child(type_, me):
     return None
 
 def get_string_col(number_of_col,border):
-    string_col = u''
-    count_col = 0
-    if border:
-        string_col = u'|'
-    while count_col < number_of_col:
-        #by default we use 'l' as alignment, however we can modify this code later
-        if border:
-            string_col = string_col + u' l |' 
-        else:
-            string_col = string_col + u' l '
-        count_col = count_col + 1
+    cols = []
+    cols_append = cols.append
 
-    if number_of_col == 0 and border:
-        string_col = u'| l |'
-    elif number_of_col == 0 and not border:
-        string_col = u' l '
+    if border is not None: cols_append(u'|')
+    
+    for i in range (number_of_col):
+        if border is not None: cols_append(u'l|')
+        else: cols_append(u' l ')
 
-    return string_col
+    return u''.join(cols)
 
-def get_multicolumn_string(number_of_col, border, header):
-    if border:
-        return u'\\multicolumn{%s}{| l |}{%s}' %(number_of_col,header.render())
-    else:
-        return u'\\multicolumn{%s}{ l }{%s}' %(number_of_col, header.render())
-
-def process_table_html(self, string_col, multicolumn):
+def process_table_html(self, string_col):
     body = base_renderer(self)
 
     if self.label is not None and self.caption is not None:
@@ -189,13 +173,22 @@ def table_cell_html_renderer(self):
     result = base_renderer(self).rstrip()
     if result.isspace() or result is None or result == u'':
         result = u' ~ '
+
+    result = get_multicolumn(self.colspan, self.border, self.is_first_cell_in_the_row, result)
+
     return result
 
+def get_multicolumn(col_span, border, first_cell, cell_string):
+    if border:
+        if first_cell: result = u'\\multicolumn{%s}{|l|}{%s} ' %(col_span, cell_string)
+        else: result = u'\\multicolumn{%s}{l|}{%s} ' %(col_span, cell_string)
+    else: result = u'\\multicolumn{%s}{l}{%s} ' %(col_span, cell_string)        
+    return result
 
 def tbody_html_renderer(self):
     result = base_renderer(self)
-    if self.border:
-        return u'\\hline %s' %(result)
+    if self.border is not None:
+        result =  u'\\hline\n%s' %(result)
     return result
 
 def theader_html_renderer(self):

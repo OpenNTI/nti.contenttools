@@ -840,6 +840,8 @@ class Row (types.Row):
         for child in element:
             if child.tag == 'td' or child.tag == 'th':
                 me.add_child(Cell.process(child, epub))
+                if number_of_col == 0: me.children[0].is_first_cell_in_the_row = True
+                me.children[number_of_col].border = border
                 number_of_col = number_of_col + 1
             else:
                 if isinstance(child,HtmlComment):
@@ -856,6 +858,9 @@ class Cell(types.Cell):
         me = cls()
         if 'id' in element.attrib:
             me.add_child(Label.process(element, epub))
+
+        if 'colspan' in element.attrib:
+            me.colspan = element.attrib['colspan']
 
         if element.text:
             if element.text.isspace():
