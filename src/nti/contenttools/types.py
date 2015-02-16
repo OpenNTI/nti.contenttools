@@ -315,6 +315,8 @@ class Row(DocumentStructureNode):
 class Cell (DocumentStructureNode):
 	def __init__(self, border=False):
 		self.border = border
+		self.is_first_cell_in_the_row = False
+		self.colspan = 1
 
 	def set_border(self, border):
 		self.border = border
