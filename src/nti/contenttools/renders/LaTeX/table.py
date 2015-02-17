@@ -114,10 +114,10 @@ def get_string_col(number_of_col,border):
     cols = []
     cols_append = cols.append
 
-    if border is not None: cols_append(u'|')
-    
+    if border and number_of_col > 0 : cols_append(u'|')
+
     for i in range (number_of_col):
-        if border is not None: cols_append(u'l|')
+        if border: cols_append(u'l|')
         else: cols_append(u' l ')
 
     return u''.join(cols)
@@ -171,6 +171,7 @@ def table_row_html_renderer(self):
 
 def table_cell_html_renderer(self):
     result = base_renderer(self).rstrip()
+    if result.find(u'&') > 0 and result.find(u'\\&') < 0 : result = result.replace(u'&', u'\\&')
     if result.isspace() or result is None or result == u'':
         result = u' ~ '
     elif self.colspan > 1:
