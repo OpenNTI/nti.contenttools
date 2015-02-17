@@ -860,7 +860,7 @@ class Cell(types.Cell):
             me.add_child(Label.process(element, epub))
 
         if 'colspan' in element.attrib:
-            me.colspan = element.attrib['colspan']
+            me.colspan = int(element.attrib['colspan'])
 
         if element.text:
             if element.text.isspace():
