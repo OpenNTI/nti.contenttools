@@ -173,8 +173,8 @@ def table_cell_html_renderer(self):
     result = base_renderer(self).rstrip()
     if result.isspace() or result is None or result == u'':
         result = u' ~ '
-
-    result = get_multicolumn(self.colspan, self.border, self.is_first_cell_in_the_row, result)
+    elif self.colspan > 1:
+        result = get_multicolumn(self.colspan, self.border, self.is_first_cell_in_the_row, result)
 
     return result
 
