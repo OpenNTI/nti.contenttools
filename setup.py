@@ -38,8 +38,7 @@ setup(
 	namespace_packages=['nti'],
 	install_requires=[
 		'setuptools',
-		'nti.dataserver',
-		'nti.app.products.gradebook'
+		'nti.dataserver'
 	],
 	entry_points=entry_points
 )
