@@ -6,8 +6,6 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-from IPython.core.debugger import Tracer
-
 logger = __import__('logging').getLogger(__name__)
 
 import os
@@ -175,7 +173,10 @@ def process_numbering( element, doc ):
 	else:
 		doc.numbering_collection[numId] = []
 		doc.numbering_collection[numId].append( [] )
-		doc.numbering_collection[numId][ilvl].append( _Node() )
+		if ilvl < len(doc.numbering_collection[numId]) : 
+			doc.numbering_collection[numId][ilvl].append( _Node() )
+		else :
+			doc.numbering_collection[numId][0].append( _Node() )
 
 	fmt_list = [ 'decimal', 'lowerLetter', 'upperLetter', 'lowerRoman', 'upperRoman' ]
 	if numId in doc.numbering:
@@ -191,10 +192,14 @@ def process_numbering( element, doc ):
 	else:
 		el = types.UnorderedList()
 
-	if ilvl > 0:
-		el.start = len(doc.numbering_collection[numId][ilvl][-1].__parent__.children)
-	else:
-		el.start = len(doc.numbering_collection[numId][ilvl])
+	if ilvl < len(doc.numbering_collection[numId]) : 
+		if ilvl > 0:
+			el.start = len(doc.numbering_collection[numId][ilvl][-1].__parent__.children)
+		else:
+			el.start = len(doc.numbering_collection[numId][ilvl])
+	else :
+		el.start = 0
+
 	el.group = numId
 	el.level = str(ilvl)
 	return el
