@@ -212,7 +212,6 @@ class Table( _DocxStructureElement ):
             elif element.tag == tblpPr_el:
                 pass
             else:
-                logger.info(tblLayout_eltblLayout)
                 logger.warn('Did not handle table property element: %s' % element.tag)
 
     def process_grid( self, grid ):
