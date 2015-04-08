@@ -39,6 +39,7 @@ def note_renderer(self):
 
 def hyperlink_renderer(self):
     result = u''
+    if self.target is None : return base_renderer(self)
     target = string_replacer.modify_string(self.target, u'%', u'\\%')
     if self.type == 'Normal':
         result = u'\\href{%s}{%s} ' % (target, base_renderer(self))

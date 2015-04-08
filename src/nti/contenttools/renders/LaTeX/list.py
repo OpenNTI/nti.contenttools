@@ -10,6 +10,8 @@ logger = __import__('logging').getLogger(__name__)
 
 from .base import base_renderer, _environment_renderer
 
+
+
 def ordered_list_renderer(self):
     optional = u''
     if self.format == 'decimal':
@@ -29,13 +31,19 @@ def ordered_list_renderer(self):
     if optional:
         optional = u'[' + optional + u']'
 
-    return _environment_renderer(self, u'enumerate', optional)
+
+    check = base_renderer(self)
+    if u'\\item' in check : return _environment_renderer(self, u'enumerate', optional) 
+    else : return check
+
+    
 
 def list_renderer(self):
     return _environment_renderer(self, u'itemize', u'')
 
 def item_renderer(self):
     desc = base_renderer(self).rstrip()
+    if u'\\chapter' in desc : return desc
     return u'\\item %s \n' % desc
 
 def list_desc_renderer(self):

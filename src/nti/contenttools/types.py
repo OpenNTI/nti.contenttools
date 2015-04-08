@@ -179,7 +179,7 @@ class Note( DocumentStructureNode ):
 
 class Hyperlink( DocumentStructureNode ):
 
-	def __init__(self, target='', type_='Normal'):
+	def __init__(self, target=None, type_='Normal'):
 		super( Hyperlink, self ).__init__()
 		self.target = target
 		self.type = type_
