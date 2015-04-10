@@ -159,7 +159,8 @@ def process_numbering( element, doc ):
 			numId = sub_element.attrib[att_val]
 		elif (sub_element.tag == ilvl_el):
 			ilvl = int(sub_element.attrib[att_val])
-
+	check = u'numId %s ilvl %s' %(numId, ilvl)
+	logger.info(check)
 	if numId in doc.numbering_collection:
 		if ilvl < len(doc.numbering_collection[numId]):
 			doc.numbering_collection[numId][ilvl].append( _Node() )
@@ -167,9 +168,10 @@ def process_numbering( element, doc ):
 				doc.numbering_collection[numId][ilvl-1][-1].add_child(doc.numbering_collection[numId][ilvl][-1])
 		else:
 			doc.numbering_collection[numId].append([])
-			doc.numbering_collection[numId][ilvl].append( _Node() )
+			length = len(doc.numbering_collection[numId]) -  1
+			doc.numbering_collection[numId][length].append( _Node() )
 			if ilvl > 0:
-				doc.numbering_collection[numId][ilvl-1][-1].add_child(doc.numbering_collection[numId][ilvl][-1])
+				doc.numbering_collection[numId][length-1][-1].add_child(doc.numbering_collection[numId][length][-1])
 	else:
 		doc.numbering_collection[numId] = []
 		doc.numbering_collection[numId].append( [] )
