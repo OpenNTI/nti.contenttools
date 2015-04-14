@@ -33,6 +33,7 @@ class Run( types.Run ):
 		doc_main_prefix = docx.nsprefixes['w']
 		rPr_el = '{%s}rPr' %(doc_main_prefix)
 		t_el = '{%s}t' %(doc_main_prefix)
+		tab_el = '{%s}tab' %(doc_main_prefix)
 		drawing_el = '{%s}drawing' %(doc_main_prefix)
 		delText_el = '{%s}delText' %(doc_main_prefix)
 		hyperlink_el = '{%s}hyperlink' %(doc_main_prefix)
@@ -58,6 +59,8 @@ class Run( types.Run ):
 					found_text = True
 					if element.text:
 						me.add_child( types.TextNode(element.text) )
+				elif (element.tag == tab_el):
+					me.add_child(types.TextNode(u'\t')) 
 				elif element.tag == drawing_el:
 					from .paragraph import Image
 					me.add_child( Image.process(element, doc, rels=rels ) )

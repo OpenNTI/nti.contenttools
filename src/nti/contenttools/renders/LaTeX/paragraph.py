@@ -8,7 +8,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from .base import base_renderer, _command_renderer, _code_renderer
+from .base import base_renderer, _command_renderer
+from .code_line import _code_renderer, _code_listings_renderer
 
 def _chapter( arg ):
     return _command_renderer( 'chapter', arg )
@@ -73,12 +74,10 @@ def paragraph_renderer(self):
             code_style = True
         elif style in [u'Figure']:
             result = u'Figure : %s' %result
-        elif style in [u'Tables'] : 
+        elif style in [u'Tables'] :
             result = u'\t\t%s' %result
         else:
             logger.warn('Unhandled paragraph style: %s' % style)
-            logger.warn(result)
-
 
     if result and not code_style : 
         result = result + u'\n\n'
