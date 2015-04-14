@@ -8,7 +8,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from .base import base_renderer, _command_renderer
+from .base import base_renderer, _command_renderer, _code_renderer
 
 def _chapter( arg ):
     return _command_renderer( 'chapter', arg )
@@ -37,6 +37,9 @@ def _abstract( arg ):
 def _author( arg ):
     return _command_renderer( 'author', arg )
 
+def _footnotetext(arg):
+    return _command_renderer ('footnotetext', arg)
+
 
 def paragraph_renderer(self):
     STYLES = { 'Heading1': _chapter,
@@ -49,26 +52,42 @@ def paragraph_renderer(self):
                'Section': _section,
                'Subsection': _subsection,
                'Abstract' : _abstract,
-               'Authors': _author}
+               'Authors': _author,
+               'BookHead1' : _section,
+               'BookHead2' : _subsection,
+               'BookHead3' : _subsubsection,
+               'Bookhead4' : _paragraph,
+               }
 
     IGNORED_STYLES = ['ListParagraph', 'Subtitle', 'NormalWeb', 'DefaultParagraphFont', 'TableParagraph', 'BodyText', 'para']
 
     result = base_renderer(self)
-
+    code_style = False
     for style in self.styles:
         if style in STYLES.keys():
             result = STYLES[style](result)
         elif style in IGNORED_STYLES:
             pass
+        elif style in [u'Code', u'cCode']:
+            result = _code_renderer(self)
+            code_style = True
+        elif style in [u'Figure']:
+            result = u'Figure : %s' %result
+        elif style in [u'Tables'] : 
+            result = u'\t\t%s' %result
         else:
             logger.warn('Unhandled paragraph style: %s' % style)
+            logger.warn(result)
 
-    if result:
+
+    if result and not code_style : 
         result = result + u'\n\n'
 
+    if code_style:
+        result = result.replace(u'\\newline', u'')
 
     return result
 
 def newline_renderer(self):
-    return u'\\newline '
+    return u'\\newline\n'
 

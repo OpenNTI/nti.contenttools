@@ -8,7 +8,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from .base import base_renderer, _command_renderer
+from .base import base_renderer, _command_renderer, _code_renderer
 
 def _textbf( arg ):
     return _command_renderer( 'textbf', arg )
@@ -46,10 +46,13 @@ def run_renderer(self):
 
     IGNORED_STYLE = [u'apple-converted-space', u'HTMLDefinition', u'cnxn-target']
 
+    code_style = False
     for style in self.styles:
         if style in STYLES.keys():
             result = STYLES[style](result)
         elif style in IGNORED_STYLE :
+            pass
+        elif style in [u'Code']:
             pass
         else:
             logger.info('Unhandled run style: %s' % style)

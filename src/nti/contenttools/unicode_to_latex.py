@@ -37,6 +37,8 @@ def _replace_multi_char(text):
 
 
 unicode_to_latex = {
+        u"{" : "\\{",
+        u"}" : "\\}",
         u"\u0023": "\\# ",
         u"\u0024": "\\$",
         u"\u0025": "\\% ",
