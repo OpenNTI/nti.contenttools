@@ -8,7 +8,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from .base import base_renderer, _command_renderer, _code_renderer
+from .base import base_renderer, _command_renderer
 
 def _textbf( arg ):
     return _command_renderer( 'textbf', arg )

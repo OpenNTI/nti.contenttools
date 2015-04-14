@@ -22,9 +22,3 @@ def _command_renderer(command, arg, optional=''):
 def _environment_renderer( self, element, optional ):
     body = base_renderer(self)
     return u'\\begin{%s}%s\n%s\n\\end{%s}\n' % ( element, optional, body, element)
-
-def _code_renderer(self):
-	body = base_renderer(self)
-	if len(body) > 0 : body =  u'\\begin{verbatim}\n%s\n\\end{verbatim}\n' % (body)
-	return body	
-

@@ -17,3 +17,15 @@ def code_line_rendered(self):
 	#if len(self.children) == 2:
 	#	return u'\\texttt{%s} %s ' %(self.children[0].render(), self.children[1].render())
 	return u'\\texttt{%s} ' %(base_renderer(self))
+
+
+def _code_renderer(self):
+	body = base_renderer(self)
+	if len(body) > 0 : body =  u'\\begin{verbatim}\n%s\n\\end{verbatim}\n' % (body)
+	return body	
+
+
+def _code_listings_renderer(self):
+	body = base_renderer(self)
+	if len(body) > 0 : body =  u'\\begin{lstlisting}\n%s\n\\end{lstlisting}\n' % (body)
+	return body	
