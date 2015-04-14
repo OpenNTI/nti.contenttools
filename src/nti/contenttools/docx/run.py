@@ -113,7 +113,7 @@ class Run( types.Run ):
 				# Look for carrage returns
 				elif (element.tag == br_el):
 					from .paragraph import Newline
-					me.add_child( Newline() )
+					me.add_child( types.Newline() )
 				# Look for other runs embedded in this run, process recursively
 				elif (element.tag == r_el):
 					me.add_child( cls.process(element, doc, fields = fields, rels = rels) )

@@ -35,7 +35,9 @@ from .equation_image import *
 from ... util import string_replacer
 
 def note_renderer(self):
-    return u'\\footnote{%s} ' % base_renderer(self)
+    content = base_renderer(self)
+    if len(content) > 0 : content = u'\\footnote{%s} ' % content
+    return content
 
 def hyperlink_renderer(self):
     result = u''
