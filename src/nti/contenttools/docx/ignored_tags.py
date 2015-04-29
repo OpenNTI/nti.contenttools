@@ -35,6 +35,6 @@ IGNORED_TAGS = {
 		'{%s}autoSpaceDE' %(doc_main_prefix),
 		'{%s}autoSpaceDN' %(doc_main_prefix),
 		'{%s}adjustRightInd' %(doc_main_prefix),
-		'{%s}tab' %(doc_main_prefix),
+		#'{%s}tab' %(doc_main_prefix),
 		'{%s}rtl' %(doc_main_prefix) 
 }

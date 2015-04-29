@@ -806,3 +806,23 @@ class OpenstaxAttributions(DocumentStructureNode):
 class OpenstaxTitle(DocumentStructureNode):
 	pass
 
+
+class CNXCollection(DocumentStructuredNode):
+	def __init__(self):
+		self.content = None
+		self.metadata = None
+
+class CNXSubcollection(DocumentStructuredNode):
+	def __init__(self):
+		self.content = None
+		self.title = None
+
+class CNXContent (DocumentStructuredNode):
+	def __init__(self):
+		self.modules = []
+		self.subcollections = []
+
+class CNXModule (DocumentStructuredNode):
+	def __init__(self):
+		self.document = None
+		self.title = None
