@@ -826,3 +826,6 @@ class CNXModule (DocumentStructuredNode):
 	def __init__(self):
 		self.document = None
 		self.title = None
+
+class CNXHTMLBody(DocumentStructuredNode):
+	pass
