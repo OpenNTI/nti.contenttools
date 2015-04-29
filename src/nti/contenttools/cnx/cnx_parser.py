@@ -11,10 +11,12 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from lxml import etree, html
 from .xml_reader import CNX_XML
 from .. import types
 import os
-
+import codecs
+from .adapters.run_adapter import adapt
 
 class CNXParser(object):
 	def __init__(self, filename):
@@ -23,6 +25,7 @@ class CNXParser(object):
 		self.image_list = u''
 		self.folder_list = u''
 		self.latex_filenames = []
+		self.content_folder = []
 
 		head, tail = os.path.split(filename)
 		self.cnx_directory = head
@@ -49,9 +52,13 @@ class CNXParser(object):
 			self.process_document(module.document)
 
 	def process_document(self,document_folder):
-		cnxml_html_file = u'%s/%s/index.cnxml.html' % (self.cnx_directory, document_folder)
-		#TODO : call the cnx html adapter here
-		#Build the latex content
+		folder = u'%s/%s' %(self.cnx_directory, document_folder)
+		self.content_folder.append(folder)
+		cnxml_html_file = u'%s/index.cnxml.html' %(folder)
+		with codecs.open( cnxml_html_file, 'r', 'utf-8' ) as file_:
+			doc_fragment = html.fromstring(file_.read())
+		cnx_html_body = adapt(doc_fragment, self)
+		#TODO : render the cnx_html_body 
 
 	def process_subcollection(self, subcollection):
 		tex = subcollection.title

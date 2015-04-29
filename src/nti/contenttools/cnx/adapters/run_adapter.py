@@ -13,6 +13,23 @@ from ... import types
 from .image_html_adapter import ImageHTML
 from lxml.html import HtmlComment
 
+def adapt(fragment, cnx):
+    head = fragment.find('head')
+    body = fragment.find('body')
+    cnx_html_body = CNXHTMLBody.process(body)
+    return cnx_html_body
+
+
+class CNXHTMLBody(types.CNXHTMLBody):
+    @classmethod
+    def process(cls,element):
+        me = cls()
+        me = check_element_text(me, element)
+        me = check_child(me, element)
+        me = check_element_tail(me, element)
+        return me    
+
+
 class Run( types.Run ):
     @classmethod
     def process(cls, element, styles=[], reading_type=None):
