@@ -19,7 +19,7 @@ for example:
 	
 	./bin/nti_glossary_finder -s textbf -g 'json files' 'latex files'
 
-if we don't have glossary.json yet, create the json file from from txt file or docx file if we already have the glossary list in this format>> use nti_glossary_exporter
+if we don't have glossary.json yet, create the json file from from glossary list written in txt file or docx file. >> use nti_glossary_exporter
 
 .. $Id$
 """
