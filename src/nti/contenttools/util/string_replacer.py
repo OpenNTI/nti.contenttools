@@ -41,3 +41,12 @@ def find(string, char):
 	find all index where a particular character located in a string
 	"""
 	return [i for i, ltr in enumerate(string) if ltr == char]
+
+def rename_filename(filename):
+	"""
+	replace some characters in a filename
+	"""
+	FORBIDDEN_CHARACTERS = [u'<', u'>', u':', u'"', u'/', u'\\', u'|', u'?', u'*', u' ', '-', u',', u'\t', u"'", u'!']
+	for ch in FORBIDDEN_CHARACTERS : 
+		if ch in filename : filename = filename.replace(ch, u'_')
+	return filename

@@ -17,6 +17,7 @@ from .. import types
 import os
 import codecs
 from .adapters.run_adapter import adapt
+from ..util.string_replacer import rename_filename
 
 class CNXParser(object):
 	def __init__(self, filename):
@@ -48,7 +49,8 @@ class CNXParser(object):
 	def process_modules(self, modules, type_ = None, latex_filename = None):
 		for module in modules:
 			if type_ == u'collection':
-				self.latex_filenames.append(module.title)
+				tex_filename = u'%s.tex' %rename_filename(module.title)
+				self.latex_filenames.append(tex_filename)
 			self.process_document(module.document)
 
 	def process_document(self,document_folder):
@@ -60,13 +62,14 @@ class CNXParser(object):
 		cnx_html_body = adapt(doc_fragment, self)
 		#TODO : render the cnx_html_body 
 
+
 	def process_subcollection(self, subcollection):
-		tex = subcollection.title
-		self.latex_filenames.append(tex) 
+		tex_filename = u'%s.tex' %rename_filename(subcollection.title)
+		self.latex_filenames.append(tex_filename) 
 		result = []
 		content = subcollection.content
 		if content.modules :
-			self.process_modules(content.modules, type_ = u'subcollection', latex_filename = tex) 
+			self.process_modules(content.modules, type_ = u'subcollection', latex_filename = tex_filename) 
 
 def main():
 	cnx_parser = CNXParser(u'collection.xml')
