@@ -56,7 +56,7 @@ class CNXParser(object):
 			if type_ == u'collection':
 				tex_filename = u'%s.tex' %rename_filename(module.title)
 				self.latex_filenames.append(tex_filename)
-				#self.write_to_file(u'content test', tex_filename)
+				self.write_to_file(u'content test', tex_filename)
 			elif type_ == u'subcollection': result_append(doc_content)
 		if type_ == u'subcollection' : return u''.join(result)
 			
@@ -70,7 +70,7 @@ class CNXParser(object):
 				doc_fragment = html.fromstring(file_.read())
 			cnx_html_body = adapt(doc_fragment, self)
 		#TODO : render the cnx_html_body
-		#return u'only for test.\n' 
+		return u'only for test.\n' 
 
 	def process_subcollection(self, subcollection):
 		tex_filename = u'%s.tex' %rename_filename(subcollection.title)
@@ -82,7 +82,7 @@ class CNXParser(object):
 			self.write_to_file(subcollection_content, tex_filename)
 
 	def write_to_file(self, content, filename, type_= None):
-		if type_ is None : filepath = u'%s/%s' %(self.output_directory, filename) 
+		if type_ is None : filepath = u'%s/%s' %(self.output_directory, filename) #filetex
 		with codecs.open(filepath,'w', 'utf-8') as file_:
 			file_.write(content)
 
@@ -125,7 +125,6 @@ def generate_main_tex_content(metadata, included_tex_list):
 	package = get_packages()
 	latex = get_included_tex(included_tex_list)
 	return u'\\documentclass{book}\n%s%s%s\\begin{document}\n%s\\end{document}' %(package, title, author, latex)
-
 
 def main():
 	cnx_parser = CNXParser(u'collection.xml')

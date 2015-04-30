@@ -10,7 +10,6 @@ logger = __import__('logging').getLogger(__name__)
 
 
 from ... import types
-from .image_html_adapter import ImageHTML
 from lxml.html import HtmlComment
 
 def adapt(fragment, cnx):

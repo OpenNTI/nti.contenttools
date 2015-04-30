@@ -184,6 +184,9 @@ class Hyperlink( DocumentStructureNode ):
 		self.target = target
 		self.type = type_
 
+class Iframe(DocumentStructureNode):
+	pass
+	
 class Label( DocumentStructureNode ):
 
 	def __init__(self, name=''):
@@ -807,25 +810,25 @@ class OpenstaxTitle(DocumentStructureNode):
 	pass
 
 
-class CNXCollection(DocumentStructuredNode):
+class CNXCollection(DocumentStructureNode):
 	def __init__(self):
 		self.content = None
 		self.metadata = None
 
-class CNXSubcollection(DocumentStructuredNode):
+class CNXSubcollection(DocumentStructureNode):
 	def __init__(self):
 		self.content = None
 		self.title = None
 
-class CNXContent (DocumentStructuredNode):
+class CNXContent(DocumentStructureNode):
 	def __init__(self):
 		self.modules = []
 		self.subcollections = []
 
-class CNXModule (DocumentStructuredNode):
+class CNXModule(DocumentStructureNode):
 	def __init__(self):
 		self.document = None
 		self.title = None
 
-class CNXHTMLBody(DocumentStructuredNode):
+class CNXHTMLBody(DocumentStructureNode):
 	pass
