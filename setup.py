@@ -12,6 +12,7 @@ entry_points = {
 		'nti_import_epub = nti.contenttools.import_epub:main',
 		'nti_glossary_finder = nti.contenttools.glossary_term_finder:main',
         'nti_glossary_exporter = nti.contenttools.glossary_json_exporter:main',
+        'nti_import_cnx = nti.contenttools.import_cnx:main',
 	]
 }
 
