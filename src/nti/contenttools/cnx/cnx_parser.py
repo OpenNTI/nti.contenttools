@@ -18,6 +18,7 @@ import os
 import codecs
 from .adapters.run_adapter import adapt
 from ..util.string_replacer import rename_filename
+from ..renders.LaTeX.base import base_renderer
 
 class CNXParser(object):
 	def __init__(self, input_file, output_directory):
@@ -56,7 +57,7 @@ class CNXParser(object):
 			if type_ == u'collection':
 				tex_filename = u'%s.tex' %rename_filename(module.title)
 				self.latex_filenames.append(tex_filename)
-				self.write_to_file(u'content test', tex_filename)
+				self.write_to_file(doc_content, tex_filename)
 			elif type_ == u'subcollection': result_append(doc_content)
 		if type_ == u'subcollection' : return u''.join(result)
 			
@@ -69,8 +70,8 @@ class CNXParser(object):
 			with codecs.open( cnxml_html_file, 'r', 'utf-8' ) as file_:
 				doc_fragment = html.fromstring(file_.read())
 			cnx_html_body = adapt(doc_fragment, self)
-		#TODO : render the cnx_html_body
-		return u'only for test.\n' 
+		tex_content = base_renderer(cnx_html_body)
+		return u'%s\n\n' %tex_content 
 
 	def process_subcollection(self, subcollection):
 		tex_filename = u'%s.tex' %rename_filename(subcollection.title)
