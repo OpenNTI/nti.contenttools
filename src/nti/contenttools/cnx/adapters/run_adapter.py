@@ -10,6 +10,7 @@ logger = __import__('logging').getLogger(__name__)
 
 
 from ... import types
+from .math_adapter import Math
 from lxml.html import HtmlComment
 
 def adapt(fragment, cnx):
@@ -368,6 +369,12 @@ def check_child(me, element, reading_type=None):
             me.add_child(BlockQuote.process(child))
         elif child.tag == 's':
             me.add_child(_process_s_elements(child))
+        elif child.tag == 'figure':
+            logger.info('Found Figure >> need to handle')
+        elif child.tag == 'section':
+            logger.info('Found section >> need to handle')
+        elif child.tag == 'math':
+            me.add_child(Math.process(child))
         else:
             if isinstance(child,HtmlComment):
                 pass
