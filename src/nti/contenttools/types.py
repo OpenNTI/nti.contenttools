@@ -353,7 +353,8 @@ class TFoot(DocumentStructureNode):
 		self.number_of_col = number_of_col
 
 class Math(DocumentStructureNode):
-	pass
+	def __init__(self):
+		self.equation_type = None
 
 class MRow(DocumentStructureNode):
 	pass
