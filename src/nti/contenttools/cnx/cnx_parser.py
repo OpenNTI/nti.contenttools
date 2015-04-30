@@ -20,26 +20,27 @@ from .adapters.run_adapter import adapt
 from ..util.string_replacer import rename_filename
 
 class CNXParser(object):
-	def __init__(self, filename):
+	def __init__(self, input_file, output_directory):
 		cnx_xml = CNX_XML()
-		self.collection = cnx_xml.read_xml(filename)
-		self.image_list = u''
-		self.folder_list = u''
+		self.collection = cnx_xml.read_xml(input_file)
+		self.image_list = []
 		self.latex_filenames = []
-		self.content_folder = []
+		self.content_folder = [] #will be use to retrieve images or pdf
+		self.latex_main_files = u''
 
-		head, tail = os.path.split(filename)
+		head, tail = os.path.split(input_file)
 		self.cnx_directory = head
+
+		self.output_directory = output_directory
 
 	def process_collection(self):
 		collection = self.collection
 		metadata = collection.metadata
 		content = collection.content
 		
-		if u'title' in metadata : main_file_tex  = metadata[u'title']
+		if u'title' in metadata : self.latex_main_files  = u'%s.tex' %rename_filename(metadata[u'title'])
 
-		if content.modules: 
-			self.process_modules(content.modules, type_ = u'collection')
+		if content.modules: self.process_modules(content.modules, type_ = u'collection')
 
 		subcollections = content.subcollections
 		if subcollections :
@@ -74,7 +75,9 @@ class CNXParser(object):
 def main():
 	cnx_parser = CNXParser(u'collection.xml')
 	result =  cnx_parser.process_collection()
-	print cnx_parser.latex_filenames
+	logger.info(cnx_parser.latex_main_files)
+	logger.info(cnx_parser.latex_filenames)
+	logger.info(cnx_parser.content_folder)
 
 if __name__ == '__main__':
 	main()
