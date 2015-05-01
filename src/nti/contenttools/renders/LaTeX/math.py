@@ -20,10 +20,10 @@ def math_html_renderer(self):
 	"""
 	to render element <math>
 	"""
-	body = u''
-	for child in self.children:
-		body = body + child.render()
-	return u'$'+body+u'$'
+	content = base_renderer(self)
+	if self.equation_type == u'inline' : return u'\(%s\)' %content
+	else :return u'\[%s\]' %content
+
 
 def math_row_html_renderer(self):
 	"""
