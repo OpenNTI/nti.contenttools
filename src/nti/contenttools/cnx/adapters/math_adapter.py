@@ -273,7 +273,7 @@ def check_math_element_child(me, element):
         elif child.tag == 'semantics':
             me.add_child(MathRun.process(child))
         elif child.tag == 'annotation-xml':
-            me.add_child(MathRun.process(child))
+            pass
         else:
             logger.warn("UNHANDLED  math element: %s", child.tag)
     return me
