@@ -17,7 +17,12 @@ class Math(types.Math):
         me = cls()
         if 'display' in element.attrib : me.equation_type = element.attrib['display']
         me =check_math_element_child(me, element)
-        return me
+        from .run_adapter import Run
+        from .run_adapter import check_element_tail
+        el = Run()
+        el.add_child(me)
+        el = check_element_tail(el, element)
+        return el
 
 class MRow(types.MRow):
     @classmethod
