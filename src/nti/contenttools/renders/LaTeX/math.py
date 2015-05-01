@@ -16,8 +16,6 @@ from nti.contenttools.epub.adapters.generic import MFenced
 
 from .base import base_renderer
 
-#from IPython.core.debugger import Tracer
-
 """
 rendering MathML element
 """
@@ -152,66 +150,62 @@ def math_sub_html_rendered(self):
 	"""
 	to render <msub> element
 	"""
-	if len(self.children[0].children)> 2 :
+	if len(self.children)> 2 :
 		raise Exception("<msub> should only have 2 children")
 	else:
-		return u'{%s}_{%s}' %(self.children[0].children[0].render(), self.children[0].children[1].render())
+		return u'{%s}_{%s}' %(self.children[0].render(), self.children[1].render())
 
 def math_sup_html_rendered(self):
 	"""
 	to render <msup> element
 	"""
-	#Tracer()()
-	if len(self.children[0].children)> 2 :
-		raise Exception("<msup> should only have 2 children")
+	if len(self.children)!= 2 :
+		logger.warn("<msup> should have 2 children")
+		return u''
 	else:
-		return u'{%s}^{%s}' %(self.children[0].children[0].render(), self.children[0].children[1].render())
+		return u'{%s}^{%s}' %(self.children[0].render(), self.children[1].render())
 
 def math_subsup_html_rendered(self):
 	"""
 	to render <msubsup> element
 	"""
-	if len(self.children[0].children) > 3:
+	if len(self.children) > 3:
 		raise Exception("<msubsup> should only have 3 children")
-	elif "int" in self.children[0].children[0].render():
-		return u'\\int_%s^\\%s' %(self.children[0].children[1].render(), self.children[0].children[2].render())
+	elif "int" in self.children[0].render():
+		return u'\\int_%s^\\%s' %(self.children[1].render(), self.children[2].render())
 	else:
-		return u'{%s}_{%s}^{%s}' %(self.children[0].children[0].render(), self.children[0].children[1].render(), \
-			self.children[0].children[1].render()) 
+		return u'{%s}_{%s}^{%s}' %(self.children[0].render(), self.children[1].render(), \
+			self.children[1].render()) 
 
 
 def math_msqrt_html_rendered(self):
 	"""
 	to render <msqrt> element
 	"""
-	if len(self.children[0].children) > 1:
-		raise Exception ("<msqrt> should only have a child")
-	else:
-		return u'\\sqrt{%s}' %(self.children[0].children[0].render())
+	return u'\\sqrt{%s}' %(base_renderer(self))
 
 def math_mroot_html_rendered(self):
 	"""
 	to render <mroot> element
 	"""
-	if len(self.children[0].children) > 2:
+	if len(self.children) > 2:
 		raise Exception ("<mroot> should only have 2 children")
 	else:
-		return u'\\sqrt[%s]{%s}' %(self.children[0].children[1].render(), self.children[0].children[0].render())
+		return u'\\sqrt[%s]{%s}' %(self.children[1].render(), self.children[0].render())
 
 def math_munder_html_rendered(self):
 	"""
 	to render <munder> element
 	"""
 	if len(self.children[0].children) == 2:
-		#TODO: Too many assumptions
-		if u'23df' in self.children[0].children[1].render().lower() or u'\u23df' in unicode(self.children[0].children[1].render()).split():
-			return u'\\underbracket{%s}' %(self.children[0].children[0].render())
-		elif u'\u220f' in unicode(self.children[0].children[0].render()).split() or u'\\prod' in self.children[0].children[0].render():
-			return u'\\prod_{%s}' %(self.children[0].children[1].render())
+		base_1  = self.children[0].render()
+		base_2 = self.children[1].render()
+		if u'23df' in base_2.lower() or u'\u23df' in unicode(base_2).split():
+			return u'\\underbracket{%s}' %(base_1)
+		elif u'\u220f' in unicode(base_1).split() or u'\\prod' in base_1:
+			return u'\\prod_{%s}' %(base_2)
 		else:
-			#logger.info("<munder> element containing children but underbracket n prod 1st: %s , 2nd: %s"\
-			#	, self.children[0].children[0].render(), self.children[0].children[1].render())
-			return u'\\underset{%s}{%s}' %(self.children[0].children[1].render(), self.children[0].children[0].render())
+			return u'\\underset{%s}{%s}' %(base_2, base_1)
 	else:
 		raise Exception ("mathml <munder> element should have 2 children")
 
@@ -219,31 +213,30 @@ def math_munderover_html_rendered(self):
 	"""
 	to render <munderover> element
 	"""
-	if len(self.children[0].children) == 3 :
+	if len(self.children) == 3 :
 		#TODO: Too many assumptions
-		if u'\u2211' in unicode(self.children[0].children[0].render()).split() or u'\\sum' in self.children[0].children[0].render():
-			return u'\\sum_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
-		elif u'\u222b' in unicode(self.children[0].children[0].render()).split() or u'\\int' in self.children[0].children[0].render():
-			return u'\\int_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
-		elif u'\u220f' in unicode(self.children[0].children[0].render()).split() or u'\\prod' in self.children[0].children[0].render():
-			return u'\\prod_{%s}^{%s}' % (self.children[0].children[1].render(), self.children[0].children[2].render())
+		token = self.children[0].render()
+		base_1  = self.children[1].render()
+		base_2 = self.children[2].render()
+		if u'\u2211' in unicode(token).split() or u'\\sum' in token:
+			return u'\\sum_{%s}^{%s}' % (base_1, base_2)
+		elif u'\u222b' in unicode(token).split() or u'\\int' in token:
+			return u'\\int_{%s}^{%s}' % (base_1, base_2)
+		elif u'\u220f' in unicode(token).split() or u'\\prod' in token:
+			return u'\\prod_{%s}^{%s}' % (base_1, base_2)
 		else :
-			#logger.info("<munderover> element with 3 children : %s -> %s -> %s\
-			#	", self.children[0].children[0].render(), self.children[0].children[1].render(), self.children[0].children[2].render())
-			return u'\\overset{%s}{\\underset{%s}{%s}}' %(self.children[0].children[2].render(), self.children[0].children[1].render(), self.children[0].children[0].render())
+			return u'\\overset{%s}{\\underset{%s}{%s}}' %(base_2, base_1, token)
 	else:
-		raise Exception ("mathml <mover> element should have 3 children")
+		return u''
 
 def math_mover_html_rendered(self):
 	"""
 	to render <mover> element
 	"""
-	if len(self.children[0].children) == 2:
-		if u'23de' in self.children[0].children[1].render().lower() or u'\u23de' in unicode(self.children[0].children[1].render()).split():
-			return u'\\overbracket{%s}' %(self.children[0].children[0].render())
-		else:
-			#logger.info("<mover> element containing children but overbracket 1st : %s , 2nd: %s"\
-			#	, self.children[0].children[0].render(), self.children[0].children[1].render())
-			return u'\\overset{%s}{%s}' %(self.children[0].children[1].render(), self.children[0].children[0].render())
+
+	if u'23de' in self.children[1].render().lower() or u'\u23de' in unicode(self.children[1].render()).split():
+			return u'\\overbracket{%s}' %(self.children[0].render())
 	else:
-		raise Exception ("mathml <mover> element should have 2 children")
+			return u'\\overset{%s}{%s}' %(self.children[1].render(), self.children[0].render())
+
+
