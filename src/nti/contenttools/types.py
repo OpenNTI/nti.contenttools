@@ -143,6 +143,8 @@ class Section( DocumentStructureNode ):
 		self.suppressed = suppressed
 		self.title = title
 		self.label = label
+		self.data_depth = None
+		self.section_type = None
 
 	def set_title(self, title):
 		self.title = title

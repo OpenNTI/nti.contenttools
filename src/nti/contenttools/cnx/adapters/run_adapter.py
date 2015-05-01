@@ -50,8 +50,18 @@ class Section( types.Section):
     @classmethod
     def process(cls, element):
         me = cls()
-        if 'id' in element.attrib : me.label = element.attrib['id']
-        me.add_child( Paragraph.process(element))
+        
+        if u'id' in element.attrib : me.label = element.attrib['id']
+        if u'data-depth' in element.attrib : me.data_depth = element.attrib['data-depth']
+        if u'class' in element.attrib : me.section_type = element.attrib['class']
+
+        me = check_element_text(me, element)
+        me = check_child(me, element)
+        check_header = me.children[0]
+        if isinstance(me.children[0], types.Paragraph):
+            title = check_header
+            me.remove_child(check_header)
+        me = check_element_tail(me, element)
         return me
 
 class Paragraph( types.Paragraph ):
