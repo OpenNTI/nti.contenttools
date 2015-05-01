@@ -130,9 +130,9 @@ def process_table_html(self, string_col):
         caption = self.caption.render().rstrip()
         #logger.info(caption)
         #TODO: the text_label only works for openstax epub, we need to modify line 136-137 if we work on different publisher
-        text_label = self.caption.children[0].render() + self.caption.children[1].children[0].render().rstrip()
+        #text_label = self.caption.children[0].render() + self.caption.children[1].children[0].render().rstrip()
         #logger.info(text_label)
-        caption = caption.replace(text_label, u' ')
+        #caption = caption.replace(text_label, u' ')
         #logger.info(caption)
         result = u'\n\\begin{table}\n\\caption {%s}\n\\label{%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\\newline\n'
         return result % (caption, label, string_col, body)
