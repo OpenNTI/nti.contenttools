@@ -212,7 +212,6 @@ def math_munderover_html_rendered(self):
 	to render <munderover> element
 	"""
 	if len(self.children) == 3 :
-		#TODO: Too many assumptions
 		token = self.children[0].render()
 		base_1  = self.children[1].render()
 		base_2 = self.children[2].render()
