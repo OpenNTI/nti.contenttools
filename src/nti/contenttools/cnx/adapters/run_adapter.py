@@ -14,6 +14,7 @@ from .math_adapter import Math
 from .image_adapter import Image
 from lxml.html import HtmlComment
 
+
 def adapt(fragment, cnx):
     head = fragment.find('head')
     body = fragment.find('body')
@@ -58,9 +59,11 @@ class Section( types.Section):
         me = check_element_text(me, element)
         me = check_child(me, element)
         check_header = me.children[0]
-        if isinstance(me.children[0], types.Paragraph):
-            title = check_header
-            me.remove_child(check_header)
+        if isinstance(check_header, types.Paragraph):
+            if u'Heading1' in check_header.styles:
+                me.title = check_header
+                me.title.styles = []
+                me.remove_child(check_header)
         me = check_element_tail(me, element)
         return me
 
@@ -441,10 +444,12 @@ def _process_h7_elements( element,reading_type=None):
     return Paragraph.process(element, ['Heading7'], reading_type)
 
 def _process_span_elements( element ):
-    styles = []
-    if u'style' in element.attrib:
-        if u'underline' in element.attrib[u'style'] : styles.append(u'underline')
-    return Run.process(element, styles=styles)
+    data_type = element.attrib['data-type'] if 'data-type' in element.attrib else None
+    if data_type == 'term' :
+        from .glossary_adapter import GlossaryTerm
+        return GlossaryTerm.process(element)
+    return Run.process(element)
+
 
 def _process_ul_elements( element ):
     return UnorderedList.process(element)
@@ -543,8 +548,9 @@ def _process_div_elements( element):
     if type_ is None : 
         el = Run.process(element)
     else:
-        if type_ == u'document-title' : style = [u'section']
-        el = Paragraph.process(element)
+        styles = []
+        if type_ == u'document-title' : styles.append(u'Section')
+        el = Paragraph.process(element, styles)
     return el
 
 class Iframe(types.Iframe):
