@@ -50,5 +50,5 @@ def extract_list(list_of_list):
 			return child
 
 def glossary_term_renderer(self):
-	item = base_renderer(self)
+	item = base_renderer(self).strip()
 	return u'\\ntiglossaryentry{\\textbf{%s}}{definition} ' % (item)
