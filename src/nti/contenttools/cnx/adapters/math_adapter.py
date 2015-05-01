@@ -16,8 +16,7 @@ class Math(types.Math):
     def process(cls, element):
         me = cls()
         if 'display' in element.attrib : me.equation_type = element.attrib['display']
-        logger.info(me.equation_type)
-        me.add_child(MathRun.process(element))
+        me =check_math_element_child(me, element)
         return me
 
 class MRow(types.MRow):
@@ -31,16 +30,10 @@ class MFenced(types.MFenced):
     @classmethod
     def process(cls, element):
         me = cls()
-        me.close = element.attrib['close']
-        me.opener = element.attrib['open']
-        me.separators = element.attrib['separators']
-        for child in element:
-            if child.tag == 'mtable':
-                me.add_child(_process_mtable_elements(child))
-            elif child.tag == 'mrow':
-                me.add_child(_process_mrow_elements(child))
-            else:
-                me.add_child(MathRun.process(element))
+        if u'close' in element.attrib : me.close = element.attrib[u'close']
+        if u'opener' in element.attrib : me.opener = element.attrib[u'open']
+        if u'separators' in element.attrib : me.separators = element.attrib['separators']
+        me = check_math_element_child(me, element)
         return me
 
 class Mtable(types.Mtable):
@@ -95,7 +88,7 @@ class Mtd(types.Mtd):
     @classmethod
     def process(cls, element):
         me = cls()
-        me.add_child(MathRun.process(element))
+        me = check_math_element_child(me, element)
         return me
 
 class Mfrac (types.Mfrac):
@@ -104,74 +97,63 @@ class Mfrac (types.Mfrac):
         me = cls()
         if 'id' in element.attrib:
             me.add_child(Label.process(element))
-
-        if element.text:
-            if element.text.isspace():
-                pass
-            else:
-                me.add_child(types.TextNode(element.text, type_text = 'omath'))
-
-        for child in element:
-            if child.tag == 'mrow':
-                me.add_child(_process_mrow_elements(child))
-            else:
-                logger.warn("UNHANDLED child under TABLE element %s", child.tag)
+        me = check_math_element_child(me, element)
         return me
 
 class MSup (types.MSup):
     @classmethod
     def process(cls, element):
         me = cls()
-        me.add_child(MathRun.process(element))
+        me = check_math_element_child(me, element)
         return me
 
 class MSub (types.MSub):
     @classmethod
     def process(cls, element):
         me = cls()
-        me.add_child(MathRun.process(element))
+        me = check_math_element_child(me, element)
         return me
 
 class MSubSup(types.MSubSup):
     @classmethod
     def process(cls, element):
         me = cls()
-        me.add_child(MathRun.process(element))
+        me = check_math_element_child(me, element)
         return me
 
 class MSqrt(types.Msqrt):
     @classmethod
     def process(cls, element):
         me = cls()
-        me.add_child(MathRun.process(element))
+        me = check_math_element_child(me, element)
         return me
 
 class MRoot(types.Mroot):
     @classmethod
     def process(cls, element):
         me = cls()
-        me.add_child(MathRun.process(element))
+        me = check_math_element_child(me, element)
         return me
 
 class MUnder(types.MUnder):
     @classmethod
     def process(cls, element):
         me = cls()
-        me.add_child(MathRun.process(element))
+        me = check_math_element_child(me, element)
         return me
 
 class MUnderover(types.MUnderover):
     @classmethod
     def process(cls, element):
         me = cls()
-        me.add_child(MathRun.process(element))
+        me = check_math_element_child(me, element)
         return me
 
 class MOver(types.MOver):
     @classmethod
     def process(cls, element):
         me = cls()
-        me.add_child(MathRun.process(element))
+        me = check_math_element_child(me, element)
         return me
 
 class MathRun(types.MathRun):
@@ -179,15 +161,73 @@ class MathRun(types.MathRun):
     def process(cls, element, styles=[]):
         me = cls()
         me.styles.extend(styles)
-        if element.text:
-            if element.text.isspace():
-                pass
-            else:
-                me.add_child(types.TextNode(element.text, type_text = 'omath'))
         me = check_math_element_child(me, element)
         return me
 
+def _process_math_elements(element):
+    return Math.process(element)
+
+def _process_mrow_elements(element):
+    return MRow.process(element)
+
+def _process_msup_elements(element):
+    return MSup.process(element)
+
+def _process_msub_elements(element):
+    return MSub.process(element)
+
+def _process_msubsup_elements(element):
+    return MSubSup.process(element)
+
+def _process_mi_elements(element):
+    return MathRun.process(element)
+
+def _process_mn_elements(element):
+    return MathRun.process(element)
+
+def _process_mo_elements(element):
+    return MathRun.process(element)
+
+def _process_mspace_elements(element):
+    return MathRun.process(element)
+
+def _process_mfenced_elements(element):
+    return MFenced.process(element)
+
+def _process_mtable_elements(element):
+    return Mtable.process(element)
+
+def _process_mtr_elements(element):
+    return Mtr.process(element)
+
+def _process_mtd_elements(element):
+    return Mtd.process(element)
+
+def _process_mfrac_elements(element):
+    return Mfrac.process(element)
+
+def _process_msqrt_elements(element):
+    return MSqrt.process(element)
+
+def _process_mroot_elements(element):
+    return MRoot.process(element)
+
+def _process_munder_elements(element):
+    return MUnder.process(element)
+
+def _process_munderover_elements(element):
+    return MUnderover.process(element)
+
+def _process_mover_elements(element):
+    return MOver.process(element)
+
+def _process_mtext_elements(element):
+    return MathRun.process(element)
+
 def check_math_element_child(me, element):
+    if element.text:
+        if element.text.isspace():pass
+        else: me.add_child(types.TextNode(element.text, type_text = 'omath'))
     for child in element:
         if child.tag == 'mi':
             me.add_child(_process_mi_elements(child))
@@ -225,6 +265,10 @@ def check_math_element_child(me, element):
             me.add_child(_process_munder_elements(child))
         elif child.tag == 'mstyle':
             pass
+        elif child.tag == 'semantics':
+            me.add_child(MathRun.process(child))
+        elif child.tag == 'annotation-xml':
+            me.add_child(MathRun.process(child))
         else:
             logger.warn("UNHANDLED  math element: %s", child.tag)
     return me
