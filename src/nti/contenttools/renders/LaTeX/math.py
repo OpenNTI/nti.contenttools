@@ -10,10 +10,7 @@ logger = __import__('logging').getLogger(__name__)
 
 import re
 
-from nti.contenttools.epub.adapters.generic import MRow
-from nti.contenttools.epub.adapters.generic import Mtable
-from nti.contenttools.epub.adapters.generic import MFenced
-
+from ... import types
 from .base import base_renderer
 
 """
@@ -48,11 +45,11 @@ def math_fenced_html_rendered(self):
 	for child in self.children:
 		result.append(child.render())
 
-	if isinstance(self.children[0], Mtable):
+	if isinstance(self.children[0], types.Mtable):
 		return set_matrix_border(opener, result)
-	elif isinstance(self.children[0], MRow):
+	elif isinstance(self.children[0], types.MRow):
 		if self.children[0].children:
-			if isinstance(self.children[0].children[0], Mtable):
+			if isinstance(self.children[0].children[0], types.Mtable):
 				return set_matrix_border(opener, result)
 			else:
 				return opener + u''.join(result) + u'' + close
@@ -94,12 +91,12 @@ def math_table_html_rendered(self):
 	for child in self.children:
 		body = body + child.render()
 
-	if isinstance(self.__parent__, MFenced):
+	if isinstance(self.__parent__, types.MFenced):
 		#when it is a matrix
 		return u'%s' %(body)
-	elif isinstance (self.__parent__, MRow):
+	elif isinstance (self.__parent__, types.MRow):
 		if self.__parent__.__parent__:
-			if isinstance(self.__parent__.__parent__, MFenced):
+			if isinstance(self.__parent__.__parent__, types.MFenced):
 				#when it is a matrix
 				return u'%s' %(body)
 			else:
@@ -188,8 +185,9 @@ def math_mroot_html_rendered(self):
 	"""
 	to render <mroot> element
 	"""
-	if len(self.children) > 2:
-		raise Exception ("<mroot> should only have 2 children")
+	if len(self.children) != 2:
+		logger.warn("<mroot> should only have 2 children")
+		return u''
 	else:
 		return u'\\sqrt[%s]{%s}' %(self.children[1].render(), self.children[0].render())
 
@@ -233,7 +231,6 @@ def math_mover_html_rendered(self):
 	"""
 	to render <mover> element
 	"""
-
 	if u'23de' in self.children[1].render().lower() or u'\u23de' in unicode(self.children[1].render()).split():
 			return u'\\overbracket{%s}' %(self.children[0].render())
 	else:
