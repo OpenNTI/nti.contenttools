@@ -11,6 +11,7 @@ logger = __import__('logging').getLogger(__name__)
 
 from ... import types
 from .math_adapter import Math
+from .image_adapter import Image
 from lxml.html import HtmlComment
 
 def adapt(fragment, cnx):
@@ -34,6 +35,7 @@ class Run( types.Run ):
     @classmethod
     def process(cls, element, styles=[], reading_type=None):
         me = cls()
+        if 'id' in element.attrib : me.label = element.attrib['id']
         me.styles.extend(styles)
         me = check_element_text(me, element)
         me = check_child(me, element, reading_type)
@@ -44,11 +46,19 @@ class Run( types.Run ):
             me = _t
         return me
 
+class Section( types.Section):
+    @classmethod
+    def process(cls, element):
+        me = cls()
+        if 'id' in element.attrib : me.label = element.attrib['id']
+        me.add_child( Paragraph.process(element))
+        return me
 
 class Paragraph( types.Paragraph ):
     @classmethod
     def process(cls, element, styles=(), reading_type=None):
         me = cls()
+        if 'id' in element.attrib : me.label = element.attrib['id']
         me.styles.extend(styles)
         me = check_element_text(me, element)
         me = check_child(me, element, reading_type)
@@ -149,6 +159,7 @@ class Table(types.Table):
     @classmethod
     def process(cls, element):
         me = cls()
+        if 'id' in element.attrib : me.label = element.attrib['id']
         me = check_element_text(me, element)
         style_ = u''
         if u'border' in element.attrib.keys():
@@ -323,7 +334,7 @@ def check_child(me, element, reading_type=None):
         elif child.tag == 'em':
             me.add_child(_process_em_elements(child))
         elif child.tag == 'img':
-            me.add_child(ImageHTML.process(child, reading_type))
+            me.add_child(Image.process(child, reading_type))
         elif child.tag == 'h1':
             me.add_child(_process_h1_elements(child,reading_type))
         elif child.tag == 'h2':
@@ -372,7 +383,7 @@ def check_child(me, element, reading_type=None):
         elif child.tag == 'figure':
             logger.info('Found Figure >> need to handle')
         elif child.tag == 'section':
-            logger.info('Found section >> need to handle')
+            me.add_child(Section.process(child))
         elif child.tag == 'math':
             me.add_child(Math.process(child))
         else:
@@ -518,13 +529,19 @@ def _process_td_elements(element):
     return Cell.process(element)
 
 def _process_div_elements( element):
-    el = Run.process(element)
+    type_ = element.attrib['data-type'] if 'data-type' in element.attrib else None
+    if type_ is None : 
+        el = Run.process(element)
+    else:
+        if type_ == u'document-title' : style = [u'section']
+        el = Paragraph.process(element)
     return el
 
 class Iframe(types.Iframe):
     @classmethod
     def process(cls, element):
         me = cls()
+        if 'id' in element.attrib : me.label = element.attrib['id']
         if u'src' in element.attrib : me.source = element.attrib[u'src']
         me = check_element_text(me, element)
         me = check_child(me , element)
@@ -535,6 +552,7 @@ class BlockQuote(types.BlockQuote):
     @classmethod
     def process(cls, element):
         me = cls()
+        if 'id' in element.attrib : me.label = element.attrib['id']
         me = check_element_text(me, element)
         me = check_child(me, element)
         me = check_element_tail(me, element)

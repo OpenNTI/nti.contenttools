@@ -63,6 +63,8 @@ class CNXParser(object):
 			
 
 	def process_document(self,document_folder):
+		logger.info(u'________________________________________')
+		logger.info(u'Process document %s', document_folder)
 		folder = u'%s/%s' %(self.cnx_directory, document_folder)
 		self.content_folder.append(folder)
 		cnxml_html_file = u'%s/index.cnxml.html' %(folder)
@@ -71,6 +73,7 @@ class CNXParser(object):
 				doc_fragment = html.fromstring(file_.read())
 			cnx_html_body = adapt(doc_fragment, self)
 		tex_content = base_renderer(cnx_html_body)
+		logger.info(u'________________________________________')
 		return u'%s\n\n' %tex_content 
 
 	def process_subcollection(self, subcollection):
