@@ -199,7 +199,8 @@ class Sidebar( DocumentStructureNode ):
 
 	def __init__(self, title=''):
 		super( Sidebar, self ).__init__()
-		self.title = title
+		self.title = None
+		self.label = None
 
 class BlockQuote( DocumentStructureNode ):
 

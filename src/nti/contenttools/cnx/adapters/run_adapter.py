@@ -47,6 +47,18 @@ class Run( types.Run ):
             me = _t
         return me
 
+class Sidebar(types.Sidebar):
+    @classmethod
+    def process(cls, element, sidebar_type=None):
+        me = cls()
+        if 'id' in element.attrib : me.label = element.attrib['id']
+        me = check_element_text(me, element)
+        me = check_child(me, element)
+        me = check_element_tail(me, element)
+        if me.title is None : 
+            me.title = sidebar_type
+        return me
+
 class Section( types.Section):
     @classmethod
     def process(cls, element):
@@ -60,7 +72,9 @@ class Section( types.Section):
         me = check_child(me, element)
         check_header = me.children[0]
         if isinstance(check_header, types.Paragraph):
-            if u'Heading1' in check_header.styles:
+            styles = set([u'Heading1', u'Heading2'])
+            compare_list = set(check_header.styles)
+            if styles.intersection(compare_list):
                 me.title = check_header
                 me.title.styles = []
                 me.remove_child(check_header)
@@ -143,7 +157,7 @@ class UnorderedList( types.UnorderedList ):
             if child.tag == 'li':
                 el = Item.process(child, format=me.format)
             elif child.tag == 'div':
-                el = _process_div_elements(child)
+                el = _process_div_elements(child, me)
             elif child.tag == 'p':
                 el = _process_p_elements(child)
             else:
@@ -367,7 +381,7 @@ def check_child(me, element, reading_type=None):
         elif child.tag == 'p':
             me.add_child(_process_p_elements(child, reading_type))
         elif child.tag == 'div':
-            me.add_child(_process_div_elements(child))
+            me.add_child(_process_div_elements(child, me))
         elif child.tag == 'ul':
             me.add_child(_process_ul_elements(child))
         elif child.tag == 'hr':
@@ -543,14 +557,28 @@ def _process_tr_elements(element):
 def _process_td_elements(element):
     return Cell.process(element)
 
-def _process_div_elements( element):
+def _process_div_elements( element, parent):
     type_ = element.attrib['data-type'] if 'data-type' in element.attrib else None
     if type_ is None : 
         el = Run.process(element)
     else:
         styles = []
-        if type_ == u'document-title' : styles.append(u'Section')
-        el = Paragraph.process(element, styles)
+        if type_ == u'document-title' : 
+            styles.append(u'Section')
+            el = Paragraph.process(element, styles)
+        elif type_ in [u'note', u'abstract', u'solution', u'problem', u'example', u'exercise']:
+            el = Sidebar.process(element, sidebar_type =type_)
+        elif type_ == u'title':
+            el = Run()
+            parent.title = Run.process(element)
+        elif type_ == u'footnote-refs':
+            logger.warn(u'TODO adapt the div element type : %s', type_)
+            el = Run.process(element)
+        elif type_ == u'glossary':
+            logger.warn(u'TODO adapt the div element type : %s', type_)
+            el = Run()
+        else:
+            el = Run.process(element)
     return el
 
 class Iframe(types.Iframe):

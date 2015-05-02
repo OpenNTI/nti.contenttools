@@ -59,10 +59,14 @@ def label_renderer(self):
 
 def sidebar_renderer(self):
     body = base_renderer(self)
+    
     title = u''
-    if self.title:
-        title = u'%s' % base_renderer(self.title)
-    return u'\\begin{sidebar}{%s}\n%s\\end{sidebar}\n' % (title, body)
+    if isinstance(self.title, str) or isinstance(self.title, unicode): title = self.title.strip()
+    else: title = u'%s' % base_renderer(self.title).strip() 
+
+    label = u'\\label{%s}\n' % self.label if self.label else u''
+    
+    return u'\\begin{sidebar}{%s}\n%s%s\\end{sidebar}\n' % (title, label,body)
 
 def blockquote_renderer(self):
     body = base_renderer(self)
