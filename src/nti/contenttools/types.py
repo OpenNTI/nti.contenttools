@@ -635,6 +635,9 @@ class Figure(DocumentStructureNode):
 	def __init__(self, caption = None, label = None):
 		self.caption = caption
 		self.label = label
+		self.image_id = None
+		self.image_alt = None
+		self.data_type = None
 
 	def set_caption(self, caption):
 		self.caption = caption

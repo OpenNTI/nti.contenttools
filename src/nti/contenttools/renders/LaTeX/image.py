@@ -75,10 +75,8 @@ def figure_rendered(self):
     if self.caption is not None:
         caption = base_renderer(self.caption)
     else:
-        logger.info("caption for figure is empty")
-        #caption = None
-        caption = u' '
-    
+        caption = self.image_alt.render() if self.image_alt is not None else u''
+
     label = self.label
 
     if caption is None:
