@@ -19,6 +19,7 @@ import codecs
 from .adapters.run_adapter import adapt
 from ..util.string_replacer import rename_filename
 from ..renders.LaTeX.base import base_renderer
+from .. import scoped_registry
 
 class CNXParser(object):
 	def __init__(self, input_file, output_directory):
@@ -32,6 +33,7 @@ class CNXParser(object):
 		head, tail = os.path.split(input_file)
 		self.cnx_directory = head
 		self.output_directory = output_directory
+		scoped_registry.output_directory = output_directory
 
 	def process_collection(self):
 		collection = self.collection
@@ -66,6 +68,7 @@ class CNXParser(object):
 		logger.info(u'________________________________________')
 		logger.info(u'Process document %s', document_folder)
 		folder = u'%s/%s' %(self.cnx_directory, document_folder)
+		scoped_registry.current_dir = folder
 		self.content_folder.append(folder)
 		cnxml_html_file = u'%s/index.cnxml.html' %(folder)
 		if os.path.exists(cnxml_html_file):

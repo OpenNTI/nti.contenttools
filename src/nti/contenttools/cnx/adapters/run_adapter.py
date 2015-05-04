@@ -415,7 +415,7 @@ def check_child(me, element, reading_type=None):
         elif child.tag == 's':
             me.add_child(_process_s_elements(child))
         elif child.tag == 'figure':
-            logger.info('Found Figure >> need to handle')
+            me.add_child(Figure.process(child))
         elif child.tag == 'section':
             me.add_child(Section.process(child))
         elif child.tag == 'math':
@@ -465,8 +465,8 @@ def _process_h7_elements( element,reading_type=None):
     return Paragraph.process(element, ['Heading7'], reading_type)
 
 def _process_span_elements( element ):
-    data_type = element.attrib['data-type'] if 'data-type' in element.attrib else None
-    if data_type == 'term' :
+    data_type = element.attrib[u'data-type'] if u'data-type' in element.attrib else None
+    if data_type == u'term' :
         from .glossary_adapter import GlossaryTerm
         return GlossaryTerm.process(element)
     return Run.process(element)
@@ -608,3 +608,24 @@ class BlockQuote(types.BlockQuote):
         me = check_child(me, element)
         me = check_element_tail(me, element)
         return me
+
+class Figure(types.Figure):
+    @classmethod
+    def process(cls, element):
+        me = cls()
+        if u'id' in element.attrib : me.label = element.attrib[u'id']
+        for child in element:
+            if child.tag == u'figcaption':
+                me.caption = Run.process(child)
+            elif child.tag == u'span':
+                if u'data-type' in child.attrib : me.data_type = child.attrib[u'data-type']
+                if u'id' in child.attrib : me.image_id = child.attrib[u'id']
+                if u'data-alt' in child.attrib : me.image_alt = types.TextNode(child.attrib[u'data-alt'])
+                img = get_figure_image(child)
+                me.add_child(img)
+        return me
+
+def get_figure_image(element):
+    for child in element:
+        if child.tag == u'img':
+            return Image.process(child)
