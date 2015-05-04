@@ -582,8 +582,10 @@ def _process_div_elements( element, parent):
             logger.warn(u'TODO adapt the div element type : %s', type_)
             el = Run.process(element)
         elif type_ == u'glossary':
-            logger.warn(u'TODO adapt the div element type : %s', type_)
             el = Run()
+            from .glossary_adapter import CNXGlossary
+            glossary = CNXGlossary.process(element)
+            #TODO : consolidate glossary to create term-meaning dictionary
         else:
             el = Run.process(element)
     return el
