@@ -839,3 +839,11 @@ class CNXModule(DocumentStructureNode):
 
 class CNXHTMLBody(DocumentStructureNode):
 	pass
+
+class CNXGlossary(DocumentStructureNode):
+	pass
+
+class GlossaryDefinition(DocumentStructureNode):
+	def __init__(self):
+		self.term = None
+		self.meaning = None
