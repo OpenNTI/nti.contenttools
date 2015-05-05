@@ -847,3 +847,19 @@ class GlossaryDefinition(DocumentStructureNode):
 	def __init__(self):
 		self.term = None
 		self.meaning = None
+
+class Footnote(DocumentStructureNode):
+	def  __init__(self):
+		self.label = None
+		self.text = None
+
+class FootnoteText(DocumentStructureNode):
+	def __init__(self):
+		self.text = None
+		self.label = None
+		self.num = None
+
+class FootnoteMark(DocumentStructureNode):
+	def __init__(self):
+		self.text = None
+		self.num = None
