@@ -22,6 +22,8 @@ from ..renders.LaTeX.base import base_renderer
 from .. import scoped_registry
 from . import cnx_glossary
 
+
+
 class CNXParser(object):
 	def __init__(self, input_file, output_directory):
 		cnx_xml = CNX_XML()
@@ -35,7 +37,7 @@ class CNXParser(object):
 		self.cnx_directory = head
 		self.output_directory = output_directory
 		scoped_registry.output_directory = output_directory
-		scoped_registry.cnx_glossary = []
+		#scoped_registry.cnx_glossary = []
 		self.tex_filepath = []
 
 	def process_collection(self):
@@ -55,19 +57,23 @@ class CNXParser(object):
 		self.create_main_latex()
 
 		#lookup for glossary term inside each latex file
-		self.process_glossary() 
+		#self.process_cleglossary() 
 
 
 	def process_modules(self, modules, type_ = None, latex_filename = None):
 		result = []
 		result_append = result.append
 		for module in modules:
-			doc_content = self.process_document(module.document)
 			if type_ == u'collection':
+				scoped_registry.cnx_glossary = []
+				doc_content = self.process_document(module.document)
 				tex_filename = u'%s.tex' %rename_filename(module.title)
 				self.latex_filenames.append(tex_filename)
+				doc_content = self.process_glossary(doc_content)
 				self.write_to_file(doc_content, tex_filename)
-			elif type_ == u'subcollection': result_append(doc_content)
+			elif type_ == u'subcollection': 
+				doc_content = self.process_document(module.document)
+				result_append(doc_content)
 		if type_ == u'subcollection' : return u''.join(result)
 			
 
@@ -87,12 +93,14 @@ class CNXParser(object):
 		return u'%s\n\n' %tex_content 
 
 	def process_subcollection(self, subcollection):
+		scoped_registry.cnx_glossary = []
 		tex_filename = u'%s.tex' %rename_filename(subcollection.title)
 		self.latex_filenames.append(tex_filename) 
 		result = []
 		content = subcollection.content
 		if content.modules :
 			subcollection_content = self.process_modules(content.modules, type_ = u'subcollection', latex_filename = tex_filename) 
+			subcollection_content = self.process_glossary(subcollection_content)
 			self.write_to_file(subcollection_content, tex_filename)
 
 	def write_to_file(self, content, filename, type_= None):
@@ -106,12 +114,26 @@ class CNXParser(object):
 		main_tex_content = generate_main_tex_content(self.metadata, self.latex_filenames)
 		self.write_to_file(main_tex_content, self.latex_main_files)
 
-	def process_glossary(self):
+	def process_glossary_(self):
 		latex_files = self.tex_filepath
 		glossary_dict = cnx_glossary.create_glossary_dictionary(scoped_registry.cnx_glossary)
+		json_file = u'%s/glossary.json' %(self.output_directory)
+		self.dictionary_to_json(glossary_dict, json_file)
 		for file_ in latex_files:
 			cnx_glossary.lookup_glossary_term_in_tex_file(file_, glossary_dict, search_text=None)
 
+	def process_glossary(self, content):
+		glossary_dict = cnx_glossary.create_glossary_dictionary(scoped_registry.cnx_glossary)
+		return cnx_glossary.lookup_glossary_term_in_content(content, glossary_dict, search_text=None)
+
+	def dictionary_to_json(self, dictionary, json_file):
+		"""
+		save dictionary to json file
+		"""
+		import simplejson as json
+		dict_json = json.dumps(dictionary, sort_keys=True, indent=4 * ' ')
+		with codecs.open( json_file, 'w', 'utf-8' ) as fp:
+			fp.write(dict_json)
 
 
 def get_packages():
