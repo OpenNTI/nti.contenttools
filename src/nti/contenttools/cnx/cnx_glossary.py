@@ -29,6 +29,11 @@ def process_cnx_glossary(cnx_glossary_node, glossary_dict):
 		if isinstance(child, types.GlossaryDefinition):
 			term = child.term.render().strip()
 			meaning = child.meaning.render().strip()
+			if term in glossary_dict:
+				if meaning != glossary_dict[term]:
+					logger.info(term)
+					logger.info('prev : %s', glossary_dict[term])
+					logger.info('current : %s', meaning)
 			glossary_dict[term] = meaning
 		else :
 			logger.warn('Unhandled CNXGlossary child %s', child)
@@ -37,6 +42,8 @@ def process_cnx_glossary(cnx_glossary_node, glossary_dict):
 def lookup_glossary_term_in_tex_file(filename, glossary_dict, search_text=None):
 	glossary_check.process_glossary(glossary_dict, filename, search_text=None)
 
+def lookup_glossary_term_in_content(content, glossary_dict, search_text=None):
+	return glossary_check.run_glossary_finder(glossary_dict, content, search_text=None)
 
 
 
