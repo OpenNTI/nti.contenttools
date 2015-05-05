@@ -13,6 +13,7 @@ from ... import types
 from .math_adapter import Math
 from .image_adapter import Image
 from lxml.html import HtmlComment
+from ... import scoped_registry
 
 
 def adapt(fragment, cnx):
@@ -585,7 +586,7 @@ def _process_div_elements( element, parent):
             el = Run()
             from .glossary_adapter import CNXGlossary
             glossary = CNXGlossary.process(element)
-            #TODO : consolidate glossary to create term-meaning dictionary
+            scoped_registry.cnx_glossary.append(glossary)
         else:
             el = Run.process(element)
     return el

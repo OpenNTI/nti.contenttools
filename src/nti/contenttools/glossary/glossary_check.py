@@ -26,7 +26,10 @@ def process_untoken_glossary(glossary_dict, filename):
 def process_glossary(glossary_dict, filename, search_text=None):
 	content = get_file_content(filename)
 	content = content.decode("utf-8") if isinstance(content, bytes) else content
+	new_content = run_glossary_finder(glossary_dict, content, search_text)
+	replace_file_content(filename, new_content)
 
+def run_glossary_finder(glossary_dict, content, search_text=None):
 	for key in glossary_dict.keys():
 		check_key = 0
 		key_text =key.rstrip()
@@ -74,7 +77,7 @@ def process_glossary(glossary_dict, filename, search_text=None):
 			logger.warn('Could not find glossary key %s',key)
 
 	new_content = content
-	replace_file_content(filename, new_content)
+	return new_content
 
 def capital_to_lower_case(text):
 	words = text.split()

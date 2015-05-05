@@ -20,6 +20,7 @@ from .adapters.run_adapter import adapt
 from ..util.string_replacer import rename_filename
 from ..renders.LaTeX.base import base_renderer
 from .. import scoped_registry
+from . import cnx_glossary
 
 class CNXParser(object):
 	def __init__(self, input_file, output_directory):
@@ -34,6 +35,8 @@ class CNXParser(object):
 		self.cnx_directory = head
 		self.output_directory = output_directory
 		scoped_registry.output_directory = output_directory
+		scoped_registry.cnx_glossary = []
+		self.tex_filepath = []
 
 	def process_collection(self):
 		collection = self.collection
@@ -50,6 +53,10 @@ class CNXParser(object):
 				self.process_subcollection(subcollection)
 
 		self.create_main_latex()
+
+		#lookup for glossary term inside each latex file
+		self.process_glossary() 
+
 
 	def process_modules(self, modules, type_ = None, latex_filename = None):
 		result = []
@@ -89,13 +96,22 @@ class CNXParser(object):
 			self.write_to_file(subcollection_content, tex_filename)
 
 	def write_to_file(self, content, filename, type_= None):
-		if type_ is None : filepath = u'%s/%s' %(self.output_directory, filename) #filetex
-		with codecs.open(filepath,'w', 'utf-8') as file_:
-			file_.write(content)
+		if type_ is None : 
+			filepath = u'%s/%s' %(self.output_directory, filename)
+			self.tex_filepath.append(filepath) 
+			with codecs.open(filepath,'w', 'utf-8') as file_:
+				file_.write(content)
 
 	def create_main_latex(self):
 		main_tex_content = generate_main_tex_content(self.metadata, self.latex_filenames)
 		self.write_to_file(main_tex_content, self.latex_main_files)
+
+	def process_glossary(self):
+		latex_files = self.tex_filepath
+		glossary_dict = cnx_glossary.create_glossary_dictionary(scoped_registry.cnx_glossary)
+		for file_ in latex_files:
+			cnx_glossary.lookup_glossary_term_in_tex_file(file_, glossary_dict, search_text=None)
+
 
 
 def get_packages():
