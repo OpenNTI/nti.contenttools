@@ -33,6 +33,7 @@ from .glossary import *
 from .note import *
 from .equation_image import *
 from ... util import string_replacer
+from .footnote import *
 
 def note_renderer(self):
     content = base_renderer(self)
@@ -210,6 +211,9 @@ types.OpenstaxNoteBody.render = openstax_ex_note_body_renderer
 types.EquationImage.render = equation_image_renderer
 types.OpenstaxAttributions.render = openstax_attribution_renderer
 types.OpenstaxTitle.render = openstax_title_renderer
+
+types.FootnoteMark.render = footnotemark_renderer
+types.FootnoteText.render = footnotetext_renderer
 
 def register():
     pass

@@ -342,7 +342,7 @@ def check_element_text(me, element):
     if element.text:
         if element.text.isspace(): pass
         else:
-            new_el_text = element.text.strip() + u' '
+            new_el_text = element.text
             me.add_child(types.TextNode(new_el_text))
     return me
 
@@ -495,20 +495,28 @@ def _process_sup_elements( element ):
     return Run.process(element, ['sup'])
 
 def _process_a_elements( element ):
-    if 'href' in element.attrib.keys():
-        el = None
-        if element.tail:
-            el = Run()
-            el.add_child( Hyperlink.process(element) )
-            el.add_child( types.TextNode(element.tail))
-        else:
-            el = Hyperlink.process(element)
-        return el
+    data_type = element.attrib[u'data-type'] if 'data-type' in element.attrib else u''
+    if data_type == u'footnote-ref':
+        from .footnote_adapter import FootnoteText
+        el = FootnoteText.process(element)
+    elif data_type == u'footnote-number':
+        from .footnote_adapter import FootnoteMark
+        el = FootnoteMark.process(element)
     else:
-        el = None
-        if element.tail:
-            el = Run()
-            el.add_child( types.TextNode(element.tail) )
+        if 'href' in element.attrib.keys():
+            el = None
+            if element.tail:
+                el = Run()
+                el.add_child( Hyperlink.process(element) )
+                el.add_child( types.TextNode(element.tail))
+            else:
+                el = Hyperlink.process(element)
+            return el
+        else:
+            el = None
+            if element.tail:
+                el = Run()
+                el.add_child( types.TextNode(element.tail) )
     return el
 
 def _process_strong_elements(element):
@@ -579,9 +587,6 @@ def _process_div_elements( element, parent):
         elif type_ == u'title':
             el = Run()
             parent.title = Run.process(element)
-        elif type_ == u'footnote-refs':
-            logger.warn(u'TODO adapt the div element type : %s', type_)
-            el = Run.process(element)
         elif type_ == u'glossary':
             el = Run()
             from .glossary_adapter import CNXGlossary
