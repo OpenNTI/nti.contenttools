@@ -28,7 +28,12 @@ def section_renderer(self):
 """
 
 def subsection_renderer(self):
-    title = self.title
+    title = None
+    if self.title is not None:
+        if isinstance(self.title, str) or isinstance(self.title, unicode):
+            title = self.title
+        else : title = self.title.render().strip()
+    
     label = None
     if isinstance(self.label, str):
         label = u'\\label{%s}' % (self.label)
