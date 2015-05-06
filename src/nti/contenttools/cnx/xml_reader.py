@@ -23,20 +23,28 @@ class CNX_XML(object):
 		me = types.CNXCollection()
 		for child in root:
 			if child.tag == cnx_prefixes['metadata']:
-				me.metadata = self.extract_metadata(child)
+				me.metadata = self.extract_metadata(child, {})
 			elif child.tag == cnx_prefixes['content']:
 				me.content = self.extract_content(child)
 		return me
 
-	def extract_metadata(self, metadata):
+	def extract_metadata(self, metadata, metadata_dict):
 		metadata_values = cnx_prefixes.values()
-		metadata_dict = {}
 		for element in metadata :
 			if element.tag in metadata_values:
 				idx = element.tag.find(u'}') + 1
 				key = element.tag[idx:]
-				metadata_dict[key] = element.text
+				if element.text.isspace() or len(element.text) == 0:
+					metadata_dict = self.check_metadata_child(element, metadata_dict, key)
+				else : metadata_dict[key] = element.text
 		return metadata_dict
+
+	def check_metadata_child(self, element, metadata_dict, key):
+		metadata_dict_child = {}
+		metadata_dict_child =  self.extract_metadata(element, metadata_dict_child)
+		metadata_dict[key] = metadata_dict_child
+		return metadata_dict
+
 
 	def extract_module(self, module):
 		me = types.CNXModule()

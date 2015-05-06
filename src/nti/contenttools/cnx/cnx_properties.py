@@ -30,5 +30,11 @@ cnx_prefixes = {
     'subjectlist'	: u'{%s}subjectlist' %mdml,
     'abstract'		: u'{%s}abstract' %mdml,
     'language'		: u'{%s}language' %mdml,
+    'role'          : u'{%s}role' %mdml,
+    'person'        : u'{%s}person' %mdml,
+    'firstname'     : u'{%s}firstname' %mdml,
+    'surname'       : u'{%s}surname' %mdml,
+    'fullname'      : u'{%s}fullname' %mdml,
+    'email'         : u'{%s}email' %mdml,
 }
 
