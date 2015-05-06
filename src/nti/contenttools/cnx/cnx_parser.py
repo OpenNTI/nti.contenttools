@@ -37,16 +37,18 @@ class CNXParser(object):
 		self.cnx_directory = head
 		self.output_directory = output_directory
 		scoped_registry.output_directory = output_directory
-		#scoped_registry.cnx_glossary = []
 		self.tex_filepath = []
 
 	def process_collection(self):
 		collection = self.collection
 		self.metadata = collection.metadata
-		content = collection.content
 		
-		if u'title' in self.metadata : self.latex_main_files  = u'MAIN_%s.tex' %rename_filename(self.metadata[u'title'])
+		if u'title' in self.metadata : 
+			title = rename_filename(self.metadata[u'title'])
+			self.latex_main_files  = u'MAIN_%s.tex' %title
+			scoped_registry.book_title = title
 
+		content = collection.content
 		if content.modules: self.process_modules(content.modules, type_ = u'collection')
 
 		subcollections = content.subcollections
@@ -55,10 +57,6 @@ class CNXParser(object):
 				self.process_subcollection(subcollection)
 
 		self.create_main_latex()
-
-		#lookup for glossary term inside each latex file
-		#self.process_cleglossary() 
-
 
 	def process_modules(self, modules, type_ = None, latex_filename = None):
 		result = []

@@ -28,13 +28,15 @@ class Image(types.Image):
 	def process(cls, element, inline_image=False):
 		me = cls()
 		path = element.attrib['src']
-		head, me.path = os.path.split(path)
+		head, filename = os.path.split(path)
+		me.predefined_image_path = True
+		me.path = u'Images/CourseAssets/%s/%s' %(scoped_registry.book_title, filename)
 		me.inline_image = inline_image
 		if 'alt' in element.attrib.keys():
 		    me.caption = element.attrib['alt']
-		source = get_image_path(me.path)
+		source = get_image_path(filename)
 		me.width, me.height = PILImage.open(source).size
-		save_image(source, me.path)
+		save_image(source, filename)
 		return me
 
 def get_image_path(image_title):
@@ -46,10 +48,9 @@ def save_image(source, filename):
 	with open (source, 'rb') as file_:
 		data = StringIO.StringIO(file_.read()).getvalue()
 
-	output_directory = u'%s/images/' %scoped_registry.output_directory 
-	filepath = u'%s%s' %(output_directory, filename) 
+	filepath = u'%s/Images/CourseAssets/%s/%s' % (scoped_registry.output_directory, scoped_registry.book_title, filename)
 	if not os.path.exists(os.path.dirname(filepath)):
-		os.mkdir(os.path.dirname(filepath))
+		os.makedirs(os.path.dirname(filepath))
 
 	with open(filepath, 'wb') as file_:
 		file_.write(data)
