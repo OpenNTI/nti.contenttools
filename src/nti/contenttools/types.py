@@ -218,6 +218,7 @@ class Image( DocumentStructureNode ):
 		self.height = 0
 		self.equation_image = False
 		self.inline_image = False
+		self.predefined_image_path = False
 
 class DocxImage( Image ):
 	pass

@@ -12,8 +12,7 @@ from ... import types
 
 def _image_renderer(self, command):
     params, command = set_image_params_and_command(self,command)
-    #to make sure we always keep images under images dir (especially when we work on Epub)
-    new_path = 'images/%s' %(self.path)
+    new_path = self.path if self.predefined_image_path else 'images/%s' %(self.path)
     return u'\\%s[%s]{%s}' % (command, params, new_path)
 
 def image_annotation_renderer(self):
