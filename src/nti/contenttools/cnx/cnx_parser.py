@@ -166,11 +166,19 @@ def get_included_tex(included_tex_list):
 
 def generate_main_tex_content(metadata, included_tex_list):
 	title = u'\\title{%s}\n' %metadata[u'title'] if 'title' in metadata else u''
-	author = u'\\author{%s}\n' %metadata[u'author'] if 'author' in metadata else u''
+	author = get_book_authors(metadata)
+	author = u'\\author{%s}\n' %author if author is not None else u''
 	package = get_packages()
 	latex = get_included_tex(included_tex_list)
 	return u'\\documentclass{book}\n%s%s%s\\begin{document}\n%s\\end{document}' %(package, title, author, latex)
 
+def get_book_authors(metadata):
+	if u'actors' in metadata:	
+		actors = metadata[u'actors']
+		if u'person' in actors:
+			person = actors[u'person']
+			if u'fullname' in person : 
+				return person[u'fullname']
 def main():
 	cnx_parser = CNXParser(u'collection.xml')
 	result =  cnx_parser.process_collection()
