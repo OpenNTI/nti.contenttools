@@ -34,6 +34,7 @@ from .note import *
 from .equation_image import *
 from ... util import string_replacer
 from .footnote import *
+from .cnx_alternate_content import *
 
 def note_renderer(self):
     content = base_renderer(self)
@@ -216,6 +217,8 @@ types.OpenstaxTitle.render = openstax_title_renderer
 
 types.FootnoteMark.render = footnotemark_renderer
 types.FootnoteText.render = footnotetext_renderer
+
+types.CNXProblemSolution.render  = cnx_problem_solution_renderer
 
 def register():
     pass
