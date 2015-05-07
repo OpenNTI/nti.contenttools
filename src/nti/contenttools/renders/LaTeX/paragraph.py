@@ -9,7 +9,7 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 from .base import base_renderer, _command_renderer
-from .code_line import _code_renderer, _code_listings_renderer
+from .code_line import verbatim_code_renderer, _code_listings_renderer
 
 def _chapter( arg ):
     return _command_renderer( 'chapter', arg )
@@ -70,7 +70,7 @@ def paragraph_renderer(self):
         elif style in IGNORED_STYLES:
             pass
         elif style in [u'Code', u'cCode']:
-            result = _code_renderer(self)
+            result = verbatim_code_renderer(self)
             code_style = True
         elif style in [u'Figure']:
             result = u'Figure : %s' %result

@@ -181,6 +181,8 @@ types.OMathLimUpp.render = omath_limupp_rendered
 types.OMathBorderBox.render = omath_bdr_box_rendered
 
 types.CodeLine.render = code_line_rendered
+types.Code.render = verbatim_code_renderer
+
 types.AlternateContent.render = alternate_content_rendered
 types.TextBoxContent.render = text_box_content_rendered
 types.NoteInteractive.render = note_interactive_rendered

@@ -35,6 +35,9 @@ class Image(types.Image):
 		if 'alt' in element.attrib.keys():
 		    me.caption = element.attrib['alt']
 		source = get_image_path(filename)
+		if not os.path.exists(source):
+			logger.warn('COULD NOT FIND Image : %s', source) 
+			return types.Run()
 		me.width, me.height = PILImage.open(source).size
 		save_image(source, filename)
 		return me

@@ -597,6 +597,9 @@ class OMathBorderBox(DocumentStructureNode):
 class CodeLine(DocumentStructureNode):
 	pass
 
+class Code(DocumentStructureNode):
+	pass
+
 class AlternateContent(DocumentStructureNode):
 	pass
 

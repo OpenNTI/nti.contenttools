@@ -22,8 +22,6 @@ from ..renders.LaTeX.base import base_renderer
 from .. import scoped_registry
 from . import cnx_glossary
 
-
-
 class CNXParser(object):
 	def __init__(self, input_file, output_directory):
 		cnx_xml = CNX_XML()
@@ -99,6 +97,8 @@ class CNXParser(object):
 		if content.modules :
 			subcollection_content = self.process_modules(content.modules, type_ = u'subcollection', latex_filename = tex_filename) 
 			subcollection_content = self.process_glossary(subcollection_content)
+			chapter = u'\\chaptertitlesuppressed{%s}\n' %(subcollection.title)
+			subcollection_content= u'%s\n%s' %(chapter, subcollection_content)
 			self.write_to_file(subcollection_content, tex_filename)
 
 	def write_to_file(self, content, filename, type_= None):
