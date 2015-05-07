@@ -425,6 +425,9 @@ def check_child(me, element, reading_type=None):
             me.add_child(Section.process(child))
         elif child.tag == 'math':
             me.add_child(Math.process(child))
+        elif child.tag == 'code':
+            from .code_adapter import Code
+            me.add_child(Code.process(child))
         else:
             if isinstance(child,HtmlComment):
                 pass
@@ -537,9 +540,6 @@ def _process_s_elements(element):
 
 def _process_dfn_elements(child):
     return Run.process(element, 'italic')
-
-def _process_code_elements(element):
-    return CodeLine.process(element)
 
 def _process_samp_elements(element):
     return Run.process(element)
