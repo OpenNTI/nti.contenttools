@@ -57,7 +57,7 @@ class Sidebar(types.Sidebar):
         me = check_child(me, element)
         me = check_element_tail(me, element)
         if me.title is None : 
-            me.title = sidebar_type
+            me.title = sidebar_type.title()
         return me
 
 class Section( types.Section):
@@ -124,8 +124,8 @@ class OrderedList( types.OrderedList ):
     @classmethod
     def process(cls, element):
         me = cls()
-        if 'style' in element.attrib:
-            numbering_type = element.attrib['style']
+        if 'data-number-style' in element.attrib:
+            numbering_type = element.attrib['data-number-style']
             me.start = 1
 
             if numbering_type == u'1': me.format = 'decimal'
@@ -586,11 +586,13 @@ def _process_div_elements( element, parent):
         if type_ == u'document-title' : 
             styles.append(u'Section')
             el = Paragraph.process(element, styles)
-        elif type_ in [u'note', u'abstract', u'solution', u'problem', u'example', u'exercise']:
+        elif type_ in [u'note', u'abstract', u'example', 'exercise']:
             el = Sidebar.process(element, sidebar_type =type_)
         elif type_ == u'title':
             el = Run()
             parent.title = Run.process(element)
+        elif type_ in [u'problem', u'solution']:
+            el = CNXProblemSolution.process(element)
         elif type_ == u'glossary':
             el = Run()
             from .glossary_adapter import CNXGlossary
@@ -641,3 +643,16 @@ def get_figure_image(element):
     for child in element:
         if child.tag == u'img':
             return Image.process(child)
+
+class CNXProblemSolution(types.CNXProblemSolution):
+    @classmethod
+    def process(cls, element):
+        me = cls()
+        data_type = element.attrib[u'data-type'] if u'data-type' in element.attrib else None
+        me.label = element.attrib[u'id'] if u'id' in element.attrib else None
+        me.title = types.TextNode(data_type.title())
+        me = check_element_text(me, element)
+        me = check_child(me, element)
+        me = check_element_tail(me, element)
+        return me
+

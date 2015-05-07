@@ -847,6 +847,11 @@ class CNXHTMLBody(DocumentStructureNode):
 class CNXGlossary(DocumentStructureNode):
 	pass
 
+class CNXProblemSolution(DocumentStructureNode):
+	def __init__(self):
+		self.title = None
+		self.label = None
+
 class GlossaryDefinition(DocumentStructureNode):
 	def __init__(self):
 		self.term = None
