@@ -591,7 +591,9 @@ def _process_div_elements( element, parent):
             styles.append(u'Section')
             el = Paragraph.process(element, styles)
         elif type_ in [u'note', u'abstract', u'example', 'exercise']:
-            el = Sidebar.process(element, sidebar_type =type_)
+            el = Run()
+            el.add_child(Sidebar.process(element, sidebar_type =type_))
+            el.add_child(types.Newline())
         elif type_ == u'title':
             el = Run()
             parent.title = Run.process(element)
