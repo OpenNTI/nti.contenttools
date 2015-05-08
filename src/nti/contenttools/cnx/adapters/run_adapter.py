@@ -63,12 +63,16 @@ class Sidebar(types.Sidebar):
 class Section( types.Section):
     @classmethod
     def process(cls, element):
-        data_depth = element.attrib['data-depth'] if u'data-depth' in element.attrib  else u'1'
+        data_depth = element.attrib['data-depth'] if u'data-depth' in element.attrib  else None
         
-        if data_depth == u'1': me = cls()
-        elif data_depth == u'2' : me = types.SubSection()
-        elif data_depth == u'3' : me = types.SubSubSection()
-        else : logger.warn('Unhandled section data depth %s', data_depth)
+        if data_depth == u'1': me = types.SubSection()
+        elif data_depth == u'2' : me = types.SubSubSection()
+        elif data_depth == u'3' : 
+            me = Paragraph.process(element)
+            return me
+        else : 
+            me = cls()
+            logger.warn('Unhandled section data depth %s', data_depth)
         
         if u'id' in element.attrib : me.label = element.attrib['id']
         if u'class' in element.attrib : me.section_type = element.attrib['class']
