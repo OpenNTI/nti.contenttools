@@ -274,6 +274,18 @@ def check_math_element_child(me, element):
             me.add_child(MathRun.process(child))
         elif child.tag == 'annotation-xml':
             pass
+        elif child.tag == 'menclose':
+            me.add_child(MMenclose.process(child))
         else:
             logger.warn("UNHANDLED  math element: %s", child.tag)
     return me
+
+class MMenclose(types.MMenclose):
+    @classmethod
+    def process(cls, element):
+        me = cls()
+        if u'notation' in element.attrib:
+            me.notation = element.attrib[u'notation']
+            logger.info('memclose notation %s', me.notation)
+        me = check_math_element_child(me, element)
+        return me

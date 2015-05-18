@@ -137,6 +137,7 @@ class OrderedList( types.OrderedList ):
             elif u'upper-alpha' in numbering_type : me.format = 'upperLetter'
             elif u'lower-roman' in numbering_type : me.format = 'lowerRoman'
             elif u'upper-roman' in numbering_type : me.format = 'upperRoman'
+            elif u'arabic' in numbering_type : me.format = 'decimal'
             else:
                 logger.warn("UNHANDLED OrderedList numbering format type %s", numbering_type)
 
@@ -657,6 +658,17 @@ class CNXProblemSolution(types.CNXProblemSolution):
         data_type = element.attrib[u'data-type'] if u'data-type' in element.attrib else None
         me.label = element.attrib[u'id'] if u'id' in element.attrib else None
         me.title = types.TextNode(data_type.title())
+        me = check_element_text(me, element)
+        me = check_child(me, element)
+        me = check_element_tail(me, element)
+        return me
+
+class PreTag(types.PreTag):
+    @classmethod
+    def process(cls, element):
+        me = cls()
+        data_type = element.attrib[u'data-type'] if u'data-type' in element.attrib else None
+        me.label = element.attrib[u'id'] if u'id' in element.attrib else None
         me = check_element_text(me, element)
         me = check_child(me, element)
         me = check_element_tail(me, element)

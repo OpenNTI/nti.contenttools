@@ -421,6 +421,10 @@ class MUnderover(DocumentStructureNode):
 class MOver(DocumentStructureNode):
 	pass
 
+class MMenclose(DocumentStructureNode):
+	def  __init__(self):
+		self.notation = None
+
 class OMath(DocumentStructureNode):
 	pass
 
@@ -872,3 +876,6 @@ class FootnoteMark(DocumentStructureNode):
 	def __init__(self):
 		self.text = None
 		self.num = None
+
+class PreTag(DocumentStructureNode):
+	pass

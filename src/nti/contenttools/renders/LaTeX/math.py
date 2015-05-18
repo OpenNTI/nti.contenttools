@@ -147,8 +147,9 @@ def math_sub_html_rendered(self):
 	"""
 	to render <msub> element
 	"""
-	if len(self.children)> 2 :
-		raise Exception("<msub> should only have 2 children")
+	if len(self.children) != 2 :
+		logger.warn('<msub> element should have 2 children')
+		return u''
 	else:
 		return u'{%s}_{%s}' %(self.children[0].render(), self.children[1].render())
 
@@ -195,7 +196,7 @@ def math_munder_html_rendered(self):
 	"""
 	to render <munder> element
 	"""
-	if len(self.children[0].children) == 2:
+	if len(self.children) == 2:
 		base_1  = self.children[0].render()
 		base_2 = self.children[1].render()
 		if u'23df' in base_2.lower() or u'\u23df' in unicode(base_2).split():
@@ -205,7 +206,8 @@ def math_munder_html_rendered(self):
 		else:
 			return u'\\underset{%s}{%s}' %(base_2, base_1)
 	else:
-		raise Exception ("mathml <munder> element should have 2 children")
+		logger.warn("mathml <munder> element should have 2 children")
+		return u''
 
 def math_munderover_html_rendered(self):
 	"""
