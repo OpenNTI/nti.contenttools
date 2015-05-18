@@ -66,6 +66,8 @@ class CNXParser(object):
 				tex_filename = u'%s.tex' %rename_filename(module.title)
 				self.latex_filenames.append(tex_filename)
 				doc_content = self.process_glossary(doc_content)
+				attribution = self.get_attribution()
+				if attribution is not None: doc_content = u'%s\n\n%s' %(doc_content, attribution)
 				self.write_to_file(doc_content, tex_filename)
 			elif type_ == u'subcollection': 
 				doc_content = self.process_document(module.document)
@@ -85,6 +87,8 @@ class CNXParser(object):
 				doc_fragment = html.fromstring(file_.read())
 			cnx_html_body = adapt(doc_fragment, self)
 		tex_content = base_renderer(cnx_html_body)
+		attribution = self.get_attribution()
+		if attribution is not None: tex_content = u'%s\n\n%s' %(tex_content, attribution)
 		logger.info(u'________________________________________')
 		return u'%s\n\n' %tex_content 
 
@@ -133,6 +137,12 @@ class CNXParser(object):
 		with codecs.open( json_file, 'w', 'utf-8' ) as fp:
 			fp.write(dict_json)
 
+	def get_attribution(self):
+		if u'content-url' in self.metadata : 
+			atthref  =  self.metadata[u'content-url']
+			attribution  = u'\\subsection{Attribution}\n\\textbf{Original book can be downloaded at \\href{%s}{%s}}' %(atthref, atthref)
+			return attribution
+
 
 def get_packages():
 	LATEX_PACKAGES = [u'graphix', 
@@ -177,6 +187,8 @@ def get_book_authors(metadata):
 			person = actors[u'person']
 			if u'fullname' in person : 
 				return person[u'fullname']
+
+
 def main():
 	cnx_parser = CNXParser(u'collection.xml')
 	result =  cnx_parser.process_collection()
