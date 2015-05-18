@@ -276,6 +276,12 @@ def check_math_element_child(me, element):
             pass
         elif child.tag == 'menclose':
             me.add_child(MMenclose.process(child))
+        elif child.tag == 'mmultiscripts':
+            me.add_child(MMultiscripts.process(child))
+        elif child.tag == 'mprescripts':
+            me.add_child(MMprescripts.process(child))
+        elif child.tag == 'none':
+            me.add_child(MNone.process(child))
         else:
             logger.warn("UNHANDLED  math element: %s", child.tag)
     return me
@@ -286,6 +292,38 @@ class MMenclose(types.MMenclose):
         me = cls()
         if u'notation' in element.attrib:
             me.notation = element.attrib[u'notation']
-            logger.info('memclose notation %s', me.notation)
         me = check_math_element_child(me, element)
         return me
+
+class MMultiscripts(types.MMultiscripts):
+    @classmethod
+    def process(cls, element):
+        mrun = types.MathRun()
+        mrun = check_math_element_child(mrun, element)
+        prescript_idx = None
+        for idx, child in enumerate(mrun.children):
+            if isinstance(child, types.MMprescripts):
+                prescript_idx = idx + 1
+        me = cls()
+        if prescript_idx is not None:
+            me.prescripts = types.MMprescripts()
+            me.prescripts.sub = mrun.children[prescript_idx: prescript_idx+1]
+            me.prescripts.sup = mrun.children[prescript_idx+1:]
+            me.base = mrun.children[:prescript_idx-1]
+        return me
+
+class MMprescripts(types.MMprescripts):
+    @classmethod
+    def process(cls, element):
+        me = cls()
+        me = check_math_element_child(me, element)
+        return me
+
+class MNone(types.MNone):
+    @classmethod
+    def process(cls, element):
+        me = cls()
+        me = check_math_element_child(me, element)
+        return me
+
+

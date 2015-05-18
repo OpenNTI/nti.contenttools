@@ -9,10 +9,7 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 def base_renderer(self):
-    result = []
-    for child in self.children:
-        result.append(child.render())
-    return ''.join(result)
+	return list_renderer(self.children)
 
 def _command_renderer(command, arg, optional=''):
     if optional is not '':
@@ -22,3 +19,10 @@ def _command_renderer(command, arg, optional=''):
 def _environment_renderer( self, element, optional ):
     body = base_renderer(self)
     return u'\\begin{%s}%s\n%s\n\\end{%s}\n' % ( element, optional, body, element)
+
+def list_renderer(content_list):
+	result = []
+	result_append = result.append
+	for item in content_list:
+		result_append(item.render())
+	return u''.join(result)

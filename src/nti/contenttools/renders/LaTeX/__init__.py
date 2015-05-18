@@ -148,6 +148,9 @@ types.Mroot.render = math_mroot_html_rendered
 types.MUnder.render = math_munder_html_rendered
 types.MUnderover.render = math_munderover_html_rendered
 types.MOver.render = math_mover_html_rendered
+types.MMultiscripts.render = math_mmultiscript_html_rendered
+types.MNone.render = math_mnone_html_rendered
+types.MMprescripts.render = math_mprescripts_html_rendered
 
 types.OMath.render = omath_rendered
 types.OMathPara.render = omath_para_rendered

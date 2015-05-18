@@ -11,7 +11,7 @@ logger = __import__('logging').getLogger(__name__)
 import re
 
 from ... import types
-from .base import base_renderer
+from .base import base_renderer, list_renderer
 
 """
 rendering MathML element
@@ -236,5 +236,33 @@ def math_mover_html_rendered(self):
 			return u'\\overbracket{%s}' %(self.children[0].render())
 	else:
 			return u'\\overset{%s}{%s}' %(self.children[1].render(), self.children[0].render())
+
+def math_mmultiscript_html_rendered(self):
+	"""
+	render <mmultiscript> element 
+	"""
+	if self.prescripts is not None and self.base is not None:
+		prescripts = self.prescripts.render()
+		base = list_renderer(self.base)
+		return u'%s{%s}' %(prescripts, base)
+	else:
+		logger.warn(u'<mmultiscript> prescripts or base is None')
+		return u''
+
+
+def math_mnone_html_rendered(self):
+	return u''
+
+def math_mprescripts_html_rendered(self):
+	if self.sub is not None and self.sup is not None:
+		return u'\\prescripts{%s}{%s}' %(list_renderer(self.sub), list_renderer(self.sup))
+	else:
+		logger.warn('prescripts sub or sup is None')
+		logger.warn(self.__parent__)
+		logger.warn(self.__parent__.children)
+		return u''
+
+
+
 
 

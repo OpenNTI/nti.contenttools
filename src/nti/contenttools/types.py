@@ -425,6 +425,19 @@ class MMenclose(DocumentStructureNode):
 	def  __init__(self):
 		self.notation = None
 
+class MMultiscripts(DocumentStructureNode):
+	def __init__(self):
+		self.base = None
+		self.prescripts = None
+
+class MNone(DocumentStructureNode):
+	pass
+
+class MMprescripts(DocumentStructureNode):
+	def __init__(self):
+		self.sub = None
+		self.sup = None
+
 class OMath(DocumentStructureNode):
 	pass
 
