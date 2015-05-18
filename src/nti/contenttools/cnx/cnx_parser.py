@@ -155,7 +155,8 @@ def get_packages():
 				 u'ntilatexmacros', 
 				 u'ntiassessment',
 				 u'ntislidedeck',
-				 u'ntiglossary']
+				 u'ntiglossary',
+				 u'mathtools']
 	package_list = []
 	package_list_append = package_list.append
 	for package in LATEX_PACKAGES:
