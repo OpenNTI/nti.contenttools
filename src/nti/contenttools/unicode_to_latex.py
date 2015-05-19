@@ -52,6 +52,7 @@ unicode_to_latex = {
         u"\u007C": "\\vert ",
         u"\u007D": "\\rbrace ",
         u"\u007E": "\\textasciitilde ",
+        u"\u00A0": " ",
         u"\u00A1": "\\textexclamdown ",
         u"\u00A2": "\\textcent ",
         u"\u00A3": "\\textsterling ",
