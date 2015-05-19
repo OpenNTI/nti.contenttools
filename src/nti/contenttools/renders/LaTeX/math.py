@@ -21,9 +21,12 @@ def math_html_renderer(self):
 	to render element <math>
 	"""
 	content = base_renderer(self)
+	if content.isspace() or len(content) == 0:
+		logger.warn('Empty math mode')
+		return u''
 	if self.equation_type == u'inline' : return u'\(%s\)' %content
 	else :return u'\[%s\]' %content
-
+	
 
 def math_row_html_renderer(self):
 	"""
@@ -100,22 +103,12 @@ def math_table_html_rendered(self):
 				#when it is a matrix
 				return u'%s' %(body)
 			else:
-				return u'$\\begin{tabular}{%s}\n%s\\end{tabular}$' %(string_col, body)
+				return u'\\begin{array}{%s}\n%s\\end{array}' %(string_col, body)
 		else:
-			return u'$\\begin{tabular}{%s}\n%s\\end{tabular}$' % (string_col, body)	
+			return u'\\begin{array}{%s}\n%s\\end{array}' % (string_col, body)	
 	else:
-		return u'$\\begin{tabular}{%s}\n%s\\end{tabular}$'	% (string_col, body)
+		return u'\\begin{array}{%s}\n%s\\end{array}'	% (string_col, body)
 
-
-def replace_special_char(char_list, string, replacer):
-	new_string = string
-	for char in string:
-		if char in char_list:
-			new_string = new_string.replace(char, replacer)
-	return new_string
-
-def find_and_replace_char_inside_matrix(string,old_char, new_char):
-	return re.sub("begin{.*}.*end{.*?}", lambda x:x.group(0).replace(old_char,new_char), string)
 
 def math_tr_html_rendered(self):
 	"""
@@ -132,7 +125,7 @@ def math_td_html_rendered(self):
 	to render <mtd> element
 	"""
 	result = base_renderer(self)
-	return u'$' + result +u'$'
+	return result
 
 def math_frac_html_rendered(self):
 	"""
@@ -168,7 +161,8 @@ def math_subsup_html_rendered(self):
 	to render <msubsup> element
 	"""
 	if len(self.children) > 3:
-		raise Exception("<msubsup> should only have 3 children")
+		logger.warn("<msubsup> should only have 3 children")
+		return u''
 	elif "int" in self.children[0].render():
 		return u'\\int_%s^\\%s' %(self.children[1].render(), self.children[2].render())
 	else:
@@ -241,27 +235,74 @@ def math_mmultiscript_html_rendered(self):
 	"""
 	render <mmultiscript> element 
 	"""
+	#TODO : fix this method after fixing <mprescripts> renderer (math_mprescripts_html_rendered)
+	return u''
+	"""
 	if self.prescripts is not None and self.base is not None:
 		prescripts = self.prescripts.render()
 		base = list_renderer(self.base)
-		return u'%s{%s}' %(prescripts, base)
+		if prescripts is not None: return u'%s{%s}' %(prescripts, base)
+		else : return u''
 	else:
 		logger.warn(u'<mmultiscript> prescripts or base is None')
 		return u''
-
+	"""
 
 def math_mnone_html_rendered(self):
 	return u''
 
 def math_mprescripts_html_rendered(self):
+	#TODO : find better way to render <mprescripts> element, don't use \prescripts since it depends on mathtools package
+	return u''
+	"""
 	if self.sub is not None and self.sup is not None:
-		return u'\\prescripts{%s}{%s}' %(list_renderer(self.sub), list_renderer(self.sup))
+		#return u'\\prescripts{%s}{%s}' %(list_renderer(self.sub), list_renderer(self.sup))
+		return u'{%s}_{%s}'
 	else:
 		logger.warn('prescripts sub or sup is None')
 		logger.warn(self.__parent__)
 		logger.warn(self.__parent__.children)
-		return u''
+	"""
 
+Menclose_NOTATION  = [
+						u'longdiv',
+						u'actuarial',
+						u'radical',
+						u'box',
+						u'roundedbox',
+						u'circle',
+						u'left',
+						u'right',
+						u'top',
+						u'bottom',
+						u'updiagonalstrike',
+						u'downdiagonalstrike',
+						u'verticalstrike',
+						u'horizontalstrike',
+						u'madruwb',
+						u'updiagonalarrow',
+						u'phasorangle'								
+					]
+
+def math_menclose_html_rendered(self):
+	#TODO : uncommment the lines after return u'' and handle all the possible menclose notation
+	return u''
+	"""
+	notation = list(self.notation.split())
+	base = base_renderer(self)
+	for item in notation:
+		if item == u'updiagonalstrike':
+			base = m_updiagonalstrike(base) 
+		#TODO :handle the other notations  
+	return base
+	"""
+
+def m_updiagonalstrike(base):
+	return u'\\cancel{%s}' %base
+
+def math_mtext_html_rendered(self):
+	content = base_renderer(self)
+	return u'\\text{%s}' %content
 
 
 

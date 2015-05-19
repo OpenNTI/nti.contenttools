@@ -438,6 +438,9 @@ class MMprescripts(DocumentStructureNode):
 		self.sub = None
 		self.sup = None
 
+class MText(DocumentStructureNode):
+	pass
+
 class OMath(DocumentStructureNode):
 	pass
 
