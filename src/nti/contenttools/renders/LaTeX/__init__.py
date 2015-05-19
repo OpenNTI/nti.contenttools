@@ -151,6 +151,8 @@ types.MOver.render = math_mover_html_rendered
 types.MMultiscripts.render = math_mmultiscript_html_rendered
 types.MNone.render = math_mnone_html_rendered
 types.MMprescripts.render = math_mprescripts_html_rendered
+types.MMenclose.render = math_menclose_html_rendered
+types.MText.render = math_mtext_html_rendered
 
 types.OMath.render = omath_rendered
 types.OMathPara.render = omath_para_rendered

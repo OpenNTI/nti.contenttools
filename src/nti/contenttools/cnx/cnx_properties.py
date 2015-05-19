@@ -28,6 +28,7 @@ cnx_prefixes = {
     'roles'			: u'{%s}roles' %mdml,
     'license'		: u'{%s}license' %mdml,
     'subjectlist'	: u'{%s}subjectlist' %mdml,
+    'subject'       : u'{%s}subject' %mdml,
     'abstract'		: u'{%s}abstract' %mdml,
     'language'		: u'{%s}language' %mdml,
     'role'          : u'{%s}role' %mdml,
@@ -36,5 +37,10 @@ cnx_prefixes = {
     'surname'       : u'{%s}surname' %mdml,
     'fullname'      : u'{%s}fullname' %mdml,
     'email'         : u'{%s}email' %mdml,
+    'keyword'       : u'{%s}keyword' %mdml,
+    'keywordlist'   : u'{%s}keywordlist' %mdml,
+    'organization'  : u'{%s}organization' %mdml,
+    'shortname'     : u'{%s}shortname' %mdml,
+    'fullname'      : u'{%s}fullname' %mdml,
 }
 
