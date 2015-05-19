@@ -226,8 +226,6 @@ def _process_munderover_elements(element):
 def _process_mover_elements(element):
     return MOver.process(element)
 
-def _process_mtext_elements(element):
-    return MathRun.process(element)
 
 def check_math_element_child(me, element):
     if element.text:
@@ -263,7 +261,7 @@ def check_math_element_child(me, element):
         elif child.tag == 'mroot':
             me.add_child(_process_mroot_elements(child))
         elif child.tag == 'mtext':
-            me.add_child(_process_mtext_elements(child))
+            me.add_child(MText.process(child))
         elif child.tag == 'munderover':
             me.add_child(_process_munderover_elements(child))
         elif child.tag == 'munder':
@@ -326,4 +324,9 @@ class MNone(types.MNone):
         me = check_math_element_child(me, element)
         return me
 
-
+class MText(types.MText):
+    @classmethod
+    def process(cls, element):
+        me = cls()
+        me = check_math_element_child(me, element)
+        return me
