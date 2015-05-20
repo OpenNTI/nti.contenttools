@@ -95,7 +95,7 @@ types.Paragraph.render = paragraph_renderer
 types.Run.render = run_renderer
 
 types.OrderedList.render = ordered_list_renderer
-types.UnorderedList.render = list_renderer
+types.UnorderedList.render = unordered_list_renderer
 types.DescriptionList.render = list_desc_renderer
 types.List.render = list_renderer
 types.Item.render = item_renderer

@@ -35,7 +35,7 @@ def math_row_html_renderer(self):
 	result = []
 	for child in self.children:
 		result.append(child.render())
-	return u''.join(result) + u''
+	return u''.join(result)
 
 def math_fenced_html_rendered(self):
 	"""
