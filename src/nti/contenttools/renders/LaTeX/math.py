@@ -235,34 +235,26 @@ def math_mmultiscript_html_rendered(self):
 	"""
 	render <mmultiscript> element 
 	"""
-	#TODO : fix this method after fixing <mprescripts> renderer (math_mprescripts_html_rendered)
-	return u''
-	"""
 	if self.prescripts is not None and self.base is not None:
 		prescripts = self.prescripts.render()
 		base = list_renderer(self.base)
-		if prescripts is not None: return u'%s{%s}' %(prescripts, base)
-		else : return u''
+		return u'%s%s' %(prescripts, base)
 	else:
 		logger.warn(u'<mmultiscript> prescripts or base is None')
 		return u''
-	"""
 
 def math_mnone_html_rendered(self):
 	return u''
 
 def math_mprescripts_html_rendered(self):
-	#TODO : find better way to render <mprescripts> element, don't use \prescripts since it depends on mathtools package
-	return u''
-	"""
 	if self.sub is not None and self.sup is not None:
-		#return u'\\prescripts{%s}{%s}' %(list_renderer(self.sub), list_renderer(self.sup))
-		return u'{%s}_{%s}'
+		sub = list_renderer(self.sub)
+		sup = list_renderer(self.sup)
+		return u'{_{%s}^{%s}}' %(sub, sup)
 	else:
 		logger.warn('prescripts sub or sup is None')
 		logger.warn(self.__parent__)
 		logger.warn(self.__parent__.children)
-	"""
 
 
 def math_menclose_html_rendered(self):
