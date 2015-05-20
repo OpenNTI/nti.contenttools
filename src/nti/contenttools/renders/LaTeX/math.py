@@ -24,7 +24,7 @@ def math_html_renderer(self):
 	if content.isspace() or len(content) == 0:
 		logger.warn('Empty math mode')
 		return u''
-	if self.equation_type == u'inline' : return u'\(%s\)' %content
+	if self.equation_type == u'inline' : return u' \(%s\) ' %content
 	else :return u'\[%s\]' %content
 	
 
