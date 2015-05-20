@@ -264,45 +264,96 @@ def math_mprescripts_html_rendered(self):
 		logger.warn(self.__parent__.children)
 	"""
 
-Menclose_NOTATION  = [
-						u'longdiv',
-						u'actuarial',
-						u'radical',
-						u'box',
-						u'roundedbox',
-						u'circle',
-						u'left',
-						u'right',
-						u'top',
-						u'bottom',
-						u'updiagonalstrike',
-						u'downdiagonalstrike',
-						u'verticalstrike',
-						u'horizontalstrike',
-						u'madruwb',
-						u'updiagonalarrow',
-						u'phasorangle'								
-					]
 
 def math_menclose_html_rendered(self):
-	#TODO : uncommment the lines after return u'' and handle all the possible menclose notation
-	return u''
-	"""
 	notation = list(self.notation.split())
 	base = base_renderer(self)
 	for item in notation:
 		if item == u'updiagonalstrike':
-			base = m_updiagonalstrike(base) 
-		#TODO :handle the other notations  
+			#TODO : need to use package : cancel, uncomment if we are able to use cancel
+			#base = m_updiagonalstrike(base) 
+			pass
+		elif item == u'downdiagonalstrike':
+			#TODO : need to use package : cancel, uncomment if we are able to use cancel
+			#base = m_downdiagonalstrike(base)
+			pass
+		elif item == 'radical':
+			base = m_radical(base)
+		elif item == 'left':
+			base = m_left(base)
+		elif item == 'right':
+			base = m_right(base)
+		elif item == 'top':
+			base = m_top(base)
+		elif item == 'bottom':
+			base = m_bottom(base)
+		elif item == 'verticalstrike':
+			#TODO : need to use package : cancel, uncomment if we are able to use cancel
+			#base = m_verticalstrike(base)
+			pass
+		elif item == 'horizontalstrike':
+			#TODO : need to use package : cancel, uncomment if we are able to use cancel
+			#base = m_horizontalstrike(base)
+			pass
+		elif item == 'madruwb':
+			#TODO : create a method to handle this notation
+			pass
+		elif item == 'updiagonalarrow':
+			#TODO : create a method to handle this notation
+			pass
+		elif item == 'phasorangle':
+			#TODO : create a method to handle this notation
+			pass
+		elif item == 'actuarial':
+			#TODO : create a method to handle this notation
+			pass
+		elif item == 'box':
+			base = m_box(base)
+		elif item == 'roundedbox':
+			#TODO : create a method to handle this notation
+			pass
+		elif item == 'circle':
+			#TODO : create a method to handle this notation
+			pass
+		elif item == 'longdiv':
+			base = m_longdiv(base)
 	return base
-	"""
+
+def m_radical(base):
+	return u'\\sqrt{%s}' %base
 
 def m_updiagonalstrike(base):
 	return u'\\cancel{%s}' %base
 
+def m_downdiagonalstrike(base):
+	return u'\\bcancel{%s}' %base
+
+def m_horizontalstrike(base):
+	return u'\\hcancel{%s}' %base
+
+def m_top(base):
+	return u'\\overline{%s}' %base
+
+def m_bottom(base):
+	return u'\\underline{%s}' %base
+
+def m_box(base):
+	return u'\\boxed{%s}' %base
+
+def m_longdiv(base):
+	#TODO : the render result will look odd, find a better command
+	return u'\\overline{)%s}' %base
+
+def m_left(base):
+	return u'\\Big|%s' %base
+
+def m_right(base):
+	return u'%s\Big|' %base
+
 def math_mtext_html_rendered(self):
 	content = base_renderer(self)
-	return u'\\text{%s}' %content
+	if len(content) > 0 : return u'\\text{%s}' %content 
+	else : return u''
 
 
 
