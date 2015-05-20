@@ -808,7 +808,7 @@ unicode_to_latex = {
         u"\u220F": "\\prod ",
         u"\u2210": "\\coprod ",
         u"\u2211": "\\sum ",
-        u"\u2212": "-"
+        u"\u2212": "-",
         u"\u2213": "\\mp ",
         u"\u2214": "\\dotplus ",
         u"\u2216": "\\setminus ",
