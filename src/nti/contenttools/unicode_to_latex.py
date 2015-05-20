@@ -34,8 +34,6 @@ def _replace_multi_char(text):
                 index = index + 1 
         return new_text
 
-
-
 unicode_to_latex = {
         u"{" : "\\{",
         u"}" : "\\}",

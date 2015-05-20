@@ -246,7 +246,8 @@ class DescriptionList(List):
 
 
 class UnorderedList( List ):
-	pass
+	def __init__(self):
+		super(UnorderedList, self).__init__()
 
 class OrderedList( List ):
 	def __init__(self):

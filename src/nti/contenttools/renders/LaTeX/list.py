@@ -10,7 +10,8 @@ logger = __import__('logging').getLogger(__name__)
 
 from .base import base_renderer, _environment_renderer
 
-
+def unordered_list_renderer(self):
+    return _environment_renderer(self, u'itemize', u'')
 
 def ordered_list_renderer(self):
     optional = u''
@@ -35,8 +36,6 @@ def ordered_list_renderer(self):
     check = base_renderer(self)
     if u'\\item' in check : return _environment_renderer(self, u'enumerate', optional) 
     else : return check
-
-    
 
 def list_renderer(self):
     return _environment_renderer(self, u'itemize', u'')
