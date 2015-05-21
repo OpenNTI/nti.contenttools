@@ -498,6 +498,7 @@ def process_span_list(element):
         else:
             logger.warn('Unhandled span list child : %s', child.tag)
     row = Row()
+    row.number_of_col = table.number_of_col
     cell = Cell()
     cell.add_child(children[0])
     row.add_child(cell)
@@ -507,7 +508,9 @@ def process_span_list(element):
         if i % 3 == 0:
             table.add_child(row)
             row = Row()
+            row.number_of_col = 3
         row.add_child(cell)
+    table.add_child(row)
     return table
 
 def _process_ul_elements( element ):
@@ -634,7 +637,7 @@ def _process_div_elements( element, parent):
         else:
             el = Run.process(element)
     return el
-    
+
 class Iframe(types.Iframe):
     @classmethod
     def process(cls, element):
