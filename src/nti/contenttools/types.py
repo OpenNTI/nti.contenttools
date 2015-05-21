@@ -275,7 +275,7 @@ class DD(DocumentStructureNode):
 	pass
 
 class Table(DocumentStructureNode):
-	def __init__(self, number_of_col_header=0, number_of_col_body=0, caption=None, label=None, border=False, type_=None, alignment=u'left'):
+	def __init__(self, number_of_col_header=0, number_of_col_body=0, caption=None, label=None, border=None, type_=None, alignment=u'left'):
 		self.number_of_col_header = number_of_col_header
 		self.number_of_col_body = number_of_col_body
 		self.caption = caption

@@ -14,6 +14,7 @@ from .math_adapter import Math
 from .image_adapter import Image
 from lxml.html import HtmlComment
 from ... import scoped_registry
+import math
 
 
 def adapt(fragment, cnx):
@@ -482,8 +483,32 @@ def _process_span_elements( element ):
     if data_type == u'term' :
         from .glossary_adapter import GlossaryTerm
         return GlossaryTerm.process(element)
+    elif data_type == u'list' :
+        return process_span_list(element)
     return Run.process(element)
 
+def process_span_list(element):
+    table = Table()
+    table.label = element.attrib[u'id'] if u'id' in element.attrib else None
+    table.number_of_col = 3
+    children = []
+    for child in element:
+        if child.tag == 'span':
+            children.append(Run.process(child))
+        else:
+            logger.warn('Unhandled span list child : %s', child.tag)
+    row = Row()
+    cell = Cell()
+    cell.add_child(children[0])
+    row.add_child(cell)
+    for i in range(1,len(children)):
+        cell = Cell()
+        cell.add_child(children[i])
+        if i % 3 == 0:
+            table.add_child(row)
+            row = Row()
+        row.add_child(cell)
+    return table
 
 def _process_ul_elements( element ):
     return UnorderedList.process(element)
@@ -570,7 +595,7 @@ def _process_table_elements(element):
 def _process_colgroup_elements(element):
     pass
 
-def _process_tbody_elements(element, border=False):
+def _process_tbody_elements(element, border=None):
     return TBody.process(element, border)
 
 def _process_tr_elements(element):
@@ -609,7 +634,7 @@ def _process_div_elements( element, parent):
         else:
             el = Run.process(element)
     return el
-
+    
 class Iframe(types.Iframe):
     @classmethod
     def process(cls, element):

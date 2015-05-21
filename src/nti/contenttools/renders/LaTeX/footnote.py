@@ -18,3 +18,4 @@ def footnotetext_renderer(self):
 	child_text = base_renderer(self)
 	result = u'\\footnotetext[%s]{%s %s}\n' %(self.num, text, child_text) if self.num is not None else u'\\footnotetext{%s %s}\n' %(text, child_text)	
 	return result
+
