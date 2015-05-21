@@ -87,8 +87,6 @@ def process_footnote_anchor_element(el, element):
 		ref_node = check_element_tail(ref_node, element)
 		if isinstance(el.children[-1], types.FootnoteText):
 			el.children[-1].add_child(ref_node)
-			from IPython.core.debugger import Tracer
-			Tracer()()
 	return el
 
 
