@@ -50,3 +50,45 @@ class FootnoteMark(types.FootnoteMark):
 		el.add_child(me)
 		el = check_element_tail(el, element)
 		return el
+
+class CNXFootnoteSection(object):
+	"""
+	There is no need to create new section of Footnote list
+	"""
+	def __init__(self):
+		self.type_ = 'footnote-section'
+	def process(self, element):
+		el = Run()
+		el = retrieve_footnote_element(el, element)
+		return el
+
+def retrieve_footnote_element(el, element):
+	for child in element:
+		if child.tag == 'ol':
+			el = retrieve_footnote_element(el, child)
+		elif child.tag == 'li':
+			el = retrieve_footnote_element(el, child)
+		elif child.tag == 'a':
+			el = process_footnote_anchor_element(el,child)
+		else:
+			continue
+	return el
+
+def process_footnote_anchor_element(el, element):
+	data_type = element.attrib[u'data-type'] if 'data-type' in element.attrib else u''
+	if data_type == u'footnote-ref':
+		el.add_child(FootnoteText.process(element))
+	else:
+		additional_el = Run()
+		ref = element.attrib[u'href'] if 'href' in element.attrib else u''
+		ref = types.TextNode(ref)
+		ref_node = Run()
+		ref_node.add_child(ref)
+		ref_node = check_element_tail(ref_node, element)
+		if isinstance(el.children[-1], types.FootnoteText):
+			el.children[-1].add_child(ref_node)
+			from IPython.core.debugger import Tracer
+			Tracer()()
+	return el
+
+
