@@ -193,9 +193,9 @@ def tbody_html_renderer(self):
     return result
 
 def theader_html_renderer(self):
-    result = u'\\hline %s \\hline\n'
+    result = u'\\hline %s \\hline\n' if self.__parent__.border else u'%s'
     return result %(base_renderer(self))
 
 def tfooter_html_renderer(self):
-    result = u'\\hline %s \\hline\n'
+    result = u'\\hline %s \\hline\n' if self.__parent__.border else u'%s'
     return result %(base_renderer(self))
