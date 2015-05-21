@@ -508,10 +508,7 @@ def _process_sup_elements( element ):
 
 def _process_a_elements( element ):
     data_type = element.attrib[u'data-type'] if 'data-type' in element.attrib else u''
-    if data_type == u'footnote-ref':
-        from .footnote_adapter import FootnoteText
-        el = FootnoteText.process(element)
-    elif data_type == u'footnote-number':
+    if data_type == u'footnote-number':
         from .footnote_adapter import FootnoteMark
         el = FootnoteMark.process(element)
     else:
@@ -605,6 +602,10 @@ def _process_div_elements( element, parent):
             from .glossary_adapter import CNXGlossary
             glossary = CNXGlossary.process(element)
             scoped_registry.cnx_glossary.append(glossary)
+        elif type_ == u'footnote-refs':
+            from .footnote_adapter import CNXFootnoteSection
+            footnote_section  = CNXFootnoteSection()
+            el = footnote_section.process(element)
         else:
             el = Run.process(element)
     return el
