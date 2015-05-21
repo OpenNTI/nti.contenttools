@@ -505,10 +505,10 @@ def process_span_list(element):
     for i in range(1,len(children)):
         cell = Cell()
         cell.add_child(children[i])
-        if i % 3 == 0:
+        if i % table.number_of_col == 0:
             table.add_child(row)
             row = Row()
-            row.number_of_col = 3
+            row.number_of_col = table.number_of_col
         row.add_child(cell)
     table.add_child(row)
     return table
