@@ -34,7 +34,8 @@ class CNX_XML(object):
 			if element.tag in metadata_values:
 				idx = element.tag.find(u'}') + 1
 				key = element.tag[idx:]
-				if element.text.isspace() or len(element.text) == 0:
+				logger.info(element.tag)
+				if element.text is None or element.text.isspace() or len(element.text) == 0:
 					metadata_dict = self.check_metadata_child(element, metadata_dict, key)
 				else : metadata_dict[key] = element.text
 		return metadata_dict
