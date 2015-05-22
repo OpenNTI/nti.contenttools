@@ -227,9 +227,9 @@ def math_mover_html_rendered(self):
 	to render <mover> element
 	"""
 	if u'23de' in self.children[1].render().lower() or u'\u23de' in unicode(self.children[1].render()).split():
-			return u'\\overbracket{%s}' %(self.children[0].render())
+		return u'\\overbracket{%s}' %(self.children[0].render()) 
 	else:
-			return u'\\overset{%s}{%s}' %(self.children[1].render(), self.children[0].render())
+		return u'\\overset{%s}{%s}' %(self.children[1].render(), self.children[0].render())
 
 def math_mmultiscript_html_rendered(self):
 	"""

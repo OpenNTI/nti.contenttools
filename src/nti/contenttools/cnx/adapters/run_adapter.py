@@ -376,7 +376,7 @@ def check_child(me, element, reading_type=None):
             me.add_child(_process_sub_elements(child))
         elif child.tag == 'sup':
             me.add_child(_process_sup_elements(child))
-        elif child.tag == 'em':
+        elif child.tag == 'em' or child.tag == 'emphasis':
             me.add_child(_process_em_elements(child))
         elif child.tag == 'img':
             me.add_child(Image.process(child, reading_type))
@@ -438,7 +438,7 @@ def check_child(me, element, reading_type=None):
             if isinstance(child,HtmlComment):
                 pass
             else:
-                print('Unhandled Run child: %s.',child)
+                logger.warn('Unhandled Run child: %s.',child)
     return me 
  
 def check_element_tail(me, element):
