@@ -634,6 +634,7 @@ class NoteInteractive(DocumentStructureNode):
 		self.link = link
 		self.caption = caption
 		self.notes = notes
+		self.complete_image_path = None
 
 	def set_image_path(self,image_path):
 		self.image_path = image_path
