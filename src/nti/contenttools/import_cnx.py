@@ -16,6 +16,7 @@ import simplejson as json
 
 from .util import string_replacer
 from .cnx.cnx_parser import CNXParser
+from . import scoped_registry
 
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
@@ -55,6 +56,9 @@ def main():
 	# Create the output directory if it does not exist
 	if not os.path.exists( args.output ):
 		os.mkdir( args.output )
+
+	# create a txt file to store information about image's name and location used in nticard
+	scoped_registry.nticard_images_filename = os.path.join(args.output, 'nticard_images.txt')
 
 	cnx = CNXParser(inputfile, args.output)
 	result =  cnx.process_collection()

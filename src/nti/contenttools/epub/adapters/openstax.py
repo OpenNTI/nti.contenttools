@@ -348,7 +348,7 @@ class NoteInteractive(types.NoteInteractive):
                         elif sub_el.tag == 'p':
                             el, link, note = process_link_interactive(sub_el, epub)
                             notes = notes + note
-                            me.set_notes(notes)
+                            #me.set_notes(notes)
                             if link is not None:
                                 me.set_link(link)
                         elif sub_el.tag == 'div' and sub_el.attrib['class'] == 'itemsizedlist':
@@ -361,6 +361,7 @@ class NoteInteractive(types.NoteInteractive):
                     logger.warn('Unhandled note interactiv div class %s',class_)
             else:
                 logger.warn('Unhandled note interactive element %s', child.tag)
+        me.notes = types.TextNode(notes)
         if me.link is None:
             logger.warn('Link is empty')
             logger.warn('notes : %s', me.notes)
