@@ -15,27 +15,31 @@ import codecs
 from ... import scoped_registry
 from ... import types
 from .run_adapter import Run
+from .image_adapter import Image
 
 class NoteInteractive(types.NoteInteractive):
 	@classmethod
 	def process(cls, element):
 		me = cls()
+		notes = Run()
 		for child in element:
 			if child.tag == u'span':
-				data_type = element.attrib[u'data-type'] if u'data-type' in element.attrib else None
+				data_type = child.attrib[u'data-type'] if u'data-type' in element.attrib else None
 				if data_type == u'media':
-					el = Run.process(child)
-					me = process_note_interactive_media(me, el)
+					me = process_note_interactive_media(me, child)
 				else:
-					me.add_child(Run.process(child))
+					notes.add_child(Run.process(child))
 			else :
-				me.add_child(Run.process(child))
+				notes.add_child(Run.process(child))
+		me.notes = notes
 		return me
 
-def process_note_interactive_media(note_interactive, media):
-	for child in media.children:
-		if isinstance(child, types.Image):
-			note_interactive.complete_image_path = child.path
-			note_interactive.caption = child.caption
-	return note_interactive 
+def process_note_interactive_media(note_interactive,element):
+	for child in element:
+		if child.tag == 'img':
+			img = Image.process(child)
+			note_interactive.complete_image_path = img.path
+			note_interactive.caption = img.caption
+	return note_interactive
+
                       
