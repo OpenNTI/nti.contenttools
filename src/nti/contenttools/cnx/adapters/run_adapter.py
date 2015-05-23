@@ -485,6 +485,7 @@ def _process_span_elements( element ):
         return GlossaryTerm.process(element)
     elif data_type == u'list' :
         return process_span_list(element)
+    if data_type is not None : logger.warn('proces SPAN as default %s', data_type)
     return Run.process(element)
 
 def process_span_list(element):
@@ -617,9 +618,15 @@ def _process_div_elements( element, parent):
             styles.append(u'Section')
             el = Paragraph.process(element, styles)
         elif type_ in [u'note', u'abstract', u'example', 'exercise']:
-            el = Run()
-            el.add_child(Sidebar.process(element, sidebar_type =type_))
-            el.add_child(types.Newline())
+            data_label = element.attrib[u'data-label'] if u'data-label' in element.attrib else None
+            if data_label in [u'Click and Explore']:
+                from .note_interactive_adapter import NoteInteractive
+                el = NoteInteractive.process(element)
+                if el.caption is None or el.caption.isspace() or len(el.caption) == 0: el.caption = data_label
+            else:
+                el = Run()
+                el.add_child(Sidebar.process(element, sidebar_type =type_))
+                el.add_child(types.Newline())
         elif type_ == u'title':
             el = Run()
             parent.title = Run.process(element)
@@ -633,8 +640,10 @@ def _process_div_elements( element, parent):
         elif type_ == u'footnote-refs':
             from .footnote_adapter import CNXFootnoteSection
             footnote_section  = CNXFootnoteSection()
-            el = footnote_section.process(element)
+            el = footnote_section.process(element) 
         else:
+            if type_ is not None : 
+                if type_ not in [u'newline'] : logger.warn('process div as default %s', type_)
             el = Run.process(element)
     return el
 
@@ -673,6 +682,8 @@ class Figure(types.Figure):
                 if u'data-alt' in child.attrib : me.image_alt = types.TextNode(child.attrib[u'data-alt'])
                 img = get_figure_image(child)
                 me.add_child(img)
+            else:
+                logger.warn('Unhandled figure child %s', child.tag)
         return me
 
 def get_figure_image(element):
