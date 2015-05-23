@@ -33,7 +33,7 @@ class Image(types.Image):
 		me.path = u'Images/CourseAssets/%s/%s' %(scoped_registry.book_title, filename)
 		me.inline_image = inline_image
 		if 'alt' in element.attrib.keys():
-		    me.caption = element.attrib['alt']
+		    me.caption = types.TextNode(element.attrib['alt'])
 		source = get_image_path(filename)
 		if not os.path.exists(source):
 			logger.warn('COULD NOT FIND Image : %s', source) 
