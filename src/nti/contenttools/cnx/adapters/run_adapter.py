@@ -677,6 +677,7 @@ class Figure(types.Figure):
     @classmethod
     def process(cls, element):
         me = cls()
+        multi_figures = Run()
         if u'id' in element.attrib : me.label = element.attrib[u'id']
         for child in element:
             if child.tag == u'figcaption':
@@ -687,6 +688,8 @@ class Figure(types.Figure):
                 if u'data-alt' in child.attrib : me.image_alt = types.TextNode(child.attrib[u'data-alt'])
                 img = get_figure_image(child)
                 me.add_child(img)
+            elif child.tag == u'figure':
+                me.add_child(Figure.process(child))
             else:
                 logger.warn('Unhandled figure child %s', child.tag)
         return me
