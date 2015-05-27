@@ -149,7 +149,6 @@ class OrderedList( types.OrderedList ):
             else:
                 logger.info('OrderedList child %s',child.tag)
                 el = Item()
-
             if isinstance(el, types.Item) or isinstance(el, types.List):
                 me.add_child( el )
             else:
@@ -640,7 +639,12 @@ def _process_div_elements( element, parent):
         elif type_ == u'footnote-refs':
             from .footnote_adapter import CNXFootnoteSection
             footnote_section  = CNXFootnoteSection()
-            el = footnote_section.process(element) 
+            el = footnote_section.process(element)
+        elif type == u'list':
+            el = UnorderedList()
+            el.add_child(Run.process(element))
+        elif type_  == u'item':
+            el = Item.process(element)
         else:
             if type_ is not None : 
                 if type_ not in [u'newline'] : logger.warn('process div as default %s', type_)
