@@ -640,8 +640,9 @@ def _process_div_elements( element, parent):
             from .footnote_adapter import CNXFootnoteSection
             footnote_section  = CNXFootnoteSection()
             el = footnote_section.process(element)
-        elif type == u'list':
-            el = UnorderedList()
+        elif type_ == u'list':
+            list_type = element.attrib['data-list-type'] if 'data-list-type' in element.attrib else None
+            el = OrderedList() if list_type == 'enumerated' else UnorderedList()
             el.add_child(Run.process(element))
         elif type_  == u'item':
             el = Item.process(element)
