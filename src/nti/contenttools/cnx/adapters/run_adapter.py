@@ -120,7 +120,7 @@ class Hyperlink( types.Hyperlink ):
                     me.target = me.target[idx:]
                 if u'#' in me.target :  me.target = me.target.replace(u'#', u'')
         if link.text:
-            me.add_child(types.TextNode( link.text ) )
+            me.add_child(types.TextNode(link.text ) )
         for child in link:
             me.add_child( Run.process( child))
         return me
@@ -690,6 +690,8 @@ class Figure(types.Figure):
                 me.add_child(img)
             elif child.tag == u'figure':
                 me.add_child(Figure.process(child))
+            elif child.tag == u'div':
+                me.add_child(_process_div_elements(child, me))
             else:
                 logger.warn('Unhandled figure child %s', child.tag)
         return me

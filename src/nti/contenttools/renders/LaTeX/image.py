@@ -77,13 +77,10 @@ def figure_rendered(self):
         caption = self.image_alt.render() if self.image_alt is not None else u''
 
     label = self.label
+    title = u'\\textbf{%s}\n\\newline\n' %self.title.render() if self.title is not None else u''
 
-    if caption is None:
-        return u'\\begin{figure}\n\\begin{center}\n%s\n\\label{%s}\n\\end{center}\n\\end{figure}\n\n'\
-         %(base_renderer(self), label)
-    else:
-        return u'\\begin{figure}\n\\begin{center}\n%s\n\\caption{%s}\n\\label{%s}\n\\end{center}\n\\end{figure}\n\n'\
-         %(base_renderer(self), caption, label)
+    return u'\\begin{figure}\n\\begin{center}\n%s%s\n\\caption{%s}\n\\label{%s}\n\\end{center}\n\\end{figure}\n\n'\
+         %(title, base_renderer(self), caption, label)
 
 def check_image_in_table(self):
     """
