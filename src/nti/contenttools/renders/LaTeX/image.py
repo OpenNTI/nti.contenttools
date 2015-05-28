@@ -72,7 +72,7 @@ def base_figured_rendered(info):
 def figure_rendered(self):
     caption = u''
     if self.caption is not None:
-        caption = base_renderer(self.caption)
+        caption = self.caption.render() #base_renderer(self.caption) 
     else:
         caption = self.image_alt.render() if self.image_alt is not None else u''
 

@@ -478,13 +478,23 @@ def _process_h7_elements( element,reading_type=None):
     return Paragraph.process(element, ['Heading7'], reading_type)
 
 def _process_span_elements( element ):
-    data_type = element.attrib[u'data-type'] if u'data-type' in element.attrib else None
+    data_type = element.attrib[u'data-type'] if u'data-type' in element.attrib else u''
     if data_type == u'term' :
         from .glossary_adapter import GlossaryTerm
         return GlossaryTerm.process(element)
     elif data_type == u'list' :
         return process_span_list(element)
-    if data_type is not None : logger.warn('proces SPAN as default %s', data_type)
+    elif data_type == u'emphasis':
+        return Run.process(element, ['italic'])
+    elif data_type == u'media':
+        el = Figure()
+        el.label = element.attrib[u'id'] if u'id' in element.attrib else None
+        img = get_figure_image(element)
+        el.add_child(img)
+        el.caption = img.caption
+        return el 
+    else:
+        logger.warn('process SPAN as default %s', data_type)
     return Run.process(element)
 
 def process_span_list(element):
@@ -608,7 +618,7 @@ def _process_td_elements(element):
     return Cell.process(element)
 
 def _process_div_elements( element, parent):
-    type_ = element.attrib['data-type'] if 'data-type' in element.attrib else None
+    type_ = element.attrib['data-type'] if 'data-type' in element.attrib else u''
     if type_ is None : 
         el = Run.process(element)
     else:
@@ -647,8 +657,7 @@ def _process_div_elements( element, parent):
         elif type_  == u'item':
             el = Item.process(element)
         else:
-            if type_ is not None : 
-                if type_ not in [u'newline'] : logger.warn('process div as default %s', type_)
+            if type_ not in [u'newline', u'equation', u'commentary', u''] : logger.warn('process div as default %s', type_)
             el = Run.process(element)
     return el
 
