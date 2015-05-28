@@ -29,17 +29,30 @@ class GlossaryDefinition(types.GlossaryDefinition):
 	@classmethod
 	def process(cls, element):
 		me = cls()
-		for child in element:
-			data_type = child.attrib[u'data-type'] if u'data-type' in child.attrib else u''
-			el = Run()
-			el = check_element_text(el, child)
-			el = check_child(el, child)
-			el = check_element_tail(el, child)
-			if data_type == u'term' : me.term = el
-			elif data_type == u'meaning' : me.meaning = el
-			else : logger.warn(u'Unhandled data type %s', data_type)
+		if element.tag == 'dl':
+			me = process_glossary_dl_element(me, element)
+		else:
+			for child in element:
+				data_type = child.attrib[u'data-type'] if u'data-type' in child.attrib else u''
+				el = Run()
+				el = check_element_text(el, child)
+				el = check_child(el, child)
+				el = check_element_tail(el, child)
+				if data_type == u'term' : me.term = el
+				elif data_type == u'meaning' : me.meaning = el
+				else : logger.warn(u'Unhandled data type %s', data_type)
 		return me
-			
+
+def process_glossary_dl_element(glossary_def_node,element):
+	for child in element :
+		if child.tag == 'dt':
+			glossary_def_node.term = Run.process(child)
+		elif child.tag == 'dd':
+			glossary_def_node.meaning = Run.process(child)
+		else:
+			logger.warn('Unhandled glossary dl element child %s', child.tag)
+	return glossary_def_node
+
 class CNXGlossary(types.CNXGlossary):
 	@classmethod
 	def process(cls, element):
@@ -47,7 +60,10 @@ class CNXGlossary(types.CNXGlossary):
 		for child in element:
 			if child.tag == u'h2' : continue
 			data_type = child.attrib[u'data-type'].strip() if u'data-type' in child.attrib else u''
-			if data_type == u'definition': me.add_child(GlossaryDefinition.process(child))
+			glossary_class = child.attrib[u'class'].strip() if u'class' in  child.attrib else u''
+			me.add_child(GlossaryDefinition.process(child))
+			if data_type == u'definition' or glossary_class == u'definition': 
+				me.add_child(GlossaryDefinition.process(child))
 			else : 
 				logger.warn('Unhandled CNX glossary data type : %s',data_type)
 		return me
