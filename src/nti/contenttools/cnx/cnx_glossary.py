@@ -14,6 +14,7 @@ from .. import types
 from nti.contenttools.renders.LaTeX import register
 from ..glossary import glossary_check
 
+
 def create_glossary_dictionary(cnx_glossary_list):
 	"""
 	create glossary dictionary from the list of cnx_glossary
@@ -27,8 +28,8 @@ def create_glossary_dictionary(cnx_glossary_list):
 def process_cnx_glossary(cnx_glossary_node, glossary_dict):
 	for child in cnx_glossary_node:
 		if isinstance(child, types.GlossaryDefinition):
-			term = child.term.render().strip()
-			meaning = child.meaning.render().strip()
+			term = child.term.render().strip() if child.term is not None else  u''
+			meaning = child.meaning.render().strip() if child.meaning is not None else  u''
 			if term in glossary_dict:
 				if meaning != glossary_dict[term]:
 					logger.info(term)
