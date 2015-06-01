@@ -48,18 +48,20 @@ def math_fenced_html_rendered(self):
 	for child in self.children:
 		result.append(child.render())
 
-	if isinstance(self.children[0], types.Mtable):
-		return set_matrix_border(opener, result)
-	elif isinstance(self.children[0], types.MRow):
-		if self.children[0].children:
-			if isinstance(self.children[0].children[0], types.Mtable):
-				return set_matrix_border(opener, result)
+	if len(self.children) > 0:
+		if isinstance(self.children[0], types.Mtable):
+			return set_matrix_border(opener, result)
+		elif isinstance(self.children[0], types.MRow):
+			if self.children[0].children:
+				if isinstance(self.children[0].children[0], types.Mtable):
+					return set_matrix_border(opener, result)
+				else:
+					return opener + u''.join(result) + u'' + close
 			else:
-				return opener + u''.join(result) + u'' + close
+				return opener + u''.join(result) + u'' + close 
 		else:
-			return opener + u''.join(result) + u'' + close 
-	else:
-		return opener + u''.join(result) + u'' + close 
+			return opener + u''.join(result) + u'' + close
+	else : return u'' 
 
 
 def set_matrix_border (opener, result):
@@ -77,7 +79,7 @@ def math_run_html_rendered(self):
 	result = []
 	for child in self.children:
 		result.append(child.render())
-	return u''.join(result) + u''
+	return u''.join(result) 
 
 def math_table_html_rendered(self):
 	"""
@@ -131,8 +133,9 @@ def math_frac_html_rendered(self):
 	"""
 	to render <mfrac> element
 	"""
-	if len(self.children) > 2 :
-		raise Exception("<mfrac> should only have 2 children")
+	if len(self.children) != 2 :
+		logger.warn("<mfrac> should only have 2 children")
+		return u''
 	else:
 		return u'\\frac{%s}{%s}' %(self.children[0].render(), self.children[1].render())
 

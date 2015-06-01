@@ -67,6 +67,10 @@ def sidebar_renderer(self):
     else: title = u'%s' % base_renderer(self.title).strip() 
 
     label = u'\\label{%s}\n' % self.label if self.label else u''
+
+    if any(chars in title for chars in [u'\\(', u'\\[' ]):
+        logger.warn("Math element found in sidebar's title. It may cause TROUBLE with nti_render, therefore no title for this sidebar. Use textbf to write title in sidebar body")
+        return u'\\begin{sidebar}%s\n\\textbf{%s}\n%s\\end{sidebar}\n' % (label,title,body)
     
     return u'\\begin{sidebar}{%s}\n%s%s\\end{sidebar}\n' % (title, label,body)
 

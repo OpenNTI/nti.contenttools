@@ -44,7 +44,7 @@ def _parse_args():
 							 help="File index to start writing attribution")
 	arg_parser.add_argument( '-s', '--skipspine',
 							 default=None,
-							 help="Epub spine id")
+							 help="skipped epub spine id")
 	return arg_parser.parse_args()
 
 def _title_escape( title ):

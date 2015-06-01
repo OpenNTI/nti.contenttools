@@ -81,11 +81,11 @@ class Mtr(types.Mtr):
                 me.add_child(types.TextNode(element.text, type_text = 'omath'))
 
         for child in element:
-            if child.tag == 'mtd':
+            if child.tag == 'mtd': 
                 me.add_child(_process_mtd_elements(child))
-                number_of_col = number_of_col + 1
             else:
-                logger.warn("UNHANDLED child under TABLE element %s", child.tag)
+                me = check_child_element_type(me, child)
+            number_of_col = number_of_col + 1
         me.set_number_of_col(number_of_col)
         return me
 
@@ -232,56 +232,61 @@ def check_math_element_child(me, element):
         if element.text.isspace():pass
         else: me.add_child(types.TextNode(element.text, type_text = 'omath'))
     for child in element:
-        if child.tag == 'mi':
-            me.add_child(_process_mi_elements(child))
-        elif child.tag == 'mo':
-            me.add_child(_process_mo_elements(child))
-        elif child.tag == 'mn':
-            me.add_child(_process_mn_elements(child))
-        elif child.tag == 'mrow':
-            me.add_child(_process_mrow_elements(child))
-        elif child.tag == 'msup':
-            me.add_child(_process_msup_elements(child))
-        elif child.tag == 'msub':
-            me.add_child(_process_msub_elements(child))
-        elif child.tag == 'mfenced':
-            me.add_child(_process_mfenced_elements(child))
-        elif child.tag == 'mspace':
-            pass
-        elif child.tag == 'msubsup':
-            me.add_child(_process_msubsup_elements(child))
-        elif child.tag == 'mfrac':
-            me.add_child(_process_mfrac_elements(child))
-        elif child.tag == 'mover':
-            me.add_child(_process_mover_elements(child))
-        elif child.tag == 'mtable':
-            me.add_child(_process_mtable_elements(child))
-        elif child.tag == 'msqrt':
-            me.add_child(_process_msqrt_elements(child))
-        elif child.tag == 'mroot':
-            me.add_child(_process_mroot_elements(child))
-        elif child.tag == 'mtext':
-            me.add_child(MText.process(child))
-        elif child.tag == 'munderover':
-            me.add_child(_process_munderover_elements(child))
-        elif child.tag == 'munder':
-            me.add_child(_process_munder_elements(child))
-        elif child.tag == 'mstyle':
-            pass
-        elif child.tag == 'semantics':
-            me.add_child(MathRun.process(child))
-        elif child.tag == 'annotation-xml':
-            pass
-        elif child.tag == 'menclose':
-            me.add_child(MMenclose.process(child))
-        elif child.tag == 'mmultiscripts':
-            me.add_child(MMultiscripts.process(child))
-        elif child.tag == 'mprescripts':
-            me.add_child(MMprescripts.process(child))
-        elif child.tag == 'none':
-            me.add_child(MNone.process(child))
-        else:
-            logger.warn("UNHANDLED  math element: %s", child.tag)
+        check_child_element_type(me, child)
+    return me
+
+def check_child_element_type(me, child):
+    if child.tag == 'mi':
+        me.add_child(_process_mi_elements(child))
+    elif child.tag == 'mo':
+        me.add_child(_process_mo_elements(child))
+    elif child.tag == 'mn':
+        me.add_child(_process_mn_elements(child))
+    elif child.tag == 'mrow':
+        me.add_child(_process_mrow_elements(child))
+    elif child.tag == 'msup':
+        me.add_child(_process_msup_elements(child))
+    elif child.tag == 'msub':
+        me.add_child(_process_msub_elements(child))
+    elif child.tag == 'mfenced':
+        me.add_child(_process_mfenced_elements(child))
+    elif child.tag == 'mspace':
+        pass
+    elif child.tag == 'msubsup':
+        me.add_child(_process_msubsup_elements(child))
+    elif child.tag == 'mfrac':
+        me.add_child(_process_mfrac_elements(child))
+    elif child.tag == 'mover':
+        me.add_child(_process_mover_elements(child))
+    elif child.tag == 'mtable':
+        me.add_child(_process_mtable_elements(child))
+    elif child.tag == 'msqrt':
+        me.add_child(_process_msqrt_elements(child))
+    elif child.tag == 'mroot':
+        me.add_child(_process_mroot_elements(child))
+    elif child.tag == 'mtext':
+        me.add_child(MText.process(child))
+    elif child.tag == 'munderover':
+        me.add_child(_process_munderover_elements(child))
+    elif child.tag == 'munder':
+        me.add_child(_process_munder_elements(child))
+    elif child.tag == 'mstyle':
+        fontstyle = child.attrib['fontstyle'] if 'fontstyle' in child.attrib else u''
+        me.add_child(MathRun.process(child, styles = [fontstyle]))
+    elif child.tag == 'semantics':
+        me.add_child(MathRun.process(child))
+    elif child.tag == 'annotation-xml':
+        pass
+    elif child.tag == 'menclose':
+        me.add_child(MMenclose.process(child))
+    elif child.tag == 'mmultiscripts':
+        me.add_child(MMultiscripts.process(child))
+    elif child.tag == 'mprescripts':
+        me.add_child(MMprescripts.process(child))
+    elif child.tag == 'none':
+        me.add_child(MNone.process(child))
+    else:
+        logger.warn("UNHANDLED  math element: %s", child.tag)
     return me
 
 class MMenclose(types.MMenclose):
