@@ -13,27 +13,13 @@ from ... import types
 
 
 def subsection_renderer(self):
-    title = u''
-    if isinstance (self.title, str): title = self.title 
-    elif self.title is not None  : title = self.title.render().strip()
-
-    label = u''
-    if isinstance(self.label, str): label = u'\\label{%s}' % (self.label)
-    elif self.label is not None:label = self.label.render().strip()
-        
+    title = get_title(self.title)
+    label = get_label(self.label)    
     return u'\\subsection{%s}\n%s\n%s' %(title, label, base_renderer(self))
 
-    
-
 def subsubsection_renderer(self):
-    title = u''
-    if isinstance (self.title, str): title = self.title 
-    elif self.title is not None  : title = self.title.render().strip()
-
-    label = u''
-    if isinstance(self.label, str): label = u'\\label{%s}' % (self.label)
-    elif self.label is not None:label = self.label.render().strip()
-        
+    title = get_title(self.title)
+    label = get_label(self.label)
     return u'\\subsubsection{%s}\n%s\n%s' %(title, label, base_renderer(self))
 
 def subsubsubsection_renderer(self):
@@ -43,33 +29,29 @@ def subsubsubsubsection_renderer(self):
     return _command_renderer('subsubsubsubsection', base_renderer(self).strip() ) + u'\n'
 
 def chapter_renderer(self):
-    
-    if self.title is None:
-        title = u''
-    else:
-        title = self.title
-
-    label = u''
-    if isinstance(self.label, str):
-        label = u'\\label{%s}' % (self.label)
-    elif self.label is not None:
-        label = self.label.render()
-
+    title = get_title(self.title)
+    label = get_label(self.label)
     if self.suppressed:
         return u'\\chaptertitlesuppressed{%s%s}%s' %(title, label, base_renderer(self))
     else:
         return u'\\chapter{%s%s}%s' %(title, label, base_renderer(self))
 
 def section_renderer(self):
-    title = u''
-    if isinstance (self.title, str): title = self.title 
-    elif self.title is not None  : title = self.title.render().strip()
-
-    label = u''
-    if isinstance(self.label, str): label = u'\\label{%s}' % (self.label)
-    elif self.label is not None:label = self.label.render().strip()
-        
+    title = get_title(self.title)
+    label = get_label(self.label)
     if self.suppressed:
         return u'\\sectiontitlesuppressed{%s}\n%s\n%s' %(title, label, base_renderer(self))
     else:
         return u'\\section{%s}\n%s\n%s' %(title, label, base_renderer(self))
+
+def get_title(node_title):
+    title = u''
+    if isinstance (node_title, str) or isinstance(node_title, unicode): title = node_title
+    elif node_title is not None  : title = node_title.render().strip()
+    return title
+
+def get_label(node_label):
+    label = u''
+    if isinstance(node_label, str): label = u'\\label{%s}' % (node_label)
+    elif node_label is not None:label = node_label.render().strip()
+    return label
