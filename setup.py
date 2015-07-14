@@ -30,16 +30,26 @@ setup(
 		'Natural Language :: English',
 		'Operating System :: OS Independent',
 		'Programming Language :: Python :: 2',
-		'Programming Language :: Python :: 2.7',
-		'Programming Language :: Python :: 3',
-		'Programming Language :: Python :: 3.3',
-		],
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+    ],
 	packages=find_packages('src'),
 	package_dir={'': 'src'},
 	namespace_packages=['nti'],
 	install_requires=[
-		'setuptools',
-		'nti.dataserver'
-	],
-	entry_points=entry_points
+        'setuptools',
+        'gevent',
+        'lxml',
+        'Pillow',
+        'pyramid',
+        'simplejson',
+        'zope.component',
+        'zope.exceptions',
+        'zope.interface',
+        'zope.security',
+        'zope.traversing',
+        'nti.contentfragments'
+    ],
+    entry_points=entry_points
 )
