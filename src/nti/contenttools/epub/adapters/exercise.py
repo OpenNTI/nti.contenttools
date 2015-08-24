@@ -17,7 +17,6 @@ from ... import types
 
 from .openstax import Run
 from .openstax import SubSection
-from IPython.core.debugger import Tracer
 
 def _process_exercise_div(element, epub, problem_type=None):
 	

@@ -13,7 +13,6 @@ logger = __import__('logging').getLogger(__name__)
 from lxml.html import HtmlComment
 
 from ... import types
-from IPython.core.debugger import Tracer
 
 class EquationImage(types.EquationImage):
 

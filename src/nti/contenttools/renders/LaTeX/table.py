@@ -11,8 +11,6 @@ logger = __import__('logging').getLogger(__name__)
 from .base import base_renderer
 from ... import types
 
-from IPython.core.debugger import Tracer
-
 def table_renderer(self):
     caption = u''
     colspec = u''
