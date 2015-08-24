@@ -7,7 +7,6 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
-from IPython.core.debugger import Tracer
 
 import os
 import shutil

@@ -8,8 +8,6 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from IPython.core.debugger import Tracer
-
 import os
 import shutil
 import subprocess
