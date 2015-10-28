@@ -3,32 +3,36 @@
 """
 .. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
 from nti.contentfragments.interfaces import PlainTextContentFragment
+
 from nti.contentfragments.latex import PlainTextToLatexFragmentConverter
 
-from nti.contenttools import unicode_to_latex
+from . import unicode_to_latex
 
-class _Node( object ):
+class _Node(object):
+
 	__parent__ = None
+
 	children = ()
-	
-	def add_child( self, child ):
+
+	def add_child(self, child):
 		if self.children == ():
 			self.children = []
-		if isinstance( child, _Node ):
-			self.children.append( child )
+		if isinstance(child, _Node):
+			self.children.append(child)
 			child.__parent__ = self
 
-	def remove_child( self, child ):
-		self.children.remove( child )
+	def remove_child(self, child):
+		self.children.remove(child)
 		child.__parent__ = None
 
-	def render( self):
+	def render(self):
 		result = u''
 
 		if not hasattr(self, 'children'):
@@ -41,15 +45,19 @@ class _Node( object ):
 
 	def __iter__(self):
 		current_item = 0
-		while ( current_item < len(self.children) ):
+		while (current_item < len(self.children)):
 			yield self.children[current_item]
 			current_item += 1
 
 def _to_latex(text, type_text):
-	#replace special unicode in TextNode with latex tag when text is a part of equation (math element)
-	#we use unicode_to_latex._replace_unicode_with_latex_tag(text) to avoid going through large extended escape_list
-	#otherwise the text replacement will take place when calling in nti.contentfragments.latex.PlainTextToLatexFragmentConverter 
-	#and try to keep escape list for nti.contentfragments.latex.PlainTextToLatexFragmentConverter small
+	# replace special unicode in TextNode with latex tag when text is
+	# a part of equation (math element)
+	# we use unicode_to_latex._replace_unicode_with_latex_tag(text) to
+	# avoid going through large extended escape_list
+	# otherwise the text replacement will take place when calling in
+	# nti.contentfragments.latex.PlainTextToLatexFragmentConverter
+	# and try to keep escape list for
+	# nti.contentfragments.latex.PlainTextToLatexFragmentConverter small
 	new_text = text
 	if type_text == 'omath':
 		string_list = list(text)
@@ -63,44 +71,44 @@ def _to_latex(text, type_text):
 
 class TextNode(_Node, PlainTextContentFragment):
 
-	__slots__ = PlainTextContentFragment.__slots__ + ('children','__parent__')
+	__slots__ = PlainTextContentFragment.__slots__ + ('children', '__parent__')
 
-	def __new__( cls, text ='', type_text = None):
-		return super(TextNode,cls).__new__( cls, _to_latex(text, type_text) )
+	def __new__(cls, text='', type_text=None):
+		return super(TextNode, cls).__new__(cls, _to_latex(text, type_text))
 
-	def __init__( self, text='', type_text = None):
+	def __init__(self, text='', type_text=None):
 		# Note: __new__ does all the actual work, because these are immutable as strings
-		super(TextNode,self).__init__( self, _to_latex(text, type_text) )
+		super(TextNode, self).__init__(self, _to_latex(text, type_text))
 
-	def render( self ):
-		return unicode( self )
+	def render(self):
+		return unicode(self)
 
-class DocumentStructureNode( _Node ):
-	
+class DocumentStructureNode(_Node):
+
 	STYLES = {}
 
-	def __init__( self ):
-		super( DocumentStructureNode, self ).__init__()
+	def __init__(self):
+		super(DocumentStructureNode, self).__init__()
 		self.styles = []
 
-	def raw( self ):
+	def raw(self):
 		val = u''
 		for child in self:
-			if hasattr( child, 'raw' ):
+			if hasattr(child, 'raw'):
 				val = val + child.raw()
 			else:
 				val = val + child
 		return val
 
-	def addStyle( self, style ):
+	def addStyle(self, style):
 		self.styles.append(style)
 
-	def removeStyle( self, style ):
+	def removeStyle(self, style):
 		self.styles.remove(style)
 
-class Document( DocumentStructureNode ):
+class Document(DocumentStructureNode):
 
-	def __init__( self, doc_type=u'book' ):
+	def __init__(self, doc_type=u'book'):
 		self.doc_type = doc_type
 		self.title = u''
 		self.author = u''
@@ -116,16 +124,16 @@ class Document( DocumentStructureNode ):
 						  'Tabbing',
 						  'textgreek']
 
-class Body( DocumentStructureNode ):
+class Body(DocumentStructureNode):
 	pass
 
 class EPUBBody(DocumentStructureNode):
 	pass
 
-class Chapter( DocumentStructureNode ):
+class Chapter(DocumentStructureNode):
 
-	def __init__( self, suppressed=False, title=None, label=None ):
-		super( Chapter, self ).__init__()
+	def __init__(self, suppressed=False, title=None, label=None):
+		super(Chapter, self).__init__()
 		self.suppressed = suppressed
 		self.title = title
 		self.label = label
@@ -136,10 +144,10 @@ class Chapter( DocumentStructureNode ):
 	def set_label(self, label):
 		self.label = label
 
-class Section( DocumentStructureNode ):
+class Section(DocumentStructureNode):
 
-	def __init__( self, suppressed=False, label = None, title = None):
-		super( Section, self ).__init__()
+	def __init__(self, suppressed=False, label=None, title=None):
+		super(Section, self).__init__()
 		self.suppressed = suppressed
 		self.title = title
 		self.label = label
@@ -152,66 +160,67 @@ class Section( DocumentStructureNode ):
 	def set_label(self, label):
 		self.label = label
 
-class SubSection( Section ):
-	def __init__( self, label = None, title = None):
-		super( SubSection, self ).__init__()
+class SubSection(Section):
+
+	def __init__(self, label=None, title=None):
+		super(SubSection, self).__init__()
 		self.title = title
 		self.label = label
 
-class SubSubSection( Section ):
+class SubSubSection(Section):
 	pass
 
-class SubSubSubSection( Section ):
+class SubSubSubSection(Section):
 	pass
 
-class SubSubSubSubSection( Section ):
+class SubSubSubSubSection(Section):
 	pass
 
-class Paragraph( DocumentStructureNode ):
+class Paragraph(DocumentStructureNode):
 	pass
 
-class Run( DocumentStructureNode ):
+class Run(DocumentStructureNode):
 	pass
 
-class Newline( DocumentStructureNode ):
+class Newline(DocumentStructureNode):
 	pass
 
-class Note( DocumentStructureNode ):
+class Note(DocumentStructureNode):
 	pass
 
-class Hyperlink( DocumentStructureNode ):
+class Hyperlink(DocumentStructureNode):
 
 	def __init__(self, target=None, type_='Normal'):
-		super( Hyperlink, self ).__init__()
+		super(Hyperlink, self).__init__()
 		self.target = target
 		self.type = type_
 
 class Iframe(DocumentStructureNode):
 	pass
-	
-class Label( DocumentStructureNode ):
+
+class Label(DocumentStructureNode):
 
 	def __init__(self, name=''):
-		super( Label, self ).__init__()
+		super(Label, self).__init__()
 		self.name = name
 
-class Sidebar( DocumentStructureNode ):
+class Sidebar(DocumentStructureNode):
 
 	def __init__(self, title=''):
-		super( Sidebar, self ).__init__()
+		super(Sidebar, self).__init__()
 		self.title = None
 		self.label = None
 
-class BlockQuote( DocumentStructureNode ):
+class BlockQuote(DocumentStructureNode):
 
 	def __init__(self, source=''):
-		super( BlockQuote, self ).__init__()
+		super(BlockQuote, self).__init__()
 		self.source = source
 
-class Image( DocumentStructureNode ):
+class Image(DocumentStructureNode):
 
 	def __init__(self, path=''):
-		super( Image, self ).__init__()
+		super(Image, self).__init__()
 		self.path = u''
 		self.caption = u''
 		self.width = 0
@@ -220,20 +229,20 @@ class Image( DocumentStructureNode ):
 		self.inline_image = False
 		self.predefined_image_path = False
 
-class DocxImage( Image ):
+class DocxImage(Image):
 	pass
 
-class Video( DocumentStructureNode ):
+class Video(DocumentStructureNode):
 
 	def __init__(self, path=''):
-		super( Video, self ).__init__()
+		super(Video, self).__init__()
 		self.path = u''
 		self.thumbnail = u''
 		self.caption = u''
 		self.width = 0
 		self.height = 0
 
-class List( DocumentStructureNode ):
+class List(DocumentStructureNode):
 
 	def __init__(self, level='', group='', start=0, fmt=''):
 		self.level = level
@@ -244,22 +253,23 @@ class List( DocumentStructureNode ):
 class DescriptionList(List):
 	pass
 
+class UnorderedList(List):
 
-class UnorderedList( List ):
 	def __init__(self):
 		super(UnorderedList, self).__init__()
 
-class OrderedList( List ):
+class OrderedList(List):
 	def __init__(self):
 		super(OrderedList, self).__init__(fmt='decimal')
 
-class Item( DocumentStructureNode ):
+class Item(DocumentStructureNode):
 	pass
 
-class ItemWithDesc( Item ):
+class ItemWithDesc(Item):
 	pass
-	
+
 class DT(DocumentStructureNode):
+
 	def __init__(self, desc=None, type_=None):
 		self.desc = desc
 		self.type_ = type_
@@ -275,7 +285,9 @@ class DD(DocumentStructureNode):
 	pass
 
 class Table(DocumentStructureNode):
-	def __init__(self, number_of_col_header=0, number_of_col_body=0, caption=None, label=None, border=None, type_=None, alignment=u'left'):
+
+	def __init__(self, number_of_col_header=0, number_of_col_body=0, caption=None,
+				 label=None, border=None, type_=None, alignment=u'left'):
 		self.number_of_col_header = number_of_col_header
 		self.number_of_col_body = number_of_col_body
 		self.caption = caption
@@ -303,14 +315,15 @@ class Table(DocumentStructureNode):
 		self.type_ = type_
 
 	def set_alignment(self, alignment):
-		self.alignment =alignment
+		self.alignment = alignment
 
 class Row(DocumentStructureNode):
-	def __init__(self, number_of_col=0, border = False, type_=None):
+
+	def __init__(self, number_of_col=0, border=False, type_=None):
 		self.number_of_col = number_of_col
 		self.border = border
 		self.type_ = type_
-		
+
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
 
@@ -321,6 +334,7 @@ class Row(DocumentStructureNode):
 		self.type_ = type_
 
 class Cell (DocumentStructureNode):
+
 	def __init__(self, border=False):
 		self.border = border
 		self.is_first_cell_in_the_row = False
@@ -330,10 +344,11 @@ class Cell (DocumentStructureNode):
 		self.border = border
 
 class TBody(DocumentStructureNode):
+
 	def __init__(self, number_of_col=0, border=False):
 		self.number_of_col = number_of_col
 		self.border = border
-		
+
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
 
@@ -341,9 +356,10 @@ class TBody(DocumentStructureNode):
 		self.border = border
 
 class THead(DocumentStructureNode):
+
 	def __init__(self, number_of_col=0, border=False):
 		self.number_of_col = number_of_col
-		
+
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
 
@@ -351,13 +367,15 @@ class THead(DocumentStructureNode):
 		self.border = border
 
 class TFoot(DocumentStructureNode):
+
 	def __init__(self, number_of_col=0):
 		self.number_of_col = number_of_col
-		
+
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
 
 class Math(DocumentStructureNode):
+
 	def __init__(self):
 		self.equation_type = None
 
@@ -377,7 +395,8 @@ class MathRun(DocumentStructureNode):
 	pass
 
 class MFenced(DocumentStructureNode):
-	def __init__(self, opener=u'', close=u'', separators = u''):
+
+	def __init__(self, opener=u'', close=u'', separators=u''):
 		self.opener = opener
 		self.close = close
 		self.separators = separators
@@ -388,16 +407,18 @@ class MSpace(DocumentStructureNode):
 		self.height = height
 
 class Mtable(DocumentStructureNode):
+
 	def __init__(self, number_of_col=0):
 		self.number_of_col = number_of_col
-		
+
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
 
 class Mtr(DocumentStructureNode):
+
 	def __init__(self, number_of_col=0):
 		self.number_of_col = number_of_col
-		
+
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
 
@@ -423,6 +444,7 @@ class MOver(DocumentStructureNode):
 	pass
 
 class MMenclose(DocumentStructureNode):
+
 	def  __init__(self):
 		self.notation = None
 
@@ -435,6 +457,7 @@ class MNone(DocumentStructureNode):
 	pass
 
 class MMprescripts(DocumentStructureNode):
+
 	def __init__(self):
 		self.sub = None
 		self.sup = None
@@ -449,9 +472,10 @@ class OMathRun(DocumentStructureNode):
 	pass
 
 class OMathFrac(DocumentStructureNode):
-	def __init__(self,frac_type= None):
+
+	def __init__(self, frac_type=None):
 		self.frac_type = frac_type
-		
+
 	def set_frac_type(self, frac_type):
 		self.frac_type = frac_type
 
@@ -480,7 +504,7 @@ class OMathSubscript(DocumentStructureNode):
 	pass
 
 class OMathSub(DocumentStructureNode):
-	pass 
+	pass
 
 class OMathSubSup(DocumentStructureNode):
 	pass
@@ -489,7 +513,8 @@ class OMathNary(DocumentStructureNode):
 	pass
 
 class OMathNaryPr(DocumentStructureNode):
-	def __init__(self, chrVal = None, limLocVal = None):
+
+	def __init__(self, chrVal=None, limLocVal=None):
 		self.chrVal = chrVal
 		self.limLocVal = limLocVal
 
@@ -503,7 +528,8 @@ class OMathDelimiter(DocumentStructureNode):
 	pass
 
 class OMathDPr(DocumentStructureNode):
-	def __init__(self, begChr = None, endChr = None):
+
+	def __init__(self, begChr=None, endChr=None):
 		self.begChr = begChr
 		self.endChr = endChr
 
@@ -520,6 +546,7 @@ class OMathLimLow(DocumentStructureNode):
 	pass
 
 class OMathBar(DocumentStructureNode):
+
 	def __init__(self, pos=None):
 		self.pos = pos
 
@@ -527,6 +554,7 @@ class OMathBar(DocumentStructureNode):
 		self.pos = pos
 
 class OMathAcc(DocumentStructureNode):
+
 	def __init__(self, accChr=None):
 		self.accChr = accChr
 
@@ -536,14 +564,15 @@ class OMathAcc(DocumentStructureNode):
 class OMathPara(DocumentStructureNode):
 	pass
 
-#handling matrix for docx
+# handling matrix for docx
 class OMathMatrix(DocumentStructureNode):
-	def __init__(self, number_of_col=0, number_of_row=0, begChr = None, endChr = None):
+
+	def __init__(self, number_of_col=0, number_of_row=0, begChr=None, endChr=None):
 		self.number_of_col = number_of_col
 		self.number_of_row = number_of_row
 		self.begChr = begChr
 		self.endChr = endChr
-		
+
 	def set_number_of_col(self, number_of_col):
 		self.number_of_col = number_of_col
 
@@ -556,7 +585,7 @@ class OMathMatrix(DocumentStructureNode):
 	def set_end_char (self, endChr):
 		self.endChr = endChr
 
-#handling matrix property
+# handling matrix property
 class OMathMPr (DocumentStructureNode):
 	pass
 
@@ -569,19 +598,20 @@ class OMathMc (DocumentStructureNode):
 class OMathMcPr (DocumentStructureNode):
 	pass
 
-#handling matrix row
+# handling matrix row
 class OMathMr (DocumentStructureNode):
 	pass
 
-#omath: handling function apply function
+# omath: handling function apply function
 class OMathFunc(DocumentStructureNode):
 	pass
 
 class OMathFName(DocumentStructureNode):
 	pass
 
-#omath : handling equation-array function
+# omath : handling equation-array function
 class OMathEqArr(DocumentStructureNode):
+
 	def __init__(self, rowSpace=1):
 		self.rowSpace = rowSpace
 
@@ -628,6 +658,7 @@ class TextBoxContent(DocumentStructureNode):
 	pass
 
 class NoteInteractive(DocumentStructureNode):
+
 	def __init__(self, image_path='', label='', link=None, caption='', notes=''):
 		self.image_path = image_path
 		self.label = label
@@ -636,7 +667,7 @@ class NoteInteractive(DocumentStructureNode):
 		self.notes = notes
 		self.complete_image_path = None
 
-	def set_image_path(self,image_path):
+	def set_image_path(self, image_path):
 		self.image_path = image_path
 
 	def set_label(self, label):
@@ -652,13 +683,15 @@ class NoteInteractive(DocumentStructureNode):
 		self.notes = notes
 
 class NoteInteractiveImage(DocumentStructureNode):
+
 	def __init__(self, path=''):
-		super( NoteInteractiveImage, self ).__init__()
+		super(NoteInteractiveImage, self).__init__()
 		self.path = u''
 		self.caption = u''
 
 class Figure(DocumentStructureNode):
-	def __init__(self, caption = None, label = None):
+
+	def __init__(self, caption=None, label=None):
 		self.caption = caption
 		self.label = label
 		self.image_id = None
@@ -673,7 +706,8 @@ class Figure(DocumentStructureNode):
 		self.label = label
 
 class Glossary(DocumentStructureNode):
-	def __init__(self, title = None, filename=None, glossary_dict=None):
+
+	def __init__(self, title=None, filename=None, glossary_dict=None):
 		self.title = title
 		self.filename = filename
 		self.glossary_dict = glossary_dict
@@ -687,13 +721,12 @@ class Glossary(DocumentStructureNode):
 	def set_glossary_dict(self, glossary_dict):
 		self.glossary_dict = glossary_dict
 
-
 class GlossaryList(DocumentStructureNode):
 	pass
 
 class GlossaryItem(DocumentStructureNode):
 	pass
-	
+
 class GlossaryDT(DocumentStructureNode):
 	def __init__(self, desc=None):
 		self.desc = desc
@@ -708,7 +741,8 @@ class GlossaryTerm(DocumentStructureNode):
 	pass
 
 class Exercise(DocumentStructureNode):
-	def __init__(self, problem =  None, solution = None, label=None):
+
+	def __init__(self, problem=None, solution=None, label=None):
 		self.problem = problem
 		self.solution = solution
 		self.label = label
@@ -723,7 +757,8 @@ class Exercise(DocumentStructureNode):
 		self.label = label
 
 class Problem (DocumentStructureNode):
-	def __init__(self, question = None, problem_type = None, solution=None, label=None):
+
+	def __init__(self, question=None, problem_type=None, solution=None, label=None):
 		self.question = question
 		self.problem_type = problem_type
 		self.solution = solution
@@ -742,7 +777,8 @@ class Problem (DocumentStructureNode):
 		self.label = label
 
 class Solution (DocumentStructureNode):
-	def __init__(self, solution = None, label = None, problem_type = None):
+
+	def __init__(self, solution=None, label=None, problem_type=None):
 		self.solution = solution
 		self.label = label
 		self.problem_type = problem_type
@@ -758,6 +794,7 @@ class Solution (DocumentStructureNode):
 
 
 class MultipleChoices(DocumentStructureNode):
+
 	def __init__(self, solution=None, choices=None):
 		self.solution = solution
 		self.choices = choices
@@ -784,13 +821,15 @@ class Example(DocumentStructureNode):
 	pass
 
 class ProblemExercise(DocumentStructureNode):
-	def __init__(self,title=None, problem_type=None, label=None):
+
+	def __init__(self, title=None, problem_type=None, label=None):
 		super(ProblemExercise, self).__init__()
 		self.title = title
 		self.problem_type = problem_type
 		self.label = label
 
 class ExerciseCheck(DocumentStructureNode):
+
 	def __init__(self, title=None, solution=None):
 		self.title = title
 		self.solution = solution
@@ -798,18 +837,19 @@ class ExerciseCheck(DocumentStructureNode):
 	def set_title(self, title):
 		self.title = title
 
-	def set_solution(self,solution):
-		self.solution =solution
+	def set_solution(self, solution):
+		self.solution = solution
 
 class EndOfChapterSolution(DocumentStructureNode):
-	def __init__(self,label=None, title=None, body=None):
+
+	def __init__(self, label=None, title=None, body=None):
 		super(EndOfChapterSolution, self).__init__
 		self.label = label
 		self.title = title
 		self.body = body
 
-
 class OpenstaxNote (DocumentStructureNode):
+
 	def __init__(self, title=None, body=None, label=None):
 		self.title = title
 		self.body = body
@@ -831,7 +871,8 @@ class OpenstaxNoteBody(DocumentStructureNode):
 	pass
 
 class EquationImage(DocumentStructureNode):
-	def __init__(self,label=None, image=None, text=None):
+
+	def __init__(self, label=None, image=None, text=None):
 		super(EquationImage, self).__init__()
 		self.label = label
 		self.image = image
@@ -842,7 +883,6 @@ class OpenstaxAttributions(DocumentStructureNode):
 
 class OpenstaxTitle(DocumentStructureNode):
 	pass
-
 
 class CNXCollection(DocumentStructureNode):
 	def __init__(self):
