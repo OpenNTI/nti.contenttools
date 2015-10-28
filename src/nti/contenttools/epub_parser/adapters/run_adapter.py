@@ -492,7 +492,8 @@ def _process_span_elements( element ):
         el.caption = img.caption
         return el 
     else:
-        logger.warn('process SPAN as default %s', data_type)
+        #logger.warn('process SPAN as default %s', data_type)
+        pass
     return Run.process(element)
 
 def process_span_list(element):

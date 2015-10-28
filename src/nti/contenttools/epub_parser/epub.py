@@ -44,6 +44,7 @@ class EPUBParser(object):
             docfrags = epub_reader.docfrags
             for item in docfrags:
                 fragment = docfrags[item]
+                scoped_registry.current_dir = item
                 epub_chapter = adapt(fragment)
                 logger.info('HERE')
 
