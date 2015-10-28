@@ -43,7 +43,7 @@ class Image(types.Image):
 		if image_path in zipfile.namelist():
 			image_data = StringIO.StringIO(zipfile.read(image_path))
 			me.width, me.height = PILImage.open(image_data).size
-			save_image(image_data, filename)
+			save_image(image_data, me.path)
 		else:
 			logger.warn('COULD NOT FIND Image : %s',image_path) 
 			return types.Run()
@@ -55,8 +55,8 @@ def get_image_path(image_title):
 	return u'%s/%s' %(image_dir, image_title) 
 	
 
-def save_image(image_data, filename):
-	filepath = u'%s/Images/CourseAssets/%s/%s' % (scoped_registry.output_directory, scoped_registry.book_title, filename)
+def save_image(image_data, filepath):
+	filepath = u'%s/%s' % (scoped_registry.output_directory, filepath)
 	if not os.path.exists(os.path.dirname(filepath)):
 		os.makedirs(os.path.dirname(filepath))
 
