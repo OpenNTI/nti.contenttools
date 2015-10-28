@@ -17,7 +17,7 @@ import os
 import codecs
 
 from .epub_reader import EPUBReader
-from .adapters.run_adapter import adapt
+from .adapters import adapt
 from ..util.string_replacer import rename_filename
 from ..renders.LaTeX.base import base_renderer
 
@@ -37,12 +37,16 @@ class EPUBParser(object):
         scoped_registry.output_directory = output_directory
         self.tex_filepath = []
 
-        self.epub_reader = EPUBParser(input_file)
+        self.epub_reader = EPUBReader(input_file)
 
-    def process_fragment(self):
-        epub_reader = self.epub_reader
-        docfrags = epub_reader.docfrags
-        for item in docfrags:
-            fragment = docfrags[item]
-            epub_chapter = adapt(fragment)
+        def process_fragment():
+            epub_reader = self.epub_reader
+            docfrags = epub_reader.docfrags
+            for item in docfrags:
+                fragment = docfrags[item]
+                epub_chapter = adapt(fragment)
+                logger.info('HERE')
+
+        result = process_fragment()
+
 

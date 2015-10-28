@@ -8,14 +8,12 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-
-from ... import types
+from lxml.html import HtmlComment
 from .math_adapter import Math
 from .image_adapter import Image
-from lxml.html import HtmlComment
+from ... import types
 from ... import scoped_registry
 import math
-
 
 def adapt(fragment):
     head = fragment.find('head')
