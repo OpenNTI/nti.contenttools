@@ -18,6 +18,7 @@ from lxml.html import html5parser, XHTMLParser
 from tempfile import mkdtemp
 from zipfile import ZipFile
 
+from .. import scoped_registry
 from .. import types
 
 class EPUBReader( object ):
@@ -78,6 +79,7 @@ class EPUBReader( object ):
             return result
 
         self.zipfile = ZipFile( file )
+        scoped_registry.zipfile = self.zipfile
         self.metadata = {}
         self.manifest = {}
         self.spine = []
@@ -88,10 +90,7 @@ class EPUBReader( object ):
         container = etree.fromstring(self.zipfile.read(u'META-INF/container.xml'))
         rootfile = etree.fromstring(self.zipfile.read(_get_rootfile( container )))
         self.content_path = os.path.dirname(_get_rootfile( container ))
-        logger.info('container %s', container)
-        logger.info('rootfile %s', rootfile)
-        logger.info('_get_rootfile( container ) %s', _get_rootfile( container ))
-        logger.info('content_path %s', self.content_path)
+        scoped_registry.content_path = self.content_path
 
         for element in rootfile:
             logger.info(element)
@@ -134,9 +133,11 @@ class EPUBReader( object ):
                 spine_dict.update({item:check_item})
                 docfragment = html.fromstring(self.zipfile.read(self.content_path+'/'+self.manifest[item]['href']))
                 docfrags.update({item:docfragment})
+                
 
         self.document = types.Document()
         self.document.title = self.title
+        scoped_registry.book_title = self.title
         self.document.author = self.author
         self.docfrags = docfrags
 
