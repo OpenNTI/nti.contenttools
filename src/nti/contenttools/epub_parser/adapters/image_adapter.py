@@ -42,8 +42,8 @@ class Image(types.Image):
 		image_path = os.path.join(scoped_registry.content_path, path)
 		if image_path in zipfile.namelist():
 			image_data = StringIO.StringIO(zipfile.read(image_path))
-			me.width, me.height = PILImage.open(image_data).size
 			save_image(image_data, me.path)
+			me.width, me.height = PILImage.open(image_data).size
 		else:
 			logger.warn('COULD NOT FIND Image : %s',image_path) 
 			return types.Run()
