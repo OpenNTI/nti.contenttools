@@ -61,6 +61,7 @@ def main():
 	scoped_registry.nticard_images_filename = os.path.join(args.output, 'nticard_images.txt')
 
 	epub = EPUBParser(inputfile, args.output)
+	epub.process_fragment()
 
 if __name__ == '__main__': # pragma: no cover
 	main()

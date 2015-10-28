@@ -105,7 +105,6 @@ class EPUBReader( object ):
             else:
                 print('Unknown element: %s' % element.tag)
 
-        #print(self.spine)
         self.title = u''
         if 'title' in self.metadata.keys():
             self.title = self.metadata['title']
@@ -134,10 +133,8 @@ class EPUBReader( object ):
                 docfragment = html.fromstring(self.zipfile.read(self.content_path+'/'+self.manifest[item]['href']))
                 docfrags.update({item:docfragment})
                 
-
         self.document = types.Document()
         self.document.title = self.title
-        scoped_registry.book_title = self.title
         self.document.author = self.author
         self.docfrags = docfrags
 
