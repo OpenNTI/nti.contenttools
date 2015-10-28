@@ -3,6 +3,7 @@
 """
 .. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
@@ -16,39 +17,39 @@ import simplejson as json
 
 from zope.exceptions import log as ze_log
 
-from . import scoped_registry
-
 from .util import string_replacer
 
 from .glossary import glossary_check
 
 from .epub.openstax_epub import EPUBFile
 
+from . import scoped_registry
+
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
 def _parse_args():
-	arg_parser = argparse.ArgumentParser( description="NTI EPUB Converter" )
-	arg_parser.add_argument( 'inputfile', 
-							 help="The EPUB file" )
-	arg_parser.add_argument( '-o', '--output', 
+	arg_parser = argparse.ArgumentParser(description="NTI EPUB Converter")
+	arg_parser.add_argument('inputfile',
+							 help="The EPUB file")
+	arg_parser.add_argument('-o', '--output',
 							 default='output',
-							 help="The output directory. The default is: %s" % 'output' )
-	arg_parser.add_argument( '-a', '--attribution', 
-							 default=None, 
+							 help="The output directory. The default is: %s" % 'output')
+	arg_parser.add_argument('-a', '--attribution',
+							 default=None,
 							 help="Attribution text")
-	arg_parser.add_argument( '-ah', '--atthref',
+	arg_parser.add_argument('-ah', '--atthref',
 							 default=None,
 							 help="Attribution link")
-	arg_parser.add_argument( '-i', '--indexatt', 
+	arg_parser.add_argument('-i', '--indexatt',
 							 default=1,
 							 help="File index to start writing attribution")
-	arg_parser.add_argument( '-s', '--skipspine',
+	arg_parser.add_argument('-s', '--skipspine',
 							 default=None,
 							 help="skipped epub spine id")
 	return arg_parser.parse_args()
 
-def _title_escape( title ):
-	return title.replace(' ', '_').replace('-','_').replace(':','_')
+def _title_escape(title):
+	return title.replace(' ', '_').replace('-', '_').replace(':', '_')
 
 def _configure_logging(level='INFO'):
 	numeric_level = getattr(logging, level.upper(), None)
@@ -58,7 +59,7 @@ def _configure_logging(level='INFO'):
 
 def _setup_configs():
 	_configure_logging()
-	
+
 def main():
 	# Parse command line args
 	args = _parse_args()
@@ -68,15 +69,15 @@ def main():
 	inputfile = os.path.expanduser(args.inputfile)
 
 	# Verify the input file exists
-	if not os.path.exists( inputfile ):
-		logger.info( 'The source file, %s, does not exist.', inputfile )
+	if not os.path.exists(inputfile):
+		logger.info('The source file, %s, does not exist.', inputfile)
 		exit()
 
 	# Create the output directory if it does not exist
-	if not os.path.exists( args.output ):
-		os.mkdir( args.output )
+	if not os.path.exists(args.output):
+		os.mkdir(args.output)
 
-	epub = EPUBFile(args.inputfile)	
+	epub = EPUBFile(args.inputfile)
 	logger.info ('Number of spine %s', len(epub.spine))
 	if epub.title:
 		name = _title_escape(epub.title) + '.tex'
@@ -85,10 +86,10 @@ def main():
 		name = _title_escape(os.path.splitext(inputfile)[0]) + '.tex'
 		outputfile = os.path.join(args.output, name)
 
-	with codecs.open( outputfile, 'w', 'utf-8' ) as fp:
-		fp.write( epub.render() )
+	with codecs.open(outputfile, 'w', 'utf-8') as fp:
+		fp.write(epub.render())
 	document = epub.document
-	
+
 	# Since document only has one body
 	global_glossary = {}
 	body = document.children[0]
@@ -102,41 +103,41 @@ def main():
 	appended_text = u''
 	attribution = args.attribution
 	atthref = args.atthref
-	
+
 	# if attribute link contains percentage '%', it will always be like '\%'
 	if atthref is not None:
 		atthref = string_replacer.modify_string(atthref, u'%', u'\\%')
 
 	if attribution is not None and atthref is not  None:
-		appended_text = u'\\subsection{Attribution}\n\\textbf{%s \\href{%s}{%s}}' %(attribution, atthref, atthref)
+		appended_text = u'\\subsection{Attribution}\n\\textbf{%s \\href{%s}{%s}}' % (attribution, atthref, atthref)
 	elif attribution is not None and atthref is None:
-		appended_text = u'\\subsection{Attribution}\n\\textbf{%s}' %(attribution)
+		appended_text = u'\\subsection{Attribution}\n\\textbf{%s}' % (attribution)
 	elif attribution is None and atthref is not None:
-		appended_text = u'\\subsection{Attribution}\n\\textbf{\\href{%s}{%s}}' %(atthref, atthref)
+		appended_text = u'\\subsection{Attribution}\n\\textbf{\\href{%s}{%s}}' % (atthref, atthref)
 
 	for index_child, _ in enumerate(body):
 		# append file tex information to nticard_images_filename
 		if index_child == 0:
 			with codecs.open(scoped_registry.nticard_images_filename, 'w', 'utf-8') as fp:
-				fp.write('file_'+str(index_child)+'.tex:\n')
+				fp.write('file_' + str(index_child) + '.tex:\n')
 		else:
 			with codecs.open(scoped_registry.nticard_images_filename, 'a', 'utf-8') as fp:
-				fp.write('file_'+str(index_child)+'.tex:\n')
+				fp.write('file_' + str(index_child) + '.tex:\n')
 
 		# write each body child into different latex file
 		# we use this format : file_1.tex
-		outputfile = os.path.join(args.output, 'file_'+str(index_child)+'.tex')
+		outputfile = os.path.join(args.output, 'file_' + str(index_child) + '.tex')
 		logger.info('------------')
 		logger.info(outputfile)
 		tex_content, glossary_dict = epub.render_body_child(index_child)
-		with codecs.open( outputfile, 'w', 'utf-8' ) as fp:
+		with codecs.open(outputfile, 'w', 'utf-8') as fp:
 			fp.write(tex_content)
 		if glossary_dict is not None:
 			global_glossary.update(glossary_dict)
 			glossary_check.process_glossary(glossary_dict, outputfile)
 		logger.info('------------')
 
-		# write required attribution in each chapter 
+		# write required attribution in each chapter
 		# appended_text (attribution text and link) can be different for each books
 		if index_child > start_attribution and attribution is not None:
 			with codecs.open(outputfile, 'a') as f:
@@ -147,7 +148,7 @@ def main():
 
 	# save glossary to json
 	glossary_json = json.dumps(glossary, sort_keys=True, indent=4 * ' ')
-	with codecs.open( glossary_file, 'w', 'utf-8' ) as fp:
+	with codecs.open(glossary_file, 'w', 'utf-8') as fp:
 		fp.write(glossary_json)
 	epub.get_media(args.output)
 
@@ -158,5 +159,5 @@ def clean_global_glossary(glossary):
 		glossary[key] = new_value
 	return glossary
 
-if __name__ == '__main__': # pragma: no cover
+if __name__ == '__main__':  # pragma: no cover
 	main()

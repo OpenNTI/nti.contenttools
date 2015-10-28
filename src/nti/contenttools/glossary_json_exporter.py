@@ -16,11 +16,11 @@ for example:
 	the output of this program in json file will be as follows:
 	--------
 	{
-	    "afterload ": "force the ventricles must develop to effectively pump blood against the resistance in the vessels",
-	    "artificial ": "pacemaker medical device that transmits electrical signals to the heart to ensure that it contracts and pumps blood to the body",
-	    "atrioventricular (AV) node ": "clump of myocardial cells located in the inferior portion of the right atrium within the atrioventricular septum; receives the impulse from the SA node, pauses, and then transmits it into specialized conducting cells within the interventricular septum",
-	    "atrioventricular bundle ": "(also, bundle of His) group of specialized myocardial conductile cells that transmit the impulse from the AV node through the interventricular septum; form the left and right atrioventricular bundle branches",
-	    "atrioventricular bundle branches ": "(also, left or right bundle branches) specialized myocardial conductile cells that arise from the bifurcation of the atrioventricular bundle and pass through the interventricular septum; lead to the Purkinje fibers and also to the right papillary muscle via the moderator band"
+		"afterload ": "force the ventricles must develop to effectively pump blood against the resistance in the vessels",
+		"artificial ": "pacemaker medical device that transmits electrical signals to the heart to ensure that it contracts and pumps blood to the body",
+		"atrioventricular (AV) node ": "clump of myocardial cells located in the inferior portion of the right atrium within the atrioventricular septum; receives the impulse from the SA node, pauses, and then transmits it into specialized conducting cells within the interventricular septum",
+		"atrioventricular bundle ": "(also, bundle of His) group of specialized myocardial conductile cells that transmit the impulse from the AV node through the interventricular septum; form the left and right atrioventricular bundle branches",
+		"atrioventricular bundle branches ": "(also, left or right bundle branches) specialized myocardial conductile cells that arise from the bifurcation of the atrioventricular bundle and pass through the interventricular septum; lead to the Purkinje fibers and also to the right papillary muscle via the moderator band"
 	}
 	--------
 	glossary in json file is needed when we run nti_glossary_finder, since it assumes we have the glossary in json file to be able to find and replace particular text with ntiglossary{'key'}{'definition'}
@@ -28,6 +28,7 @@ for example:
 
 .. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
@@ -50,22 +51,22 @@ register()
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
 def _parse_args():
-	arg_parser = argparse.ArgumentParser( description="NTI Glossary JSON Exporter" )
-	arg_parser.add_argument( 'inputfile', 
-							 help="The plain text file or docx file having glossary list" )
-	arg_parser.add_argument( '-o', '--output', 
-							 default=None, 
-							 help="Output directory")
-	arg_parser.add_argument( '-dp', '--pattern', 
-							 default=None, 
-							 help="Use when exporting from docx. If glossary term is written as bold in docx use 'textbf', if it is italic use 'textit', if it is bold & italix use 'textbf, textit'")
-	arg_parser.add_argument( '-t' '--token',
+	arg_parser = argparse.ArgumentParser(description="NTI Glossary JSON Exporter")
+	arg_parser.add_argument('inputfile',
+							 help="The plain text file or docx file having glossary list")
+	arg_parser.add_argument('-o', '--output',
 							 default=None,
-							 help ="Use when exporting from plain text")
+							 help="Output directory")
+	arg_parser.add_argument('-dp', '--pattern',
+							 default=None,
+							 help="Use when exporting from docx. If glossary term is written as bold in docx use 'textbf', if it is italic use 'textit', if it is bold & italix use 'textbf, textit'")
+	arg_parser.add_argument('-t' '--token',
+							 default=None,
+							 help="Use when exporting from plain text")
 	return arg_parser.parse_args()
 
-def _title_escape( title ):
-	return title.replace(' ', '_').replace('-','_').replace(':','_')
+def _title_escape(title):
+	return title.replace(' ', '_').replace('-', '_').replace(':', '_')
 
 def _configure_logging(level='INFO'):
 	numeric_level = getattr(logging, level.upper(), None)
@@ -82,7 +83,6 @@ def set_pattern_as_list(pattern_str, delimiter):
 		pattern_list[i] = item.rstrip().lstrip()
 	return pattern_list
 
-
 def main():
 	# Parse command line args
 	args = _parse_args()
@@ -91,36 +91,36 @@ def main():
 	inputfile = os.path.expanduser(args.inputfile)
 	# Verify the input file exists
 	if not os.path.exists(inputfile):
-		logger.info( 'The source file, %s, does not exist.',inputfile)
+		logger.info('The source file, %s, does not exist.', inputfile)
 		sys.exit(-2)
 
 	# Create the output directory if it does not exist
-	if not os.path.exists( args.output ):
-		os.mkdir( args.output )
+	if not os.path.exists(args.output):
+		os.mkdir(args.output)
 
 	_, file_ext = os.path.splitext(os.path.basename(inputfile))
 	if file_ext == u'.docx' :
 		logger.info('Beginning Conversion of ' + inputfile)
 		logger.info('First phase')
-		#convert docx to tex
-		docxFile = DocxFile( inputfile )
+		# convert docx to tex
+		docxFile = DocxFile(inputfile)
 		tex_file = u''
 		json_file = u''
 		if docxFile.title:
 			name = _title_escape(docxFile.title) + '.tex'
 			tex_file = os.path.join(args.output, name)
-			name_json = u'glossary_'+_title_escape(docxFile.title) + '.json'
+			name_json = u'glossary_' + _title_escape(docxFile.title) + '.json'
 			json_file = os.path.join(args.output, name_json)
 		else:
 			name = _title_escape(os.path.splitext(os.path.basename(inputfile))[0]) + '.tex'
 			tex_file = os.path.join(args.output, name)
-			name_json = u'glossary_'+_title_escape(os.path.splitext(os.path.basename(inputfile))[0]) + '.json'
+			name_json = u'glossary_' + _title_escape(os.path.splitext(os.path.basename(inputfile))[0]) + '.json'
 			json_file = os.path.join(args.output, name_json)
-		
-		with codecs.open( tex_file, 'w', 'utf-8' ) as fp:
-			fp.write( docxFile.render() )
 
-		#convert tex to json
+		with codecs.open(tex_file, 'w', 'utf-8') as fp:
+			fp.write(docxFile.render())
+
+		# convert tex to json
 		logger.info('Second phase')
 		content = tex_to_json.get_line_from_tex(tex_file)
 		open_token = u'{'
@@ -130,7 +130,7 @@ def main():
 			pattern = set_pattern_as_list(args.pattern, ',')
 			logger.info(args.pattern)
 		dictionary = tex_to_json.map_key_value_tex(content, pattern, open_token, close_token)
-		tex_to_json. dictionary_to_json(dictionary,json_file)
+		tex_to_json. dictionary_to_json(dictionary, json_file)
 		logger.info('Conversion successful, output written to ' + json_file)
 
 	elif file_ext == u'.txt':
