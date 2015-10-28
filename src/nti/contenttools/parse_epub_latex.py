@@ -60,7 +60,7 @@ def main():
 	# create a txt file to store information about image's name and location used in nticard
 	scoped_registry.nticard_images_filename = os.path.join(args.output, 'nticard_images.txt')
 
-	epub = CNXParser(inputfile, args.output)
+	epub = EPUBParser(inputfile, args.output)
 
 if __name__ == '__main__': # pragma: no cover
 	main()

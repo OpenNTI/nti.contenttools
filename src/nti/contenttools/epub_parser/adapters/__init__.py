@@ -8,3 +8,4 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from .run_adapter import adapt
