@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: math_adapter.py 58552 2015-01-29 23:10:30Z egawati.panjei $
+.. $Id: image_adapter.py 58552 2015-01-29 23:10:30Z egawati.panjei $
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
@@ -11,7 +11,6 @@ logger = __import__('logging').getLogger(__name__)
 from ... import types
 from lxml.html import HtmlComment
 import os
-import codecs
 from ... import scoped_registry
 
 from ... import types
@@ -48,12 +47,7 @@ class Image(types.Image):
 			logger.warn('COULD NOT FIND Image : %s',image_path) 
 			return types.Run()
 
-		return me
-
-def get_image_path(image_title):
-	image_dir = scoped_registry.current_dir
-	return u'%s/%s' %(image_dir, image_title) 
-	
+		return me	
 
 def save_image(image_data, filepath):
 	filepath = u'%s/%s' % (scoped_registry.output_directory, filepath)
