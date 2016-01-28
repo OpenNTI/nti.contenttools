@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: parse_html_latex.py 58552 2015-01-29 23:10:30Z egawati.panjei $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -12,12 +12,12 @@ logger = __import__('logging').getLogger(__name__)
 import os
 import logging
 import argparse
+
 import requests
 
+from nti.contenttools import scoped_registry
 
-from .html_parser import HTMLParser
-
-from . import scoped_registry
+from nti.contenttools.html_parser import HTMLParser
 
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
@@ -51,13 +51,13 @@ def main():
 		os.mkdir(args.output)
 
 	url = args.url
-	scoped_registry.image_url = args.image_url 
+	scoped_registry.image_url = args.image_url
 	scoped_registry.output_directory = args.output
 	response = requests.get(url, stream=True)
 	if response.status_code == 200:
 		script = response.content
 		parser = HTMLParser(script)
-		tex = parser.process()
+		_ = parser.process()
 
 if __name__ == '__main__':  # pragma: no cover
 	main()

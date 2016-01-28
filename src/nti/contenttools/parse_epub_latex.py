@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: parse_epub_latex.py 58552 2015-01-29 23:10:30Z egawati.panjei $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -13,11 +13,11 @@ import os
 import logging
 import argparse
 
-from .util import string_replacer
+from nti.contenttools import scoped_registry
 
-from .epub_parser import EPUBParser
+from nti.contenttools.epub_parser import EPUBParser
 
-from . import scoped_registry
+from nti.contenttools.util import string_replacer
 
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
