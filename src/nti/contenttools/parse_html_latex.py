@@ -25,6 +25,8 @@ def _parse_args():
 	arg_parser = argparse.ArgumentParser(description="NTI EPUB-Latex Parser")
 	arg_parser.add_argument('url',
 							 help="url")
+	arg_parser.add_argument('-iu', '--image_url',
+							 help="url to retrieve images")
 	arg_parser.add_argument('-o', '--output',
 							 default='output',
 							 help="The output directory. The default is: %s" % 'output')
@@ -49,15 +51,13 @@ def main():
 		os.mkdir(args.output)
 
 	url = args.url
-
+	scoped_registry.image_url = args.image_url 
+	scoped_registry.output_directory = args.output
 	response = requests.get(url, stream=True)
 	if response.status_code == 200:
 		script = response.content
 		parser = HTMLParser(script)
 		tex = parser.process()
-
-	# create a txt file to store information about image's name and location used in nticard
-	scoped_registry.nticard_images_filename = os.path.join(args.output, 'nticard_images.txt')
 
 if __name__ == '__main__':  # pragma: no cover
 	main()

@@ -52,6 +52,7 @@ def paragraph_renderer(self):
                'Heading7': _subsubparagraph,
                'Section': _section,
                'Subsection': _subsection,
+               'Subsubsection': _subsubsection,
                'Abstract' : _abstract,
                'Authors': _author,
                'BookHead1' : _section,

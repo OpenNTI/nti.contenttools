@@ -465,13 +465,13 @@ def _process_section_elements(element, reading_type=None):
     return el
 
 def _process_h1_elements(element, reading_type=None):
-    return Paragraph.process(element, ['Heading1'], reading_type)
+    return Paragraph.process(element, ['Section'], reading_type)
 
 def _process_h2_elements( element,reading_type=None ):
-    return Paragraph.process(element,['Heading2'], reading_type)
+    return Paragraph.process(element,['Subsection'], reading_type)
 
 def _process_h3_elements( element,reading_type=None ):
-    return Paragraph.process(element, ['Heading3'], reading_type)
+    return Paragraph.process(element, ['Subsubsection'], reading_type)
 
 def _process_h4_elements( element,reading_type=None ):
     return Paragraph.process(element, ['Heading4'], reading_type)
