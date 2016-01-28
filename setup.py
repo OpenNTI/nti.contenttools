@@ -13,7 +13,8 @@ entry_points = {
 		'nti_glossary_finder = nti.contenttools.glossary_term_finder:main',
         'nti_glossary_exporter = nti.contenttools.glossary_json_exporter:main',
         'nti_import_cnx = nti.contenttools.import_cnx:main',
-        'nti_epub_latex_parser = nti.contenttools.parse_epub_latex:main'
+        'nti_epub_latex_parser = nti.contenttools.parse_epub_latex:main',
+        'nti_html_latex_parser = nti.contenttools.parse_html_latex:main' 
 	]
 }
 
