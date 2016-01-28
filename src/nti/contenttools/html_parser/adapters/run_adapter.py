@@ -208,8 +208,9 @@ class Table(types.Table):
         if u'border' in element.attrib.keys():
             me.border = element.attrib[u'border']
 
+        has_caption = False
         for child in element:
-            if child.tag == 'colgroup':
+            if child.tag == 'colgroup' or child.tag == 'col':
                 me.add_child(_process_colgroup_elements(child))
             elif child.tag == 'tbody':
                 if me.border:
@@ -225,10 +226,18 @@ class Table(types.Table):
             elif child.tag == 'caption':
                 caption = Run.process(child)
                 me.caption = caption
+                has_caption = True
+            elif child.tag == 'p':
+                caption = Run.process(child)
+                if not has_caption:
+                    me.caption = caption
+                else:
+                    me.caption.add_child(caption)
             else:
                 if isinstance(child,HtmlComment): pass
                 else:
                     logger.warn('Unhandled table child: %s.',child.tag)
+                    
         return me
 
 
