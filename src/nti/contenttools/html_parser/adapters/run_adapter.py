@@ -21,7 +21,6 @@ def adapt(fragment):
     head = fragment.find('head')
     body = fragment.find('body')
     html_body = HTMLBody.process(body)
-    #print (html.tostring(body))
     return html_body
 
 
@@ -33,7 +32,6 @@ class HTMLBody(types.Body):
         me = check_child(me, element)
         me = check_element_tail(me, element)
         return me    
-
 
 class Run( types.Run ):
     @classmethod
