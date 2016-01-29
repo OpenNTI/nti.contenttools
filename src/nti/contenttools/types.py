@@ -651,6 +651,9 @@ class CodeLine(DocumentStructureNode):
 class Code(DocumentStructureNode):
 	pass
 
+class Verbatim(DocumentStructureNode):
+	pass
+
 class AlternateContent(DocumentStructureNode):
 	pass
 

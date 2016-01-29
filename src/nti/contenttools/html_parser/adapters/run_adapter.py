@@ -353,8 +353,6 @@ def add_children_from_lists(node, list_of_child_types):
         node.add_child(item)
     return node
 
-
-
 def check_element_text(me, element):
     if element.text:
         if element.text.isspace(): pass
@@ -627,36 +625,44 @@ def _process_td_elements(element):
     return Cell.process(element)
 
 def _process_div_elements( element, parent):
-    type_ = element.attrib['data-type'] if 'data-type' in element.attrib else u''
-    if type_ is None : 
+    type_ = element.attrib['data-type'] if 'data-type' in element.attrib else None
+    class_ = element.attrib['class'] if 'class' in element.attrib else None
+    if type_ is None and class_ is None: 
         el = Run.process(element)
     else:
-        styles = []
-        if type_ == u'document-title' : 
-            styles.append(u'Section')
-            el = Paragraph.process(element, styles)
-        elif type_ in [u'note', u'abstract', u'example', 'exercise']:
-            data_label = element.attrib[u'data-label'] if u'data-label' in element.attrib else None
-            if data_label in [u'Click and Explore']:
-                from .note_interactive_adapter import NoteInteractive
-                el = NoteInteractive.process(element)
-                if el.caption is None or el.caption.isspace() or len(el.caption) == 0: el.caption = data_label
-            else:
+        if type_ is not None:
+            styles = []
+            if type_ == u'document-title' : 
+                styles.append(u'Section')
+                el = Paragraph.process(element, styles)
+            elif type_ in [u'note', u'abstract', u'example', 'exercise']:
+                data_label = element.attrib[u'data-label'] if u'data-label' in element.attrib else None
+                if data_label in [u'Click and Explore']:
+                    from .note_interactive_adapter import NoteInteractive
+                    el = NoteInteractive.process(element)
+                    if el.caption is None or el.caption.isspace() or len(el.caption) == 0: el.caption = data_label
+                else:
+                    el = Run()
+                    el.add_child(Sidebar.process(element, sidebar_type =type_))
+                    el.add_child(types.Newline())
+            elif type_ == u'title':
                 el = Run()
-                el.add_child(Sidebar.process(element, sidebar_type =type_))
-                el.add_child(types.Newline())
-        elif type_ == u'title':
-            el = Run()
-            parent.title = Run.process(element)
-        elif type_ == u'list':
-            list_type = element.attrib['data-list-type'] if 'data-list-type' in element.attrib else None
-            el = OrderedList() if list_type == 'enumerated' else UnorderedList()
-            el.add_child(Run.process(element))
-        elif type_  == u'item':
-            el = Item.process(element)
+                parent.title = Run.process(element)
+            elif type_ == u'list':
+                list_type = element.attrib['data-list-type'] if 'data-list-type' in element.attrib else None
+                el = OrderedList() if list_type == 'enumerated' else UnorderedList()
+                el.add_child(Run.process(element))
+            elif type_  == u'item':
+                el = Item.process(element)
+            else:
+                if type_ not in [u'newline', u'equation', u'commentary', u''] : logger.warn('process div as default %s', type_)
+                el = Run.process(element)
         else:
-            if type_ not in [u'newline', u'equation', u'commentary', u''] : logger.warn('process div as default %s', type_)
-            el = Run.process(element)
+            if class_ == u'doctest':
+                from .code_adapter import Verbatim
+                el = Verbatim.process(element)
+            else:
+                el = Run.process(element)
     return el
 
 class Iframe(types.Iframe):
