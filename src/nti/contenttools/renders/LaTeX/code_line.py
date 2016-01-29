@@ -16,8 +16,6 @@ def code_line_rendered(self):
 
 def verbatim_code_renderer(self):
 	body = base_renderer(self)
-	print('verbatim body')
-	print(body)
 	if len(body) > 0 : body =  u'\\begin{verbatim}\n%s\n\\end{verbatim}\n' % (body)
 	return body	
 

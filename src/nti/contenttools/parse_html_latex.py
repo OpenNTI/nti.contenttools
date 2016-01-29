@@ -10,6 +10,7 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 import os
+import codecs
 import logging
 import argparse
 
@@ -18,6 +19,8 @@ import requests
 from nti.contenttools import scoped_registry
 
 from nti.contenttools.html_parser import HTMLParser
+
+from nti.contenttools.util import string_replacer
 
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
@@ -57,7 +60,11 @@ def main():
 	if response.status_code == 200:
 		script = response.content
 		parser = HTMLParser(script)
-		_ = parser.process()
+		tex = parser.process()
+		title = string_replacer.rename_filename(scoped_registry.title)
+		filepath = u'%s/%s.tex' %(scoped_registry.output_directory, title)
+		with codecs.open(filepath,'w', 'utf-8') as file_:
+			file_.write(tex)
 		
 if __name__ == '__main__':  # pragma: no cover
 	main()

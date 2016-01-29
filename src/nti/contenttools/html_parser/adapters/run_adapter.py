@@ -18,7 +18,6 @@ from ... import scoped_registry
 import math
 
 def adapt(fragment):
-    head = fragment.find('head')
     body = fragment.find('body')
     html_body = HTMLBody.process(body)
     return html_body
@@ -386,7 +385,14 @@ def check_child(me, element, reading_type=None):
         elif child.tag == 'img':
             me.add_child(Image.process(child, reading_type))
         elif child.tag == 'h1':
-            me.add_child(_process_h1_elements(child,reading_type))
+            class_ = child.attrib['class'] if 'class' in child.attrib else None
+            if class_ == 'title':
+                node = Paragraph.process(child, ['Chapter'])
+                me.add_child(node)
+                scoped_registry.title = child.text
+                print(child.text)
+            else:    
+                me.add_child(_process_h1_elements(child,reading_type))
         elif child.tag == 'h2':
             me.add_child(_process_h2_elements(child, reading_type))
         elif child.tag == 'h3':
