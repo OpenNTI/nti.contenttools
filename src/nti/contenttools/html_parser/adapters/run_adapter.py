@@ -390,7 +390,6 @@ def check_child(me, element, reading_type=None):
                 node = Paragraph.process(child, ['Chapter'])
                 me.add_child(node)
                 scoped_registry.title = child.text
-                print(child.text)
             else:    
                 me.add_child(_process_h1_elements(child,reading_type))
         elif child.tag == 'h2':
