@@ -370,7 +370,7 @@ def check_child(me, element, reading_type=None):
             me.add_child( types.Newline() )
             if child.tail:
                 me.add_child(types.TextNode(child.tail))    
-        elif child.tag == 'i':
+        elif child.tag == 'i' or child.tag == 'cite':
             me.add_child(_process_i_elements(child))
         elif child.tag == 'u' : 
             me.add_child(_process_u_elements(child))
