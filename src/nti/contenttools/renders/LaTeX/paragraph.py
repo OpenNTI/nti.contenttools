@@ -50,6 +50,7 @@ def paragraph_renderer(self):
                'Heading5': _paragraph,
                'Heading6': _subparagraph,
                'Heading7': _subsubparagraph,
+               'Chapter' : _chapter,
                'Section': _section,
                'Subsection': _subsection,
                'Subsubsection': _subsubsection,

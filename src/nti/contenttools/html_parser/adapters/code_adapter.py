@@ -49,5 +49,9 @@ def check_verbatim_child(me, element):
 	for child in element:
 		node = VerbatimChild.process(child)
 		me.add_child(node)
+		if child.tag == 'span':
+			class_ = element.attrib['class'] if 'class' in element.attrib else u''
+			if class_ in ('pysrc-output', 'pysrc-prompt', 'pysrc-more'):
+				me.add_child(types.TextNode('\n'))
 	return me 
 
