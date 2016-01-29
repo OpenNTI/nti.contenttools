@@ -192,6 +192,7 @@ types.OMathBorderBox.render = omath_bdr_box_rendered
 
 types.CodeLine.render = code_line_rendered
 types.Code.render = code_line_rendered
+types.Verbatim.render = verbatim_code_renderer
 
 types.AlternateContent.render = alternate_content_rendered
 types.TextBoxContent.render = text_box_content_rendered

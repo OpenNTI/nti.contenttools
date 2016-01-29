@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from lxml.html import HtmlComment
+
 from nti.contenttools import types
 
 from nti.contenttools.html_parser.adapters.run_adapter import check_child
@@ -16,7 +18,6 @@ from nti.contenttools.html_parser.adapters.run_adapter import check_element_text
 from nti.contenttools.html_parser.adapters.run_adapter import check_element_tail
 
 class Code (types.Code):
-
 	@classmethod
 	def process(cls, element):
 		me = cls()
@@ -24,3 +25,29 @@ class Code (types.Code):
 		me = check_child(me, element)
 		me = check_element_tail(me, element)
 		return me
+
+
+class Verbatim(types.Verbatim):
+	@classmethod
+	def process(cls, element):
+		me = cls()
+		me = check_element_text(me, element)
+		me = check_verbatim_child(me,element)
+		me = check_element_tail(me, element)
+		return me
+
+class VerbatimChild(types.Run):
+	@classmethod
+	def process(cls, element):
+		me = cls()
+		me = check_element_text(me, element)
+		me = check_verbatim_child(me,element)
+		me = check_element_tail(me, element)
+		return me
+
+def check_verbatim_child(me, element):
+	for child in element:
+		node = VerbatimChild.process(child)
+		me.add_child(node)
+	return me 
+
