@@ -98,6 +98,10 @@ class Paragraph( types.Paragraph ):
         me = check_element_text(me, element)
         me = check_child(me, element, reading_type)
         me = check_element_tail(me, element)
+        if u'class' in element.attrib:
+            substring_list = [u'Body-Text', u'Block-Text']
+            if any(substring in element.attrib['class'] for substring in substring_list):
+                me.add_child(types.TextNode("\\\\\n"))
         me.reading_type = reading_type
         return me
 
