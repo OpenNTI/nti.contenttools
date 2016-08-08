@@ -18,6 +18,7 @@ import codecs
 
 from .epub_reader import EPUBReader
 from .adapters import adapt
+from .ifsta_adapters import adapt as adapt_ifsta
 from ..util.string_replacer import rename_filename
 from ..renders.LaTeX.base import base_renderer
 
@@ -26,10 +27,11 @@ from .. import types
 
 
 class EPUBParser(object):
-    def __init__(self, input_file, output_directory):
+    def __init__(self, input_file, output_directory, epub_type):
         self.image_list = []
         self.latex_filenames = []
         self.content_folder = [] #will be use to retrieve images or pdf
+        self.epub_type = epub_type
 
         self.input_file = input_file
         self.output_directory = output_directory
@@ -48,7 +50,10 @@ class EPUBParser(object):
         for item in epub_reader.spine:
             fragment = docfrags[item]
             scoped_registry.current_dir = item
-            epub_chapter = adapt(fragment)
+            if self.epub_type == 'ifsta':
+                epub_chapter = adapt_ifsta(fragment)
+            else:
+                epub_chapter = adapt(fragment)
             tex_filename = u'%s.tex' %rename_filename(item)
             self.latex_filenames.append(tex_filename)
             tex_content = base_renderer(epub_chapter)

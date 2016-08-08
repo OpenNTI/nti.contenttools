@@ -28,6 +28,9 @@ def _parse_args():
 	arg_parser.add_argument('-o', '--output',
 							 default='output',
 							 help="The output directory. The default is: %s" % 'output')
+	arg_parser.add_argument('-t', '--type',
+							 default='generic',
+							 help="The epub type. The default is: %s" % 'generic')
 	return arg_parser.parse_args()
 
 def _title_escape(title):
@@ -60,8 +63,7 @@ def main():
 
 	# create a txt file to store information about image's name and location used in nticard
 	scoped_registry.nticard_images_filename = os.path.join(args.output, 'nticard_images.txt')
-
-	epub = EPUBParser(inputfile, args.output)
+	epub = EPUBParser(inputfile, args.output, args.type)
 	epub.process_fragment()
 
 if __name__ == '__main__':  # pragma: no cover
