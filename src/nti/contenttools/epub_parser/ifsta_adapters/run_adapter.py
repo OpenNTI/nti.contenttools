@@ -121,6 +121,11 @@ class Paragraph( types.Paragraph ):
                     new_item.children = me.children
                     bullet_class.children = [new_item]
                     me = bullet_class
+                elif element.attrib['class'] == u"sidebars-heads ParaOverride-1":
+                    me.element_type = u'sidebars-heads'
+                elif element.attrib['class'] == u"sidebars-body-text ParaOverride-1":
+                    me.element_type = u"sidebars-body"
+                    me.add_child(types.TextNode("\\\\\n"))
                 elif any(substring in element.attrib['class'] for substring in paragraph_list):
                     me.add_child(types.TextNode("\\\\\n"))
                     #from IPython.core.debugger import Tracer; Tracer()()
@@ -649,37 +654,34 @@ def _process_td_elements(element):
     return Cell.process(element)
 
 def _process_div_elements( element, parent):
-    type_ = element.attrib['data-type'] if 'data-type' in element.attrib else u''
-    if type_ is None : 
-        el = Run.process(element)
+    class_type = element.attrib['class'] if 'class' in element.attrib else None
+    el = Run.process(element)
+    if class_type is None:
+        pass
     else:
-        styles = []
-        if type_ == u'document-title' : 
-            styles.append(u'Section')
-            el = Paragraph.process(element, styles)
-        elif type_ in [u'note', u'abstract', u'example', 'exercise']:
-            data_label = element.attrib[u'data-label'] if u'data-label' in element.attrib else None
-            if data_label in [u'Click and Explore']:
-                from .note_interactive_adapter import NoteInteractive
-                el = NoteInteractive.process(element)
-                if el.caption is None or el.caption.isspace() or len(el.caption) == 0: el.caption = data_label
-            else:
-                el = Run()
-                el.add_child(Sidebar.process(element, sidebar_type =type_))
-                el.add_child(types.Newline())
-        elif type_ == u'title':
-            el = Run()
-            parent.title = Run.process(element)
-        elif type_ == u'list':
-            list_type = element.attrib['data-list-type'] if 'data-list-type' in element.attrib else None
-            el = OrderedList() if list_type == 'enumerated' else UnorderedList()
-            el.add_child(Run.process(element))
-        elif type_  == u'item':
-            el = Item.process(element)
-        else:
-            if type_ not in [u'newline', u'equation', u'commentary', u''] : logger.warn('process div as default %s', type_)
-            el = Run.process(element)
+        if class_type == u"Basic-Text-Frame":
+            el.element_type = u"Basic-Text-Frame"
+            #need to check if there the div has sidebar-head and sidebar-text
+            caption = Run()
+            body_text = Run()
+            caption, body_text = examine_div_element(el, caption, body_text)
+            if len(caption.children) > 0 and len(body_text.children) > 0:
+                new_el  = Sidebar()
+                new_el.title  = caption
+                new_el.children = body_text.children
+                el = new_el
     return el
+
+def examine_div_element(el, caption, body_text):   
+    for child in el.children:
+        if isinstance(child, types.Paragraph):
+            if child.element_type == u'sidebars-heads':
+                caption.add_child(child)
+            elif child.element_type == u'sidebars-body':
+                body_text.add_child(child)
+        elif isinstance(child, Run):
+            caption, body_text = examine_div_element(child, caption, body_text)
+    return caption, body_text
 
 class Iframe(types.Iframe):
     @classmethod
