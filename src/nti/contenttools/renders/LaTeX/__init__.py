@@ -77,7 +77,7 @@ def sidebar_renderer(self):
 
 def blockquote_renderer(self):
     body = base_renderer(self)
-    return u'\\begin{quote}\n%s\\end{quote}\n' % body
+    return u'\n\\begin{quote}\n%s\n\\end{quote}\n' % body
 
 def video_renderer(self):
     body = base_renderer(self)
