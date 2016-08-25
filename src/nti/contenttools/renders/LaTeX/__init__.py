@@ -64,15 +64,16 @@ def sidebar_renderer(self):
     
     title = u''
     if isinstance(self.title, str) or isinstance(self.title, unicode): title = self.title.strip()
+    elif self.title is None : pass
     else: title = u'%s' % base_renderer(self.title).strip() 
 
     label = u'\\label{%s}\n' % self.label if self.label else u''
 
     if any(chars in title for chars in [u'\\(', u'\\[' ]):
         logger.warn("Math element found in sidebar's title. It may cause TROUBLE with nti_render, therefore no title for this sidebar. Use textbf to write title in sidebar body")
-        return u'\\begin{sidebar}%s\n\\textbf{%s}\n%s\\end{sidebar}\n' % (label,title,body)
+        return u'\n\\begin{sidebar}%s\n\\textbf{%s}\n%s\n\\end{sidebar}\n' % (label,title,body)
     
-    return u'\\begin{sidebar}{%s}\n%s%s\\end{sidebar}\n' % (title, label,body)
+    return u'\n\\begin{sidebar}{%s}\n%s%s\n\\end{sidebar}\n' % (title, label,body)
 
 def blockquote_renderer(self):
     body = base_renderer(self)

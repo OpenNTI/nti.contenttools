@@ -93,16 +93,34 @@ class Paragraph( types.Paragraph ):
     @classmethod
     def process(cls, element, styles=(), reading_type=None):
         me = cls()
+        me.reading_type = reading_type
         if 'id' in element.attrib : me.label = element.attrib['id']
         me.styles.extend(styles)
         me = check_element_text(me, element)
         me = check_child(me, element, reading_type)
         me = check_element_tail(me, element)
         if u'class' in element.attrib:
-            substring_list = [u'Body-Text', u'Block-Text']
-            if any(substring in element.attrib['class'] for substring in substring_list):
+            paragraph_list = [u'Body-Text', u'Block-Text', 'ParaOverride']
+            section_list = [u'A-Head']
+            sidebar_list = [u'Case-History ParaOverride-1']
+            bullet_list = [u'Bullet ParaOverride-1']
+            if any(substring in element.attrib['class'] for substring in sidebar_list):
+                sidebar_class = Sidebar()
+                if u'Case-History' in element.attrib['class']:
+                    sidebar_class.title = u'Case History'
+                sidebar_class.children = me.children
+                me = sidebar_class
+            elif any(substring in element.attrib['class'] for substring in section_list):
+                me.styles.append('Section')
+            elif any(substring in element.attrib['class'] for substring in bullet_list):
+                bullet_class = UnorderedList()
+                new_item  = Item()
+                new_item.children = me.children
+                bullet_class.children = [new_item]
+                me = bullet_class
+            elif any(substring in element.attrib['class'] for substring in paragraph_list):
                 me.add_child(types.TextNode("\\\\\n"))
-        me.reading_type = reading_type
+                #from IPython.core.debugger import Tracer; Tracer()()
         return me
 
 class Hyperlink( types.Hyperlink ):
@@ -180,7 +198,6 @@ class UnorderedList( types.UnorderedList ):
             elif child.tag == 'p':
                 el = _process_p_elements(child)
             else:
-                logger.info('undordered list %',child)
                 el = Item()
 
             if isinstance(el, types.Item) or isinstance(el, types.List):
@@ -351,7 +368,11 @@ def add_children_from_lists(node, list_of_child_types):
 
 def check_element_text(me, element):
     if element.text:
-        if element.text.isspace(): pass
+        if element.text.isspace(): 
+            if len(element.text) == 1:
+                me.add_child(types.TextNode(u' '))
+            else:
+                pass
         else:
             new_el_text = element.text
             me.add_child(types.TextNode(new_el_text))
