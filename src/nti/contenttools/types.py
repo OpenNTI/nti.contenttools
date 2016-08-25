@@ -177,10 +177,14 @@ class SubSubSubSubSection(Section):
 	pass
 
 class Paragraph(DocumentStructureNode):
-	pass
+	def __init__(self, element_type=None):
+		super(Paragraph, self).__init__()
+		self.element_type = element_type
 
 class Run(DocumentStructureNode):
-	pass
+	def __init__(self, element_type=None):
+		super(Run, self).__init__()
+		self.element_type = element_type
 
 class Newline(DocumentStructureNode):
 	pass
