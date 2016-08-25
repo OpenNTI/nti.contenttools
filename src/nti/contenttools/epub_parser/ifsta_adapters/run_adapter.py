@@ -513,25 +513,13 @@ def _process_h7_elements( element,reading_type=None):
     return Paragraph.process(element, ['Heading7'], reading_type)
 
 def _process_span_elements( element ):
-    data_type = element.attrib[u'data-type'] if u'data-type' in element.attrib else u''
-    if data_type == u'term' :
-        from .glossary_adapter import GlossaryTerm
-        return GlossaryTerm.process(element)
-    elif data_type == u'list' :
-        return process_span_list(element)
-    elif data_type == u'emphasis':
-        return Run.process(element, ['italic'])
-    elif data_type == u'media':
-        el = Figure()
-        el.label = element.attrib[u'id'] if u'id' in element.attrib else None
-        img = get_figure_image(element)
-        el.add_child(img)
-        el.caption = img.caption
-        return el 
+    span_class = element.attrib['class'] if u'class' in element.attrib else u''
+    if 'bullet' in span_class:
+        el = Run()
+        el.element_type = 'bullet' 
     else:
-        #logger.warn('process SPAN as default %s', data_type)
-        pass
-    return Run.process(element)
+        el = Run.process(element)
+    return el
 
 def process_span_list(element):
     table = Table()
@@ -664,7 +652,7 @@ def _process_div_elements( element, parent):
             #need to check if there the div has sidebar-head and sidebar-text
             caption = Run()
             body_text = Run()
-            caption, body_text = examine_div_element(el, caption, body_text)
+            caption, body_text = examine_div_element_for_sidebar(el, caption, body_text)
             if len(caption.children) > 0 and len(body_text.children) > 0:
                 new_el  = Sidebar()
                 new_el.title  = caption
@@ -672,16 +660,31 @@ def _process_div_elements( element, parent):
                 el = new_el
     return el
 
-def examine_div_element(el, caption, body_text):   
+def examine_div_element_for_sidebar(el, caption, body_text):   
     for child in el.children:
         if isinstance(child, types.Paragraph):
             if child.element_type == u'sidebars-heads':
                 caption.add_child(child)
             elif child.element_type == u'sidebars-body':
-                body_text.add_child(child)
+                check_list = check_paragraph_bullet(child)
+                if check_list:
+                    bullet_class = UnorderedList()
+                    new_item  = Item()
+                    new_item.children = [child]
+                    bullet_class.children = [new_item]
+                    body_text.add_child(bullet_class)
+                else:
+                    body_text.add_child(child)
         elif isinstance(child, Run):
-            caption, body_text = examine_div_element(child, caption, body_text)
+            caption, body_text = examine_div_element_for_sidebar(child, caption, body_text)
     return caption, body_text
+
+def check_paragraph_bullet(el):
+    for child in el.children:
+        if isinstance(child, types.Run):
+            if child.element_type == 'bullet':
+                return True
+    return False
 
 class Iframe(types.Iframe):
     @classmethod
