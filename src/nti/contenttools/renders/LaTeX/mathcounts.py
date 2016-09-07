@@ -24,7 +24,7 @@ def naq_symmath_part_renderer(self):
 	
 	solution_part = self.solution.render()
 
-	result = u"\n\\begin{naqsymmathpart}\n%s\n%s\n\\end{naqsymmathpart}\n" %(content, solution_part)
+	result = u"\n\\begin{naqsymmathpart}\n%s\n%s\n\\end{naqsymmathpart}\n\n" %(content, solution_part)
 
 	return result
 
@@ -35,7 +35,7 @@ def naq_symmath_part_solution_renderer(self):
 	"""
 	solution = base_renderer(self)
 
-	result = u"\\begin{naqsolutions}\n%s\n\\end{naqsolutions}" %(solution)
+	result = u"\\begin{naqsolutions}\n%s\\end{naqsolutions}" %(solution)
 
 	return result
 
