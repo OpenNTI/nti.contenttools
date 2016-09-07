@@ -945,3 +945,16 @@ class FootnoteMark(DocumentStructureNode):
 
 class PreTag(DocumentStructureNode):
 	pass
+
+class NaqSymmathPart(DocumentStructureNode):
+	def __init__(self):
+		self.text = u''
+		self.solution = u''
+
+class NaqSymmathPartSolution(DocumentStructureNode):
+	pass
+
+class NaqSymmathPartSolutionValue(DocumentStructureNode):
+	def __init__(self):
+		self.option = u''
+		self.value = u''
