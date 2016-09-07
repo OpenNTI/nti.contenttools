@@ -51,7 +51,6 @@ def main():
 	if not os.path.exists(args.output):
 		os.mkdir(args.output)
 
-	url = args.url
 	scoped_registry.output_directory = args.output
 
 	inputfile = os.path.expanduser(args.inputfile)
@@ -67,7 +66,8 @@ def main():
 	
 	parser = MathcountsHTMLParser(script)
 	tex = parser.process()
-	title = string_replacer.rename_filename(scoped_registry.title)
+	title = string_replacer.rename_filename(args.inputfile)
+	title = title.replace('.html', '')
 	filepath = u'%s/%s.tex' %(scoped_registry.output_directory, title)
 	with codecs.open(filepath,'w', 'utf-8') as file_:
 		file_.write(tex)
