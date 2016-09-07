@@ -15,6 +15,8 @@ from nti.contenttools.mathcounts_parser.adapters import adapt
 
 from nti.contenttools.renders.LaTeX.base import base_renderer
 
+from .. import scoped_registry
+
 class MathcountsHTMLParser(object):
 
 	def __init__(self, script):

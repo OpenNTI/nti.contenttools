@@ -950,6 +950,7 @@ class NaqSymmathPart(DocumentStructureNode):
 	def __init__(self):
 		self.text = u''
 		self.solution = u''
+		self.label = u''
 
 class NaqSymmathPartSolution(DocumentStructureNode):
 	pass

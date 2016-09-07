@@ -715,6 +715,10 @@ class NaqSymmathPart(types.NaqSymmathPart):
         me.text.children = me.children
         me.children = []
 
+        counter = scoped_registry.counter_id
+        me.label = u'qid.%s.%s' %(scoped_registry.id, counter)
+        scoped_registry.counter_id = counter + 1
+
         me.solution = NaqSymmathPartSolution.process()
         return me
 
