@@ -92,14 +92,19 @@ class Section( types.Section):
 class Paragraph( types.Paragraph ):
     @classmethod
     def process(cls, element, styles=(), reading_type=None):
-        me = cls()
-        if 'id' in element.attrib : me.label = element.attrib['id']
-        me.styles.extend(styles)
-        me = check_element_text(me, element)
-        me = check_child(me, element, reading_type)
-        me = check_element_tail(me, element)
-        me.reading_type = reading_type
-        return me
+        class_type = element.attrib['class'] if 'class' in element.attrib else None    
+        if class_type == u"Normal":
+            el = NaqSymmathPart.process(element)
+            return el
+        else:
+            me = cls()
+            if 'id' in element.attrib : me.label = element.attrib['id']
+            me.styles.extend(styles)
+            me = check_element_text(me, element)
+            me = check_child(me, element, reading_type)
+            me = check_element_tail(me, element)
+            me.reading_type = reading_type
+            return me
 
 class Hyperlink( types.Hyperlink ):
 
@@ -630,44 +635,10 @@ def _process_td_elements(element):
     return Cell.process(element)
 
 def _process_div_elements( element, parent):
-    type_ = element.attrib['data-type'] if 'data-type' in element.attrib else None
-    class_ = element.attrib['class'] if 'class' in element.attrib else None
-    if type_ is None and class_ is None: 
+    class_type = element.attrib['class'] if 'class' in element.attrib else None    
+    el = Run()
+    if class_type == u"Basic-Text-Frame":
         el = Run.process(element)
-    else:
-        if type_ is not None:
-            styles = []
-            if type_ == u'document-title' : 
-                styles.append(u'Section')
-                el = Paragraph.process(element, styles)
-            elif type_ in [u'note', u'abstract', u'example', 'exercise']:
-                data_label = element.attrib[u'data-label'] if u'data-label' in element.attrib else None
-                if data_label in [u'Click and Explore']:
-                    from .note_interactive_adapter import NoteInteractive
-                    el = NoteInteractive.process(element)
-                    if el.caption is None or el.caption.isspace() or len(el.caption) == 0: el.caption = data_label
-                else:
-                    el = Run()
-                    el.add_child(Sidebar.process(element, sidebar_type =type_))
-                    el.add_child(types.Newline())
-            elif type_ == u'title':
-                el = Run()
-                parent.title = Run.process(element)
-            elif type_ == u'list':
-                list_type = element.attrib['data-list-type'] if 'data-list-type' in element.attrib else None
-                el = OrderedList() if list_type == 'enumerated' else UnorderedList()
-                el.add_child(Run.process(element))
-            elif type_  == u'item':
-                el = Item.process(element)
-            else:
-                if type_ not in [u'newline', u'equation', u'commentary', u''] : logger.warn('process div as default %s', type_)
-                el = Run.process(element)
-        else:
-            if class_ == u'doctest':
-                from .code_adapter import Verbatim
-                el = Verbatim.process(element)
-            else:
-                el = Run.process(element)
     return el
 
 class Iframe(types.Iframe):
@@ -729,5 +700,40 @@ class PreTag(types.PreTag):
         me = check_element_text(me, element)
         me = check_child(me, element)
         me = check_element_tail(me, element)
+        return me
+
+
+class NaqSymmathPart(types.NaqSymmathPart):
+    @classmethod
+    def process(cls, element):
+        me = cls()
+        me = check_element_text(me, element)
+        me = check_child(me, element)
+        me = check_element_tail(me, element)
+
+        me.text = Run()
+        me.text.children = me.children
+        me.children = []
+
+        me.solution = NaqSymmathPartSolution.process()
+        return me
+
+class NaqSymmathPartSolution(types.NaqSymmathPartSolution):
+    @classmethod
+    def  process(cls):
+        """
+        TODO : find how to get the list of solution
+        """
+        me = cls()
+        me.add_child(NaqSymmathPartSolutionValue.process())
+        return me
+
+class NaqSymmathPartSolutionValue(types.NaqSymmathPartSolutionValue):
+    @classmethod
+    def process(cls):
+        """
+        TODO : find how to get solution \\naqsolution[1]
+        """
+        me = cls()
         return me
 

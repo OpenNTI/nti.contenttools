@@ -30,7 +30,7 @@ class Image(types.Image):
 		path = element.attrib['src']
 		if u'../' in path :
 			path = path.replace('../', '')
-			image_url = u'%s/%s' %(scoped_registry.image_url, path)
+			image_url = u'%s' %(path)
 			filepath = u'%s/%s' %(scoped_registry.output_directory, path)
 			save_image(image_url, filepath)
 
