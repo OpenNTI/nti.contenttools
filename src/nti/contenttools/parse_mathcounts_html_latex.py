@@ -64,10 +64,13 @@ def main():
 	with codecs.open(inputfile,'r', 'utf-8') as f:
 		script = f.read()
 	
-	parser = MathcountsHTMLParser(script)
-	tex = parser.process()
 	title = string_replacer.rename_filename(args.inputfile)
 	title = title.replace('.html', '')
+	scoped_registry.id = title
+	scoped_registry.counter_id = 1
+
+	parser = MathcountsHTMLParser(script)
+	tex = parser.process()
 	filepath = u'%s/%s.tex' %(scoped_registry.output_directory, title)
 	with codecs.open(filepath,'w', 'utf-8') as file_:
 		file_.write(tex)
