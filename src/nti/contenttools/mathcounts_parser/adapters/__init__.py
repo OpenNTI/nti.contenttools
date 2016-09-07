@@ -9,4 +9,4 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from nti.contenttools.html_parser.adapters.run_adapter import adapt
+from nti.contenttools.mathcounts_parser.adapters.run_adapter import adapt
