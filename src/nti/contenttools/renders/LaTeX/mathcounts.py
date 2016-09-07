@@ -49,7 +49,7 @@ def naq_symmath_part_solution_value_renderer(self):
 	else:
 		option = u"<%s>" %(self.option)
 	
-	value = self.value.render()
+	value = self.value
 
 	result = u"\\naqsolution[1] %s %s\n" %(option, value)
 	return result
