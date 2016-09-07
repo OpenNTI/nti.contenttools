@@ -11,11 +11,11 @@ logger = __import__('logging').getLogger(__name__)
 
 from lxml import html
 
-from nti.contenttools.html_parser.adapters import adapt
+from nti.contenttools.mathcounts_parser.adapters import adapt
 
 from nti.contenttools.renders.LaTeX.base import base_renderer
 
-class HTMLParser(object):
+class MathcountsHTMLParser(object):
 
 	def __init__(self, script):
 		self.script = script
