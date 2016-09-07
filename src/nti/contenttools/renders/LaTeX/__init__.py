@@ -35,6 +35,7 @@ from .equation_image import *
 from ... util import string_replacer
 from .footnote import *
 from .cnx_alternate_content import *
+from .mathcounts import *
 
 def note_renderer(self):
     content = base_renderer(self)
@@ -230,6 +231,10 @@ types.FootnoteMark.render = footnotemark_renderer
 types.FootnoteText.render = footnotetext_renderer
 
 types.CNXProblemSolution.render  = cnx_problem_solution_renderer
+
+types.NaqSymmathPart.render = mathcounts.naq_symmath_part_renderer
+types.NaqSymmathPartSolution.render = mathcounts.naq_symmath_part_solution_renderer
+types.NaqSymmathPartSolutionValue.render = mathcounts.naq_symmath_part_solution_value_renderer
 
 def register():
     pass
