@@ -88,15 +88,20 @@ class CNXParser(object):
 	def process_document(self, document_folder):
 		logger.info(u'________________________________________')
 		logger.info(u'Process document %s', document_folder)
-		folder = u'%s/%s' % (self.cnx_directory, document_folder)
+		tex_content = u''
+		if len(self.cnx_directory) == 0:
+			folder = u'%s' %(document_folder)
+		else:
+			folder = u'%s/%s' % (self.cnx_directory, document_folder)
 		scoped_registry.current_dir = folder
 		self.content_folder.append(folder)
 		cnxml_html_file = u'%s/index.cnxml.html' % (folder)
+		logger.info(cnxml_html_file)
 		if os.path.exists(cnxml_html_file):
 			with codecs.open(cnxml_html_file, 'r', 'utf-8') as file_:
 				doc_fragment = html.fromstring(file_.read())
 			cnx_html_body = adapt(doc_fragment, self)
-		tex_content = base_renderer(cnx_html_body)
+			tex_content = base_renderer(cnx_html_body)
 		attribution = self.get_attribution()
 		if attribution is not None: 
 			tex_content = u'%s\n\n%s' % (tex_content, attribution)
