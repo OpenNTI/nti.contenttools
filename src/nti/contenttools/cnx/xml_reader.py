@@ -39,7 +39,7 @@ class CNX_XML(object):
 				idx = element.tag.find(u'}') + 1
 				key = element.tag[idx:]
 				logger.info(element.tag)
-				if not element.text is None or element.text.isspace():
+				if element.text is None or element.text.isspace():
 					metadata_dict = self.check_metadata_child(element, metadata_dict, key)
 				else:
 					metadata_dict[key] = element.text
