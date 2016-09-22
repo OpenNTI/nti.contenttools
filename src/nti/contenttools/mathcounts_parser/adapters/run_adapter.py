@@ -93,7 +93,7 @@ class Paragraph( types.Paragraph ):
     @classmethod
     def process(cls, element, styles=(), reading_type=None):
         class_type = element.attrib['class'] if 'class' in element.attrib else None    
-        if class_type == u"Normal":
+        if class_type in [u"Normal", u"Problems ParaOverride-1", u"Normal ParaOverride-2", u"List-Paragraph ParaOverride-3", "List-Paragraph ParaOverride-2", "AProblems ParaOverride-2", "AProblems ParaOverride-3"]:
             el = NaqSymmathPart.process(element)
             return el
         else:
@@ -637,7 +637,7 @@ def _process_td_elements(element):
 def _process_div_elements( element, parent):
     class_type = element.attrib['class'] if 'class' in element.attrib else None    
     el = Run()
-    if class_type == u"Basic-Text-Frame":
+    if class_type in [u"Basic-Text-Frame", u"_idGenObjectStyleOverride-1"]:
         el = Run.process(element)
     return el
 
