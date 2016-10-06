@@ -130,10 +130,10 @@ class Paragraph( types.Paragraph ):
                     me.element_type = u"sidebars-body"
                     me.add_child(types.TextNode("\\\\\n"))
                 elif element.attrib['class'] == u'definition ParaOverride-1':
-                    blockquote = BlockQuote()
-                    blockquote.children = me.children
+                    sidebar = Sidebar()
+                    sidebar.children = me.children
                     el = Run()
-                    el.add_child(blockquote)
+                    el.add_child(sidebar)
                     el.add_child(types.TextNode("\\\\\n"))
                     me = el
                 elif any(substring in element.attrib['class'] for substring in paragraph_list):
