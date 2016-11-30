@@ -166,11 +166,20 @@ class Run( types.Run ):
 		vertAlign = '{%s}vertAlign' %(doc_main_prefix)
 		position = '{%s}position' %(doc_main_prefix)
 
+		#this for attribute values (for examine whether we need to set a text bold or not)
+		att_val = '{%s}val' %(doc_main_prefix)
+
 		for element in properties.iterchildren():
 			if element.tag == rStyle:
 				self.addStyle(element.attrib[att_val])
 			elif element.tag == b:
-				self.addStyle('bold')
+				if att_val in element.attrib:
+					if element.attrib[att_val] == '0':
+						pass
+					else:
+						self.addStyle('bold')
+				else:
+					self.addStyle('bold')
 			# Ignore bold complex script specification
 			elif element.tag == bCs:
 				pass
