@@ -59,3 +59,16 @@ def rename_filename(filename):
 	for ch in FORBIDDEN_CHARACTERS :
 		if ch in filename : filename = filename.replace(ch, u'_')
 	return filename
+
+def create_label(label_type, arg):
+	"""
+	create label based on the given type and arg
+	for example :
+		label_type = "chapter"
+		arg = "Chapter review and summary"
+		return \label{chapter:Chapter review and summary}
+	"""
+	for ch in FORBIDDEN_CHARACTERS :
+		if ch in arg : arg = arg.replace(ch, u'_')
+
+	return u'\\label{%s:%s}' % (label_type, arg) 

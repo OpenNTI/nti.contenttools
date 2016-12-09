@@ -11,14 +11,22 @@ logger = __import__('logging').getLogger(__name__)
 from .base import base_renderer, _command_renderer
 from .code_line import verbatim_code_renderer, _code_listings_renderer
 
+from nti.contenttools.util  import create_label
+
 def _chapter( arg ):
-    return _command_renderer( 'chapter', arg )
+    chapter_command = _command_renderer( 'chapter', arg )
+    chapter_command = u'%s\n%s' %(chapter_command, create_label('chapter', arg))
+    return chapter_command
 
 def _section( arg ):
-    return _command_renderer( 'section', arg )
+    section_command = _command_renderer( 'section', arg )
+    section_command = u'%s\n%s' %(section_command, create_label('section', arg))
+    return section_command
 
 def _subsection( arg ):
-    return _command_renderer( 'subsection', arg )
+    subsection_command = _command_renderer( 'subsection', arg )
+    subsection_command = u'%s\n%s' %(subsection_command, create_label('subsection', arg))
+    return subsection_command
 
 def _subsubsection( arg ):
     return _command_renderer( 'subsubsection', arg )
