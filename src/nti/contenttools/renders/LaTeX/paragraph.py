@@ -77,7 +77,6 @@ def paragraph_renderer(self):
     for style in self.styles:
         if style in STYLES.keys():
             result = STYLES[style](result)
-            print(result)
         elif style in IGNORED_STYLES:
             pass
         elif style in [u'Code', u'cCode']:

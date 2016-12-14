@@ -214,6 +214,7 @@ class Sidebar(DocumentStructureNode):
 		super(Sidebar, self).__init__()
 		self.title = None
 		self.label = None
+		self.type = None
 
 class BlockQuote(DocumentStructureNode):
 
