@@ -131,6 +131,7 @@ class Paragraph( types.Paragraph ):
                     me.add_child(types.TextNode("\\\\\n"))
                 elif element.attrib['class'] == u'definition ParaOverride-1':
                     sidebar = Sidebar()
+                    sidebar.type = u"sidebar_term"
                     sidebar.children = me.children
                     el = Run()
                     el.add_child(sidebar)

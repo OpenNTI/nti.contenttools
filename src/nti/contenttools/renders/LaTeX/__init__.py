@@ -61,9 +61,17 @@ def label_renderer(self):
     return u'\\label{%s} ' % self.name
 
 def sidebar_renderer(self):
-    body = base_renderer(self)
-    
     title = u''
+    body = base_renderer(self)
+
+    #this is useful for glossary term (for example glossary term in IFSTA epub)
+    if self.type == u"sidebar_term" : 
+        str_pos = body.find('-')
+        if str_pos > -1 :
+            term = body[0:str_pos].strip()
+            if self.title is None : self.title = term
+            if self.label is None : self.label = u'sidebar_term:%s' % term.replace(u" ", u"_")
+
     if isinstance(self.title, str) or isinstance(self.title, unicode): title = self.title.strip()
     elif self.title is None : pass
     else: title = u'%s' % base_renderer(self.title).strip() 

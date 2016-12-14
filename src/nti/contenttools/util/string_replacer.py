@@ -66,7 +66,7 @@ def create_label(label_type, arg):
 	for example :
 		label_type = "chapter"
 		arg = "Chapter review and summary"
-		return \label{chapter:Chapter review and summary}
+		return \label{chapter:Chapter_review_and_summary}
 	"""
 	for ch in FORBIDDEN_CHARACTERS :
 		if ch in arg : arg = arg.replace(ch, u'_')
