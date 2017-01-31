@@ -10,10 +10,11 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 try:
-	from gevent.local import local
+    from gevent.local import local
 except ImportError:
-	from threading import local
+    from threading import local
+
 
 class ScopedRegistry(local):
-	pass
+    pass
 scoped_registry = ScopedRegistry()
