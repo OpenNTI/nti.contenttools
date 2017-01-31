@@ -1630,7 +1630,7 @@ def _process_q_elements(element, epub):
     return Run.process(element, epub, ['bold'])
 
 def _process_dfn_elements(child, epub):
-    return Run.process(element, epub, 'italic')
+    return Run.process(child, epub, 'italic')
 
 def _process_code_elements(element, epub):
     return CodeLine.process(element,epub)
