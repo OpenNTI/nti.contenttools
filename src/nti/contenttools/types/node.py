@@ -35,16 +35,9 @@ class Node(object):
         child.__parent__ = None
     remove_child = remove
 
-    def render(self, context=None):
-        result = u''
-
-        if not hasattr(self, 'children'):
-            return self
-
+    def render(self, context):
         for child in self:
-            result = result + child.render()
-
-        return result
+            child.render(context)
 
     def __iter__(self):
         for item in self.children or ():
