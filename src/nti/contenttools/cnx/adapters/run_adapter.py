@@ -49,6 +49,14 @@ class Run( types.Run ):
             me = _t
         return me
 
+class Label( types.Label ):
+
+    @classmethod
+    def process(cls, label, epub ):
+        me = cls()
+        me.name = label.attrib['id']
+        return me
+
 class Sidebar(types.Sidebar):
     @classmethod
     def process(cls, element, sidebar_type=None):
@@ -578,7 +586,7 @@ def _process_q_elements(element):
 def _process_s_elements(element):
     return Run.process(element, ['strike'])
 
-def _process_dfn_elements(child):
+def _process_dfn_elements(element):
     return Run.process(element, 'italic')
 
 def _process_samp_elements(element):
