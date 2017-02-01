@@ -20,11 +20,11 @@ class Node(object):
 
     __name__ = None
     __parent__ = None
-
-    def __init__(self, children=()):
-        self.children = list(children or ())
-
+    children = ()
+    
     def add(self, child):
+        if self.children == ():
+            self.children = list(self.children or ())
         if INode.providedBy(child):
             self.children.append(child)
             child.__parent__ = self # take ownership
