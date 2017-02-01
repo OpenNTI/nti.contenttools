@@ -14,16 +14,16 @@ does_not = is_not
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
-from nti.contenttools.types.interfaces import INode
+from nti.contenttools.types.interfaces import IRunNode
 
-from nti.contenttools.types.node import Node
+from nti.contenttools.types.run import Run
 
 from nti.contenttools.tests import ContentToolsTestCase
 
 
 class TestNode(ContentToolsTestCase):
 
-    def test_object(self):
-        node = Node()
-        assert_that(node, validly_provides(INode))
-        assert_that(node, verifiably_provides(INode))
+    def test_node(self):
+        node = Run()
+        assert_that(node, validly_provides(IRunNode))
+        assert_that(node, verifiably_provides(IRunNode))
