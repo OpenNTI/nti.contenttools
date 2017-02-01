@@ -11,22 +11,17 @@ import unittest
 
 import zope.testing.cleanup
 
-from nti.dataserver.tests.mock_dataserver import WithMockDS
-from nti.dataserver.tests.mock_dataserver import mock_db_trans
-
 from nti.testing.layers import find_test
 from nti.testing.layers import GCLayerMixin
 from nti.testing.layers import ZopeComponentLayer
 from nti.testing.layers import ConfiguringLayerMixin
 
-from nti.dataserver.tests.mock_dataserver import DSInjectorMixin
 
 class SharedConfiguringTestLayer(ZopeComponentLayer,
                                  GCLayerMixin,
-                                 ConfiguringLayerMixin,
-                                 DSInjectorMixin):
-    
-    set_up_packages = ('nti.dataserver', 'nti.contenttools')
+                                 ConfiguringLayerMixin):
+
+    set_up_packages = ('nti.contenttools',)
 
     @classmethod
     def setUp(cls):
@@ -39,12 +34,12 @@ class SharedConfiguringTestLayer(ZopeComponentLayer,
 
     @classmethod
     def testSetUp(cls, test=None):
-        test = test or find_test()
-        cls.setUpTestDS(test)
+        pass
 
     @classmethod
     def testTearDown(cls):
         pass
+
 
 class ContentToolsTestCase(unittest.TestCase):
     layer = SharedConfiguringTestLayer
