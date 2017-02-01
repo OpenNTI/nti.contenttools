@@ -14,8 +14,6 @@ from .math_adapter import Math
 from .image_adapter import Image
 from lxml.html import HtmlComment
 from ... import scoped_registry
-import math
-
 
 def adapt(fragment, cnx):
     head = fragment.find('head')
@@ -316,7 +314,6 @@ class Table(types.Table):
         me = cls()
         if 'id' in element.attrib : me.label = element.attrib['id']
         me = check_element_text(me, element)
-        style_ = u''
         if u'border' in element.attrib.keys():
             me.border = element.attrib[u'border']
 
@@ -797,7 +794,6 @@ class Figure(types.Figure):
     @classmethod
     def process(cls, element):
         me = cls()
-        multi_figures = Run()
         if u'id' in element.attrib : me.label = element.attrib[u'id']
         for child in element:
             if child.tag == u'figcaption':
@@ -837,7 +833,6 @@ class PreTag(types.PreTag):
     @classmethod
     def process(cls, element):
         me = cls()
-        data_type = element.attrib[u'data-type'] if u'data-type' in element.attrib else None
         me.label = element.attrib[u'id'] if u'id' in element.attrib else None
         me = check_element_text(me, element)
         me = check_child(me, element)
