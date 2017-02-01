@@ -4,8 +4,8 @@
 			xmlns:zcml="http://namespaces.zope.org/zcml">
 
 	<adapter factory=".run.RunRenderer"
-			 for="nti.contenttools.interfaces.IRunNode"
-			 provides="nti.contenttools.interfaces.IRenderer"
+			 for="nti.contenttools.types.interfaces.IRunNode"
+			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
 
 </configure>

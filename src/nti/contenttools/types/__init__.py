@@ -15,47 +15,13 @@ from nti.contentfragments.interfaces import PlainTextContentFragment
 
 from nti.contentfragments.latex import PlainTextToLatexFragmentConverter
 
-from nti.contenttools.interfaces import INode
-from nti.contenttools.interfaces import IRunNode
+from .. import unicode_to_latex
 
-from . import unicode_to_latex
+from .node import Node
+from .node import _Node
+from .node import DocumentStructureNode
 
-@interface.implementer(INode)
-class _Node(object):
-
-	__parent__ = None
-
-	children = ()
-
-	def add(self, child):
-		if self.children == ():
-			self.children = []
-		if isinstance(child, _Node):
-			self.children.append(child)
-			child.__parent__ = self
-	add_child = add
-
-	def remove(self, child):
-		self.children.remove(child)
-		child.__parent__ = None
-	remove_child = remove
-
-	def render(self, context=None):
-		result = u''
-
-		if not hasattr(self, 'children'):
-			return self
-
-		for child in self:
-			result = result + child.render()
-
-		return result
-
-	def __iter__(self):
-		current_item = 0
-		while (current_item < len(self.children)):
-			yield self.children[current_item]
-			current_item += 1
+from .run import Run
 
 def _to_latex(text, type_text):
 	# replace special unicode in TextNode with latex tag when text is
@@ -91,28 +57,6 @@ class TextNode(_Node, PlainTextContentFragment):
 	def render(self):
 		return unicode(self)
 
-class DocumentStructureNode(_Node):
-
-	STYLES = {}
-
-	def __init__(self):
-		super(DocumentStructureNode, self).__init__()
-		self.styles = []
-
-	def raw(self):
-		val = u''
-		for child in self:
-			if hasattr(child, 'raw'):
-				val = val + child.raw()
-			else:
-				val = val + child
-		return val
-
-	def addStyle(self, style):
-		self.styles.append(style)
-
-	def removeStyle(self, style):
-		self.styles.remove(style)
 
 class Document(DocumentStructureNode):
 
@@ -189,11 +133,6 @@ class Paragraph(DocumentStructureNode):
 		super(Paragraph, self).__init__()
 		self.element_type = element_type
 
-@interface.implementer(IRunNode)
-class Run(DocumentStructureNode):
-	def __init__(self, element_type=None):
-		super(Run, self).__init__()
-		self.element_type = element_type
 
 class Newline(DocumentStructureNode):
 	pass
