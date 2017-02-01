@@ -47,9 +47,6 @@ class Mtable(types.Mtable):
         me = cls()
         number_of_col = 0 
         count_child = -1
-        if 'id' in element.attrib:
-            me.add_child(Label.process(element))
-
         if element.text:
             if element.text.isspace():
                 pass
@@ -71,8 +68,6 @@ class Mtr(types.Mtr):
     def process(cls, element):
         me = cls()
         number_of_col = 0
-        if 'id' in element.attrib:
-            me.add_child(Label.process(element))
 
         if element.text:
             if element.text.isspace():
@@ -100,8 +95,6 @@ class Mfrac (types.Mfrac):
     @classmethod
     def process(cls, element):
         me = cls()
-        if 'id' in element.attrib:
-            me.add_child(Label.process(element))
         me = check_math_element_child(me, element)
         return me
 
