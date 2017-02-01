@@ -13,9 +13,9 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
-from nti.contenttools.interfaces import IRunNode
 from nti.contenttools.interfaces import IRenderer
 
+from nti.contenttools.types.interfaces import IRunNode
 
 @component.adapter(IRunNode)
 @interface.implementer(IRenderer)
