@@ -51,7 +51,8 @@ setup(
         'zope.location',
         'zope.security',
         'zope.traversing',
-        'nti.contentfragments'
+        'nti.contentfragments',
+        'nti.schema'
     ],
     entry_points=entry_points
 )
