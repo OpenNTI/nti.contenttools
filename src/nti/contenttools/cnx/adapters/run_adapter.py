@@ -132,6 +132,109 @@ class Hyperlink( types.Hyperlink ):
         for child in link:
             me.add_child( Run.process( child))
         return me
+    
+class DescriptionList( types.DescriptionList):
+    @classmethod
+    def process(cls, element, epub, type_ = None):
+        me = cls()
+        me.add_child(ItemWithDesc.process(element, epub, type_))
+        return me
+
+class ItemWithDesc( types.ItemWithDesc ):
+    @classmethod
+    def process(cls, element, epub, type_=None):
+        me = cls()
+        count_child = -1
+        for child in element:
+            if child.tag == 'dt':
+                el = DT.process(child, epub, type_)
+                me.add_child(el)
+                count_child = count_child + 1
+            elif child.tag == 'dd':
+                if me.children[count_child].desc == None:
+                    desc = []
+                    _dd = DD.process(child, epub)
+                    desc.append(_dd)
+                    me.children[count_child].set_description(desc)
+                else:
+                    desc = me.children[count_child].desc
+                    _dd = DD.process(child, epub)
+                    desc.append(_dd)
+                    me.children[count_child].set_description(desc)
+            elif child.tag == 'a':
+                if me.children[count_child].desc == None:
+                    desc = []
+                    _a = _process_a_elements(child, epub)
+                    desc.append(_a)
+                    me.children[count_child].set_description(desc)
+                else:
+                    desc = me.children[count_child].desc
+                    _a = _process_a_elements(child, epub)
+                    desc.append(_a)
+                    me.children[count_child].set_description(desc)
+            else:
+                if isinstance(child,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled <dl> element child: %s.',child.tag)
+        return me
+
+class DT(types.DT):
+    @classmethod
+    def process(cls, element, epub, type_=None):
+        me = cls()
+        me.set_type(type_)
+        if element.text:
+            if element.text.isspace():
+                pass
+            else:
+                new_el_text = element.text.rstrip() + u' '
+                me.add_child(types.TextNode(new_el_text))
+        for sub_el in element:
+            if sub_el.tag == 'p':
+                me.add_child(_process_p_elements(sub_el, epub))
+            elif sub_el.tag == 'img':
+                inline_image = False
+                alt_ = u''
+                if 'alt' in sub_el.attrib.keys():
+                    alt_ = sub_el.attrib['alt']
+                if alt_ in ['OpenStax College Logo']:
+                    inline_image = True
+                me.add_child(Image.process(sub_el, epub, inline_image))
+            elif sub_el.tag ==  'span':
+                me.add_child(_process_span_elements(sub_el, epub))
+            elif sub_el.tag ==  'sub':
+                me.add_child(_process_sub_elements(sub_el, epub))
+            elif sub_el.tag ==  'sup':
+                me.add_child(_process_sup_elements(sub_el, epub))
+            else:
+                if isinstance(sub_el,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled <dt> child: %s.',sub_el.tag)
+        return me
+
+class DD(types.DD):
+    @classmethod
+    def process(cls, element, epub):
+        me = cls()
+        if element.text:
+            if element.text.isspace():
+                pass
+            else:
+                new_el_text = element.text.rstrip() + u' '
+                me.add_child(types.TextNode(new_el_text))
+        for sub_el in element:
+            if sub_el.tag == 'p':
+                me.add_child(_process_p_elements(sub_el, epub))
+            elif sub_el.tag == 'div':
+                me.add_child(_process_div_elements(sub_el, epub))
+            else:
+                if isinstance(sub_el,HtmlComment):
+                    pass
+                else:
+                    logger.warn('Unhandled <dd> child: %s.',sub_el.tag)
+        return me
 
 class OrderedList( types.OrderedList ):
     @classmethod
