@@ -40,7 +40,7 @@ setup(
     namespace_packages=['nti'],
     install_requires=[
         'setuptools',
-        'dolmen',
+        'dolmen.builtins',
         'gevent',
         'lxml',
         'Pillow',
