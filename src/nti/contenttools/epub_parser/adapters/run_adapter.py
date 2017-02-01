@@ -525,9 +525,6 @@ def process_span_list(element):
 def _process_ul_elements( element ):
     return UnorderedList.process(element)
 
-def _process_dl_elements( element, type_=None ):
-    return DescriptionList.process(element, type_)
-
 def _process_b_elements( element ):
     return Run.process(element, ['bold'])
 
@@ -577,7 +574,7 @@ def _process_q_elements(element):
 def _process_s_elements(element):
     return Run.process(element, ['strike'])
 
-def _process_dfn_elements(child):
+def _process_dfn_elements(element):
     return Run.process(element, 'italic')
 
 def _process_samp_elements(element):

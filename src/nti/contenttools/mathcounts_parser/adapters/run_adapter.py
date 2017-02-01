@@ -595,7 +595,7 @@ def _process_q_elements(element):
 def _process_s_elements(element):
     return Run.process(element, ['strike'])
 
-def _process_dfn_elements(child):
+def _process_dfn_elements(element):
     return Run.process(element, 'italic')
 
 def _process_samp_elements(element):
