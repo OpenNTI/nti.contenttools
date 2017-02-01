@@ -17,11 +17,13 @@ from nti.contentfragments.latex import PlainTextToLatexFragmentConverter
 
 from .. import unicode_to_latex
 
-from .node import Node
-from .node import _Node
-from .node import DocumentStructureNode
+from nti.contenttools.types.document import Document
 
-from .run import Run
+from nti.contenttools.types.node import Node
+from nti.contenttools.types.node import _Node
+from nti.contenttools.types.node import DocumentStructureNode
+
+from nti.contenttools.types.run import Run
 
 def _to_latex(text, type_text):
 	# replace special unicode in TextNode with latex tag when text is
@@ -57,24 +59,6 @@ class TextNode(_Node, PlainTextContentFragment):
 	def render(self):
 		return unicode(self)
 
-
-class Document(DocumentStructureNode):
-
-	def __init__(self, doc_type=u'book'):
-		self.doc_type = doc_type
-		self.title = u''
-		self.author = u''
-		self.packages = [ 'graphicx',
-						  'hyperref',
-						  'ulem',
-						  'ntilatexmacros',
-						  'ntiassessment',
-						  'amsmath',
-						  'enumitem',
-						  'listings',
-						  'ntiglossary',
-						  'Tabbing',
-						  'textgreek']
 
 class Body(DocumentStructureNode):
 	pass

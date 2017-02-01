@@ -76,3 +76,23 @@ class IRunNode(IDocumentStructureNode):
 
     element_type = ValidTextLine(title="Element type",
                                  required=False)
+
+
+class IDocument(IDocumentStructureNode):
+
+    doc_type = ValidTextLine(title="Document type",
+                             required=True,
+                             default=u'book')
+
+    title = ValidTextLine(title="Document type",
+                          required=True,
+                          default=u'')
+
+    author = ValidTextLine(title="Document author",
+                           required=False,
+                           default=u'')
+
+    packages = ListOrTuple(ValidTextLine(title='the package'),
+                           title='List of packages',
+                           required=False,
+                           min_length=0)
