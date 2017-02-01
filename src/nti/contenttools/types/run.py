@@ -15,9 +15,10 @@ from nti.contenttools.types.interfaces import IRunNode
 
 from nti.contenttools.types.node import DocumentStructureNode
 
+
 @interface.implementer(IRunNode)
 class Run(DocumentStructureNode):
 
-    def __init__(self, element_type=None):
-        DocumentStructureNode.__init__(self)
+    def __init__(self, styles=(), element_type=None):
+        DocumentStructureNode.__init__(self, styles)
         self.element_type = element_type

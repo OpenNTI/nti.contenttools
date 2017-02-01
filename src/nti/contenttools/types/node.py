@@ -11,25 +11,23 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from zope.location.interfaces import IContained
-
 from nti.contenttools.types.interfaces import INode
+from nti.contenttools.types.interfaces import IDocumentStructureNode
 
 
-@interface.implementer(INode, IContained)
+@interface.implementer(INode)
 class Node(object):
 
     __name__ = None
     __parent__ = None
 
-    children = ()
+    def __init__(self, children=()):
+        self.children = list(children or ())
 
     def add(self, child):
-        if self.children == ():
-            self.children = []
-        if isinstance(child, Node):
+        if INode.providedBy(child):
             self.children.append(child)
-            child.__parent__ = self
+            child.__parent__ = self # take ownership
     add_child = add
 
     def remove(self, child):
@@ -49,20 +47,19 @@ class Node(object):
         return result
 
     def __iter__(self):
-        current_item = 0
-        while (current_item < len(self.children)):
-            yield self.children[current_item]
-            current_item += 1
+        for item in self.children or ():
+            yield item
 _Node = Node
 
 
+@interface.implementer(IDocumentStructureNode)
 class DocumentStructureNode(Node):
 
     STYLES = {}
 
-    def __init__(self):
-        super(DocumentStructureNode, self).__init__()
-        self.styles = []
+    def __init__(self, styles=None):
+        Node.__init__(self)
+        self.styles = list(styles or ())
 
     def raw(self):
         val = u''
@@ -73,8 +70,10 @@ class DocumentStructureNode(Node):
                 val = val + child
         return val
 
-    def addStyle(self, style):
+    def add_style(self, style):
         self.styles.append(style)
+    addStyle = add_style
 
-    def removeStyle(self, style):
+    def remove_style(self, style):
         self.styles.remove(style)
+    removeStyle = remove_style
