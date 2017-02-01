@@ -11,37 +11,68 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from zope.location.interfaces import IContained
+
+from dolmen.builtins.interfaces import IIterable
+
 from nti.schema.field import Object
-from nti.schema.field import UniqueIterable
+from nti.schema.field import ListOrTuple
+from nti.schema.field import ValidTextLine
+from nti.schema.field import IndexedIterable
+
 
 class _INode(interface.Interface):
     """
     Basic interface for nodes
     """
 
-class INode(_INode):
 
-    children = UniqueIterable(Object(_INode, title='the node'),
-                              title='List of nodes')
+class INode(_INode, IIterable, IContained):
+
+    children = IndexedIterable(Object(_INode, title='the node'),
+                               title='List of nodes',
+                               required=False,
+                               min_length=0)
 
     def add(node):
         """
-        add a ndoe
+        add a node
         """
 
     def remove(node):
         """
         remove a node
         """
-        
+
     def render(context):
         """
         Render this node using the specified context
-        
+
         :param context: A :class:`nti.contenttools.interfaces.IRenderContext` object 
         """
 
-class IRunNode(INode):
-    """
-    A run node
-    """
+
+class IDocumentStructureNode(INode):
+
+    styles = ListOrTuple(ValidTextLine(title='the style'),
+                         title='List of styles',
+                         required=False,
+                         min_length=0)
+
+    def add_style(style):
+        """
+        add a style
+        """
+    addStyle = add_style
+
+    def remove_style(node):
+        """
+        remove a style
+        """
+    removeStyle = remove_style
+
+
+class IRunNode(IDocumentStructureNode):
+
+    element_type = ValidTextLine(title="Element type",
+                                 required=False)
