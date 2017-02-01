@@ -15,4 +15,7 @@
 	<!-- Utility for math latex tag-->
 	<utility factory=".latex._ExtendedTextLatexEscaper" name="extended" />
 
+	<include package=".types" />
+	<include package=".renderers" />
+
 </configure>
