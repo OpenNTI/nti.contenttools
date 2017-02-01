@@ -40,6 +40,7 @@ setup(
     namespace_packages=['nti'],
     install_requires=[
         'setuptools',
+        'dolmen',
         'gevent',
         'lxml',
         'Pillow',
@@ -47,6 +48,7 @@ setup(
         'zope.component',
         'zope.exceptions',
         'zope.interface',
+        'zope.location',
         'zope.security',
         'zope.traversing',
         'nti.contentfragments'
