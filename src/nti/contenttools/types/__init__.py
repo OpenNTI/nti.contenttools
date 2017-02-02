@@ -25,875 +25,1033 @@ from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.contenttools.types.run import Run
 
+
 def _to_latex(text, type_text):
-	# replace special unicode in TextNode with latex tag when text is
-	# a part of equation (math element)
-	# we use unicode_to_latex._replace_unicode_with_latex_tag(text) to
-	# avoid going through large extended escape_list
-	# otherwise the text replacement will take place when calling in
-	# nti.contentfragments.latex.PlainTextToLatexFragmentConverter
-	# and try to keep escape list for
-	# nti.contentfragments.latex.PlainTextToLatexFragmentConverter small
-	new_text = text
-	if type_text == 'omath':
-		string_list = list(text)
-		if len(string_list) > 1:
-			new_text = unicode_to_latex._replace_multi_char(new_text)
-		else:
-			new_text = unicode_to_latex._replace_unicode_with_latex_tag(new_text)
-		return new_text
-	else:
-		return PlainTextToLatexFragmentConverter(new_text)
+    # replace special unicode in TextNode with latex tag when text is
+    # a part of equation (math element)
+    # we use unicode_to_latex._replace_unicode_with_latex_tag(text) to
+    # avoid going through large extended escape_list
+    # otherwise the text replacement will take place when calling in
+    # nti.contentfragments.latex.PlainTextToLatexFragmentConverter
+    # and try to keep escape list for
+    # nti.contentfragments.latex.PlainTextToLatexFragmentConverter small
+    new_text = text
+    if type_text == 'omath':
+        string_list = list(text)
+        if len(string_list) > 1:
+            new_text = unicode_to_latex._replace_multi_char(new_text)
+        else:
+            new_text = unicode_to_latex._replace_unicode_with_latex_tag(new_text)
+        return new_text
+    else:
+        return PlainTextToLatexFragmentConverter(new_text)
+
 
 class TextNode(_Node, PlainTextContentFragment):
 
-	__slots__ = PlainTextContentFragment.__slots__ + ('children', '__parent__')
+    __slots__ = PlainTextContentFragment.__slots__ + ('children', '__parent__')
 
-	def __new__(cls, text='', type_text=None):
-		return super(TextNode, cls).__new__(cls, _to_latex(text, type_text))
+    def __new__(cls, text='', type_text=None):
+        return super(TextNode, cls).__new__(cls, _to_latex(text, type_text))
 
-	def __init__(self, text='', type_text=None):
-		# Note: __new__ does all the actual work, because these are immutable as strings
-		super(TextNode, self).__init__(self, _to_latex(text, type_text))
+    def __init__(self, text='', type_text=None):
+        # Note: __new__ does all the actual work, because these are immutable as strings
+        super(TextNode, self).__init__(self, _to_latex(text, type_text))
 
-	def render(self):
-		return unicode(self)
+    def render(self):
+        return unicode(self)
 
 
 class Body(DocumentStructureNode):
-	pass
+    pass
+
 
 class EPUBBody(DocumentStructureNode):
-	pass
+    pass
+
 
 class Chapter(DocumentStructureNode):
 
-	def __init__(self, suppressed=False, title=None, label=None):
-		super(Chapter, self).__init__()
-		self.suppressed = suppressed
-		self.title = title
-		self.label = label
+    def __init__(self, suppressed=False, title=None, label=None):
+        super(Chapter, self).__init__()
+        self.suppressed = suppressed
+        self.title = title
+        self.label = label
 
-	def set_title(self, title):
-		self.title = title
+    def set_title(self, title):
+        self.title = title
 
-	def set_label(self, label):
-		self.label = label
+    def set_label(self, label):
+        self.label = label
+
 
 class Section(DocumentStructureNode):
 
-	def __init__(self, suppressed=False, label=None, title=None):
-		super(Section, self).__init__()
-		self.suppressed = suppressed
-		self.title = title
-		self.label = label
-		self.data_depth = None
-		self.section_type = None
+    def __init__(self, suppressed=False, label=None, title=None):
+        super(Section, self).__init__()
+        self.suppressed = suppressed
+        self.title = title
+        self.label = label
+        self.data_depth = None
+        self.section_type = None
 
-	def set_title(self, title):
-		self.title = title
+    def set_title(self, title):
+        self.title = title
 
-	def set_label(self, label):
-		self.label = label
+    def set_label(self, label):
+        self.label = label
+
 
 class SubSection(Section):
 
-	def __init__(self, label=None, title=None):
-		super(SubSection, self).__init__()
-		self.title = title
-		self.label = label
+    def __init__(self, label=None, title=None):
+        super(SubSection, self).__init__()
+        self.title = title
+        self.label = label
+
 
 class SubSubSection(Section):
-	pass
+    pass
+
 
 class SubSubSubSection(Section):
-	pass
+    pass
+
 
 class SubSubSubSubSection(Section):
-	pass
+    pass
+
 
 class Paragraph(DocumentStructureNode):
-	def __init__(self, element_type=None):
-		super(Paragraph, self).__init__()
-		self.element_type = element_type
+
+    def __init__(self, element_type=None):
+        super(Paragraph, self).__init__()
+        self.element_type = element_type
 
 
 class Newline(DocumentStructureNode):
-	pass
+    pass
+
 
 class Note(DocumentStructureNode):
-	
-	def __init__(self, type_=u'', rels=None, notes=None):
-		super(Note, self).__init__()
-		self.type = type_
-		self.rels = rels
-		self.notes = notes
+
+    def __init__(self, type_=u'', rels=None, notes=None):
+        super(Note, self).__init__()
+        self.type = type_
+        self.rels = rels
+        self.notes = notes
+
 
 class Hyperlink(DocumentStructureNode):
 
-	def __init__(self, target=None, type_='Normal'):
-		super(Hyperlink, self).__init__()
-		self.target = target
-		self.type = type_
+    def __init__(self, target=None, type_='Normal'):
+        super(Hyperlink, self).__init__()
+        self.target = target
+        self.type = type_
+
 
 class Iframe(DocumentStructureNode):
-	pass
+    pass
+
 
 class Label(DocumentStructureNode):
 
-	def __init__(self, name=''):
-		super(Label, self).__init__()
-		self.name = name
+    def __init__(self, name=''):
+        super(Label, self).__init__()
+        self.name = name
+
 
 class Sidebar(DocumentStructureNode):
 
-	def __init__(self, title=''):
-		super(Sidebar, self).__init__()
-		self.title = None
-		self.label = None
-		self.type = None
+    def __init__(self, title=''):
+        super(Sidebar, self).__init__()
+        self.title = None
+        self.label = None
+        self.type = None
+
 
 class BlockQuote(DocumentStructureNode):
 
-	def __init__(self, source=''):
-		super(BlockQuote, self).__init__()
-		self.source = source
+    def __init__(self, source=''):
+        super(BlockQuote, self).__init__()
+        self.source = source
+
 
 class Image(DocumentStructureNode):
 
-	def __init__(self, path=''):
-		super(Image, self).__init__()
-		self.path = u''
-		self.caption = u''
-		self.width = 0
-		self.height = 0
-		self.equation_image = False
-		self.inline_image = False
-		self.predefined_image_path = False
+    def __init__(self, path=''):
+        super(Image, self).__init__()
+        self.path = u''
+        self.caption = u''
+        self.width = 0
+        self.height = 0
+        self.equation_image = False
+        self.inline_image = False
+        self.predefined_image_path = False
+
 
 class DocxImage(Image):
-	pass
+    pass
+
 
 class Video(DocumentStructureNode):
 
-	def __init__(self, path=''):
-		super(Video, self).__init__()
-		self.path = u''
-		self.thumbnail = u''
-		self.caption = u''
-		self.width = 0
-		self.height = 0
+    def __init__(self, path=''):
+        super(Video, self).__init__()
+        self.path = u''
+        self.thumbnail = u''
+        self.caption = u''
+        self.width = 0
+        self.height = 0
+
 
 class List(DocumentStructureNode):
 
-	def __init__(self, level='', group='', start=0, fmt=''):
-		self.level = level
-		self.group = group
-		self.start = start
-		self.format = fmt
+    def __init__(self, level='', group='', start=0, fmt=''):
+        self.level = level
+        self.group = group
+        self.start = start
+        self.format = fmt
+
 
 class DescriptionList(List):
-	pass
+    pass
+
 
 class UnorderedList(List):
 
-	def __init__(self):
-		super(UnorderedList, self).__init__()
+    def __init__(self):
+        super(UnorderedList, self).__init__()
+
 
 class OrderedList(List):
-	def __init__(self):
-		super(OrderedList, self).__init__(fmt='decimal')
+
+    def __init__(self):
+        super(OrderedList, self).__init__(fmt='decimal')
+
 
 class Item(DocumentStructureNode):
-	pass
+    pass
+
 
 class ItemWithDesc(Item):
-	pass
+    pass
+
 
 class DT(DocumentStructureNode):
 
-	def __init__(self, desc=None, type_=None):
-		self.desc = desc
-		self.type_ = type_
+    def __init__(self, desc=None, type_=None):
+        self.desc = desc
+        self.type_ = type_
 
-	def set_description(self, desc):
-		self.desc = desc
+    def set_description(self, desc):
+        self.desc = desc
 
-	def set_type(self, type_):
-		self.type_ = type_
+    def set_type(self, type_):
+        self.type_ = type_
 
 
 class DD(DocumentStructureNode):
-	pass
+    pass
+
 
 class Table(DocumentStructureNode):
 
-	def __init__(self, number_of_col_header=0, number_of_col_body=0, caption=None,
-				 label=None, border=None, type_=None, alignment=u'left'):
-		self.number_of_col_header = number_of_col_header
-		self.number_of_col_body = number_of_col_body
-		self.caption = caption
-		self.label = label
-		self.border = border
-		self.type_ = type_
-		self.alignment = alignment
+    def __init__(self, number_of_col_header=0, number_of_col_body=0, caption=None,
+                 label=None, border=None, type_=None, alignment=u'left'):
+        self.number_of_col_header = number_of_col_header
+        self.number_of_col_body = number_of_col_body
+        self.caption = caption
+        self.label = label
+        self.border = border
+        self.type_ = type_
+        self.alignment = alignment
 
-	def set_number_of_col_header(self, number_of_col_header):
-		self.number_of_col_header = number_of_col_header
+    def set_number_of_col_header(self, number_of_col_header):
+        self.number_of_col_header = number_of_col_header
 
-	def set_number_of_col_body(self, number_of_col_body):
-		self.number_of_col_body = number_of_col_body
+    def set_number_of_col_body(self, number_of_col_body):
+        self.number_of_col_body = number_of_col_body
 
-	def set_caption(self, caption):
-		self.caption = caption
+    def set_caption(self, caption):
+        self.caption = caption
 
-	def set_label(self, label):
-		self.label = label
+    def set_label(self, label):
+        self.label = label
 
-	def set_border(self, border):
-		self.border = border
+    def set_border(self, border):
+        self.border = border
 
-	def set_type(self, type_):
-		self.type_ = type_
+    def set_type(self, type_):
+        self.type_ = type_
 
-	def set_alignment(self, alignment):
-		self.alignment = alignment
+    def set_alignment(self, alignment):
+        self.alignment = alignment
+
 
 class Row(DocumentStructureNode):
 
-	def __init__(self, number_of_col=0, border=False, type_=None):
-		self.number_of_col = number_of_col
-		self.border = border
-		self.type_ = type_
+    def __init__(self, number_of_col=0, border=False, type_=None):
+        self.number_of_col = number_of_col
+        self.border = border
+        self.type_ = type_
 
-	def set_number_of_col(self, number_of_col):
-		self.number_of_col = number_of_col
+    def set_number_of_col(self, number_of_col):
+        self.number_of_col = number_of_col
 
-	def set_border(self, border):
-		self.border = border
+    def set_border(self, border):
+        self.border = border
 
-	def set_type(self, type_):
-		self.type_ = type_
+    def set_type(self, type_):
+        self.type_ = type_
+
 
 class Cell (DocumentStructureNode):
 
-	def __init__(self, border=False):
-		self.border = border
-		self.is_first_cell_in_the_row = False
-		self.colspan = 1
+    def __init__(self, border=False):
+        self.border = border
+        self.is_first_cell_in_the_row = False
+        self.colspan = 1
 
-	def set_border(self, border):
-		self.border = border
+    def set_border(self, border):
+        self.border = border
+
 
 class TBody(DocumentStructureNode):
 
-	def __init__(self, number_of_col=0, border=False):
-		self.number_of_col = number_of_col
-		self.border = border
+    def __init__(self, number_of_col=0, border=False):
+        self.number_of_col = number_of_col
+        self.border = border
 
-	def set_number_of_col(self, number_of_col):
-		self.number_of_col = number_of_col
+    def set_number_of_col(self, number_of_col):
+        self.number_of_col = number_of_col
 
-	def set_border(self, border):
-		self.border = border
+    def set_border(self, border):
+        self.border = border
+
 
 class THead(DocumentStructureNode):
 
-	def __init__(self, number_of_col=0, border=False):
-		self.number_of_col = number_of_col
+    def __init__(self, number_of_col=0, border=False):
+        self.number_of_col = number_of_col
 
-	def set_number_of_col(self, number_of_col):
-		self.number_of_col = number_of_col
+    def set_number_of_col(self, number_of_col):
+        self.number_of_col = number_of_col
 
-	def set_border(self, border):
-		self.border = border
+    def set_border(self, border):
+        self.border = border
+
 
 class TFoot(DocumentStructureNode):
 
-	def __init__(self, number_of_col=0):
-		self.number_of_col = number_of_col
+    def __init__(self, number_of_col=0):
+        self.number_of_col = number_of_col
 
-	def set_number_of_col(self, number_of_col):
-		self.number_of_col = number_of_col
+    def set_number_of_col(self, number_of_col):
+        self.number_of_col = number_of_col
+
 
 class Math(DocumentStructureNode):
 
-	def __init__(self):
-		self.equation_type = None
+    def __init__(self):
+        self.equation_type = None
+
 
 class MRow(DocumentStructureNode):
-	pass
+    pass
+
 
 class MSup(DocumentStructureNode):
-	pass
+    pass
+
 
 class MSub(DocumentStructureNode):
-	pass
+    pass
+
 
 class MSubSup(DocumentStructureNode):
-	pass
+    pass
+
 
 class MathRun(DocumentStructureNode):
-	pass
+    pass
+
 
 class MFenced(DocumentStructureNode):
 
-	def __init__(self, opener=u'', close=u'', separators=u''):
-		self.opener = opener
-		self.close = close
-		self.separators = separators
+    def __init__(self, opener=u'', close=u'', separators=u''):
+        self.opener = opener
+        self.close = close
+        self.separators = separators
+
 
 class MSpace(DocumentStructureNode):
-	def __init__(self, width=0, height=0):
-		self.width = width
-		self.height = height
+
+    def __init__(self, width=0, height=0):
+        self.width = width
+        self.height = height
+
 
 class Mtable(DocumentStructureNode):
 
-	def __init__(self, number_of_col=0):
-		self.number_of_col = number_of_col
+    def __init__(self, number_of_col=0):
+        self.number_of_col = number_of_col
 
-	def set_number_of_col(self, number_of_col):
-		self.number_of_col = number_of_col
+    def set_number_of_col(self, number_of_col):
+        self.number_of_col = number_of_col
+
 
 class Mtr(DocumentStructureNode):
 
-	def __init__(self, number_of_col=0):
-		self.number_of_col = number_of_col
+    def __init__(self, number_of_col=0):
+        self.number_of_col = number_of_col
 
-	def set_number_of_col(self, number_of_col):
-		self.number_of_col = number_of_col
+    def set_number_of_col(self, number_of_col):
+        self.number_of_col = number_of_col
+
 
 class Mtd (DocumentStructureNode):
-	pass
+    pass
+
 
 class Mfrac(DocumentStructureNode):
-	pass
+    pass
+
 
 class Msqrt(DocumentStructureNode):
-	pass
+    pass
+
 
 class Mroot(DocumentStructureNode):
-	pass
+    pass
+
 
 class MUnder(DocumentStructureNode):
-	pass
+    pass
+
 
 class MUnderover(DocumentStructureNode):
-	pass
+    pass
+
 
 class MOver(DocumentStructureNode):
-	pass
+    pass
+
 
 class MMenclose(DocumentStructureNode):
 
-	def  __init__(self):
-		self.notation = None
+    def __init__(self):
+        self.notation = None
+
 
 class MMultiscripts(DocumentStructureNode):
-	def __init__(self):
-		self.base = None
-		self.prescripts = None
+
+    def __init__(self):
+        self.base = None
+        self.prescripts = None
+
 
 class MNone(DocumentStructureNode):
-	pass
+    pass
+
 
 class MMprescripts(DocumentStructureNode):
 
-	def __init__(self):
-		self.sub = None
-		self.sup = None
+    def __init__(self):
+        self.sub = None
+        self.sup = None
+
 
 class MText(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMath(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathRun(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathFrac(DocumentStructureNode):
 
-	def __init__(self, frac_type=None):
-		self.frac_type = frac_type
+    def __init__(self, frac_type=None):
+        self.frac_type = frac_type
 
-	def set_frac_type(self, frac_type):
-		self.frac_type = frac_type
+    def set_frac_type(self, frac_type):
+        self.frac_type = frac_type
+
 
 class OMathNumerator(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathDenominator(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathRadical(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathDegree(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathBase(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathSuperscript(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathSup(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathSubscript(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathSub(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathSubSup(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathNary(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathNaryPr(DocumentStructureNode):
 
-	def __init__(self, chrVal=None, limLocVal=None):
-		self.chrVal = chrVal
-		self.limLocVal = limLocVal
+    def __init__(self, chrVal=None, limLocVal=None):
+        self.chrVal = chrVal
+        self.limLocVal = limLocVal
 
-	def set_chr_val (self, chrVal):
-		self.chrVal = chrVal
+    def set_chr_val(self, chrVal):
+        self.chrVal = chrVal
 
-	def set_lim_loc_val (self, limLocVal):
-		self.limLocVal = limLocVal
+    def set_lim_loc_val(self, limLocVal):
+        self.limLocVal = limLocVal
+
 
 class OMathDelimiter(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathDPr(DocumentStructureNode):
 
-	def __init__(self, begChr=None, endChr=None):
-		self.begChr = begChr
-		self.endChr = endChr
+    def __init__(self, begChr=None, endChr=None):
+        self.begChr = begChr
+        self.endChr = endChr
 
-	def set_beg_char (self, begChr):
-		self.begChr = begChr
+    def set_beg_char(self, begChr):
+        self.begChr = begChr
 
-	def set_end_char (self, endChr):
-		self.endChr = endChr
+    def set_end_char(self, endChr):
+        self.endChr = endChr
+
 
 class OMathLim(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathLimLow(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathBar(DocumentStructureNode):
 
-	def __init__(self, pos=None):
-		self.pos = pos
+    def __init__(self, pos=None):
+        self.pos = pos
 
-	def set_bar_pos(self, pos):
-		self.pos = pos
+    def set_bar_pos(self, pos):
+        self.pos = pos
+
 
 class OMathAcc(DocumentStructureNode):
 
-	def __init__(self, accChr=None):
-		self.accChr = accChr
+    def __init__(self, accChr=None):
+        self.accChr = accChr
 
-	def set_acc_chr(self, accChr):
-		self.accChr = accChr
+    def set_acc_chr(self, accChr):
+        self.accChr = accChr
+
 
 class OMathPara(DocumentStructureNode):
-	pass
+    pass
 
 # handling matrix for docx
+
+
 class OMathMatrix(DocumentStructureNode):
 
-	def __init__(self, number_of_col=0, number_of_row=0, begChr=None, endChr=None):
-		self.number_of_col = number_of_col
-		self.number_of_row = number_of_row
-		self.begChr = begChr
-		self.endChr = endChr
+    def __init__(self, number_of_col=0, number_of_row=0, begChr=None, endChr=None):
+        self.number_of_col = number_of_col
+        self.number_of_row = number_of_row
+        self.begChr = begChr
+        self.endChr = endChr
 
-	def set_number_of_col(self, number_of_col):
-		self.number_of_col = number_of_col
+    def set_number_of_col(self, number_of_col):
+        self.number_of_col = number_of_col
 
-	def set_number_of_row(self, number_of_row):
-		self.number_of_row = number_of_row
+    def set_number_of_row(self, number_of_row):
+        self.number_of_row = number_of_row
 
-	def set_beg_char (self, begChr):
-		self.begChr = begChr
+    def set_beg_char(self, begChr):
+        self.begChr = begChr
 
-	def set_end_char (self, endChr):
-		self.endChr = endChr
+    def set_end_char(self, endChr):
+        self.endChr = endChr
 
 # handling matrix property
+
+
 class OMathMPr (DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathMcs (DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathMc (DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathMcPr (DocumentStructureNode):
-	pass
+    pass
 
 # handling matrix row
+
+
 class OMathMr (DocumentStructureNode):
-	pass
+    pass
 
 # omath: handling function apply function
+
+
 class OMathFunc(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathFName(DocumentStructureNode):
-	pass
+    pass
 
 # omath : handling equation-array function
+
+
 class OMathEqArr(DocumentStructureNode):
 
-	def __init__(self, rowSpace=1):
-		self.rowSpace = rowSpace
+    def __init__(self, rowSpace=1):
+        self.rowSpace = rowSpace
 
-	def set_row_space (self, rowSpace):
-		self.rowSpace = rowSpace
+    def set_row_space(self, rowSpace):
+        self.rowSpace = rowSpace
+
 
 class OMathSPre(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathBox(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathGroupChr(DocumentStructureNode):
-	def __init__(self, groupChr=None, pos=None, vertJc=None):
-		self.groupChr = groupChr
-		self.pos = pos
-		self.vertJc = vertJc
 
-	def set_groupChr(self, groupChr):
-		self.groupChr = groupChr
+    def __init__(self, groupChr=None, pos=None, vertJc=None):
+        self.groupChr = groupChr
+        self.pos = pos
+        self.vertJc = vertJc
 
-	def set_pos(self, pos):
-		self.pos = pos
+    def set_groupChr(self, groupChr):
+        self.groupChr = groupChr
 
-	def set_vertJc(self, vertJc):
-		self.vertJc = vertJc
+    def set_pos(self, pos):
+        self.pos = pos
+
+    def set_vertJc(self, vertJc):
+        self.vertJc = vertJc
+
 
 class OMathLimUpp(DocumentStructureNode):
-	pass
+    pass
+
 
 class OMathBorderBox(DocumentStructureNode):
-	pass
+    pass
+
 
 class CodeLine(DocumentStructureNode):
-	pass
+    pass
+
 
 class Code(DocumentStructureNode):
-	pass
+    pass
+
 
 class Verbatim(DocumentStructureNode):
-	pass
+    pass
+
 
 class AlternateContent(DocumentStructureNode):
-	pass
+    pass
+
 
 class TextBoxContent(DocumentStructureNode):
-	pass
+    pass
+
 
 class NoteInteractive(DocumentStructureNode):
 
-	def __init__(self, image_path='', label='', link=None, caption='', notes=''):
-		self.image_path = image_path
-		self.label = label
-		self.link = link
-		self.caption = caption
-		self.notes = notes
-		self.complete_image_path = None
+    def __init__(self, image_path='', label='', link=None, caption='', notes=''):
+        self.image_path = image_path
+        self.label = label
+        self.link = link
+        self.caption = caption
+        self.notes = notes
+        self.complete_image_path = None
 
-	def set_image_path(self, image_path):
-		self.image_path = image_path
+    def set_image_path(self, image_path):
+        self.image_path = image_path
 
-	def set_label(self, label):
-		self.label = label
+    def set_label(self, label):
+        self.label = label
 
-	def set_link(self, link):
-		self.link = link
+    def set_link(self, link):
+        self.link = link
 
-	def set_caption(self, caption):
-		self.caption = caption
+    def set_caption(self, caption):
+        self.caption = caption
 
-	def set_notes(self, notes):
-		self.notes = notes
+    def set_notes(self, notes):
+        self.notes = notes
+
 
 class NoteInteractiveImage(DocumentStructureNode):
 
-	def __init__(self, path=''):
-		super(NoteInteractiveImage, self).__init__()
-		self.path = u''
-		self.caption = u''
+    def __init__(self, path=''):
+        super(NoteInteractiveImage, self).__init__()
+        self.path = u''
+        self.caption = u''
+
 
 class Figure(DocumentStructureNode):
 
-	def __init__(self, caption=None, label=None):
-		self.caption = caption
-		self.label = label
-		self.image_id = None
-		self.image_alt = None
-		self.data_type = None
-		self.title = None
+    def __init__(self, caption=None, label=None):
+        self.caption = caption
+        self.label = label
+        self.image_id = None
+        self.image_alt = None
+        self.data_type = None
+        self.title = None
 
-	def set_caption(self, caption):
-		self.caption = caption
+    def set_caption(self, caption):
+        self.caption = caption
 
-	def set_label(self, label):
-		self.label = label
+    def set_label(self, label):
+        self.label = label
+
 
 class Glossary(DocumentStructureNode):
 
-	def __init__(self, title=None, filename=None, glossary_dict=None):
-		self.title = title
-		self.filename = filename
-		self.glossary_dict = glossary_dict
+    def __init__(self, title=None, filename=None, glossary_dict=None):
+        self.title = title
+        self.filename = filename
+        self.glossary_dict = glossary_dict
 
-	def set_title(self, title):
-		self.title = title
+    def set_title(self, title):
+        self.title = title
 
-	def set_filename(self, filename):
-		self.filename = filename
+    def set_filename(self, filename):
+        self.filename = filename
 
-	def set_glossary_dict(self, glossary_dict):
-		self.glossary_dict = glossary_dict
+    def set_glossary_dict(self, glossary_dict):
+        self.glossary_dict = glossary_dict
+
 
 class GlossaryList(DocumentStructureNode):
-	pass
+    pass
+
 
 class GlossaryItem(DocumentStructureNode):
-	pass
+    pass
+
 
 class GlossaryDT(DocumentStructureNode):
-	def __init__(self, desc=None):
-		self.desc = desc
 
-	def set_description(self, desc):
-		self.desc = desc
+    def __init__(self, desc=None):
+        self.desc = desc
+
+    def set_description(self, desc):
+        self.desc = desc
+
 
 class GlossaryDD(DocumentStructureNode):
-	pass
+    pass
+
 
 class GlossaryTerm(DocumentStructureNode):
-	pass
+    pass
+
 
 class Exercise(DocumentStructureNode):
 
-	def __init__(self, problem=None, solution=None, label=None):
-		self.problem = problem
-		self.solution = solution
-		self.label = label
+    def __init__(self, problem=None, solution=None, label=None):
+        self.problem = problem
+        self.solution = solution
+        self.label = label
 
-	def set_problem(self, problem):
-		self.problem = problem
+    def set_problem(self, problem):
+        self.problem = problem
 
-	def set_solution(self, solution):
-		self.solution = solution
+    def set_solution(self, solution):
+        self.solution = solution
 
-	def set_label(self, label):
-		self.label = label
+    def set_label(self, label):
+        self.label = label
+
 
 class Problem (DocumentStructureNode):
 
-	def __init__(self, question=None, problem_type=None, solution=None, label=None):
-		self.question = question
-		self.problem_type = problem_type
-		self.solution = solution
-		self.label = label
+    def __init__(self, question=None, problem_type=None, solution=None, label=None):
+        self.question = question
+        self.problem_type = problem_type
+        self.solution = solution
+        self.label = label
 
-	def set_question(self, question):
-		self.question = question
+    def set_question(self, question):
+        self.question = question
 
-	def set_problem_type(self, problem_type):
-		self.problem_type = problem_type
+    def set_problem_type(self, problem_type):
+        self.problem_type = problem_type
 
-	def set_solution(self, solution):
-		self.solution = solution
+    def set_solution(self, solution):
+        self.solution = solution
 
-	def set_label(self, label):
-		self.label = label
+    def set_label(self, label):
+        self.label = label
+
 
 class Solution (DocumentStructureNode):
 
-	def __init__(self, solution=None, label=None, problem_type=None):
-		self.solution = solution
-		self.label = label
-		self.problem_type = problem_type
+    def __init__(self, solution=None, label=None, problem_type=None):
+        self.solution = solution
+        self.label = label
+        self.problem_type = problem_type
 
-	def set_solution(self, solution):
-		self.solution = solution
+    def set_solution(self, solution):
+        self.solution = solution
 
-	def set_label(self, label):
-		self.label = label
+    def set_label(self, label):
+        self.label = label
 
-	def set_problem_type(self, problem_type):
-		self.problem_type = problem_type
+    def set_problem_type(self, problem_type):
+        self.problem_type = problem_type
 
 
 class MultipleChoices(DocumentStructureNode):
 
-	def __init__(self, solution=None, choices=None):
-		self.solution = solution
-		self.choices = choices
+    def __init__(self, solution=None, choices=None):
+        self.solution = solution
+        self.choices = choices
 
-	def set_solution(self, solution):
-		self.solution = solution
+    def set_solution(self, solution):
+        self.solution = solution
 
-	def set_choices(self, choices):
-		self.choices = choices
+    def set_choices(self, choices):
+        self.choices = choices
+
 
 class ChapterExercise(DocumentStructureNode):
-	pass
+    pass
+
 
 class ExerciseSection(DocumentStructureNode):
-	pass
+    pass
+
 
 class ExerciseElement(DocumentStructureNode):
-	pass
+    pass
+
 
 class ExerciseDiv(DocumentStructureNode):
-	pass
+    pass
+
 
 class Example(DocumentStructureNode):
-	pass
+    pass
+
 
 class ProblemExercise(DocumentStructureNode):
 
-	def __init__(self, title=None, problem_type=None, label=None):
-		super(ProblemExercise, self).__init__()
-		self.title = title
-		self.problem_type = problem_type
-		self.label = label
+    def __init__(self, title=None, problem_type=None, label=None):
+        super(ProblemExercise, self).__init__()
+        self.title = title
+        self.problem_type = problem_type
+        self.label = label
+
 
 class ExerciseCheck(DocumentStructureNode):
 
-	def __init__(self, title=None, solution=None):
-		self.title = title
-		self.solution = solution
+    def __init__(self, title=None, solution=None):
+        self.title = title
+        self.solution = solution
 
-	def set_title(self, title):
-		self.title = title
+    def set_title(self, title):
+        self.title = title
 
-	def set_solution(self, solution):
-		self.solution = solution
+    def set_solution(self, solution):
+        self.solution = solution
+
 
 class EndOfChapterSolution(DocumentStructureNode):
 
-	def __init__(self, label=None, title=None, body=None):
-		super(EndOfChapterSolution, self).__init__
-		self.label = label
-		self.title = title
-		self.body = body
+    def __init__(self, label=None, title=None, body=None):
+        super(EndOfChapterSolution, self).__init__
+        self.label = label
+        self.title = title
+        self.body = body
+
 
 class OpenstaxNote (DocumentStructureNode):
 
-	def __init__(self, title=None, body=None, label=None):
-		self.title = title
-		self.body = body
-		self.label = label
+    def __init__(self, title=None, body=None, label=None):
+        self.title = title
+        self.body = body
+        self.label = label
 
-	def set_title(self, title):
-		self.title = title
+    def set_title(self, title):
+        self.title = title
 
-	def set_body(self, body):
-		self.body = body
+    def set_body(self, body):
+        self.body = body
 
-	def set_label(self, label):
-		self.label = label
+    def set_label(self, label):
+        self.label = label
+
 
 class OpenstaxExampleNote(OpenstaxNote):
-	pass
+    pass
+
 
 class OpenstaxNoteBody(DocumentStructureNode):
-	pass
+    pass
+
 
 class EquationImage(DocumentStructureNode):
 
-	def __init__(self, label=None, image=None, text=None):
-		super(EquationImage, self).__init__()
-		self.label = label
-		self.image = image
-		self.text = text
+    def __init__(self, label=None, image=None, text=None):
+        super(EquationImage, self).__init__()
+        self.label = label
+        self.image = image
+        self.text = text
+
 
 class OpenstaxAttributions(DocumentStructureNode):
-	pass
+    pass
+
 
 class OpenstaxTitle(DocumentStructureNode):
-	pass
+    pass
+
 
 class CNXCollection(DocumentStructureNode):
-	def __init__(self):
-		self.content = None
-		self.metadata = None
+
+    def __init__(self):
+        self.content = None
+        self.metadata = None
+
 
 class CNXSubcollection(DocumentStructureNode):
-	def __init__(self):
-		self.content = None
-		self.title = None
+
+    def __init__(self):
+        self.content = None
+        self.title = None
+
 
 class CNXContent(DocumentStructureNode):
-	def __init__(self):
-		self.modules = []
-		self.subcollections = []
+
+    def __init__(self):
+        self.modules = []
+        self.subcollections = []
+
 
 class CNXModule(DocumentStructureNode):
-	def __init__(self):
-		self.document = None
-		self.title = None
+
+    def __init__(self):
+        self.document = None
+        self.title = None
+
 
 class CNXHTMLBody(DocumentStructureNode):
-	pass
+    pass
+
 
 class CNXGlossary(DocumentStructureNode):
-	pass
+    pass
+
 
 class CNXProblemSolution(DocumentStructureNode):
-	def __init__(self):
-		self.title = None
-		self.label = None
+
+    def __init__(self):
+        self.title = None
+        self.label = None
+
 
 class GlossaryDefinition(DocumentStructureNode):
-	def __init__(self):
-		self.term = None
-		self.meaning = None
+
+    def __init__(self):
+        self.term = None
+        self.meaning = None
+
 
 class Footnote(DocumentStructureNode):
-	def  __init__(self):
-		self.label = None
-		self.text = None
+
+    def __init__(self):
+        self.label = None
+        self.text = None
+
 
 class FootnoteText(DocumentStructureNode):
-	def __init__(self):
-		self.text = None
-		self.label = None
-		self.num = None
+
+    def __init__(self):
+        self.text = None
+        self.label = None
+        self.num = None
+
 
 class FootnoteMark(DocumentStructureNode):
-	def __init__(self):
-		self.text = None
-		self.num = None
+
+    def __init__(self):
+        self.text = None
+        self.num = None
+
 
 class PreTag(DocumentStructureNode):
-	pass
+    pass
+
 
 class NaqSymmathPart(DocumentStructureNode):
-	def __init__(self):
-		self.text = u''
-		self.solution = u''
-		self.label = u''
+
+    def __init__(self):
+        self.text = u''
+        self.solution = u''
+        self.label = u''
+
 
 class NaqSymmathPartSolution(DocumentStructureNode):
-	pass
+    pass
+
 
 class NaqSymmathPartSolutionValue(DocumentStructureNode):
-	def __init__(self):
-		self.option = u''
-		self.value = u''
+
+    def __init__(self):
+        self.option = u''
+        self.value = u''
