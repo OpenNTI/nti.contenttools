@@ -21,13 +21,13 @@ class Node(object):
     __name__ = None
     __parent__ = None
     children = ()
-    
+
     def add(self, child):
         if self.children == ():
             self.children = list(self.children or ())
         if INode.providedBy(child):
             self.children.append(child)
-            child.__parent__ = self # take ownership
+            child.__parent__ = self  # take ownership
     add_child = add
 
     def remove(self, child):

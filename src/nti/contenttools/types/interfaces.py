@@ -48,7 +48,7 @@ class INode(_INode, IIterable, IContained):
         """
         Render this node using the specified context
 
-        :param context: A :class:`nti.contenttools.interfaces.IRenderContext` object 
+        :param context: A :class:`nti.contenttools.interfaces.IRenderContext` object
         """
 
 

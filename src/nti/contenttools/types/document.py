@@ -33,7 +33,7 @@ class Document(DocumentStructureNode):
 
     title = ''
     author = ''
-    
+
     def __init__(self, doc_type=u'book'):
         DocumentStructureNode.__init__(self)
         self.doc_type = doc_type or u'book'
