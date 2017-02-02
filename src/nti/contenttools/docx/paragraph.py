@@ -16,6 +16,7 @@ from . import process_border
 from . import properties as docx
 from ..types import _Node
 from .. import types
+from .note import Note
 from .omath import OMathPara, OMath
 from .run import Run
 from .ignored_tags import IGNORED_TAGS
