@@ -122,7 +122,12 @@ class Newline(DocumentStructureNode):
 	pass
 
 class Note(DocumentStructureNode):
-	pass
+	
+	def __init__(self, type_=u'', rels=None, notes=None):
+		super(Note, self).__init__()
+		self.type = type_
+		self.rels = rels
+		self.notes = notes
 
 class Hyperlink(DocumentStructureNode):
 
