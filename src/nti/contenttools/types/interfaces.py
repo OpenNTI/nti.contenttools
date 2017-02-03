@@ -15,7 +15,7 @@ from zope.location.interfaces import IContained
 
 from dolmen.builtins.interfaces import IIterable
 
-from nti.schema.field import Bool
+from nti.schema.field import Bool, ValidText, ValidTextLine
 from nti.schema.field import Int
 from nti.schema.field import Object
 from nti.schema.field import ListOrTuple
@@ -341,3 +341,150 @@ class IDD(IDocumentStructureNode):
     """
     DD : Part of Description List Node
     """
+
+
+class ITable(IDocumentStructureNode):
+    number_of_col_header = Int(title="Number of Column Header",
+                               required=True,
+                               default=0)
+    number_of_col_body = Int(title="Number of Column Body",
+                             required=True,
+                             default=0)
+    caption = ValidTextLine(title="Table Caption",
+                            required=False)
+    label = ValidTextLine(title="Table Label",
+                          required=False)
+    border = ListOrTuple(title="TableBorder",
+                         required=False)
+    type_ = ValidTextLine(title="Table Type",
+                          required=False)
+    alignment = ValidTextLine(title="Table Alignment",
+                              required=True,
+                              default=u'left')
+
+    def set_number_of_col_header(number_of_col_header):
+        """
+        set number of column header
+        """
+
+    def set_number_of_col_body(number_of_col_body):
+        """
+        set number of column body
+        """
+
+    def set_caption(caption):
+        """
+        set caption
+        """
+
+    def set_label(label):
+        """
+        set label
+        """
+
+    def set_border(border):
+        """
+        set border
+        """
+
+    def set_type(type_):
+        """
+        set type
+        """
+
+    def set_alignment(alignment):
+        """
+        set alignment
+        """
+
+
+class IRow(IDocumentStructureNode):
+    number_of_col = Int(title="Number of Column",
+                        required=True,
+                        default=0)
+    border = Bool(title="Border",
+                  required=True,
+                  default=False)
+    type_ = ValidTextLine(title="Row Type",
+                          required=False)
+
+    def set_number_of_col(number_of_col):
+        """
+        set number of column
+        """
+
+    def set_border(border):
+        """
+        set border
+        """
+
+    def set_type(type_):
+        """
+        set type
+        """
+
+
+class ICell (IDocumentStructureNode):
+    border = Bool(title="Border",
+                  required=True,
+                  default=False)
+    is_first_cell_in_the_row = Bool(title="Check if it is the first cell on the row",
+                                    required=True,
+                                    default=False)
+    colspan = Int(title="Column Span",
+                  required=True,
+                  default=1)
+
+    def set_border(border):
+        """
+        set border
+        """
+
+
+class ITBody(IDocumentStructureNode):
+    number_of_col = Int(title="Number of Column",
+                        required=True,
+                        default=0)
+    border = Bool(title="Table Body Border",
+                  required=True,
+                  default=False)
+
+    def set_number_of_col(number_of_col):
+        """
+        set number of column
+        """
+
+    def set_border(border):
+        """
+        set table body border
+        """
+
+
+class ITHead(IDocumentStructureNode):
+    number_of_col = Int(title="Number of Table Header Column",
+                        required=True,
+                        default=0)
+    border = Bool(title="Table Header Border",
+                  required=True,
+                  default=False)
+
+    def set_number_of_col(number_of_col):
+        """
+        set number of table header column
+        """
+
+    def set_border(border):
+        """
+        set table header border
+        """
+
+
+class ITFoot(IDocumentStructureNode):
+    number_of_col = Int(title="Number of Table Footer Column",
+                        required=True,
+                        default=0)
+
+    def set_number_of_col(number_of_col):
+        """
+        set number of column
+        """
