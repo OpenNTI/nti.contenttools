@@ -86,7 +86,7 @@ class IDocument(IDocumentStructureNode):
                              required=True,
                              default=u'book')
 
-    title = ValidTextLine(title="Document type",
+    title = ValidTextLine(title="Document title",
                           required=True,
                           default=u'')
 
@@ -136,10 +136,10 @@ class IChapter(IDocumentStructureNode):
 class ISection(IDocumentStructureNode):
     suppressed = Bool(title="Suppressed",
                       default=False)
-    title = ValidTextLine(title="Section title",
+    title = ValidTextLine(title="Section Title",
                           required=True,
                           default=u'')
-    label = ValidTextLine(title="Section label",
+    label = ValidTextLine(title="Section Label",
                           required=True,
                           default=u'')
     data_depth = Int(title="Data depth",
@@ -160,10 +160,10 @@ class ISection(IDocumentStructureNode):
 
 class ISubSection(ISection):
 
-    title = ValidTextLine(title="Section title",
+    title = ValidTextLine(title="Section Title",
                           required=True,
                           default=u'')
-    label = ValidTextLine(title="Section label",
+    label = ValidTextLine(title="Section Label",
                           required=False)
 
 
@@ -175,5 +175,53 @@ class ISubSubSection(ISection):
 
 class IParagraph(IDocumentStructureNode):
 
-    element_type = ValidTextLine(title="Element type",
+    element_type = ValidTextLine(title="Element Type",
                                  required=False)
+
+
+class INewline(IDocumentStructureNode):
+    """
+    Newline Node
+    """
+
+
+class INote(IDocumentStructureNode):
+    """
+    Note Node
+    """
+
+
+class Hyperlink(IDocumentStructureNode):
+    target = ValidTextLine(title="Hyperlink Target",
+                           required=True,
+                           default=u'')
+    type = ValidTextLine(title="Hyperlink Type ",
+                         required=True,
+                         default=u'Normal')
+
+
+class IIframe(IDocumentStructureNode):
+    """
+    IFrame Node
+    """
+
+
+class ILabel(IDocumentStructureNode):
+    name = ValidTextLine(title="Label Name",
+                         required=True,
+                         default=u'')
+
+
+class ISidebar(IDocumentStructureNode):
+    title = ValidTextLine(title="Sidebar Title",
+                          required=False)
+    label = ValidTextLine(title="Sidebar Label",
+                          required=False)
+    type = ValidTextLine(title="Sidebar Type",
+                         required=False)
+
+
+class IBlockQuote(IDocumentStructureNode):
+    source = ValidTextLine(title="Block Quote Source",
+                           required=True,
+                           default=u'')
