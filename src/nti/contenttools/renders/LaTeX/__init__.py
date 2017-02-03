@@ -240,9 +240,9 @@ types.FootnoteText.render = footnotetext_renderer
 
 types.CNXProblemSolution.render  = cnx_problem_solution_renderer
 
-types.NaqSymmathPart.render = mathcounts.naq_symmath_part_renderer
-types.NaqSymmathPartSolution.render = mathcounts.naq_symmath_part_solution_renderer
-types.NaqSymmathPartSolutionValue.render = mathcounts.naq_symmath_part_solution_value_renderer
+types.NaqSymmathPart.render = naq_symmath_part_renderer
+types.NaqSymmathPartSolution.render = naq_symmath_part_solution_renderer
+types.NaqSymmathPartSolutionValue.render = naq_symmath_part_solution_value_renderer
 
 def register():
     pass
