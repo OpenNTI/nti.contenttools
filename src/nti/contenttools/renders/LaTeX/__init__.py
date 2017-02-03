@@ -37,14 +37,18 @@ from .footnote import *
 from .cnx_alternate_content import *
 from .mathcounts import *
 
+
 def note_renderer(self):
     content = base_renderer(self)
-    if len(content) > 0 : content = u'\\footnote{%s} ' % content
+    if len(content) > 0:
+        content = u'\\footnote{%s} ' % content
     return content
+
 
 def hyperlink_renderer(self):
     result = u''
-    if self.target is None : return base_renderer(self)
+    if self.target is None:
+        return base_renderer(self)
     target = string_replacer.modify_string(self.target, u'%', u'\\%')
     if self.type == 'Normal':
         result = u'\\href{%s}{%s} ' % (target, base_renderer(self))
@@ -57,41 +61,52 @@ def hyperlink_renderer(self):
         result = u'\\ntiidref{%s} ' % target
     return result
 
+
 def label_renderer(self):
     return u'\\label{%s} ' % self.name
+
 
 def sidebar_renderer(self):
     title = u''
     body = base_renderer(self)
 
-    #this is useful for glossary term (for example glossary term in IFSTA epub)
-    if self.type == u"sidebar_term" : 
+    # this is useful for glossary term (for example glossary term in IFSTA epub)
+    if self.type == u"sidebar_term":
         str_pos = body.find('-')
-        if str_pos > -1 :
+        if str_pos > -1:
             term = body[0:str_pos].strip()
-            if self.title is None : self.title = term
-            if self.label is None : self.label = u'sidebar_term:%s' % term.replace(u" ", u"_")
+            if self.title is None:
+                self.title = term
+            if self.label is None:
+                self.label = u'sidebar_term:%s' % term.replace(u" ", u"_")
 
-    if isinstance(self.title, str) or isinstance(self.title, unicode): title = self.title.strip()
-    elif self.title is None : pass
-    else: title = u'%s' % base_renderer(self.title).strip() 
+    if isinstance(self.title, str) or isinstance(self.title, unicode):
+        title = self.title.strip()
+    elif self.title is None:
+        pass
+    else:
+        title = u'%s' % base_renderer(self.title).strip()
 
     label = u'\\label{%s}\n' % self.label if self.label else u''
 
-    if any(chars in title for chars in [u'\\(', u'\\[' ]):
-        logger.warn("Math element found in sidebar's title. It may cause TROUBLE with nti_render, therefore no title for this sidebar. Use textbf to write title in sidebar body")
-        return u'\n\\begin{sidebar}%s\n\\textbf{%s}\n%s\n\\end{sidebar}\n' % (label,title,body)
-    
-    return u'\n\\begin{sidebar}{%s}\n%s%s\n\\end{sidebar}\n' % (title, label,body)
+    if any(chars in title for chars in [u'\\(', u'\\[']):
+        logger.warn(
+            "Math element found in sidebar's title. It may cause TROUBLE with nti_render, therefore no title for this sidebar. Use textbf to write title in sidebar body")
+        return u'\n\\begin{sidebar}%s\n\\textbf{%s}\n%s\n\\end{sidebar}\n' % (
+            label, title, body)
+
+    return u'\n\\begin{sidebar}{%s}\n%s%s\n\\end{sidebar}\n' % (title, label, body)
+
 
 def blockquote_renderer(self):
     body = base_renderer(self)
     return u'\n\\begin{quote}\n%s\n\\end{quote}\n' % body
 
+
 def video_renderer(self):
     body = base_renderer(self)
     parameters = 'width=%spx,height=%spx' % (self.width, self.height)
-    src = os.path.splitext( self.path )[0]
+    src = os.path.splitext(self.path)[0]
     s = (parameters, src, self.caption, self.thumbnail, body)
     t = u'\n\\begin{ntilocalvideo}\n\\ntiincludelocalvideo[%s]{%s}{%s}{%s}\n%s\n\\end{ntilocalvideo}\n'
     return t % s
@@ -139,7 +154,7 @@ NAQChoice.render = choice_renderer
 NAQSolutions.render = solutions_renderer
 NAQSolution.render = solution_renderer
 
-types.Table.render =  table_html_renderer
+types.Table.render = table_html_renderer
 types.Row.render = table_row_html_renderer
 types.Cell.render = table_cell_html_renderer
 types.THead.render = theader_html_renderer
@@ -238,12 +253,12 @@ types.OpenstaxTitle.render = openstax_title_renderer
 types.FootnoteMark.render = footnotemark_renderer
 types.FootnoteText.render = footnotetext_renderer
 
-types.CNXProblemSolution.render  = cnx_problem_solution_renderer
+types.CNXProblemSolution.render = cnx_problem_solution_renderer
 
 types.NaqSymmathPart.render = naq_symmath_part_renderer
 types.NaqSymmathPartSolution.render = naq_symmath_part_solution_renderer
 types.NaqSymmathPartSolutionValue.render = naq_symmath_part_solution_value_renderer
 
+
 def register():
     pass
-
