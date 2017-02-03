@@ -15,6 +15,8 @@ from zope.location.interfaces import IContained
 
 from dolmen.builtins.interfaces import IIterable
 
+from nti.schema.field import Bool
+from nti.schema.field import Int
 from nti.schema.field import Object
 from nti.schema.field import ListOrTuple
 from nti.schema.field import ValidTextLine
@@ -96,3 +98,82 @@ class IDocument(IDocumentStructureNode):
                            title='List of packages',
                            required=False,
                            min_length=0)
+
+
+class IBody(IDocumentStructureNode):
+    """
+    Body Element
+    """
+
+
+class IEPUBBody(IDocumentStructureNode):
+    """
+    For EPUB Document Body
+    """
+
+
+class IChapter(IDocumentStructureNode):
+    suppressed = Bool(title="Suppressed",
+                      default=False)
+    title = ValidTextLine(title="Chapter Title",
+                          required=True,
+                          default=u'')
+    label = ValidTextLine(title="Chapter label",
+                          required=True,
+                          default=u'')
+
+    def set_title(self, title):
+        """
+        set title
+        """
+
+    def set_label(self, label):
+        """
+        set label
+        """
+
+
+class ISection(IDocumentStructureNode):
+    suppressed = Bool(title="Suppressed",
+                      default=False)
+    title = ValidTextLine(title="Section title",
+                          required=True,
+                          default=u'')
+    label = ValidTextLine(title="Section label",
+                          required=True,
+                          default=u'')
+    data_depth = Int(title="Data depth",
+                     required=False)
+    section_type = ValidTextLine(title="Section type",
+                                 required=False)
+
+    def set_title(title):
+        """
+        set title
+        """
+
+    def set_label(label):
+        """
+        set label
+        """
+
+
+class ISubSection(ISection):
+
+    title = ValidTextLine(title="Section title",
+                          required=True,
+                          default=u'')
+    label = ValidTextLine(title="Section label",
+                          required=False)
+
+
+class ISubSubSection(ISection):
+    """
+    SubSubSection
+    """
+
+
+class IParagraph(IDocumentStructureNode):
+
+    element_type = ValidTextLine(title="Element type",
+                                 required=False)
