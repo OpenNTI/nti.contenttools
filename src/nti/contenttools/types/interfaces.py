@@ -225,3 +225,49 @@ class IBlockQuote(IDocumentStructureNode):
     source = ValidTextLine(title="Block Quote Source",
                            required=True,
                            default=u'')
+
+class IImage(IDocumentStructureNode):
+    path = ValidTextLine(title="Image Path",
+                         required=True,
+                         default=u'')
+    caption = ValidTextLine(title="Image Caption",
+                         required=True,
+                         default=u'')
+    width = Int(title="Image Width", 
+                required = True,
+                default=0)
+    height = Int(title="Image Height", 
+                required = True,
+                default=0)
+    equation_image = Bool(title="Equation Image Type",
+                               required=True,
+                               default=False)
+    inline_image = Bool(title="Inline Image Type",
+                               required=True,
+                               default=False)
+    predefined_image_path = Bool(title="Predifined Image Path",
+                               required=True,
+                               default=False)
+
+
+class IDocxImage(IImage):
+    """
+    Docx Image Node
+    """
+
+class IVideo(IDocumentStructureNode):
+    path = ValidTextLine(title="Video Path",
+                         required=True,
+                         default=u'')
+    thumbnail = ValidTextLine(title="Video Thumbnail",
+                         required=True,
+                         default=u'')
+    caption = ValidTextLine(title="Video",
+                         required=True,
+                         default=u'')
+    width = Int(title="Video Width", 
+                required = True,
+                default=0)
+    height = Int(title="Video Height", 
+                required = True,
+                default=0)
