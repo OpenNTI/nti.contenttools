@@ -3,6 +3,15 @@ from setuptools import setup, find_packages
 
 VERSION = '0.0.0'
 
+TESTS_REQUIRE = [
+    'fudge',
+    'nose2[coverage_plugin]',
+    'nti.testing',
+    'pyhamcrest',
+    'z3c.baseregistry',
+    'zope.testrunner',
+]
+
 entry_points = {
     "z3c.autoinclude.plugin": [
         'target = nti.contenttools',
@@ -54,5 +63,8 @@ setup(
         'nti.contentfragments',
         'nti.schema'
     ],
+    extras_require={
+        'test': TESTS_REQUIRE,
+    },
     entry_points=entry_points
 )
