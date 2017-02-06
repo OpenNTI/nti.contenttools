@@ -490,9 +490,10 @@ class ITFoot(IDocumentStructureNode):
         set number of column
         """
 
+
 class IMath(IDocumentStructureNode):
     equation_type = ValidTextLine(title="Equation Type",
-                                       required=False)
+                                  required=False)
 
 
 class IMRow(IDocumentStructureNode):
@@ -500,25 +501,30 @@ class IMRow(IDocumentStructureNode):
     Node for MathML element <mrow>
     """
 
+
 class IMSup(IDocumentStructureNode):
     """
     Node for MathML element <msup>
     """
+
 
 class IMSub(IDocumentStructureNode):
     """
     Node for MathML element <>
     """
 
+
 class IMSubSup(IDocumentStructureNode):
     """
     Node for MathML element <msubsup>
     """
 
+
 class IMathRun(IDocumentStructureNode):
     """
     Node covering general MathML element
     """
+
 
 class IMFenced(IDocumentStructureNode):
     """
@@ -528,11 +534,11 @@ class IMFenced(IDocumentStructureNode):
                            required=True,
                            default=u'')
     close = ValidTextLine(title="Close mfence",
-                           required=True,
-                           default=u'')
+                          required=True,
+                          default=u'')
     separators = ValidTextLine(title="Separator",
-                           required=True,
-                           default=u'')
+                               required=True,
+                               default=u'')
 
 
 class IMSpace(IDocumentStructureNode):
@@ -540,74 +546,92 @@ class IMSpace(IDocumentStructureNode):
                 required=True,
                 default=0)
     height = Int(title="Height",
-                required=True,
-                default=0)
+                 required=True,
+                 default=0)
+
 
 class IMTable(IDocumentStructureNode):
     number_of_col = Int(title="Number of column",
-                required=True,
-                default=0)
-   
+                        required=True,
+                        default=0)
+
     def set_number_of_col(number_of_col):
         """
         set number of column
         """
+
 
 class IMtr(IDocumentStructureNode):
 
     number_of_col = Int(title="Number of column",
-                required=True,
-                default=0)
-   
+                        required=True,
+                        default=0)
+
     def set_number_of_col(number_of_col):
         """
         set number of column
         """
+
 
 class IMtd (IDocumentStructureNode):
     """
     Node for MathML element <mtd>
     """
 
+
 class IMFrac(IDocumentStructureNode):
     """
     Node for MathML element <mfrac>
     """
+
 
 class IMsqrt(IDocumentStructureNode):
     """
     Node for MathML element <msqrt>
     """
 
+
 class IMRoot(IDocumentStructureNode):
     """
     Node for MathML element <mroot>
     """
+
 
 class IMUnder(IDocumentStructureNode):
     """
     Node for MathML element <munder>
     """
 
+
 class IMUnderover(IDocumentStructureNode):
     """
     Node for MathML element <munderover>
     """
+
 
 class IMOver(IDocumentStructureNode):
     """
     Node for MathML element <mover>
     """
 
+
 class IMMenclose(IDocumentStructureNode):
-    notation= ListOrTuple(title="Notation",
-                          required=False)
+    notation = ListOrTuple(title="Notation",
+                           required=False)
+
 
 class IMMprescripts(IDocumentStructureNode):
+    """
+    To do : double check sub and sup types
+    """
     sub = IMSub
     sup = IMSup
 
+
 class IMMultiscripts(IDocumentStructureNode):
+    """
+    To do  : double check base and prescripts type
+    """
     base = IDocumentStructureNode
     prescripts = IMMprescripts
 
