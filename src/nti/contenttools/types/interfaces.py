@@ -5,7 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from pytz.tzfile import base
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -16,8 +15,8 @@ from zope.location.interfaces import IContained
 
 from dolmen.builtins.interfaces import IIterable
 
-from nti.schema.field import Bool, ValidText, ValidTextLine
 from nti.schema.field import Int
+from nti.schema.field import Bool
 from nti.schema.field import Object
 from nti.schema.field import ListOrTuple
 from nti.schema.field import ValidTextLine
@@ -114,11 +113,14 @@ class IEPUBBody(IDocumentStructureNode):
 
 
 class IChapter(IDocumentStructureNode):
+
     suppressed = Bool(title="Suppressed",
                       default=False)
+
     title = ValidTextLine(title="Chapter Title",
                           required=True,
                           default=u'')
+
     label = ValidTextLine(title="Chapter label",
                           required=True,
                           default=u'')
@@ -135,16 +137,21 @@ class IChapter(IDocumentStructureNode):
 
 
 class ISection(IDocumentStructureNode):
+
     suppressed = Bool(title="Suppressed",
                       default=False)
+
     title = ValidTextLine(title="Section Title",
                           required=True,
                           default=u'')
+
     label = ValidTextLine(title="Section Label",
                           required=True,
                           default=u'')
+
     data_depth = Int(title="Data depth",
                      required=False)
+
     section_type = ValidTextLine(title="Section type",
                                  required=False)
 
@@ -164,6 +171,7 @@ class ISubSection(ISection):
     title = ValidTextLine(title="Section Title",
                           required=True,
                           default=u'')
+
     label = ValidTextLine(title="Section Label",
                           required=False)
 
@@ -193,9 +201,11 @@ class INote(IDocumentStructureNode):
 
 
 class Hyperlink(IDocumentStructureNode):
+
     target = ValidTextLine(title="Hyperlink Target",
                            required=True,
                            default=u'')
+
     type = ValidTextLine(title="Hyperlink Type ",
                          required=True,
                          default=u'Normal')
@@ -208,16 +218,20 @@ class IIframe(IDocumentStructureNode):
 
 
 class ILabel(IDocumentStructureNode):
+
     name = ValidTextLine(title="Label Name",
                          required=True,
                          default=u'')
 
 
 class ISidebar(IDocumentStructureNode):
+
     title = ValidTextLine(title="Sidebar Title",
                           required=False)
+
     label = ValidTextLine(title="Sidebar Label",
                           required=False)
+
     type = ValidTextLine(title="Sidebar Type",
                          required=False)
 
@@ -232,21 +246,27 @@ class IImage(IDocumentStructureNode):
     path = ValidTextLine(title="Image Path",
                          required=True,
                          default=u'')
+
     caption = ValidTextLine(title="Image Caption",
                             required=True,
                             default=u'')
+
     width = Int(title="Image Width",
                 required=True,
                 default=0)
+
     height = Int(title="Image Height",
                  required=True,
                  default=0)
+
     equation_image = Bool(title="Equation Image Type",
                           required=True,
                           default=False)
+
     inline_image = Bool(title="Inline Image Type",
                         required=True,
                         default=False)
+
     predefined_image_path = Bool(title="Predifined Image Path",
                                  required=True,
                                  default=False)
@@ -259,33 +279,42 @@ class IDocxImage(IImage):
 
 
 class IVideo(IDocumentStructureNode):
+
     path = ValidTextLine(title="Video Path",
                          required=True,
                          default=u'')
+
     thumbnail = ValidTextLine(title="Video Thumbnail",
                               required=True,
                               default=u'')
+
     caption = ValidTextLine(title="Video",
                             required=True,
                             default=u'')
+
     width = Int(title="Video Width",
                 required=True,
                 default=0)
+
     height = Int(title="Video Height",
                  required=True,
                  default=0)
 
 
 class IList(IDocumentStructureNode):
+
     level = ValidTextLine(title="Level",
                           required=True,
                           default=u'')
+
     group = ValidTextLine(title="Group",
                           required=True,
                           default=u'')
+
     start = Int(title="List Start Number",
                 required=True,
                 default=0)
+
     format = ValidTextLine(title="Format",
                            required=True,
                            default=u'')
@@ -322,8 +351,10 @@ class ItemWithDesc(IItem):
 
 
 class IDT(IDocumentStructureNode):
+
     desc = ValidTextLine(title="Description",
                          required=False)
+
     type = ValidTextLine(title="Description Type",
                          required=False)
 
@@ -348,17 +379,23 @@ class ITable(IDocumentStructureNode):
     number_of_col_header = Int(title="Number of Column Header",
                                required=True,
                                default=0)
+
     number_of_col_body = Int(title="Number of Column Body",
                              required=True,
                              default=0)
+
     caption = ValidTextLine(title="Table Caption",
                             required=False)
+
     label = ValidTextLine(title="Table Label",
                           required=False)
+
     border = ListOrTuple(title="TableBorder",
                          required=False)
-    type_ = ValidTextLine(title="Table Type",
-                          required=False)
+
+    type = ValidTextLine(title="Table Type",
+                         required=False)
+
     alignment = ValidTextLine(title="Table Alignment",
                               required=True,
                               default=u'left')
@@ -400,14 +437,17 @@ class ITable(IDocumentStructureNode):
 
 
 class IRow(IDocumentStructureNode):
+
     number_of_col = Int(title="Number of Column",
                         required=True,
                         default=0)
+
     border = Bool(title="Border",
                   required=True,
                   default=False)
-    type_ = ValidTextLine(title="Row Type",
-                          required=False)
+
+    type = ValidTextLine(title="Row Type",
+                         required=False)
 
     def set_number_of_col(number_of_col):
         """
@@ -426,12 +466,15 @@ class IRow(IDocumentStructureNode):
 
 
 class ICell (IDocumentStructureNode):
+
     border = Bool(title="Border",
                   required=True,
                   default=False)
+
     is_first_cell_in_the_row = Bool(title="Check if it is the first cell on the row",
                                     required=True,
                                     default=False)
+
     colspan = Int(title="Column Span",
                   required=True,
                   default=1)
@@ -443,9 +486,11 @@ class ICell (IDocumentStructureNode):
 
 
 class ITBody(IDocumentStructureNode):
+
     number_of_col = Int(title="Number of Column",
                         required=True,
                         default=0)
+
     border = Bool(title="Table Body Border",
                   required=True,
                   default=False)
@@ -462,9 +507,11 @@ class ITBody(IDocumentStructureNode):
 
 
 class ITHead(IDocumentStructureNode):
+
     number_of_col = Int(title="Number of Table Header Column",
                         required=True,
                         default=0)
+
     border = Bool(title="Table Header Border",
                   required=True,
                   default=False)
@@ -481,6 +528,7 @@ class ITHead(IDocumentStructureNode):
 
 
 class ITFoot(IDocumentStructureNode):
+
     number_of_col = Int(title="Number of Table Footer Column",
                         required=True,
                         default=0)
@@ -492,6 +540,7 @@ class ITFoot(IDocumentStructureNode):
 
 
 class IMath(IDocumentStructureNode):
+
     equation_type = ValidTextLine(title="Equation Type",
                                   required=False)
 
@@ -533,24 +582,29 @@ class IMFenced(IDocumentStructureNode):
     opener = ValidTextLine(title="Open mfence",
                            required=True,
                            default=u'')
+
     close = ValidTextLine(title="Close mfence",
                           required=True,
                           default=u'')
+
     separators = ValidTextLine(title="Separator",
                                required=True,
                                default=u'')
 
 
 class IMSpace(IDocumentStructureNode):
+
     width = Int(title="Width",
                 required=True,
                 default=0)
+
     height = Int(title="Height",
                  required=True,
                  default=0)
 
 
 class IMTable(IDocumentStructureNode):
+
     number_of_col = Int(title="Number of column",
                         required=True,
                         default=0)
@@ -616,6 +670,7 @@ class IMOver(IDocumentStructureNode):
 
 
 class IMMenclose(IDocumentStructureNode):
+
     notation = ListOrTuple(title="Notation",
                            required=False)
 
@@ -641,80 +696,95 @@ class IMText(IDocumentStructureNode):
     Node for handling text in MathML element
     """
 
+
 class IOMath(IDocumentStructureNode):
     """
     Main node for ooxml element <o:math>
     """
+
 
 class IOMathRun(IDocumentStructureNode):
     """
     Run type node for ooxml element
     """
 
+
 class IOMathFrac(IDocumentStructureNode):
+
     frac_type = ValidTextLine(title="Fraction Type",
                               required=False)
-  
+
     def set_frac_type(frac_type):
         """
         set fraction type
         """
-        
+
 
 class IOMathNumerator(IDocumentStructureNode):
     """
     Node for ooxml element <m:num>
     """
 
+
 class IOMathDenominator(IDocumentStructureNode):
     """
     Node for ooxml element <m:den>
     """
+
 
 class IOMathRadical(IDocumentStructureNode):
     """
     Node for ooxml element <m:rad>
     """
 
+
 class IOMathDegree(IDocumentStructureNode):
     """
     Node for ooxml element <m:deg>
     """
+
 
 class IOMathBase(IDocumentStructureNode):
     """
     Node for ooxml element <m:e>
     """
 
+
 class IOMathSuperscript(IDocumentStructureNode):
     """
     Node for ooxml element <m:sSup>
     """
+
 
 class IOMathSup(IDocumentStructureNode):
     """
     Node for ooxml element <m:sup>
     """
 
+
 class IOMathSubscript(IDocumentStructureNode):
     """
     Node for ooxml element <m:sSub>
     """
+
 
 class IOMathSub(IDocumentStructureNode):
     """
     Node for ooxml element <m:sub>
     """
 
+
 class IOMathSubSup(IDocumentStructureNode):
     """
     Node for ooxml element <m:sSubSup>
     """
 
+
 class IOMathNary(IDocumentStructureNode):
     """
     Node for ooxml element <m:nary>
     """
+
 
 class IOMathNaryPr(IDocumentStructureNode):
     """
@@ -722,9 +792,10 @@ class IOMathNaryPr(IDocumentStructureNode):
     """
     chrVal = ValidTextLine(title="chrValue",
                            required=False)
+
     limLocVal = ValidTextLine(title="lim location value",
-                           required=False)
-  
+                              required=False)
+
     def set_chr_val(chrVal):
         """
         set chrVal
@@ -735,59 +806,65 @@ class IOMathNaryPr(IDocumentStructureNode):
         set limLocVal
         """
 
+
 class IOMathDelimiter(IDocumentStructureNode):
     """
     Node for ooxml element <m:d>
     """
 
+
 class IOMathDPr(IDocumentStructureNode):
     """
     Node for ooxml element <m:dPr>
     """
-    begChr = ValidTextLine(title = "Beginning Char",
-                           required = False)
-    endChr = ValidTextLine(title = "End Char",
-                           required = False)
+    begChr = ValidTextLine(title="Beginning Char",
+                           required=False)
 
-    def set_beg_char (begChr):
+    endChr = ValidTextLine(title="End Char",
+                           required=False)
+
+    def set_beg_char(begChr):
         """
         set beginning char
         """
-    
-    def set_end_char (endChr):
+
+    def set_end_char(endChr):
         """
         set end char
         """
+
 
 class IOMathLimLow(IDocumentStructureNode):
     """
     Node for ooxml element <m:limlow>
     """
 
+
 class IOMathBar(IDocumentStructureNode):
     """
     Node for ooxml element <m:bar>
     """
-    pos = ValidTextLine(title = "Position",
-                           required = False)
-    
+    pos = ValidTextLine(title="Position",
+                        required=False)
+
     def set_bar_pos(pos):
         """
         set position
         """
 
+
 class IOMathAcc(IDocumentStructureNode):
     """
     Node for ooxml element  <m:acc>
     """
-    accChr = ValidTextLine(title = "accChr",
-                           required = False)
-    
+    accChr = ValidTextLine(title="accChr",
+                           required=False)
+
     def set_acc_chr(accChr):
         """
         set accChr
         """
-        
+
 
 class IOMathPara(IDocumentStructureNode):
     """
@@ -795,21 +872,26 @@ class IOMathPara(IDocumentStructureNode):
     """
 
 # handling matrix for docx
+
+
 class IOMathMatrix(IDocumentStructureNode):
     """
     Node for ooxml element <m:m>
     """
-    begChr = ValidTextLine(title = "Beginning Char",
-                           required = False)
-    endChr = ValidTextLine(title = "End Char",
-                           required = False)
-    number_of_col = Int(title= "Number of Column",
-                        required = True,
-                        default = 0)
-    number_of_row = Int(title= "Number of Row",
-                        required = True,
-                        default = 0)
-    
+    begChr = ValidTextLine(title="Beginning Char",
+                           required=False)
+
+    endChr = ValidTextLine(title="End Char",
+                           required=False)
+
+    number_of_col = Int(title="Number of Column",
+                        required=True,
+                        default=0)
+
+    number_of_row = Int(title="Number of Row",
+                        required=True,
+                        default=0)
+
     def set_number_of_col(number_of_col):
         """
         set number of column
@@ -820,27 +902,32 @@ class IOMathMatrix(IDocumentStructureNode):
         set number of row
         """
 
-    def set_beg_char (begChr):
+    def set_beg_char(begChr):
         """
         set beginning char
         """
-    
-    def set_end_char (endChr):
+
+    def set_end_char(endChr):
         """
         set end char
         """
 
 # handling matrix row
+
+
 class IOMathMr (IDocumentStructureNode):
     """
     Node for ooxml element <m:mr>
     """
 
 # omath: handling function apply function
+
+
 class IOMathFunc(IDocumentStructureNode):
     """
     Node for ooxml element <m:func>
     """
+
 
 class IOMathFName(IDocumentStructureNode):
     """
@@ -848,6 +935,8 @@ class IOMathFName(IDocumentStructureNode):
     """
 
 # omath : handling equation-array function
+
+
 class IOMathEqArr(IDocumentStructureNode):
     """
     Node for ooxml element <m:eqArr>
@@ -856,20 +945,23 @@ class IOMathEqArr(IDocumentStructureNode):
                    required=True,
                    default=1)
 
-    def set_row_space (rowSpace):
+    def set_row_space(rowSpace):
         """
         set row space
         """
+
 
 class IOMathSPre(IDocumentStructureNode):
     """
     Node for ooxml element <m:sPre>
     """
 
+
 class IOMathBox(IDocumentStructureNode):
     """
     Node for ooxml element <m:box>
     """
+
 
 class IOMathGroupChr(IDocumentStructureNode):
     """
@@ -877,11 +969,13 @@ class IOMathGroupChr(IDocumentStructureNode):
     """
     pos = ValidTextLine(title="Position",
                         required=False)
+
     groupChr = ValidTextLine(title="group Chr",
                              required=False)
+
     vertJc = ValidTextLine(title="Vertical Jc",
-                        required=False)
-   
+                           required=False)
+
     def set_groupChr(groupChr):
         """
         set group Chr
@@ -897,10 +991,12 @@ class IOMathGroupChr(IDocumentStructureNode):
         set vertical Jc
         """
 
+
 class IOMathLimUpp(IDocumentStructureNode):
     """
     Node for ooxml element <m:limUpp>
     """
+
 
 class IOMathBorderBox(IDocumentStructureNode):
     """
