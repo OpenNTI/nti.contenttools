@@ -640,3 +640,269 @@ class IMText(IDocumentStructureNode):
     """
     Node for handling text in MathML element
     """
+
+class IOMath(IDocumentStructureNode):
+    """
+    Main node for ooxml element <o:math>
+    """
+
+class IOMathRun(IDocumentStructureNode):
+    """
+    Run type node for ooxml element
+    """
+
+class IOMathFrac(IDocumentStructureNode):
+    frac_type = ValidTextLine(title="Fraction Type",
+                              required=False)
+  
+    def set_frac_type(frac_type):
+        """
+        set fraction type
+        """
+        
+
+class IOMathNumerator(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:num>
+    """
+
+class IOMathDenominator(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:den>
+    """
+
+class IOMathRadical(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:rad>
+    """
+
+class IOMathDegree(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:deg>
+    """
+
+class IOMathBase(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:e>
+    """
+
+class IOMathSuperscript(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:sSup>
+    """
+
+class IOMathSup(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:sup>
+    """
+
+class IOMathSubscript(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:sSub>
+    """
+
+class IOMathSub(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:sub>
+    """
+
+class IOMathSubSup(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:sSubSup>
+    """
+
+class IOMathNary(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:nary>
+    """
+
+class IOMathNaryPr(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:naryPr>
+    """
+    chrVal = ValidTextLine(title="chrValue",
+                           required=False)
+    limLocVal = ValidTextLine(title="lim location value",
+                           required=False)
+  
+    def set_chr_val(chrVal):
+        """
+        set chrVal
+        """
+
+    def set_lim_loc_val(limLocVal):
+        """
+        set limLocVal
+        """
+
+class IOMathDelimiter(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:d>
+    """
+
+class IOMathDPr(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:dPr>
+    """
+    begChr = ValidTextLine(title = "Beginning Char",
+                           required = False)
+    endChr = ValidTextLine(title = "End Char",
+                           required = False)
+
+    def set_beg_char (begChr):
+        """
+        set beginning char
+        """
+    
+    def set_end_char (endChr):
+        """
+        set end char
+        """
+
+class IOMathLimLow(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:limlow>
+    """
+
+class IOMathBar(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:bar>
+    """
+    pos = ValidTextLine(title = "Position",
+                           required = False)
+    
+    def set_bar_pos(pos):
+        """
+        set position
+        """
+
+class IOMathAcc(IDocumentStructureNode):
+    """
+    Node for ooxml element  <m:acc>
+    """
+    accChr = ValidTextLine(title = "accChr",
+                           required = False)
+    
+    def set_acc_chr(accChr):
+        """
+        set accChr
+        """
+        
+
+class IOMathPara(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:OMathPara>
+    """
+
+# handling matrix for docx
+class IOMathMatrix(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:m>
+    """
+    begChr = ValidTextLine(title = "Beginning Char",
+                           required = False)
+    endChr = ValidTextLine(title = "End Char",
+                           required = False)
+    number_of_col = Int(title= "Number of Column",
+                        required = True,
+                        default = 0)
+    number_of_row = Int(title= "Number of Row",
+                        required = True,
+                        default = 0)
+    
+    def set_number_of_col(number_of_col):
+        """
+        set number of column
+        """
+
+    def set_number_of_row(number_of_row):
+        """
+        set number of row
+        """
+
+    def set_beg_char (begChr):
+        """
+        set beginning char
+        """
+    
+    def set_end_char (endChr):
+        """
+        set end char
+        """
+
+# handling matrix row
+class IOMathMr (IDocumentStructureNode):
+    """
+    Node for ooxml element <m:mr>
+    """
+
+# omath: handling function apply function
+class IOMathFunc(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:func>
+    """
+
+class IOMathFName(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:fName>
+    """
+
+# omath : handling equation-array function
+class IOMathEqArr(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:eqArr>
+    """
+    rowspace = Int(title="Row Space",
+                   required=True,
+                   default=1)
+
+    def set_row_space (rowSpace):
+        """
+        set row space
+        """
+
+class IOMathSPre(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:sPre>
+    """
+
+class IOMathBox(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:box>
+    """
+
+class IOMathGroupChr(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:groupChr>
+    """
+    pos = ValidTextLine(title="Position",
+                        required=False)
+    groupChr = ValidTextLine(title="group Chr",
+                             required=False)
+    vertJc = ValidTextLine(title="Vertical Jc",
+                        required=False)
+   
+    def set_groupChr(groupChr):
+        """
+        set group Chr
+        """
+
+    def set_pos(pos):
+        """
+        set position
+        """
+
+    def set_vertJc(vertJc):
+        """
+        set vertical Jc
+        """
+
+class IOMathLimUpp(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:limUpp>
+    """
+
+class IOMathBorderBox(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:borderBox>
+    """
