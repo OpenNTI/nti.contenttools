@@ -15,26 +15,6 @@ from nti.schema.field import ValidTextLine
 
 
 class IRenderContext(interface.Interface):
-    """
-    Renderer context
-    """
-
-
-class IRenderer(interface.Interface):
-    """
-    Marker interface for node renderers
-    """
-
-    def render(context, node, *args, **kwargs):
-        """
-        Render this not using the specified context
-
-        :param context: A :class:`IRenderContext` object
-        :param context: A :class:`nti.contenttools.types.interfaces.INode` object to render
-        """
-
-
-class IRenderContext(interface.Interface):
 
     name = ValidTextLine(title="renderer",
                          required=True,
@@ -60,4 +40,18 @@ class IRenderContext(interface.Interface):
 
         :param name: Property name
         :param value: Property value
+        """
+
+
+class IRenderer(interface.Interface):
+    """
+    Marker interface for node renderers
+    """
+
+    def render(context, node):
+        """
+        Render this node using the specified context
+
+        :param context: A :class:`IRenderContext` object
+        :param context: A :class:`nti.contenttools.types.interfaces.INode` object to render
         """

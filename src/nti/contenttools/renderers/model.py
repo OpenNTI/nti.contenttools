@@ -15,7 +15,9 @@ from zope import interface
 
 from nti.contenttools.renderers.interfaces import IRenderContext
 
-from nti.schema.fieldproperty import createDirectFieldProperties
+from nti.schema.field import SchemaConfigured
+
+from nti.schema.fieldproperty import createFieldProperties
 
 
 class RenderContextMixin(object):
@@ -32,8 +34,8 @@ class RenderContextMixin(object):
 
 
 @interface.implemeter(IRenderContext)
-class DefaultRendererContext(RenderContextMixin):
-    createDirectFieldProperties(IRenderContext)
+class DefaultRendererContext(SchemaConfigured, RenderContextMixin):
+    createFieldProperties(IRenderContext)
 
     def __init__(self, *args, **kwargs):
         super(DefaultRendererContext, self).__init__(*args, **kwargs)
@@ -42,6 +44,8 @@ class DefaultRendererContext(RenderContextMixin):
     def write(self, data):
         if data is not None:
             self.data.write(data)
+            return True
+        return False
 
     def reset(self):
         self.data.seek(0)
