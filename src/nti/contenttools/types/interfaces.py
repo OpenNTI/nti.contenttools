@@ -688,8 +688,10 @@ class IMMultiscripts(IDocumentStructureNode):
     """
     To do  : double check base and prescripts type
     """
-    base = IDocumentStructureNode
-    prescripts = IMMprescripts
+    base = Object(IDocumentStructureNode, title="base",
+                 required=False)
+    prescripts = Object(IMMprescripts, title="prescript",
+                 required=False)
 
 
 class IMText(IDocumentStructureNode):
