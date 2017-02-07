@@ -676,11 +676,12 @@ class IMMenclose(IDocumentStructureNode):
 
 
 class IMMprescripts(IDocumentStructureNode):
-    """
-    To do : double check sub and sup types
-    """
-    sub = IMSub
-    sup = IMSup
+
+    sub = Object(IMSub, title="subscript",
+                 required=False)
+
+    sup = Object(IMSup,  title="superscript",
+                 required=False)
 
 
 class IMMultiscripts(IDocumentStructureNode):
