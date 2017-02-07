@@ -25,6 +25,13 @@ from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.contenttools.types.run import Run
 
+from nti.contenttools.types.sectioning import Chapter
+from nti.contenttools.types.sectioning import Section
+from nti.contenttools.types.sectioning import SubSection
+from nti.contenttools.types.sectioning import SubSubSection
+from nti.contenttools.types.sectioning import SubSubSubSection
+from nti.contenttools.types.sectioning import SubSubSubSubSection
+
 
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
@@ -41,7 +48,8 @@ def _to_latex(text, type_text):
         if len(string_list) > 1:
             new_text = unicode_to_latex._replace_multi_char(new_text)
         else:
-            new_text = unicode_to_latex._replace_unicode_with_latex_tag(new_text)
+            new_text = unicode_to_latex._replace_unicode_with_latex_tag(
+                new_text)
         return new_text
     else:
         return PlainTextToLatexFragmentConverter(new_text)
@@ -55,7 +63,8 @@ class TextNode(_Node, PlainTextContentFragment):
         return super(TextNode, cls).__new__(cls, _to_latex(text, type_text))
 
     def __init__(self, text='', type_text=None):
-        # Note: __new__ does all the actual work, because these are immutable as strings
+        # Note: __new__ does all the actual work, because these are immutable
+        # as strings
         super(TextNode, self).__init__(self, _to_latex(text, type_text))
 
     def render(self):
@@ -67,58 +76,6 @@ class Body(DocumentStructureNode):
 
 
 class EPUBBody(DocumentStructureNode):
-    pass
-
-
-class Chapter(DocumentStructureNode):
-
-    def __init__(self, suppressed=False, title=None, label=None):
-        super(Chapter, self).__init__()
-        self.suppressed = suppressed
-        self.title = title
-        self.label = label
-
-    def set_title(self, title):
-        self.title = title
-
-    def set_label(self, label):
-        self.label = label
-
-
-class Section(DocumentStructureNode):
-
-    def __init__(self, suppressed=False, label=None, title=None):
-        super(Section, self).__init__()
-        self.suppressed = suppressed
-        self.title = title
-        self.label = label
-        self.data_depth = None
-        self.section_type = None
-
-    def set_title(self, title):
-        self.title = title
-
-    def set_label(self, label):
-        self.label = label
-
-
-class SubSection(Section):
-
-    def __init__(self, label=None, title=None):
-        super(SubSection, self).__init__()
-        self.title = title
-        self.label = label
-
-
-class SubSubSection(Section):
-    pass
-
-
-class SubSubSubSection(Section):
-    pass
-
-
-class SubSubSubSubSection(Section):
     pass
 
 
@@ -591,7 +548,8 @@ class OMathPara(DocumentStructureNode):
 
 class OMathMatrix(DocumentStructureNode):
 
-    def __init__(self, number_of_col=0, number_of_row=0, begChr=None, endChr=None):
+    def __init__(
+            self, number_of_col=0, number_of_row=0, begChr=None, endChr=None):
         self.number_of_col = number_of_col
         self.number_of_row = number_of_row
         self.begChr = begChr
@@ -710,7 +668,8 @@ class TextBoxContent(DocumentStructureNode):
 
 class NoteInteractive(DocumentStructureNode):
 
-    def __init__(self, image_path='', label='', link=None, caption='', notes=''):
+    def __init__(
+            self, image_path='', label='', link=None, caption='', notes=''):
         self.image_path = image_path
         self.label = label
         self.link = link
@@ -820,7 +779,8 @@ class Exercise(DocumentStructureNode):
 
 class Problem (DocumentStructureNode):
 
-    def __init__(self, question=None, problem_type=None, solution=None, label=None):
+    def __init__(
+            self, question=None, problem_type=None, solution=None, label=None):
         self.question = question
         self.problem_type = problem_type
         self.solution = solution

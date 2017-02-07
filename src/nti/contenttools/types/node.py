@@ -14,13 +14,21 @@ from zope import interface
 from nti.contenttools.types.interfaces import INode
 from nti.contenttools.types.interfaces import IDocumentStructureNode
 
+from nti.schema.field import SchemaConfigured
+
+from nti.schema.fieldproperty import createFieldProperties
+
 
 @interface.implementer(INode)
-class Node(object):
+class Node(SchemaConfigured):
+    createFieldProperties(INode)
 
     __name__ = None
     __parent__ = None
     children = ()
+
+    def __init__(self, *args, **kwargs):
+        super(Node, self).__init__(*args, **kwargs)
 
     def add(self, child):
         if self.children == ():
@@ -47,12 +55,13 @@ _Node = Node
 
 @interface.implementer(IDocumentStructureNode)
 class DocumentStructureNode(Node):
+    createFieldProperties(IDocumentStructureNode)
 
     STYLES = {}
 
-    def __init__(self, styles=None):
-        Node.__init__(self)
-        self.styles = list(styles or ())
+    def __init__(self, *args, **kwargs):
+        super(DocumentStructureNode, self).__init__(*args, **kwargs)
+        self.styles = self.styles or list()
 
     def raw(self):
         val = u''
