@@ -8,4 +8,9 @@
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
 
+	<adapter factory=".document.DocumentRenderer"
+			 for="nti.contenttools.types.interfaces.IDocument"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+
 </configure>
