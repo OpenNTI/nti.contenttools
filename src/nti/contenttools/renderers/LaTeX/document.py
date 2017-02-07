@@ -50,7 +50,7 @@ def render_document(context, document):
     if document.author:
         context.write(document_title(document.author))
     render_children(context, document)
-    return context
+    return document
 
 
 @component.adapter(IDocument)
