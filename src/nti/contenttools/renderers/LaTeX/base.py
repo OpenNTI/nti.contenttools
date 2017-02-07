@@ -24,3 +24,4 @@ def render_iterable(context, iterabe):
 
 def render_children(context, node):
     render_iterable(context, node.children or ())
+    return node
