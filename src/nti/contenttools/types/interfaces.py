@@ -155,16 +155,6 @@ class ISection(IDocumentStructureNode):
     section_type = ValidTextLine(title="Section type",
                                  required=False)
 
-    def set_title(title):
-        """
-        set title
-        """
-
-    def set_label(label):
-        """
-        set label
-        """
-
 
 class ISubSection(ISection):
 
@@ -179,6 +169,18 @@ class ISubSection(ISection):
 class ISubSubSection(ISection):
     """
     SubSubSection
+    """
+
+
+class ISubSubSubSection(ISection):
+    """
+    SubSubSubSection
+    """
+
+
+class ISubSubSubSubSection(ISection):
+    """
+    SubSubSubSubSection
     """
 
 
@@ -680,7 +682,7 @@ class IMMprescripts(IDocumentStructureNode):
     sub = Object(IMSub, title="subscript",
                  required=False)
 
-    sup = Object(IMSup,  title="superscript",
+    sup = Object(IMSup, title="superscript",
                  required=False)
 
 
@@ -689,9 +691,9 @@ class IMMultiscripts(IDocumentStructureNode):
     To do  : double check base and prescripts type
     """
     base = Object(IDocumentStructureNode, title="base",
-                 required=False)
+                  required=False)
     prescripts = Object(IMMprescripts, title="prescript",
-                 required=False)
+                        required=False)
 
 
 class IMText(IDocumentStructureNode):
