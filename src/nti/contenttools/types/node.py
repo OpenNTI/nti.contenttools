@@ -25,14 +25,12 @@ class Node(SchemaConfigured):
 
     __name__ = None
     __parent__ = None
-    children = ()
 
     def __init__(self, *args, **kwargs):
         super(Node, self).__init__(*args, **kwargs)
+        self.children = self.children or list()
 
     def add(self, child):
-        if self.children == ():
-            self.children = list(self.children or ())
         if INode.providedBy(child):
             self.children.append(child)
             child.__parent__ = self  # take ownership
