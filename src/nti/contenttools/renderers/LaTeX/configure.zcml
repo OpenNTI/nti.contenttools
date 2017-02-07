@@ -13,4 +13,15 @@
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
 
+	<adapter factory=".sectioning.ChapterRenderer"
+			 for="nti.contenttools.types.interfaces.IChapter"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+
+	<adapter factory=".sectioning.SectionRenderer"
+			 for="nti.contenttools.types.interfaces.ISection"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+
+
 </configure>

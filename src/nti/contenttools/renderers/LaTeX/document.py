@@ -12,11 +12,9 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
-from nti.contenttools.renderers.base import render_children
-
 from nti.contenttools.renderers.interfaces import IRenderer
 
-from nti.contenttools.renderers.model import DefaultRendererContext
+from nti.contenttools.renderers.LaTeX.base import render_children
 
 from nti.contenttools.types.interfaces import IDocument
 
@@ -62,8 +60,7 @@ class DocumentRenderer(object):
     def __init__(self, document):
         self.document = document
 
-    def render(self, context=None, node=None):
+    def render(self, context, node=None):
         document = self.document if node is None else node
-        context = DefaultRendererContext() if context is None else None
         return render_document(context, document)
     __call__ = render

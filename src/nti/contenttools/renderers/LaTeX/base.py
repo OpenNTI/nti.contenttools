@@ -13,6 +13,15 @@ from zope import component
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
+from nti.contenttools.renderers.model import DefaultRendererContext
+
+
+def render(node):
+    result = DefaultRendererContext(name="LaTeX")
+    renderer = component.getAdapter(node, IRenderer, name="LaTeX")
+    renderer.render(result, node)
+    return result.read()
+
 
 def render_iterable(context, iterabe):
     for node in iterabe or ():

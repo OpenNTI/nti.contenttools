@@ -46,14 +46,6 @@ class INode(_INode, IIterable, IContained):
         remove a node
         """
 
-    def render(context):
-        """
-        Render this node using the specified context
-
-        :param context: A :class:`nti.contenttools.interfaces.IRenderContext` object
-        """
-
-
 class IDocumentStructureNode(INode):
 
     styles = ListOrTuple(ValidTextLine(title='the style'),
@@ -125,12 +117,12 @@ class IChapter(IDocumentStructureNode):
                           required=True,
                           default=u'')
 
-    def set_title(self, title):
+    def set_title(title):
         """
         set title
         """
 
-    def set_label(self, label):
+    def set_label(label):
         """
         set label
         """

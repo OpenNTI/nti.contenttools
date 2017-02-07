@@ -15,10 +15,11 @@ from nti.contenttools.types.interfaces import IRunNode
 
 from nti.contenttools.types.node import DocumentStructureNode
 
+from nti.schema.fieldproperty import createFieldProperties
 
 @interface.implementer(IRunNode)
 class Run(DocumentStructureNode):
+    createFieldProperties(IRunNode)
 
-    def __init__(self, styles=(), element_type=None):
-        DocumentStructureNode.__init__(self, styles)
-        self.element_type = element_type
+    def __init__(self, *args, **kwargs):
+        super(Run, self).__init__(*args, **kwargs)

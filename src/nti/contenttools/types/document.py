@@ -15,11 +15,14 @@ from nti.contenttools.types.interfaces import IDocument
 
 from nti.contenttools.types.node import DocumentStructureNode
 
+from nti.schema.fieldproperty import createFieldProperties
+
 
 @interface.implementer(IDocument)
 class Document(DocumentStructureNode):
+    createFieldProperties(IDocument)
 
-    packages = ['graphicx',
+    packages = ('graphicx',
                 'hyperref',
                 'ulem',
                 'ntilatexmacros',
@@ -29,11 +32,12 @@ class Document(DocumentStructureNode):
                 'listings',
                 'ntiglossary',
                 'Tabbing',
-                'textgreek']
+                'textgreek')
 
-    title = ''
-    author = ''
-
-    def __init__(self, doc_type=u'book'):
-        DocumentStructureNode.__init__(self)
-        self.doc_type = doc_type or u'book'
+    def __init__(self, *args, **kwargs):
+        super(Document, self).__init__(*args, **kwargs)
+        self.title = self.title or u''
+        self.author = self.author or u''
+        self.doc_type = self.doc_type or u'book'
+        if not self.packages:
+            self.packages = list(Document.packages)
