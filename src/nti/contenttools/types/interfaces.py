@@ -139,7 +139,8 @@ class IChapter(IDocumentStructureNode):
 class ISection(IDocumentStructureNode):
 
     suppressed = Bool(title="Suppressed",
-                      default=False)
+                      default=False,
+                      required=False)
 
     title = ValidTextLine(title="Section Title",
                           required=True,
