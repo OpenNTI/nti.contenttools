@@ -33,7 +33,7 @@ class RenderContextMixin(object):
         return self.properties.get(name, default)
 
 
-@interface.implemeter(IRenderContext)
+@interface.implementer(IRenderContext)
 class DefaultRendererContext(SchemaConfigured, RenderContextMixin):
     createFieldProperties(IRenderContext)
 
@@ -49,3 +49,7 @@ class DefaultRendererContext(SchemaConfigured, RenderContextMixin):
 
     def reset(self):
         self.data.seek(0)
+
+    def read(self):
+        self.reset()
+        return self.data.read()
