@@ -20,7 +20,6 @@ from .. import unicode_to_latex
 from nti.contenttools.types.document import Document
 
 from nti.contenttools.types.node import Node
-from nti.contenttools.types.node import _Node
 from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.contenttools.types.run import Run
@@ -54,6 +53,7 @@ def _to_latex(text, type_text):
     else:
         return PlainTextToLatexFragmentConverter(new_text)
 
+from nti.contenttools.types.node import _Node
 
 class TextNode(_Node, PlainTextContentFragment):
 

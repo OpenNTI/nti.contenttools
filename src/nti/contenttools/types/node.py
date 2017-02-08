@@ -19,12 +19,22 @@ from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createFieldProperties
 
 
-@interface.implementer(INode)
-class Node(SchemaConfigured):
-    createFieldProperties(INode)
+class NodeMixin(object):
 
     __name__ = None
     __parent__ = None
+
+    children = ()
+
+    def __iter__(self):
+        for item in self.children or ():
+            yield item
+_Node = NodeMixin
+
+
+@interface.implementer(INode)
+class Node(SchemaConfigured, NodeMixin):
+    createFieldProperties(INode)
 
     def __init__(self, *args, **kwargs):
         super(Node, self).__init__(*args, **kwargs)
@@ -44,11 +54,6 @@ class Node(SchemaConfigured):
     def render(self, context):
         for child in self:
             child.render(context)
-
-    def __iter__(self):
-        for item in self.children or ():
-            yield item
-_Node = Node
 
 
 @interface.implementer(IDocumentStructureNode)
