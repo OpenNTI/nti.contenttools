@@ -8,17 +8,13 @@ __docformat__ = "restructuredtext en"
 # pylint: disable=W0212,R0904
 
 from hamcrest import is_
-from hamcrest import none
 from hamcrest import is_not
 from hamcrest import assert_that
 does_not = is_not
 
-from zope import component
+from nti.contenttools.renderers.LaTeX.base import render_output
 
-from nti.contenttools.renderers.interfaces import IRenderer
-
-from nti.contenttools.renderers.model import DefaultRendererContext
-
+from nti.contenttools.types.document import Body
 from nti.contenttools.types.document import Document
 
 from nti.contenttools.tests import ContentToolsTestCase
@@ -26,15 +22,25 @@ from nti.contenttools.tests import ContentToolsTestCase
 
 class TestDocument(ContentToolsTestCase):
 
-    def test_render(self):
-        context = DefaultRendererContext()
+    def test_document(self):
         document = Document(doc_type='manga',
                             title='bleach',
                             author='kube',
                             packages=('graphicx',))
-        renderer = component.getAdapter(document, IRenderer, name="LaTeX")
-        assert_that(renderer, is_not(none()))
-        renderer.render(context)
-        output = context.read()
+        output = render_output(document)
         assert_that(output,
                     is_(u'\\documentclass{manga}\n\\usepackage{graphicx}\n\\title{bleach}\n\\author{kube}\n'))
+        
+    def test_body(self):
+        body = Body()
+        output = render_output(body)
+        assert_that(output,
+                    is_(u'\\begin{document}\n\n\\end{document}\n'))
+        
+    def test_body_and_document(self):
+        document = Document(doc_type='book',
+                            packages=('graphicx',))
+        document.add(Body())
+        output = render_output(document)
+        assert_that(output,
+                    is_(u'\\documentclass{book}\n\\usepackage{graphicx}\n\\begin{document}\n\n\\end{document}\n'))

@@ -16,6 +16,7 @@ from nti.contenttools.renderers.interfaces import IRenderer
 
 from nti.contenttools.renderers.LaTeX.base import render_children
 
+from nti.contenttools.types.interfaces import IBody
 from nti.contenttools.types.interfaces import IDocument
 
 
@@ -51,16 +52,35 @@ def render_document(context, document):
     return document
 
 
-@component.adapter(IDocument)
+def render_body(context, body, optional=''):
+    context.write(u'\\begin{document}')
+    if optional:
+        context.write(optional)
+    context.write("\n")
+    render_children(context, body)
+    context.write(u'\n\\end{document}\n')
+    return body
+
+
 @interface.implementer(IRenderer)
-class DocumentRenderer(object):
+class RendererMixin(object):
 
-    __slots__ = ('document',)
+    func = None
 
-    def __init__(self, document):
-        self.document = document
+    def __init__(self, node):
+        self.node = node
 
     def render(self, context, node=None):
-        document = self.document if node is None else node
-        return render_document(context, document)
+        node = self.node if node is None else node
+        return self.func(context, node)
     __call__ = render
+
+
+@component.adapter(IDocument)
+class DocumentRenderer(RendererMixin):
+    func = staticmethod(render_document)
+
+
+@component.adapter(IBody)
+class BodyRenderer(RendererMixin):
+    func = staticmethod(render_body)
