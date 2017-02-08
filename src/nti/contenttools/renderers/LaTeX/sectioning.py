@@ -66,6 +66,7 @@ def render_subsubsection(context, node):
     label = get_label(node.label)
     context.write('\\subsubsection{%s}\n%s\n' % (title, label))
     render_children(context, node)
+    return node
 
 
 def render_subsection(context, node):
@@ -73,6 +74,7 @@ def render_subsection(context, node):
     label = get_label(node.label)
     context.write('\\subsection{%s}\n%s\n' % (title, label))
     render_children(context, node)
+    return node
 
 
 def render_section(context, section):
