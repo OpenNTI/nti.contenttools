@@ -17,6 +17,7 @@ from nti.contentfragments.latex import PlainTextToLatexFragmentConverter
 
 from .. import unicode_to_latex
 
+from nti.contenttools.types.document import Body
 from nti.contenttools.types.document import Document
 
 from nti.contenttools.types.node import Node
@@ -69,10 +70,6 @@ class TextNode(_Node, PlainTextContentFragment):
 
     def render(self):
         return unicode(self)
-
-
-class Body(DocumentStructureNode):
-    pass
 
 
 class EPUBBody(DocumentStructureNode):

@@ -11,6 +11,7 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from nti.contenttools.types.interfaces import IBody
 from nti.contenttools.types.interfaces import IDocument
 
 from nti.contenttools.types.node import DocumentStructureNode
@@ -41,3 +42,8 @@ class Document(DocumentStructureNode):
         self.doc_type = self.doc_type or u'book'
         if not self.packages:
             self.packages = list(Document.packages)
+
+
+@interface.implementer(IBody)
+class Body(DocumentStructureNode):
+    createFieldProperties(IBody)

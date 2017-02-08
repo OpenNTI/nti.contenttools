@@ -9,6 +9,11 @@
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
 
+	<adapter factory=".document.BodyRenderer"
+			 for="nti.contenttools.types.interfaces.IBody"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+
 	<!-- Sectioning -->
 	<adapter factory=".sectioning.ChapterRenderer"
 			 for="nti.contenttools.types.interfaces.IChapter"
