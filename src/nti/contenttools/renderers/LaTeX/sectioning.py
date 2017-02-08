@@ -112,7 +112,7 @@ class RendererMixin(object):
 
     def render(self, context, node=None):
         node = self.node if node is None else node
-        return self.__class__.func(context, node)
+        return self.func(context, node)
     __call__ = render
 
 
