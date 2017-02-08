@@ -41,6 +41,8 @@ class Node(SchemaConfigured, NodeMixin):
         self.children = self.children or list()
 
     def add(self, child):
+        if self.children is None:
+            self.children = list()
         if INode.providedBy(child):
             self.children.append(child)
             child.__parent__ = self  # take ownership
