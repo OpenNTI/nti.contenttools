@@ -3,16 +3,13 @@
 			xmlns:i18n="http://namespaces.zope.org/i18n"
 			xmlns:zcml="http://namespaces.zope.org/zcml">
 
-	<adapter factory=".run.RunRenderer"
-			 for="nti.contenttools.types.interfaces.IRunNode"
-			 provides="..interfaces.IRenderer"
-			 name="LaTeX" />
-
+	<!-- Document -->
 	<adapter factory=".document.DocumentRenderer"
 			 for="nti.contenttools.types.interfaces.IDocument"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
 
+	<!-- Sectioning -->
 	<adapter factory=".sectioning.ChapterRenderer"
 			 for="nti.contenttools.types.interfaces.IChapter"
 			 provides="..interfaces.IRenderer"
@@ -23,5 +20,30 @@
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
 
+	<adapter factory=".sectioning.SubSectionRenderer"
+			 for="nti.contenttools.types.interfaces.ISubSection"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+
+	<adapter factory=".sectioning.SubSubSectionRenderer"
+			 for="nti.contenttools.types.interfaces.ISubSubSection"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+
+	<adapter factory=".sectioning.SubSubSubSectionRenderer"
+			 for="nti.contenttools.types.interfaces.ISubSubSubSection"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+
+	<adapter factory=".sectioning.SubSubSubSubSectionRenderer"
+			 for="nti.contenttools.types.interfaces.ISubSubSubSubSection"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+
+	<!-- Run -->
+	<adapter factory=".run.RunRenderer"
+		 for="nti.contenttools.types.interfaces.IRunNode"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 
 </configure>
