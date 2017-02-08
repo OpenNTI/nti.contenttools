@@ -31,13 +31,13 @@ def render_iterable(context, iterable):
 def render_children(context, node):
     render_iterable(context, node.children or ())
     return node
+base_renderer = render_children  # alias
 
 
 def render_output(node):
     result = DefaultRendererContext(name="LaTeX")
     render_node(result, node)
     return result.read()
-base_renderer = render_children  # alias
 
 
 def render_children_output(node):
