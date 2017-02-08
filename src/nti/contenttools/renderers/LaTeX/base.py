@@ -16,21 +16,30 @@ from nti.contenttools.renderers.interfaces import IRenderer
 from nti.contenttools.renderers.model import DefaultRendererContext
 
 
-def render(node):
-    result = DefaultRendererContext(name="LaTeX")
-    renderer = component.getAdapter(node, IRenderer, name="LaTeX")
-    renderer.render(result, node)
-    return result.read()
+def render_node(context, node):
+    renderer = component.getAdapter(node,
+                                    IRenderer,
+                                    name=context.name)
+    return renderer.render(context, node)
 
 
 def render_iterable(context, iterabe):
     for node in iterabe or ():
-        renderer = component.getAdapter(node,
-                                        IRenderer,
-                                        name=context.name)
-        renderer.render(context, node)
+        render_node(context, node)
 
 
 def render_children(context, node):
     render_iterable(context, node.children or ())
     return node
+
+
+def render_output(node):
+    result = DefaultRendererContext(name="LaTeX")
+    render_node(result, node)
+    return result.read()
+
+
+def render_children_output(node):
+    result = DefaultRendererContext(name="LaTeX")
+    render_children(result, node)
+    return result.read()

@@ -8,18 +8,17 @@ __docformat__ = "restructuredtext en"
 # pylint: disable=W0212,R0904
 
 from hamcrest import is_
-from hamcrest import none
 from hamcrest import is_not
 from hamcrest import assert_that
 does_not = is_not
 
-from zope import component
-
-from nti.contenttools.renderers.interfaces import IRenderer
-
-from nti.contenttools.renderers.LaTeX.base import render
+from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.sectioning import Section
+from nti.contenttools.types.sectioning import SubSection
+from nti.contenttools.types.sectioning import SubSubSection
+from nti.contenttools.types.sectioning import SubSubSubSection
+from nti.contenttools.types.sectioning import SubSubSubSubSection
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -27,14 +26,36 @@ from nti.contenttools.tests import ContentToolsTestCase
 class TestSectioning(ContentToolsTestCase):
 
     def test_section(self):
-        section = Section(title='bleach', label='ichigo')
-        renderer = component.getAdapter(section, IRenderer, name="LaTeX")
-        assert_that(renderer, is_not(none()))
-        output = render(section)
+        node = Section(title='bleach', label='ichigo')
+        output = render_output(node)
         assert_that(output,
                     is_(u'\\section{bleach}\n\\label{ichigo}\n'))
 
-        section.suppressed = True
-        output = render(section)
+        node.suppressed = True
+        output = render_output(node)
         assert_that(output,
                     is_(u'\\sectiontitlesuppressed{bleach}\n\\label{ichigo}\n'))
+
+    def test_subsection(self):
+        node = SubSection(title='bleach', label='ichigo')
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\subsection{bleach}\n\\label{ichigo}\n'))
+
+    def test_subsubsection(self):
+        node = SubSubSection(title='bleach', label='ichigo')
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\subsubsection{bleach}\n\\label{ichigo}\n'))
+
+    def test_subsubsubsection(self):
+        node = SubSubSubSection(title='bleach', label='ichigo')
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\subsubsubsection{}\n'))
+
+    def test_subsubsubsubsection(self):
+        node = SubSubSubSubSection()
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\subsubsubsubsection{}\n'))

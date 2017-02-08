@@ -14,19 +14,24 @@ from six import string_types
 from zope import component
 from zope import interface
 
-from nti.contenttools.renderers.LaTeX.base import render
+from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
-from nti.contenttools.types.interfaces import IChapter, ISection
+from nti.contenttools.types.interfaces import IChapter
+from nti.contenttools.types.interfaces import ISection
+from nti.contenttools.types.interfaces import ISubSection
+from nti.contenttools.types.interfaces import ISubSubSection
+from nti.contenttools.types.interfaces import ISubSubSubSection
+from nti.contenttools.types.interfaces import ISubSubSubSubSection
 
 
 def get_title(context):
     if isinstance(context, string_types):
         result = context
     elif context is not None:
-        result = render(context).strip()
+        result = render_output(context).strip()
     else:
         result = u''
     return result
@@ -36,32 +41,38 @@ def get_label(context):
     if isinstance(context, string_types):
         result = u'\\label{%s}' % (context)
     elif context is not None:
-        result = render(context).strip()
+        result = render_output(context).strip()
     else:
         result = u''
     return result
 
 
-# def subsection_renderer(self):
-#     title = get_title(self.title)
-#     label = get_label(self.label)
-#     return u'\\subsection{%s}\n%s\n%s' % (title, label, base_renderer(self))
-#
-#
-# def subsubsection_renderer(self):
-#     title = get_title(self.title)
-#     label = get_label(self.label)
-#     return u'\\subsubsection{%s}\n%s\n%s' % (title, label, base_renderer(self))
-#
-#
-# def subsubsubsection_renderer(self):
-#     return _command_renderer(
-#         'subsubsubsection', base_renderer(self).strip()) + u'\n'
-#
-#
-# def subsubsubsubsection_renderer(self):
-#     return _command_renderer(
-#         'subsubsubsubsection', base_renderer(self).strip()) + u'\n'
+def render_subsubsubsubsection(context, node):
+    context.write('\\subsubsubsubsection{')
+    render_children(context, node)
+    context.write('}\n')
+    return node
+
+
+def render_subsubsubsection(context, node):
+    context.write('\\subsubsubsection{')
+    render_children(context, node)
+    context.write('}\n')
+    return node
+
+
+def render_subsubsection(context, node):
+    title = get_title(node.title)
+    label = get_label(node.label)
+    context.write('\\subsubsection{%s}\n%s\n' % (title, label))
+    render_children(context, node)
+
+
+def render_subsection(context, node):
+    title = get_title(node.title)
+    label = get_label(node.label)
+    context.write('\\subsection{%s}\n%s\n' % (title, label))
+    render_children(context, node)
 
 
 def render_section(context, section):
@@ -86,31 +97,45 @@ def render_chapter(context, chapter):
     return chapter
 
 
-@component.adapter(IChapter)
 @interface.implementer(IRenderer)
-class ChapterRenderer(object):
+class RendererMixin(object):
 
-    __slots__ = ('chapter',)
+    func = None
 
-    def __init__(self, chapter):
-        self.chapter = chapter
+    def __init__(self, node):
+        self.node = node
 
     def render(self, context, node=None):
-        chapter = self.chapter if node is None else node
-        return render_chapter(context, chapter)
+        node = self.node if node is None else node
+        return self.__class__.func(context, node)
     __call__ = render
+
+
+@component.adapter(IChapter)
+class ChapterRenderer(RendererMixin):
+    func = staticmethod(render_chapter)
 
 
 @component.adapter(ISection)
-@interface.implementer(IRenderer)
-class SectionRenderer(object):
+class SectionRenderer(RendererMixin):
+    func = staticmethod(render_section)
 
-    __slots__ = ('section',)
 
-    def __init__(self, section):
-        self.section = section
+@component.adapter(ISubSection)
+class SubSectionRenderer(RendererMixin):
+    func = staticmethod(render_subsection)
 
-    def render(self, context, node=None):
-        section = self.section if node is None else node
-        return render_section(context, section)
-    __call__ = render
+
+@component.adapter(ISubSubSection)
+class SubSubSectionRenderer(RendererMixin):
+    func = staticmethod(render_subsubsection)
+
+
+@component.adapter(ISubSubSubSection)
+class SubSubSubSectionRenderer(RendererMixin):
+    func = staticmethod(render_subsubsubsection)
+
+
+@component.adapter(ISubSubSubSubSection)
+class SubSubSubSubSectionRenderer(RendererMixin):
+    func = staticmethod(render_subsubsubsubsection)
