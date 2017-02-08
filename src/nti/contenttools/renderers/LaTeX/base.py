@@ -23,8 +23,8 @@ def render_node(context, node):
     return renderer.render(context, node)
 
 
-def render_iterable(context, iterabe):
-    for node in iterabe or ():
+def render_iterable(context, iterable):
+    for node in iterable or ():
         render_node(context, node)
 
 
@@ -37,6 +37,7 @@ def render_output(node):
     result = DefaultRendererContext(name="LaTeX")
     render_node(result, node)
     return result.read()
+base_renderer = render_children  # alias
 
 
 def render_children_output(node):
