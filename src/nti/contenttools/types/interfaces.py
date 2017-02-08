@@ -19,8 +19,8 @@ from nti.schema.field import Int
 from nti.schema.field import Bool
 from nti.schema.field import Object
 from nti.schema.field import ListOrTuple
-from nti.schema.field import ValidTextLine
 from nti.schema.field import IndexedIterable
+from nti.schema.field import TextLine as ValidTextLine
 
 
 class _INode(interface.Interface):
@@ -45,6 +45,7 @@ class INode(_INode, IIterable, IContained):
         """
         remove a node
         """
+
 
 class IDocumentStructureNode(INode):
 
