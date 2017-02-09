@@ -21,15 +21,15 @@ from nti.contenttools.types.interfaces import IDocument
 from nti.contenttools.types.interfaces import IEPUBBody
 
 
-def document_class(docclass, options=''):
-    if options:
-        options = u'[%s]' % options
+def document_class(docclass, options=u''):
+    options = options or u''
+    options = u'[%s]' % options if options else options
     return u'\\documentclass%s{%s}\n' % (options, docclass)
 
 
-def use_package(package, options=''):
-    if options:
-        options = u'[%s]' % options
+def use_package(package, options=u''):
+    options = options or u''
+    options = u'[%s]' % options if options else options
     return u'\\usepackage%s{%s}\n' % (options, package)
 
 
@@ -57,7 +57,7 @@ def render_body(context, body, optional=''):
     context.write(u'\\begin{document}')
     if optional:
         context.write(optional)
-    context.write("\n")
+    context.write(u"\n")
     render_children(context, body)
     context.write(u'\n\\end{document}\n')
     return body
