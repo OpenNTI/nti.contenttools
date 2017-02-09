@@ -16,6 +16,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.document import Body
 from nti.contenttools.types.document import Document
+from nti.contenttools.types.document import EPUBBody
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -33,6 +34,12 @@ class TestDocument(ContentToolsTestCase):
         
     def test_body(self):
         body = Body()
+        output = render_output(body)
+        assert_that(output,
+                    is_(u'\\begin{document}\n\n\\end{document}\n'))
+        
+    def test_epub_body(self):
+        body = EPUBBody()
         output = render_output(body)
         assert_that(output,
                     is_(u'\\begin{document}\n\n\\end{document}\n'))

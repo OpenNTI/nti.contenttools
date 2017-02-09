@@ -13,6 +13,7 @@ from zope import interface
 
 from nti.contenttools.types.interfaces import IBody
 from nti.contenttools.types.interfaces import IDocument
+from nti.contenttools.types.interfaces import IEPUBBody
 
 from nti.contenttools.types.node import DocumentStructureNode
 
@@ -47,3 +48,8 @@ class Document(DocumentStructureNode):
 @interface.implementer(IBody)
 class Body(DocumentStructureNode):
     createFieldProperties(IBody)
+
+
+@interface.implementer(IEPUBBody)
+class EPUBBody(DocumentStructureNode):
+    pass

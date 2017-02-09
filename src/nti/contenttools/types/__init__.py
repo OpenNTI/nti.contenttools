@@ -19,6 +19,7 @@ from .. import unicode_to_latex
 
 from nti.contenttools.types.document import Body
 from nti.contenttools.types.document import Document
+from nti.contenttools.types.document import EPUBBody
 
 from nti.contenttools.types.node import Node
 from nti.contenttools.types.node import DocumentStructureNode
@@ -70,10 +71,6 @@ class TextNode(_Node, PlainTextContentFragment):
 
     def render(self):
         return unicode(self)
-
-
-class EPUBBody(DocumentStructureNode):
-    pass
 
 
 class Paragraph(DocumentStructureNode):
