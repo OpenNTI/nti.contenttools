@@ -19,9 +19,11 @@ from nti.testing.matchers import verifiably_provides
 
 from nti.contenttools.types.interfaces import IBody
 from nti.contenttools.types.interfaces import IDocument
+from nti.contenttools.types.interfaces import IEPUBBody
 
 from nti.contenttools.types.document import Body
 from nti.contenttools.types.document import Document
+from nti.contenttools.types.document import EPUBBody
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -41,3 +43,8 @@ class TestDocument(ContentToolsTestCase):
         node = Body()
         assert_that(node, validly_provides(IBody))
         assert_that(node, verifiably_provides(IBody))
+        
+    def test_epub_body(self):
+        node = EPUBBody()
+        assert_that(node, validly_provides(IEPUBBody))
+        assert_that(node, verifiably_provides(IEPUBBody))

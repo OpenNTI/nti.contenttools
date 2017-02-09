@@ -14,6 +14,11 @@
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
 
+	<adapter factory=".document.EPUBBodyRenderer"
+			 for="nti.contenttools.types.interfaces.IEPUBBody"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+
 	<!-- Sectioning -->
 	<adapter factory=".sectioning.ChapterRenderer"
 			 for="nti.contenttools.types.interfaces.IChapter"

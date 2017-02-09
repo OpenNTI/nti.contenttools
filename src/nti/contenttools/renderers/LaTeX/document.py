@@ -18,6 +18,7 @@ from nti.contenttools.renderers.LaTeX.base import render_children
 
 from nti.contenttools.types.interfaces import IBody
 from nti.contenttools.types.interfaces import IDocument
+from nti.contenttools.types.interfaces import IEPUBBody
 
 
 def document_class(docclass, options=''):
@@ -62,6 +63,14 @@ def render_body(context, body, optional=''):
     return body
 
 
+def render_epub_body(context, body):
+    context.write(u'\\begin{document}\n')
+    for idx in enumerate(body.children or ()):
+        context.write(u'\\include{file_%s.tex}\n' % idx)
+    context.write(u'\n\\end{document}\n')
+    return body
+
+
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -84,3 +93,8 @@ class DocumentRenderer(RendererMixin):
 @component.adapter(IBody)
 class BodyRenderer(RendererMixin):
     func = staticmethod(render_body)
+
+
+@component.adapter(IEPUBBody)
+class EPUBBodyRenderer(RendererMixin):
+    func = staticmethod(render_epub_body)
