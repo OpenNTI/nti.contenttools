@@ -19,6 +19,12 @@
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
 
+	<!-- Paragraph -->
+	<adapter factory=".paragraph.ParagraphRenderer"
+			 for="nti.contenttools.types.interfaces.IParagraph"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+
 	<!-- Sectioning -->
 	<adapter factory=".sectioning.ChapterRenderer"
 			 for="nti.contenttools.types.interfaces.IChapter"
