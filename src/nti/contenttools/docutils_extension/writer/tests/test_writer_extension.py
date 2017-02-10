@@ -35,13 +35,12 @@ class TestWriterExtension(TestCase):
         rst = read_file(get_relative_path('data/section.rst'))
         self.assertTrue(isinstance(rst, basestring))
         tex = latex.generate_tex_from_rst(rst)
-        print(tex)
         self.assertTrue(isinstance(rst, basestring))
         write_file(get_relative_path('test_result/section.tex'), tex)
     
     def test_custom(self):
-        rst = read_file('nti_docutils_ext/tests/data/custom.rst')
+        rst = read_file(get_relative_path('data/custom.rst'))
         self.assertTrue(isinstance(rst, basestring))
         tex = latex.generate_tex_from_rst(rst)
         self.assertTrue(isinstance(rst, basestring))
-        write_file('nti_docutils_ext/tests/test_result/custom.tex',tex)
+        write_file(get_relative_path('test_result/custom.tex'), tex)
