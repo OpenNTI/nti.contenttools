@@ -21,7 +21,7 @@ from nti.contenttools.tests import ContentToolsTestCase
 
 class TestParagraph(ContentToolsTestCase):
 
-    def test_document(self):
+    def test_simple_par(self):
         par = Paragraph(element_type='manga')
         output = render_output(par)
         assert_that(output,
