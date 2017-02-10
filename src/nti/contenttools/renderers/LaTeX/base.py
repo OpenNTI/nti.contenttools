@@ -26,7 +26,7 @@ def render_node(context, node):
 def render_iterable(context, iterable):
     for node in iterable or ():
         render_node(context, node)
-
+    return context
 
 def render_children(context, node):
     render_iterable(context, node.children or ())
@@ -47,6 +47,13 @@ def render_environment(context, element, node, optional=''):
     render_children(context, node)
     context.write(u'\n\\end{%s}\n' % element)
     return node
+
+def render_verbatim(context, node):
+    if node.children:
+        context.write(u'\begin{verbatim}\n')
+        render_children(context, node)
+        context.write(u'\n\\end{verbatim}\n')
+    return node    
 
 def render_output(node):
     result = DefaultRendererContext(name="LaTeX")

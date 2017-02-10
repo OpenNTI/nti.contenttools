@@ -24,6 +24,8 @@ from nti.contenttools.types.document import EPUBBody
 from nti.contenttools.types.node import Node
 from nti.contenttools.types.node import DocumentStructureNode
 
+from nti.contenttools.types.paragraph import Paragraph
+
 from nti.contenttools.types.run import Run
 
 from nti.contenttools.types.sectioning import Chapter
@@ -71,13 +73,6 @@ class TextNode(_Node, PlainTextContentFragment):
 
     def render(self):
         return unicode(self)
-
-
-class Paragraph(DocumentStructureNode):
-
-    def __init__(self, element_type=None):
-        super(Paragraph, self).__init__()
-        self.element_type = element_type
 
 
 class Newline(DocumentStructureNode):
