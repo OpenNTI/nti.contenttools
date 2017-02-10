@@ -33,7 +33,7 @@ class NTILaTeXTranslator(LaTeXTranslator):
         self.in_title = False
 
     def visit_bolditalic(self, node):
-        self.out.append(r'\textbf{\emph{')
+        self.out.append(u'\\textbf{\\emph{')
         if node['classes']:
             self.visit_inline(node)
 
@@ -43,7 +43,7 @@ class NTILaTeXTranslator(LaTeXTranslator):
         self.out.append('}}')
 
     def visit_boldunderlined(self, node):
-        self.out.append(r'\textbf{\underline{')
+        self.out.append(u'\\textbf{\\underline{')
         if node['classes']:
             self.visit_inline(node)
 
@@ -53,7 +53,7 @@ class NTILaTeXTranslator(LaTeXTranslator):
         self.out.append('}}')
 
     def visit_italicunderlined(self, node):
-        self.out.append(r'\emph{\underline{')
+        self.out.append(u'\\emph{\\underline{')
         if node['classes']:
             self.visit_inline(node)
 
@@ -63,7 +63,7 @@ class NTILaTeXTranslator(LaTeXTranslator):
         self.out.append('}}')
 
     def visit_bolditalicunderlined(self, node):
-        self.out.append(r'\textbf{\emph{\underline{')
+        self.out.append(u'\\textbf{\\emph{\\underline{')
         if node['classes']:
             self.visit_inline(node)
 
