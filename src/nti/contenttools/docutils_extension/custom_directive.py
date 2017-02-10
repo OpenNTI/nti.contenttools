@@ -13,23 +13,37 @@ from docutils.nodes import TextElement, Inline
 from docutils.parsers import rst
 from docutils.parsers.rst import directives, roles, languages
 
-class bolditalic(Inline, TextElement): pass
-class boldunderlined(Inline, TextElement): pass
-class italicunderlined(Inline, TextElement): pass
-class bolditalicunderlined(Inline, TextElement): pass
+
+class bolditalic(Inline, TextElement):
+    pass
+
+
+class boldunderlined(Inline, TextElement):
+    pass
+
+
+class italicunderlined(Inline, TextElement):
+    pass
+
+
+class bolditalicunderlined(Inline, TextElement):
+    pass
 
 
 class CustomEmphasisDirective(rst.Directive):
     required_arguments = 0
     optional_arguments = 0
     has_content = True
+
     def run(self):
         text = '\n'.join(self.content)
         return [nodes.emphasis(self.block_text, text)]
 
+
 def registerRole(name, cls):
     languages.en.roles[name] = name
     roles.register_generic_role(name, cls)
+
 
 def register_custom_directive():
     registerRole('bolditalic', bolditalic)
@@ -39,4 +53,3 @@ def register_custom_directive():
     directives.register_directive('custom_emphasis_directive', CustomEmphasisDirective)
 
 register_directive = register_custom_directive
-
