@@ -47,7 +47,7 @@ class EPUBReader( object ):
             result = {}
             for element in metadata:
                 if element.tag == '{http://purl.org/dc/elements/1.1/}title':
-                    result['title'] = element.text
+                    result['title'] = unicode(element.text)
                 elif element.tag == '{http://purl.org/dc/elements/1.1/}creator':
                     result['creator'] = element.text
                 elif element.tag == '{http://purl.org/dc/elements/1.1/}publisher':
@@ -134,8 +134,8 @@ class EPUBReader( object ):
                 docfrags.update({item:docfragment})
                 
         self.document = types.Document()
-        self.document.title = self.title
         self.document.author = self.author
+        self.document.title = self.title
         self.docfrags = docfrags
 
     
