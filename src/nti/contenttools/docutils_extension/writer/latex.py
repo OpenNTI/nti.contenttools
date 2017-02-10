@@ -12,6 +12,8 @@ from docutils.writers.latex2e import Writer, LaTeXTranslator
 import docutils.core
 import os
 
+from nti.contenttools.docutils_extension.custom_directive import register_directive
+
 
 class NTIWriter(Writer):
     default_template = 'default.tex'
@@ -19,6 +21,7 @@ class NTIWriter(Writer):
     default_preamble = '\n'.join([r''])
 
     def __init__(self):
+        register_directive()
         Writer.__init__(self)
         self.translator_class = NTILaTeXTranslator
 
@@ -75,6 +78,5 @@ class NTILaTeXTranslator(LaTeXTranslator):
 
 def generate_tex_from_rst(source):
     latex_writer = NTIWriter()
-    latex_writer.translator_class = NTILaTeXTranslator
     tex = docutils.core.publish_string(source=source, writer=latex_writer)
     return tex
