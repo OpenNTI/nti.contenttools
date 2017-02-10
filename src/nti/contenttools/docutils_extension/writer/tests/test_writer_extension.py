@@ -26,12 +26,15 @@ def write_file(filename, data):
     with open(filename, 'w') as wfile:
         wfile.write(data)
 
+def get_relative_path(filename):
+    return os.path.join(os.path.dirname(__file__),filename)
 
 class TestWriterExtension(TestCase):
 
     def test_section(self):
-        rst = read_file('../data/section.rst')
+        rst = read_file(get_relative_path('data/section.rst'))
         self.assertTrue(isinstance(rst, basestring))
         tex = latex.generate_tex_from_rst(rst)
+        print(tex)
         self.assertTrue(isinstance(rst, basestring))
-        write_file('../test_result/section.tex', tex)
+        write_file(get_relative_path('test_result/section.tex'), tex)
