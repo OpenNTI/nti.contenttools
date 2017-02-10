@@ -24,5 +24,4 @@ class TestParagraph(ContentToolsTestCase):
     def test_simple_par(self):
         par = Paragraph(element_type='manga')
         output = render_output(par)
-        assert_that(output,
-                    is_(u'\\documentclass{manga}\n'))
+        assert_that(output, is_(u''))
