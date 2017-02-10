@@ -13,6 +13,7 @@ import os
 
 from nti.contenttools.docutils_extension.writer import latex
 
+
 def read_file(filename):
     with open(filename, 'r') as rfile:
         data = rfile.read()
@@ -26,8 +27,10 @@ def write_file(filename, data):
     with open(filename, 'w') as wfile:
         wfile.write(data)
 
+
 def get_relative_path(filename):
-    return os.path.join(os.path.dirname(__file__),filename)
+    return os.path.join(os.path.dirname(__file__), filename)
+
 
 class TestWriterExtension(TestCase):
 
@@ -37,7 +40,7 @@ class TestWriterExtension(TestCase):
         tex = latex.generate_tex_from_rst(rst)
         self.assertTrue(isinstance(rst, basestring))
         write_file(get_relative_path('test_result/section.tex'), tex)
-    
+
     def test_custom(self):
         rst = read_file(get_relative_path('data/custom.rst'))
         self.assertTrue(isinstance(rst, basestring))
