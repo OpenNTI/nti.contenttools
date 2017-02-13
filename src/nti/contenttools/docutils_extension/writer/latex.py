@@ -14,6 +14,16 @@ import os
 
 from nti.contenttools.docutils_extension.custom_directive import register_directive
 
+nti_packages = { 'hyperref': u'\\usepackage{hyperref}',
+                 'ulem': u'\\usepackage{ulem}',
+                 'tabbing': u'\\usepackage{Tabbing}',
+                 'textgreek': u'\\usepackage{textgreek}',
+                 'nticourse': u'\\usepackage{nticourse}',
+                 'ntilatexmacros': u'\\usepackage{ntilatexmacros}',
+                 'ntiassessment': u'\\usepackage{ntiassessment}',
+                 'ntislidedeck': u'\\usepackage{ntislidedeck}',
+                 'ntiglossary': u'\\usepackage{ntiglossary}'}
+
 
 class NTIWriter(Writer):
     default_template = 'default.tex'
@@ -24,7 +34,7 @@ class NTIWriter(Writer):
         register_directive()
         Writer.__init__(self)
         self.translator_class = NTILaTeXTranslator
-
+        
 
 class NTILaTeXTranslator(LaTeXTranslator):
 
@@ -34,6 +44,8 @@ class NTILaTeXTranslator(LaTeXTranslator):
         self.head = []
         self.body_prefix = []
         self.in_title = False
+        for key in nti_packages.keys():
+            self.requirements[key] = nti_packages.get(key)
 
     def visit_bolditalic(self, node):
         self.out.append(u'\\textbf{\\emph{')
