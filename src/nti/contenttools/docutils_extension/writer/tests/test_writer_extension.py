@@ -66,3 +66,7 @@ class TestWriterExtension(ContentToolsTestCase):
         tex = latex.generate_tex_from_rst(rst)
         self.assertTrue(isinstance(rst, basestring))
         write_file(get_relative_path('test_result/custom.tex'), tex)
+        assert_that(tex, contains_string(u'\\textbf{\\emph{bolditalic}}'))
+        assert_that(tex,contains_string(u'\\textbf{\\underline{boldunderline}}'))
+        assert_that(tex,contains_string(u'\\emph{\\underline{italicunderlined}}'))
+        assert_that(tex,contains_string(u'\\textbf{\\emph{\\underline{bolditalicunderlined}}}'))
