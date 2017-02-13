@@ -14,15 +14,14 @@ import os
 
 from nti.contenttools.docutils_extension.custom_directive import register_directive
 
-nti_packages = { 'hyperref': u'\\usepackage{hyperref}',
-                 'ulem': u'\\usepackage{ulem}',
-                 'tabbing': u'\\usepackage{Tabbing}',
-                 'textgreek': u'\\usepackage{textgreek}',
-                 'nticourse': u'\\usepackage{nticourse}',
-                 'ntilatexmacros': u'\\usepackage{ntilatexmacros}',
-                 'ntiassessment': u'\\usepackage{ntiassessment}',
-                 'ntislidedeck': u'\\usepackage{ntislidedeck}',
-                 'ntiglossary': u'\\usepackage{ntiglossary}'}
+nti_packages = {'ulem': u'\\usepackage{ulem}',
+                'tabbing': u'\\usepackage{Tabbing}',
+                'textgreek': u'\\usepackage{textgreek}',
+                'nticourse': u'\\usepackage{nticourse}',
+                'ntilatexmacros': u'\\usepackage{ntilatexmacros}',
+                'ntiassessment': u'\\usepackage{ntiassessment}',
+                'ntislidedeck': u'\\usepackage{ntislidedeck}',
+                'ntiglossary': u'\\usepackage{ntiglossary}'}
 
 
 class NTIWriter(Writer):
@@ -34,7 +33,7 @@ class NTIWriter(Writer):
         register_directive()
         Writer.__init__(self)
         self.translator_class = NTILaTeXTranslator
-        
+
 
 class NTILaTeXTranslator(LaTeXTranslator):
 
@@ -90,5 +89,5 @@ class NTILaTeXTranslator(LaTeXTranslator):
 
 def generate_tex_from_rst(source):
     latex_writer = NTIWriter()
-    tex = docutils.core.publish_string(source=source, writer=latex_writer)
+    tex = docutils.core.publish_string(source=source, writer=latex_writer, writer_name="latex")
     return tex
