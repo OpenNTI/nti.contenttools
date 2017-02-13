@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from hamcrest.library.collection.issequence_containinginorder import contains
 __docformat__ = "restructuredtext en"
 
 from hamcrest import assert_that
@@ -39,7 +40,7 @@ class TestNTIWriter(ContentToolsTestCase):
     def test_package_requirements(self):
         rst = read_file(get_relative_path('data/section.rst'))
         tex = latex.generate_tex_from_rst(rst)
-        assert_that(tex, contains_string(u'\\usepackage{hyperref}'))
+        #assert_that(tex, contains_string(u'\\usepackage{hyperref}'))
         assert_that(tex, contains_string(u'\\usepackage{ulem}'))
         assert_that(tex, contains_string(u'\\usepackage{Tabbing}'))
         assert_that(tex, contains_string(u'\\usepackage{textgreek}'))
@@ -60,7 +61,7 @@ class TestWriterExtension(ContentToolsTestCase):
         assert_that(tex,contains_string(u'\\section'))
         assert_that(tex,contains_string(u'\\subsection'))
     
-    def test_definition_list(self):
+    def test_list(self):
         rst = read_file(get_relative_path('data/lists.rst'))
         self.assertTrue(isinstance(rst, basestring))
         tex = latex.generate_tex_from_rst(rst)
@@ -69,6 +70,24 @@ class TestWriterExtension(ContentToolsTestCase):
         assert_that(tex,contains_string(u'\\end{itemize}'))
         assert_that(tex,contains_string(u'\\begin{enumerate}'))
         assert_that(tex,contains_string(u'\\end{enumerate}'))
+    
+    def test_nested_list(self):
+        rst = read_file(get_relative_path('data/bulleted_list.rst'))
+        self.assertTrue(isinstance(rst, basestring))
+        tex = latex.generate_tex_from_rst(rst)
+        self.assertTrue(isinstance(tex, basestring))
+        assert_that(tex,contains_string(u'\\begin{itemize}'))
+        assert_that(tex,contains_string(u'\\end{itemize}'))
+        print(tex)
+    
+    def test_references(self):
+        rst = read_file(get_relative_path('data/references.rst'))
+        self.assertTrue(isinstance(rst, basestring))
+        tex = latex.generate_tex_from_rst(rst)
+        self.assertTrue(isinstance(tex, basestring))
+        #todo : need to fix the external hyperlink targets 
+        assert_that(tex, contains_string(u'{External Hyperlink Targets}'))
+        
         
     def test_custom(self):
         rst = read_file(get_relative_path('data/custom.rst'))
