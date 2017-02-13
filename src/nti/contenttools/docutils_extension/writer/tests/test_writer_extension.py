@@ -13,7 +13,6 @@ from hamcrest import contains_string
 import os
 
 from nti.contenttools.docutils_extension.writer import latex
-from nti.contenttools.docutils_extension.writer.latex import NTILaTeXTranslator
 from nti.contenttools.tests import ContentToolsTestCase
 
 
@@ -57,14 +56,25 @@ class TestWriterExtension(ContentToolsTestCase):
         rst = read_file(get_relative_path('data/section.rst'))
         self.assertTrue(isinstance(rst, basestring))
         tex = latex.generate_tex_from_rst(rst)
+        self.assertTrue(isinstance(tex, basestring))
+        assert_that(tex,contains_string(u'\\section'))
+        assert_that(tex,contains_string(u'\\subsection'))
+    
+    def test_definition_list(self):
+        rst = read_file(get_relative_path('data/lists.rst'))
         self.assertTrue(isinstance(rst, basestring))
-        write_file(get_relative_path('test_result/section.tex'), tex)
-
+        tex = latex.generate_tex_from_rst(rst)
+        self.assertTrue(isinstance(tex, basestring))
+        assert_that(tex,contains_string(u'\\begin{itemize}'))
+        assert_that(tex,contains_string(u'\\end{itemize}'))
+        assert_that(tex,contains_string(u'\\begin{enumerate}'))
+        assert_that(tex,contains_string(u'\\end{enumerate}'))
+        
     def test_custom(self):
         rst = read_file(get_relative_path('data/custom.rst'))
         self.assertTrue(isinstance(rst, basestring))
         tex = latex.generate_tex_from_rst(rst)
-        self.assertTrue(isinstance(rst, basestring))
+        self.assertTrue(isinstance(tex, basestring))
         write_file(get_relative_path('test_result/custom.tex'), tex)
         assert_that(tex, contains_string(u'\\textbf{\\emph{bolditalic}}'))
         assert_that(tex,contains_string(u'\\textbf{\\underline{boldunderline}}'))
