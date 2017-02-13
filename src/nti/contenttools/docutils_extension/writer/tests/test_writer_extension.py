@@ -7,11 +7,14 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-from unittest import TestCase
+from hamcrest import assert_that
+from hamcrest import contains_string
 
 import os
 
 from nti.contenttools.docutils_extension.writer import latex
+from nti.contenttools.docutils_extension.writer.latex import NTILaTeXTranslator
+from nti.contenttools.tests import ContentToolsTestCase
 
 
 def read_file(filename):
@@ -32,7 +35,23 @@ def get_relative_path(filename):
     return os.path.join(os.path.dirname(__file__), filename)
 
 
-class TestWriterExtension(TestCase):
+class TestNTIWriter(ContentToolsTestCase):
+
+    def test_package_requirements(self):
+        rst = read_file(get_relative_path('data/section.rst'))
+        tex = latex.generate_tex_from_rst(rst)
+        assert_that(tex, contains_string(u'\\usepackage{hyperref}'))
+        assert_that(tex, contains_string(u'\\usepackage{ulem}'))
+        assert_that(tex, contains_string(u'\\usepackage{Tabbing}'))
+        assert_that(tex, contains_string(u'\\usepackage{textgreek}'))
+        assert_that(tex, contains_string(u'\\usepackage{nticourse}'))
+        assert_that(tex, contains_string(u'\\usepackage{ntiassessment}'))
+        assert_that(tex, contains_string(u'\\usepackage{ntislidedeck}'))
+        assert_that(tex, contains_string(u'\\usepackage{ntiglossary}'))
+        assert_that(tex, contains_string(u'\\usepackage{ntilatexmacros}'))
+
+
+class TestWriterExtension(ContentToolsTestCase):
 
     def test_section(self):
         rst = read_file(get_relative_path('data/section.rst'))
