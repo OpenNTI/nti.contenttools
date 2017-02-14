@@ -68,6 +68,12 @@ class TestWriterExtension(ContentToolsTestCase):
         assert_that(tex, contains_string(u'\\end{itemize}'))
         assert_that(tex, contains_string(u'\\begin{enumerate}'))
         assert_that(tex, contains_string(u'\\end{enumerate}'))
+    
+    def test_images(self):
+        rst = read_file(get_relative_path('data/images.rst'))
+        self.assertTrue(isinstance(rst, basestring))
+        tex = latex.generate_tex_from_rst(rst)
+        assert_that(tex, contains_string(u'\\includegraphics{images/block.png}'))
 
     def test_nested_list(self):
         rst = read_file(get_relative_path('data/bulleted_list.rst'))
@@ -76,12 +82,13 @@ class TestWriterExtension(ContentToolsTestCase):
         self.assertTrue(isinstance(tex, basestring))
         assert_that(tex, contains_string(u'\\begin{itemize}'))
         assert_that(tex, contains_string(u'\\end{itemize}'))
-    
+
     def test_paragraph(self):
         rst = read_file(get_relative_path('data/paragraph.rst'))
         self.assertTrue(isinstance(rst, basestring))
         tex = latex.generate_tex_from_rst(rst)
-        assert_that(tex, contains_string(u"You see? It's curious. Ted did figure it out - time travel. And when we get back, we gonna tell everyone. How it's possible, how it's done, what the dangers are."))
+        assert_that(tex, contains_string(
+            u"You see? It's curious. Ted did figure it out - time travel. And when we get back, we gonna tell everyone. How it's possible, how it's done, what the dangers are."))
 
     def test_references(self):
         rst = read_file(get_relative_path('data/references.rst'))
