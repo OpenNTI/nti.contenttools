@@ -30,7 +30,7 @@ class NTIWriter(Writer):
     default_preamble = '\n'.join([r''])
 
     def __init__(self):
-        register_directive()
+        #register_directive()
         Writer.__init__(self)
         self.translator_class = NTILaTeXTranslator
 
