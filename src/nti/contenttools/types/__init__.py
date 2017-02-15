@@ -21,6 +21,15 @@ from nti.contenttools.types.document import Body
 from nti.contenttools.types.document import Document
 from nti.contenttools.types.document import EPUBBody
 
+from nti.contenttools.types.lists import DD
+from nti.contenttools.types.lists import DT
+from nti.contenttools.types.lists import Item
+from nti.contenttools.types.lists import List
+from nti.contenttools.types.lists import OrderedList
+from nti.contenttools.types.lists import ItemWithDesc
+from nti.contenttools.types.lists import UnorderedList
+from nti.contenttools.types.lists import DescriptionList
+
 from nti.contenttools.types.node import Node
 from nti.contenttools.types.node import DocumentStructureNode
 
@@ -35,21 +44,12 @@ from nti.contenttools.types.sectioning import SubSubSection
 from nti.contenttools.types.sectioning import SubSubSubSection
 from nti.contenttools.types.sectioning import SubSubSubSubSection
 
-from nti.contenttools.types.lists import List
-from nti.contenttools.types.lists import UnorderedList
-from nti.contenttools.types.lists import OrderedList
-from nti.contenttools.types.lists import Item
-from nti.contenttools.types.lists import DescriptionList
-from nti.contenttools.types.lists import ItemWithDesc
-from nti.contenttools.types.lists import DT
-from nti.contenttools.types.lists import DD
-
-from nti.contenttools.types.table import Table
 from nti.contenttools.types.table import Row
 from nti.contenttools.types.table import Cell
 from nti.contenttools.types.table import TBody
 from nti.contenttools.types.table import THead
 from nti.contenttools.types.table import TFoot
+from nti.contenttools.types.table import Table
 
 
 def _to_latex(text, type_text):

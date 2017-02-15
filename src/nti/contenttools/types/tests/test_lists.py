@@ -16,24 +16,23 @@ does_not = is_not
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
-from nti.contenttools.types.interfaces import IList
-from nti.contenttools.types.interfaces import IUnorderedList
-from nti.contenttools.types.interfaces import IOrderedList
-from nti.contenttools.types.interfaces import IItem
-from nti.contenttools.types.interfaces import IDescriptionList
-from nti.contenttools.types.interfaces import IItemWithDesc
-from nti.contenttools.types.interfaces import IDT
 from nti.contenttools.types.interfaces import IDD
+from nti.contenttools.types.interfaces import IDT
+from nti.contenttools.types.interfaces import IItem
+from nti.contenttools.types.interfaces import IList
+from nti.contenttools.types.interfaces import IOrderedList
+from nti.contenttools.types.interfaces import IItemWithDesc
+from nti.contenttools.types.interfaces import IUnorderedList
+from nti.contenttools.types.interfaces import IDescriptionList
 
-from nti.contenttools.types.lists import List
-from nti.contenttools.types.lists import UnorderedList
-from nti.contenttools.types.lists import OrderedList
-from nti.contenttools.types.lists import Item
-from nti.contenttools.types.lists import DescriptionList
-from nti.contenttools.types.lists import ItemWithDesc
-from nti.contenttools.types.lists import DT
 from nti.contenttools.types.lists import DD
-
+from nti.contenttools.types.lists import DT
+from nti.contenttools.types.lists import Item
+from nti.contenttools.types.lists import List
+from nti.contenttools.types.lists import ItemWithDesc
+from nti.contenttools.types.lists import OrderedList
+from nti.contenttools.types.lists import UnorderedList
+from nti.contenttools.types.lists import DescriptionList
 
 from nti.contenttools.tests import ContentToolsTestCase
 
