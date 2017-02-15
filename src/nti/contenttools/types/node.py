@@ -26,6 +26,19 @@ class NodeMixin(object):
 
     children = ()
 
+    def add(self, child):
+        if self.children is None:
+            self.children = list()
+        if INode.providedBy(child):
+            self.children.append(child)
+            child.__parent__ = self  # take ownership
+    add_child = add
+
+    def remove(self, child):
+        self.children.remove(child)
+        child.__parent__ = None
+    remove_child = remove
+
     def __iter__(self):
         for item in self.children or ():
             yield item
@@ -39,19 +52,6 @@ class Node(SchemaConfigured, NodeMixin):
     def __init__(self, *args, **kwargs):
         super(Node, self).__init__(*args, **kwargs)
         self.children = self.children or list()
-
-    def add(self, child):
-        if self.children is None:
-            self.children = list()
-        if INode.providedBy(child):
-            self.children.append(child)
-            child.__parent__ = self  # take ownership
-    add_child = add
-
-    def remove(self, child):
-        self.children.remove(child)
-        child.__parent__ = None
-    remove_child = remove
 
     def render(self, context):
         for child in self:
