@@ -31,15 +31,21 @@ class NodeMixin(object):
     def __init__(self, *args, **kwargs):
         super(NodeMixin, self).__init__(*args, **kwargs)
         
-    def add(self, child):
-        if self.children is None or isinstance(self.children , tuple):
+    def _ensure_children(self):
+        if     self.children is None \
+            or isinstance(self.children, tuple):
             self.children = list()
-        if isinstance(child, NodeMixin):
+        return self.children
+
+    def add(self, child):
+        self._ensure_children()
+        if _INode.providedBy(child):
             self.children.append(child)
             child.__parent__ = self  # take ownership
     add_child = add
 
     def remove(self, child):
+        self._ensure_children()
         self.children.remove(child)
         child.__parent__ = None
     remove_child = remove
@@ -56,18 +62,18 @@ class Node(NodeMixin, SchemaConfigured):
 
     def __init__(self, *args, **kwargs):
         super(Node, self).__init__(*args, **kwargs)
-        self.children = self.children or list()
+        self._ensure_children()
 
-    def render(self, context):
+    def render(self):
         for child in self:
-            child.render(context)
+            child.render()
 
 
 @interface.implementer(IDocumentStructureNode)
 class DocumentStructureNode(Node):
     createFieldProperties(IDocumentStructureNode)
 
-    STYLES = {}
+    STYLES = {} # TODO: Remove
 
     def __init__(self, *args, **kwargs):
         super(DocumentStructureNode, self).__init__(*args, **kwargs)

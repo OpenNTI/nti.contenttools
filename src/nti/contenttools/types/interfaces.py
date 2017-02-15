@@ -9,8 +9,6 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from zope import interface
-
 from zope.location.interfaces import IContained
 
 from dolmen.builtins.interfaces import IIterable
@@ -23,13 +21,13 @@ from nti.schema.field import IndexedIterable
 from nti.schema.field import TextLine as ValidTextLine
 
 
-class _INode(interface.Interface):
+class _INode(IContained):
     """
     Basic interface for nodes
     """
 
 
-class INode(_INode, IIterable, IContained):
+class INode(_INode, IIterable):
 
     children = IndexedIterable(Object(_INode, title='the node'),
                                title='List of nodes',
@@ -49,10 +47,10 @@ class INode(_INode, IIterable, IContained):
 
 class IDocumentStructureNode(INode):
 
-    styles = ListOrTuple(ValidTextLine(title='the style'),
-                         title='List of styles',
-                         required=False,
-                         min_length=0)
+    styles = IndexedIterable(ValidTextLine(title='the style'),
+                             title='List of styles',
+                             required=False,
+                             min_length=0)
 
     def add_style(style):
         """
