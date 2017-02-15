@@ -34,15 +34,12 @@ from nti.contenttools.types.lists import ItemWithDesc
 from nti.contenttools.types.lists import DT
 from nti.contenttools.types.lists import DD
 
-from nti.contenttools.types.interfaces import IParagraph
-
-from nti.contenttools.types.paragraph import Paragraph
 
 from nti.contenttools.tests import ContentToolsTestCase
 
 
 class TestLists(ContentToolsTestCase):
-    
+
     def test_list(self):
         node = List()
         assert_that(node, validly_provides(IList))
@@ -50,8 +47,8 @@ class TestLists(ContentToolsTestCase):
         assert_that(node, has_property('group', is_(u'')))
         assert_that(node, has_property('format', is_(u'')))
         assert_that(node, has_property('level', is_(u'')))
-        assert_that(node, has_property('start', is_(0))) 
-        
+        assert_that(node, has_property('start', is_(0)))
+
     def test_unordered_list(self):
         node = UnorderedList()
         assert_that(node, validly_provides(IUnorderedList))
@@ -59,8 +56,8 @@ class TestLists(ContentToolsTestCase):
         assert_that(node, has_property('group', is_(u'')))
         assert_that(node, has_property('format', is_(u'')))
         assert_that(node, has_property('level', is_(u'')))
-        assert_that(node, has_property('start', is_(0))) 
-    
+        assert_that(node, has_property('start', is_(0)))
+
     def test_ordered_list(self):
         node = OrderedList()
         assert_that(node, validly_provides(IOrderedList))
@@ -68,32 +65,31 @@ class TestLists(ContentToolsTestCase):
         assert_that(node, has_property('group', is_(u'')))
         assert_that(node, has_property('format', is_(u'')))
         assert_that(node, has_property('level', is_(u'')))
-        assert_that(node, has_property('start', is_(0))) 
-    
+        assert_that(node, has_property('start', is_(0)))
+
     def test_item(self):
         node = Item()
         assert_that(node, validly_provides(IItem))
         assert_that(node, verifiably_provides(IItem))
-        
+
     def test_description_list(self):
         node = DescriptionList()
         assert_that(node, validly_provides(IDescriptionList))
         assert_that(node, verifiably_provides(IDescriptionList))
-        
+
     def test_item_with_desc(self):
         node = ItemWithDesc()
         assert_that(node, validly_provides(IItemWithDesc))
         assert_that(node, verifiably_provides(IItemWithDesc))
-        
+
     def test_dt(self):
         node = DT()
         assert_that(node, validly_provides(IDT))
         assert_that(node, verifiably_provides(IDT))
         assert_that(node, has_property('desc', is_(None)))
         assert_that(node, has_property('type', is_(None)))
-    
+
     def test_dd(self):
         node = DD()
         assert_that(node, validly_provides(IDD))
         assert_that(node, verifiably_provides(IDD))
-        
