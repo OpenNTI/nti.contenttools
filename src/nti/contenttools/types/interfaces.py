@@ -312,8 +312,8 @@ class IList(IDocumentStructureNode):
                 default=0)
 
     format = ValidTextLine(title="Format",
-                           required=True,
-                           default=u'')
+                 required=True,
+                 default=u'')
 
 
 class IUnorderedList(IList):
@@ -340,7 +340,7 @@ class IDescriptionList(IList):
     """
 
 
-class ItemWithDesc(IItem):
+class IItemWithDesc(IItem):
     """
     Item list with some descriptions
     """

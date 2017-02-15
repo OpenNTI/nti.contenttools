@@ -187,7 +187,7 @@ def process_numbering( element, doc ):
 		if len(numbering.levels) > 0:
 			if numbering.levels[str(ilvl)].format in fmt_list:
 				el = types.OrderedList()
-				el.format = numbering.levels[str(ilvl)].format
+				el.format = unicode(numbering.levels[str(ilvl)].format)
 			else:
 				el = types.UnorderedList()
 		else:
@@ -203,8 +203,8 @@ def process_numbering( element, doc ):
 	else :
 		el.start = 0
 
-	el.group = numId
-	el.level = str(ilvl)
+	el.group = unicode(numId)
+	el.level = unicode(ilvl)
 	return el
 
 
