@@ -13,8 +13,8 @@ from zope import component
 from zope import interface
 
 from nti.contenttools.renderers.LaTeX.base import render_command
+from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_verbatim
-from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 from nti.contenttools.renderers.LaTeX.utils import create_label
 
@@ -28,9 +28,8 @@ from nti.contenttools.types.interfaces import IParagraph
 def _label_command(context, node, command):
     render_command(context, command, node)
     context.write('\n')
-    # create a label from children
-    value = render_children_output(node)
-    context.write(create_label(command, value))
+    if node.label:  # check for label
+        context.write(create_label(command, node.label))
     return node
 
 
@@ -111,39 +110,38 @@ def render_newline_(context):
     context.write(u'%s\n' % NEW_LINE)
 
 
-def render_paragraph(out_context, node):
-    result = None
+def render_paragraph(context, node):
+    result = True
     code_style = False
-    for style in node.styles or ():
-        if style in STYLES:
-            style_render = STYLES[style]
-            context = DefaultRendererContext()
-            style_render(context, node)
-            result = context.read()
-        elif style in [u'Code', u'cCode']:
-            context = DefaultRendererContext()
-            render_verbatim(context, node)
-            result = context.read()
-            code_style = True
-        elif style in [u'Figure']:
-            if not result:
-                result = render_children_output(node)
-            result = u'Figure : %s' % result
-        elif style in [u'Tables']:
-            if not result:
-                result = render_children_output(node)
-            result = u'\t\t%s' % result
-        elif style not in IGNORED_STYLES:
-            logger.warn('Unhandled paragraph style: %s' % style)
+    styles = list(node.styles or ())
+    style = styles[0] if styles else None
+
+    # handle styles
+    if style in STYLES:
+        style_render = STYLES[style]
+        style_render(context, node)
+    elif style in [u'Code', u'cCode']:
+        temp_context = DefaultRendererContext()
+        render_verbatim(temp_context, node)
+        data = context.read()
+        if data:
+            result.replace(NEW_LINE, u'')
+            context.write(result)
+        else:
+            result = False
+        code_style = True
+    elif style in [u'Figure']:
+        context.write(u'Figure : ')
+        render_children(context, node)
+    elif style in [u'Tables']:
+        context.write(u'\t\t')
+        render_children(context, node)
+    elif style not in IGNORED_STYLES:
+        logger.warn('Unhandled paragraph style: %s' % style)
+        result = False
 
     if result and not code_style:
-        result = result + u'\n\n'
-
-    if code_style:
-        result = result.replace(NEW_LINE, u'')
-
-    if result:
-        out_context.write(result)
+        context.write(u'\n\n')
     return node
 
 
