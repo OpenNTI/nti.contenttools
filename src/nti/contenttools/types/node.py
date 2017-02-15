@@ -26,10 +26,13 @@ class NodeMixin(object):
 
     children = ()
 
+    def __init__(self, *args, **kwargs):
+        super(NodeMixin, self).__init__(*args, **kwargs)
+        
     def add(self, child):
-        if self.children is None:
+        if self.children is None or isinstance(self.children , tuple):
             self.children = list()
-        if INode.providedBy(child):
+        if isinstance(child, NodeMixin):
             self.children.append(child)
             child.__parent__ = self  # take ownership
     add_child = add
@@ -46,7 +49,7 @@ _Node = NodeMixin
 
 
 @interface.implementer(INode)
-class Node(SchemaConfigured, NodeMixin):
+class Node(NodeMixin, SchemaConfigured):
     createFieldProperties(INode)
 
     def __init__(self, *args, **kwargs):
