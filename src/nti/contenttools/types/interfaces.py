@@ -999,3 +999,32 @@ class IOMathBorderBox(IDocumentStructureNode):
     """
     Node for ooxml element <m:borderBox>
     """
+
+class ICodeLine(IDocumentStructureNode):
+    """
+    Node for inline code
+    """
+
+
+class ICode(IDocumentStructureNode):
+    """
+    Node for code
+    """
+
+
+class IVerbatim(IDocumentStructureNode):
+    """
+    Node for verbatim style
+    """
+
+
+class IAlternateContent(IDocumentStructureNode):
+    """
+    Node for alternate content
+    """
+
+
+class ITextBoxContent(IDocumentStructureNode):
+    """
+    Node for text box content
+    """

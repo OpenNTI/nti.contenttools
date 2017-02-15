@@ -74,6 +74,8 @@ class TestWriterExtension(ContentToolsTestCase):
         self.assertTrue(isinstance(rst, basestring))
         tex = latex.generate_tex_from_rst(rst)
         assert_that(tex, contains_string(u'\\includegraphics{images/block.png}'))
+        assert_that(tex, contains_string(u'\\begin{figure}'))
+        assert_that(tex, contains_string(u'\\end{figure}'))
 
     def test_nested_list(self):
         rst = read_file(get_relative_path('data/bulleted_list.rst'))
