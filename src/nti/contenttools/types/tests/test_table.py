@@ -16,19 +16,19 @@ does_not = is_not
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
-from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IRow
 from nti.contenttools.types.interfaces import ICell
 from nti.contenttools.types.interfaces import ITBody
 from nti.contenttools.types.interfaces import ITHead
 from nti.contenttools.types.interfaces import ITFoot
+from nti.contenttools.types.interfaces import ITable
 
-from nti.contenttools.types.table import Table
 from nti.contenttools.types.table import Row
 from nti.contenttools.types.table import Cell
 from nti.contenttools.types.table import TBody
 from nti.contenttools.types.table import THead
 from nti.contenttools.types.table import TFoot
+from nti.contenttools.types.table import Table
 
 from nti.contenttools.tests import ContentToolsTestCase
 
