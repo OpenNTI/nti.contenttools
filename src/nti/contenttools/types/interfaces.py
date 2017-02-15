@@ -1376,3 +1376,56 @@ class IEndOfChapterSolution(IDocumentStructureNode):
     body = Object(IDocumentStructureNode,
                   title="Chapter Solution Body",
                   required=False)
+
+
+class IOpenstaxNoteBody(IDocumentStructureNode):
+    """
+    Node for openstax note body
+    """
+
+
+class IOpenstaxNote (IDocumentStructureNode):
+    """
+    Node for openstax note
+    This is mostly used when parsing openstax epub to latex.
+    """
+    title = ValidTextLine(title="Title",
+                          required=False)
+    label = ValidTextLine(title="Label",
+                          required=False)
+    body = Object(IOpenstaxNoteBody,
+                  title="Openstax Note Body",
+                  required=False)
+
+
+class IOpenstaxExampleNote(IOpenstaxNote):
+    """
+    Node for openstax note
+    """
+
+
+class IEquationImage(IDocumentStructureNode):
+    """
+    Node for equation image
+    """
+    label = Object(IRunNode,
+                   title="Label",
+                   required=False)
+    text = Object(IRunNode,
+                  title="Text",
+                  required=False)
+    image = Object(IRunNode,
+                   title="Image",
+                   required=False)
+
+
+class IOpenstaxAttributions(IDocumentStructureNode):
+    """
+    Node for openstax attribution
+    """
+
+
+class IOpenstaxTitle(IDocumentStructureNode):
+    """
+    Node for openstax title
+    """
