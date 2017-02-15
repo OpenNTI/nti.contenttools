@@ -1128,9 +1128,9 @@ class IGlossary(IDocumentStructureNode):
     title = ValidTextLine(title="Title",
                           required=False)
     filename = ValidTextLine(title="Filename",
-                          required=False)
+                             required=False)
     glossary_dict = Dict(title="Glossarry dict",
-                         required = False)
+                         required=False)
 
     def set_title(title):
         """
@@ -1166,7 +1166,7 @@ class IGlossaryDT(IDocumentStructureNode):
     """
     desc = ValidTextLine(title="Description",
                          required=False)
-    
+
     def set_description(desc):
         """
         set description
@@ -1183,3 +1183,196 @@ class IGlossaryTerm(IDocumentStructureNode):
     """
     Node for glossary term
     """
+
+
+class ISolution (IDocumentStructureNode):
+    """
+    Node for exercise's solution
+    This is mostly used when parsing openstax epub to latex.
+    """
+    solution = ValidTextLine(title="Solution",
+                             required=False)
+    label = ValidTextLine(title="Label",
+                          required=False)
+    problem_type = ValidTextLine(title="Problem Type",
+                                 required=False)
+
+    def set_solution(solution):
+        """
+        set solution
+        """
+
+    def set_label(label):
+        """
+        set label
+        """
+
+    def set_problem_type(problem_type):
+        """
+        set problem type
+        """
+
+
+class IProblem (IDocumentStructureNode):
+    """
+    Node for exercise's solution
+    This is mostly used when parsing openstax epub to latex.
+    """
+    question = Object(IDocumentStructureNode,
+                      required=False)
+    solution = ValidTextLine(title="Solution",
+                             required=False)
+    label = ValidTextLine(title="Label",
+                          required=False)
+    problem_type = ValidTextLine(title="Problem Type",
+                                 required=False)
+
+    def set_question(question):
+        """
+        set question
+        """
+
+    def set_solution(solution):
+        """
+        set solution
+        """
+
+    def set_label(label):
+        """
+        set label
+        """
+
+    def set_problem_type(problem_type):
+        """
+        set problem type
+        """
+
+
+class IExercise(IDocumentStructureNode):
+    """
+    Node for exercise which consists of problem and solution.
+    This is mostly used when parsing openstax epub to latex.
+    """
+    problem = Object(IProblem, title="Problem",
+                     required=False)
+    solution = Object(ISolution, title="Solution",
+                      required=False)
+
+    def set_problem(problem):
+        """
+        set problem
+        """
+
+    def set_solution(solution):
+        """
+        set solution
+        """
+
+    def set_label(label):
+        """
+        set label
+        """
+
+
+class IMultipleChoices(IDocumentStructureNode):
+    """
+    Node for multiple choices question
+    This is mostly used when parsing openstax epub to latex.
+    """
+    solution = Object(IDocumentStructureNode,
+                      required=False)
+    choices = Object(IDocumentStructureNode,
+                     required=False)
+
+    def set_solution(solution):
+        """
+        set solution
+        """
+
+    def set_choices(choices):
+        """
+        set choices
+        """
+
+
+class IChapterExercise(IDocumentStructureNode):
+    """
+    Node for chapter exercise
+    This is mostly used when parsing openstax epub to latex.
+    """
+
+
+class IExerciseSection(IDocumentStructureNode):
+    """
+    Node for exercise section
+    This is mostly used when parsing openstax epub to latex.
+    """
+
+
+class IExerciseElement(IDocumentStructureNode):
+    """
+    Node for exercise element
+    This is mostly used when parsing openstax epub to latex.
+    """
+
+
+class IExerciseDiv(IDocumentStructureNode):
+    """
+    Node for exercise div
+    This is mostly used when parsing openstax epub to latex.
+    """
+
+
+class IExample(IDocumentStructureNode):
+    """
+    Node for exercise example
+    This is mostly used when parsing openstax epub to latex.
+    """
+
+
+class IProblemExercise(IDocumentStructureNode):
+    """
+    Node for exercise problem
+    This is mostly used when parsing openstax epub to latex.
+    """
+    problem_type = ValidTextLine(title="Problem type",
+                                 required=False)
+    title = ValidTextLine(title="Title",
+                          required=False)
+    label = ValidTextLine(title="Label",
+                          required=False)
+
+
+class IExerciseCheck(IDocumentStructureNode):
+    """
+    Node for exercise check
+    This is mostly used when parsing openstax epub to latex.
+    """
+    title = ValidTextLine(title="Title",
+                          required=False)
+    solution = Object(ISolution, title="Solution",
+                      required=False)
+
+    def set_title(title):
+        """
+        set title
+        """
+
+    def set_solution(solution):
+        """
+        set solution
+        """
+
+
+class IEndOfChapterSolution(IDocumentStructureNode):
+    """
+    Node for end of chapter solution
+    This is mostly used when parsing openstax epub to latex.
+    """
+    title = ValidTextLine(title="Title",
+                          required=False)
+    label = ValidTextLine(title="Label",
+                          required=False)
+    body = Object(IDocumentStructureNode,
+                  title="Chapter Solution Body",
+                  required=False)
