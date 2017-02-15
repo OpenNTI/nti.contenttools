@@ -15,10 +15,11 @@ from dolmen.builtins.interfaces import IIterable
 
 from nti.schema.field import Int, ValidTextLine
 from nti.schema.field import Bool
+from nti.schema.field import Dict
 from nti.schema.field import Object
 from nti.schema.field import ListOrTuple
 from nti.schema.field import IndexedIterable
-from nti.schema.field import TextLine as ValidTextLine
+#from nti.schema.field import TextLine as ValidTextLine
 
 
 class _INode(IContained):
@@ -1090,3 +1091,95 @@ class INoteInteractiveImage(IDocumentStructureNode):
     caption = ValidTextLine(title="Caption",
                             required=True,
                             default=u'')
+
+
+class IFigure(IDocumentStructureNode):
+    """
+    Node for figure environment
+    """
+    label = ValidTextLine(title="Label",
+                          required=False)
+    caption = ValidTextLine(title="Caption",
+                            required=False)
+    image_id = ValidTextLine(title="Image id",
+                             required=False)
+    image_alt = ValidTextLine(title="Image alt",
+                              required=False)
+    data_type = ValidTextLine(title="Data type",
+                              required=False)
+    title = ValidTextLine(title="Title",
+                          required=False)
+
+    def set_caption(caption):
+        """
+        set caption
+        """
+
+    def set_label(label):
+        """
+        set label
+        """
+
+
+class IGlossary(IDocumentStructureNode):
+    """
+    Node for glossary
+    """
+    title = ValidTextLine(title="Title",
+                          required=False)
+    filename = ValidTextLine(title="Filename",
+                          required=False)
+    glossary_dict = Dict(title="Glossarry dict",
+                         required = False)
+
+    def set_title(title):
+        """
+        set title
+        """
+
+    def set_filename(filename):
+        """
+        set filename
+        """
+
+    def set_glossary_dict(glossary_dict):
+        """
+        set glossary dictionary
+        """
+
+
+class IGlossaryList(IDocumentStructureNode):
+    """
+    Node for glossary list
+    """
+
+
+class IGlossaryItem(IDocumentStructureNode):
+    """
+    Node for glossary item
+    """
+
+
+class IGlossaryDT(IDocumentStructureNode):
+    """
+    Node for glossary row
+    """
+    desc = ValidTextLine(title="Description",
+                         required=False)
+    
+    def set_description(desc):
+        """
+        set description
+        """
+
+
+class IGlossaryDD(IDocumentStructureNode):
+    """
+    Node for glossary description (stored in a cell)
+    """
+
+
+class IGlossaryTerm(IDocumentStructureNode):
+    """
+    Node for glossary term
+    """
