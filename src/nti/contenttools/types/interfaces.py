@@ -13,7 +13,7 @@ from zope.location.interfaces import IContained
 
 from dolmen.builtins.interfaces import IIterable
 
-from nti.schema.field import Int
+from nti.schema.field import Int, ValidTextLine
 from nti.schema.field import Bool
 from nti.schema.field import Object
 from nti.schema.field import ListOrTuple
@@ -1000,6 +1000,7 @@ class IOMathBorderBox(IDocumentStructureNode):
     Node for ooxml element <m:borderBox>
     """
 
+
 class ICodeLine(IDocumentStructureNode):
     """
     Node for inline code
@@ -1028,3 +1029,64 @@ class ITextBoxContent(IDocumentStructureNode):
     """
     Node for text box content
     """
+
+
+class INoteInteractive(IDocumentStructureNode):
+    """
+    Node for note interactive
+    """
+
+    image_path = ValidTextLine(title="Image path",
+                               required=True,
+                               default=u'')
+    label = ValidTextLine(title="Label",
+                          required=True,
+                          default=u'')
+    link = ValidTextLine(title="Link",
+                               required=False)
+    caption = ValidTextLine(title="Caption",
+                            required=True,
+                            default=u'')
+    image_path = ValidTextLine(title="Notes",
+                               required=True,
+                               default=u'')
+    complete_image_path = ValidTextLine(title="Complete image path",
+                                        required=True,
+                                        default=u'')
+
+    def set_image_path(image_path):
+        """
+        set image path
+        """
+
+    def set_label(label):
+        """
+        set label
+        """
+
+    def set_link(link):
+        """
+        set link
+        """
+
+    def set_caption(caption):
+        """
+        set caption
+        """
+
+    def set_notes(notes):
+        """
+        set notes
+        """
+
+
+class INoteInteractiveImage(IDocumentStructureNode):
+    """
+    Node for interactive image
+    """
+    path = ValidTextLine(title="path",
+                         required=True,
+                         default=u'')
+    caption = ValidTextLine(title="Caption",
+                            required=True,
+                            default=u'')
