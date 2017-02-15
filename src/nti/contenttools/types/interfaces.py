@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from CodeWarrior.Standard_Suite import document
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -1429,3 +1430,78 @@ class IOpenstaxTitle(IDocumentStructureNode):
     """
     Node for openstax title
     """
+
+
+class ICNXContent(IDocumentStructureNode):
+    """
+    Node for CNX Content
+    """
+    modules = ListOrTuple(title="Modules",
+                          required=False)
+    subcollections = ListOrTuple(title="Sub Collection",
+                                 required=False)
+
+
+class ICNXCollection(IDocumentStructureNode):
+    """
+    Node for cnx collection
+    """
+    metadata = Dict(title="Metadata",
+                    required=False)
+    content = Object(ICNXContent, title="Content",
+                     required=False)
+
+
+class ICNXSubcollection(IDocumentStructureNode):
+    """
+    Node for cnx sub collection
+    """
+    title = ValidTextLine(title="Title",
+                          required=False)
+    content = Object(ICNXContent, title="Content",
+                     required=False)
+
+
+class ICNXModule(IDocumentStructureNode):
+    """
+    Node for cnx module
+    """
+    document = ValidTextLine(title="Document",
+                             required=False)
+    title = ValidTextLine(title="Title",
+                          required=False)
+
+
+class ICNXHTMLBody(IDocumentStructureNode):
+    """
+    Node for cnx html body
+    """
+
+
+class ICNXGlossary(IDocumentStructureNode):
+    """
+    Node for cnx glossary
+    """
+
+
+class ICNXProblemSolution(IDocumentStructureNode):
+    """
+    Node for cnx problem solution
+    """
+    #todo : title should be a type of TextNode
+    title = Object(INode,title="Title",
+                   required=False)
+    label = ValidTextLine(title="Label",
+                          required=False)
+
+
+class IGlossaryDefinition(IDocumentStructureNode):
+    """
+    Node for glossary definition
+    """
+    term = Object(IRunNode, 
+                  title="Term",
+                  required=False)
+    meaning = Object(IRunNode, 
+                  title="Meaning",
+                  required=False)
