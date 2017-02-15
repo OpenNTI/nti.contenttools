@@ -1488,8 +1488,8 @@ class ICNXProblemSolution(IDocumentStructureNode):
     """
     Node for cnx problem solution
     """
-    #todo : title should be a type of TextNode
-    title = Object(INode,title="Title",
+    # todo : title should be a type of TextNode
+    title = Object(INode, title="Title",
                    required=False)
     label = ValidTextLine(title="Label",
                           required=False)
@@ -1499,12 +1499,13 @@ class IGlossaryDefinition(IDocumentStructureNode):
     """
     Node for glossary definition
     """
-    term = Object(IRunNode, 
+    term = Object(IRunNode,
                   title="Term",
                   required=False)
-    meaning = Object(IRunNode, 
-                  title="Meaning",
-                  required=False)
+    meaning = Object(IRunNode,
+                     title="Meaning",
+                     required=False)
+
 
 class IFootnoteText(IDocumentStructureNode):
     """
@@ -1515,7 +1516,7 @@ class IFootnoteText(IDocumentStructureNode):
     label = ValidTextLine(title="Label",
                           required=False)
     num = ValidTextLine(title="Num",
-                          required=False)
+                        required=False)
 
 
 class IFootnoteMark(IDocumentStructureNode):
@@ -1525,8 +1526,8 @@ class IFootnoteMark(IDocumentStructureNode):
     text = Object(IRunNode, title="Title",
                   required=False)
     num = ValidTextLine(title="Num",
-                          required=False)
-    
+                        required=False)
+
 
 class IFootnote(IDocumentStructureNode):
     """
@@ -1536,6 +1537,7 @@ class IFootnote(IDocumentStructureNode):
                   required=False)
     label = ValidTextLine(title="Label",
                           required=False)
+
 
 class IPreTag(IDocumentStructureNode):
     """
