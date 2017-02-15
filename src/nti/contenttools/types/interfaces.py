@@ -1505,3 +1505,39 @@ class IGlossaryDefinition(IDocumentStructureNode):
     meaning = Object(IRunNode, 
                   title="Meaning",
                   required=False)
+
+class IFootnoteText(IDocumentStructureNode):
+    """
+    Node for footnote text.
+    """
+    text = Object(IRunNode, title="Title",
+                  required=False)
+    label = ValidTextLine(title="Label",
+                          required=False)
+    num = ValidTextLine(title="Num",
+                          required=False)
+
+
+class IFootnoteMark(IDocumentStructureNode):
+    """
+    Node for footnote text.
+    """
+    text = Object(IRunNode, title="Title",
+                  required=False)
+    num = ValidTextLine(title="Num",
+                          required=False)
+    
+
+class IFootnote(IDocumentStructureNode):
+    """
+    Node for footnote
+    """
+    text = Object(IRunNode, title="Title",
+                  required=False)
+    label = ValidTextLine(title="Label",
+                          required=False)
+
+class IPreTag(IDocumentStructureNode):
+    """
+    Node for PreTag
+    """
