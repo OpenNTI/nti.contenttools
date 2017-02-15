@@ -12,6 +12,7 @@ logger = __import__('logging').getLogger(__name__)
 from zope import interface
 
 from nti.contenttools.types.interfaces import INode
+from nti.contenttools.types.interfaces import _INode
 from nti.contenttools.types.interfaces import IDocumentStructureNode
 
 from nti.schema.field import SchemaConfigured
@@ -19,6 +20,7 @@ from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createFieldProperties
 
 
+@interface.implementer(_INode)
 class NodeMixin(object):
 
     __name__ = None
