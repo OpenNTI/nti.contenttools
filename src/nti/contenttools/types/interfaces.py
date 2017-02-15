@@ -5,7 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from CodeWarrior.Standard_Suite import document
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -14,13 +13,13 @@ from zope.location.interfaces import IContained
 
 from dolmen.builtins.interfaces import IIterable
 
-from nti.schema.field import Int, ValidTextLine
+from nti.schema.field import Int
 from nti.schema.field import Bool
 from nti.schema.field import Dict
 from nti.schema.field import Object
 from nti.schema.field import ListOrTuple
 from nti.schema.field import IndexedIterable
-#from nti.schema.field import TextLine as ValidTextLine
+from nti.schema.field import TextLine as ValidTextLine
 
 
 class _INode(IContained):
@@ -180,6 +179,9 @@ class ISubSubSubSubSection(ISection):
 
 class IParagraph(IDocumentStructureNode):
 
+    label = ValidTextLine(title="Paragraph label",
+                          required=False)
+
     element_type = ValidTextLine(title="Element Type",
                                  required=False)
 
@@ -239,6 +241,7 @@ class IBlockQuote(IDocumentStructureNode):
 
 
 class IImage(IDocumentStructureNode):
+
     path = ValidTextLine(title="Image Path",
                          required=True,
                          default=u'')
@@ -312,8 +315,8 @@ class IList(IDocumentStructureNode):
                 default=0)
 
     format = ValidTextLine(title="Format",
-                 required=True,
-                 default=u'')
+                           required=True,
+                           default=u'')
 
 
 class IUnorderedList(IList):
@@ -372,6 +375,7 @@ class IDD(IDocumentStructureNode):
 
 
 class ITable(IDocumentStructureNode):
+
     number_of_col_header = Int(title="Number of Column Header",
                                required=True,
                                default=0)
@@ -575,6 +579,7 @@ class IMFenced(IDocumentStructureNode):
     """
     Node for MathML element <mfence>
     """
+
     opener = ValidTextLine(title="Open mfence",
                            required=True,
                            default=u'')
@@ -682,10 +687,12 @@ class IMMprescripts(IDocumentStructureNode):
 
 class IMMultiscripts(IDocumentStructureNode):
     """
-    To do  : double check base and prescripts type
+    TODO: double check base and prescripts type
     """
+
     base = Object(IDocumentStructureNode, title="base",
                   required=False)
+
     prescripts = Object(IMMprescripts, title="prescript",
                         required=False)
 
@@ -914,7 +921,7 @@ class IOMathMatrix(IDocumentStructureNode):
 # handling matrix row
 
 
-class IOMathMr (IDocumentStructureNode):
+class IOMathMr(IDocumentStructureNode):
     """
     Node for ooxml element <m:mr>
     """
@@ -966,6 +973,7 @@ class IOMathGroupChr(IDocumentStructureNode):
     """
     Node for ooxml element <m:groupChr>
     """
+
     pos = ValidTextLine(title="Position",
                         required=False)
 
@@ -1041,17 +1049,22 @@ class INoteInteractive(IDocumentStructureNode):
     image_path = ValidTextLine(title="Image path",
                                required=True,
                                default=u'')
+
     label = ValidTextLine(title="Label",
                           required=True,
                           default=u'')
+
     link = ValidTextLine(title="Link",
-                               required=False)
+                         required=False)
+
     caption = ValidTextLine(title="Caption",
                             required=True,
                             default=u'')
+
     image_path = ValidTextLine(title="Notes",
                                required=True,
                                default=u'')
+
     complete_image_path = ValidTextLine(title="Complete image path",
                                         required=True,
                                         default=u'')
@@ -1086,9 +1099,11 @@ class INoteInteractiveImage(IDocumentStructureNode):
     """
     Node for interactive image
     """
+
     path = ValidTextLine(title="path",
                          required=True,
                          default=u'')
+
     caption = ValidTextLine(title="Caption",
                             required=True,
                             default=u'')
@@ -1098,16 +1113,22 @@ class IFigure(IDocumentStructureNode):
     """
     Node for figure environment
     """
+
     label = ValidTextLine(title="Label",
                           required=False)
+
     caption = ValidTextLine(title="Caption",
                             required=False)
+
     image_id = ValidTextLine(title="Image id",
                              required=False)
+
     image_alt = ValidTextLine(title="Image alt",
                               required=False)
+
     data_type = ValidTextLine(title="Data type",
                               required=False)
+
     title = ValidTextLine(title="Title",
                           required=False)
 
@@ -1128,8 +1149,10 @@ class IGlossary(IDocumentStructureNode):
     """
     title = ValidTextLine(title="Title",
                           required=False)
+
     filename = ValidTextLine(title="Filename",
                              required=False)
+
     glossary_dict = Dict(title="Glossarry dict",
                          required=False)
 
@@ -1165,6 +1188,7 @@ class IGlossaryDT(IDocumentStructureNode):
     """
     Node for glossary row
     """
+
     desc = ValidTextLine(title="Description",
                          required=False)
 
@@ -1191,10 +1215,13 @@ class ISolution (IDocumentStructureNode):
     Node for exercise's solution
     This is mostly used when parsing openstax epub to latex.
     """
+
     solution = ValidTextLine(title="Solution",
                              required=False)
+
     label = ValidTextLine(title="Label",
                           required=False)
+
     problem_type = ValidTextLine(title="Problem Type",
                                  required=False)
 
@@ -1214,17 +1241,21 @@ class ISolution (IDocumentStructureNode):
         """
 
 
-class IProblem (IDocumentStructureNode):
+class IProblem(IDocumentStructureNode):
     """
     Node for exercise's solution
     This is mostly used when parsing openstax epub to latex.
     """
+
     question = Object(IDocumentStructureNode,
                       required=False)
+
     solution = ValidTextLine(title="Solution",
                              required=False)
+
     label = ValidTextLine(title="Label",
                           required=False)
+
     problem_type = ValidTextLine(title="Problem Type",
                                  required=False)
 
@@ -1254,8 +1285,10 @@ class IExercise(IDocumentStructureNode):
     Node for exercise which consists of problem and solution.
     This is mostly used when parsing openstax epub to latex.
     """
+
     problem = Object(IProblem, title="Problem",
                      required=False)
+
     solution = Object(ISolution, title="Solution",
                       required=False)
 
@@ -1280,8 +1313,10 @@ class IMultipleChoices(IDocumentStructureNode):
     Node for multiple choices question
     This is mostly used when parsing openstax epub to latex.
     """
+
     solution = Object(IDocumentStructureNode,
                       required=False)
+
     choices = Object(IDocumentStructureNode,
                      required=False)
 
@@ -1338,8 +1373,10 @@ class IProblemExercise(IDocumentStructureNode):
     """
     problem_type = ValidTextLine(title="Problem type",
                                  required=False)
+
     title = ValidTextLine(title="Title",
                           required=False)
+
     label = ValidTextLine(title="Label",
                           required=False)
 
@@ -1351,6 +1388,7 @@ class IExerciseCheck(IDocumentStructureNode):
     """
     title = ValidTextLine(title="Title",
                           required=False)
+
     solution = Object(ISolution, title="Solution",
                       required=False)
 
@@ -1370,10 +1408,13 @@ class IEndOfChapterSolution(IDocumentStructureNode):
     Node for end of chapter solution
     This is mostly used when parsing openstax epub to latex.
     """
+
     title = ValidTextLine(title="Title",
                           required=False)
+
     label = ValidTextLine(title="Label",
                           required=False)
+
     body = Object(IDocumentStructureNode,
                   title="Chapter Solution Body",
                   required=False)
@@ -1392,8 +1433,10 @@ class IOpenstaxNote (IDocumentStructureNode):
     """
     title = ValidTextLine(title="Title",
                           required=False)
+
     label = ValidTextLine(title="Label",
                           required=False)
+
     body = Object(IOpenstaxNoteBody,
                   title="Openstax Note Body",
                   required=False)
@@ -1409,12 +1452,15 @@ class IEquationImage(IDocumentStructureNode):
     """
     Node for equation image
     """
+
     label = Object(IRunNode,
                    title="Label",
                    required=False)
+
     text = Object(IRunNode,
                   title="Text",
                   required=False)
+
     image = Object(IRunNode,
                    title="Image",
                    required=False)
@@ -1438,6 +1484,7 @@ class ICNXContent(IDocumentStructureNode):
     """
     modules = ListOrTuple(title="Modules",
                           required=False)
+
     subcollections = ListOrTuple(title="Sub Collection",
                                  required=False)
 
@@ -1448,6 +1495,7 @@ class ICNXCollection(IDocumentStructureNode):
     """
     metadata = Dict(title="Metadata",
                     required=False)
+
     content = Object(ICNXContent, title="Content",
                      required=False)
 
@@ -1458,6 +1506,7 @@ class ICNXSubcollection(IDocumentStructureNode):
     """
     title = ValidTextLine(title="Title",
                           required=False)
+
     content = Object(ICNXContent, title="Content",
                      required=False)
 
@@ -1468,6 +1517,7 @@ class ICNXModule(IDocumentStructureNode):
     """
     document = ValidTextLine(title="Document",
                              required=False)
+
     title = ValidTextLine(title="Title",
                           required=False)
 
@@ -1488,9 +1538,11 @@ class ICNXProblemSolution(IDocumentStructureNode):
     """
     Node for cnx problem solution
     """
-    # todo : title should be a type of TextNode
+
+    # TODO: title should be a type of TextNode
     title = Object(INode, title="Title",
                    required=False)
+
     label = ValidTextLine(title="Label",
                           required=False)
 
@@ -1502,6 +1554,7 @@ class IGlossaryDefinition(IDocumentStructureNode):
     term = Object(IRunNode,
                   title="Term",
                   required=False)
+
     meaning = Object(IRunNode,
                      title="Meaning",
                      required=False)
@@ -1511,10 +1564,13 @@ class IFootnoteText(IDocumentStructureNode):
     """
     Node for footnote text.
     """
+
     text = Object(IRunNode, title="Title",
                   required=False)
+
     label = ValidTextLine(title="Label",
                           required=False)
+
     num = ValidTextLine(title="Num",
                         required=False)
 
@@ -1523,8 +1579,10 @@ class IFootnoteMark(IDocumentStructureNode):
     """
     Node for footnote text.
     """
+
     text = Object(IRunNode, title="Title",
                   required=False)
+
     num = ValidTextLine(title="Num",
                         required=False)
 
