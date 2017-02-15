@@ -17,6 +17,10 @@ from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.schema.fieldproperty import createFieldProperties
 
+
 @interface.implementer(IParagraph)
 class Paragraph(DocumentStructureNode):
     createFieldProperties(IParagraph)
+
+    def set_label(self, label):
+        self.label = label
