@@ -44,6 +44,14 @@ from nti.contenttools.types.lists import ItemWithDesc
 from nti.contenttools.types.lists import DT
 from nti.contenttools.types.lists import DD
 
+from nti.contenttools.types.table import Table
+from nti.contenttools.types.table import Row
+from nti.contenttools.types.table import Cell
+from nti.contenttools.types.table import TBody
+from nti.contenttools.types.table import THead
+from nti.contenttools.types.table import TFoot
+
+
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
     # a part of equation (math element)
@@ -66,6 +74,7 @@ def _to_latex(text, type_text):
         return PlainTextToLatexFragmentConverter(new_text)
 
 from nti.contenttools.types.node import _Node
+
 
 class TextNode(_Node, PlainTextContentFragment):
 
@@ -157,101 +166,6 @@ class Video(DocumentStructureNode):
         self.caption = u''
         self.width = 0
         self.height = 0
-
-class Table(DocumentStructureNode):
-
-    def __init__(self, number_of_col_header=0, number_of_col_body=0, caption=None,
-                 label=None, border=None, type_=None, alignment=u'left'):
-        self.number_of_col_header = number_of_col_header
-        self.number_of_col_body = number_of_col_body
-        self.caption = caption
-        self.label = label
-        self.border = border
-        self.type_ = type_
-        self.alignment = alignment
-
-    def set_number_of_col_header(self, number_of_col_header):
-        self.number_of_col_header = number_of_col_header
-
-    def set_number_of_col_body(self, number_of_col_body):
-        self.number_of_col_body = number_of_col_body
-
-    def set_caption(self, caption):
-        self.caption = caption
-
-    def set_label(self, label):
-        self.label = label
-
-    def set_border(self, border):
-        self.border = border
-
-    def set_type(self, type_):
-        self.type_ = type_
-
-    def set_alignment(self, alignment):
-        self.alignment = alignment
-
-
-class Row(DocumentStructureNode):
-
-    def __init__(self, number_of_col=0, border=False, type_=None):
-        self.number_of_col = number_of_col
-        self.border = border
-        self.type_ = type_
-
-    def set_number_of_col(self, number_of_col):
-        self.number_of_col = number_of_col
-
-    def set_border(self, border):
-        self.border = border
-
-    def set_type(self, type_):
-        self.type_ = type_
-
-
-class Cell (DocumentStructureNode):
-
-    def __init__(self, border=False):
-        self.border = border
-        self.is_first_cell_in_the_row = False
-        self.colspan = 1
-
-    def set_border(self, border):
-        self.border = border
-
-
-class TBody(DocumentStructureNode):
-
-    def __init__(self, number_of_col=0, border=False):
-        self.number_of_col = number_of_col
-        self.border = border
-
-    def set_number_of_col(self, number_of_col):
-        self.number_of_col = number_of_col
-
-    def set_border(self, border):
-        self.border = border
-
-
-class THead(DocumentStructureNode):
-
-    def __init__(self, number_of_col=0, border=False):
-        self.number_of_col = number_of_col
-
-    def set_number_of_col(self, number_of_col):
-        self.number_of_col = number_of_col
-
-    def set_border(self, border):
-        self.border = border
-
-
-class TFoot(DocumentStructureNode):
-
-    def __init__(self, number_of_col=0):
-        self.number_of_col = number_of_col
-
-    def set_number_of_col(self, number_of_col):
-        self.number_of_col = number_of_col
 
 
 class Math(DocumentStructureNode):
