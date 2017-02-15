@@ -35,6 +35,14 @@ from nti.contenttools.types.sectioning import SubSubSection
 from nti.contenttools.types.sectioning import SubSubSubSection
 from nti.contenttools.types.sectioning import SubSubSubSubSection
 
+from nti.contenttools.types.lists import List
+from nti.contenttools.types.lists import UnorderedList
+from nti.contenttools.types.lists import OrderedList
+from nti.contenttools.types.lists import Item
+from nti.contenttools.types.lists import DescriptionList
+from nti.contenttools.types.lists import ItemWithDesc
+from nti.contenttools.types.lists import DT
+from nti.contenttools.types.lists import DD
 
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
@@ -149,57 +157,6 @@ class Video(DocumentStructureNode):
         self.caption = u''
         self.width = 0
         self.height = 0
-
-
-class List(DocumentStructureNode):
-
-    def __init__(self, level='', group='', start=0, fmt=''):
-        self.level = level
-        self.group = group
-        self.start = start
-        self.format = fmt
-
-
-class DescriptionList(List):
-    pass
-
-
-class UnorderedList(List):
-
-    def __init__(self):
-        super(UnorderedList, self).__init__()
-
-
-class OrderedList(List):
-
-    def __init__(self):
-        super(OrderedList, self).__init__(fmt='decimal')
-
-
-class Item(DocumentStructureNode):
-    pass
-
-
-class ItemWithDesc(Item):
-    pass
-
-
-class DT(DocumentStructureNode):
-
-    def __init__(self, desc=None, type_=None):
-        self.desc = desc
-        self.type_ = type_
-
-    def set_description(self, desc):
-        self.desc = desc
-
-    def set_type(self, type_):
-        self.type_ = type_
-
-
-class DD(DocumentStructureNode):
-    pass
-
 
 class Table(DocumentStructureNode):
 
