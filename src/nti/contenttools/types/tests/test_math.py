@@ -104,7 +104,7 @@ class TestMath(ContentToolsTestCase):
         assert_that(node, has_property('opener', is_(u'')))
         assert_that(node, has_property('close', is_(u'')))
         assert_that(node, has_property('separators', is_(u'')))
-        
+
     def test_mspace(self):
         node = MSpace()
         assert_that(node, validly_provides(IMSpace))
@@ -164,7 +164,7 @@ class TestMath(ContentToolsTestCase):
         assert_that(node, validly_provides(IMMenclose))
         assert_that(node, verifiably_provides(IMMenclose))
         assert_that(node, has_property('notation', is_(None)))
-        
+
     def test_mprescripts(self):
         node = MMprescripts()
         assert_that(node, validly_provides(IMprescripts))
