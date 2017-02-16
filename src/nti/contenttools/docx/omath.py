@@ -71,7 +71,7 @@ class OMathFrac(types.OMathFrac):
             elif element.tag == fPr_el:
                 for el in element.iterchildren():
                     if el.tag == type_el:
-                        me.set_frac_type(el.attrib[att_val])
+                        me.set_frac_type(unicode(el.attrib[att_val]))
         return me
 
 
@@ -286,7 +286,7 @@ class OMathNaryPr(types.OMathNaryPr):
                 me.add_child(process_omath_chr_attributes(element, doc))
                 me.set_chr_val(element.attrib[att_val])
             elif element.tag == limLoc_el:
-                me.set_lim_loc_val(element.attrib[att_val])
+                me.set_lim_loc_val(unicode(element.attrib[att_val]))
             elif element.tag == grow_el:
                 pass
             elif element.tag == subHide_el:
@@ -336,7 +336,7 @@ class OMathDPr(types.OMathDPr):
         att_val = '{%s}val' % (doc_math_prefix)
         for element in mdpr.iterchildren():
             if element.tag == begChr_el:
-                begChr = element.attrib[att_val]
+                begChr = unicode(element.attrib[att_val])
                 me.set_beg_char(begChr)
                 me.add_child(types.TextNode(begChr, type_text='omath'))
             elif element.tag == endChr_el:
@@ -639,7 +639,7 @@ class OMathGroupChr(types.OMathGroupChr):
                     if el.tag == vertJc_el:
                         me.set_vertJc(el.attrib[val_att])
                     if el.tag == pos_el:
-                        me.set_pos(el.attrib[val_att])
+                        me.set_pos(unicode(el.attrib[val_att]))
             elif element.tag == e_el:
                 me.add_child(OMathBase.process(element, doc))
             else:
