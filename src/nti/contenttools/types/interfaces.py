@@ -20,6 +20,7 @@ from nti.schema.field import Object
 from nti.schema.field import ListOrTuple
 from nti.schema.field import IndexedIterable
 from nti.schema.field import TextLine as ValidTextLine
+from nti.schema.field import Variant
 
 
 class _INode(IContained):
@@ -839,10 +840,12 @@ class IOMathDPr(IDocumentStructureNode):
         set end char
         """
 
+
 class IOMathLim(IDocumentStructureNode):
     """
     Node for ooxml element <m:lim>
     """
+
 
 class IOMathLimLow(IDocumentStructureNode):
     """
@@ -883,21 +886,25 @@ class IOMathPara(IDocumentStructureNode):
 
 # handling matrix property
 
+
 class IOMathMPr(IDocumentStructureNode):
     """
     Node for ooxml element <m:OMathMPr>
     """
-    
-class IOMathMCs(IDocumentStructureNode):
+
+
+class IOMathMcs(IDocumentStructureNode):
     """
     Node for ooxml element <m:OMathMcs>
     """
-    
+
+
 class IOMathMc(IDocumentStructureNode):
     """
     Node for ooxml element <m:OMathMc>
     """
-    
+
+
 class IOMathMcPr(IDocumentStructureNode):
     """
     Node for ooxml element <m:OMathMcPr>
@@ -916,13 +923,15 @@ class IOMathMatrix(IDocumentStructureNode):
     endChr = ValidTextLine(title="End Char",
                            required=False)
 
-    number_of_col = Int(title="Number of Column",
-                        required=True,
-                        default=0)
+    number_of_col = Variant((Int(title="Number of Column"),
+                             ValidTextLine(title="Number of Column")),
+                            required=True,
+                            default='0')
 
-    number_of_row = Int(title="Number of Row",
-                        required=True,
-                        default=0)
+    number_of_row = Variant((Int(title="Number of Row"),
+                             ValidTextLine(title="Number of Row")),
+                            required=True,
+                            default=0)
 
     def set_number_of_col(number_of_col):
         """
@@ -945,6 +954,8 @@ class IOMathMatrix(IDocumentStructureNode):
         """
 
 # handling matrix row
+
+
 class IOMathMr(IDocumentStructureNode):
     """
     Node for ooxml element <m:mr>
@@ -971,7 +982,7 @@ class IOMathEqArr(IDocumentStructureNode):
     """
     Node for ooxml element <m:eqArr>
     """
-    rowspace = Int(title="Row Space",
+    rowSpace = Int(title="Row Space",
                    required=True,
                    default=1)
 

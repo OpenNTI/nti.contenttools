@@ -128,10 +128,10 @@ class OMathDPr(DocumentStructureNode):
     createFieldProperties(IOMathDPr)
     
     def set_beg_char(self, begChr):
-        self.begChr = begChr
+        self.begChr = unicode(begChr)
 
     def set_end_char(self, endChr):
-        self.endChr = endChr
+        self.endChr = unicode(endChr)
 
 @interface.implementer(IOMathLim)
 class OMathLim(DocumentStructureNode):
@@ -146,7 +146,7 @@ class OMathBar(DocumentStructureNode):
     createFieldProperties(IOMathBar)
     
     def set_bar_pos(self, pos):
-        self.pos = pos
+        self.pos = unicode(pos)
 
 @interface.implementer(IOMathAcc)
 class OMathAcc(DocumentStructureNode):
@@ -166,16 +166,16 @@ class OMathMatrix(DocumentStructureNode):
     createFieldProperties(IOMathMatrix)
 
     def set_number_of_col(self, number_of_col):
-        self.number_of_col = number_of_col
+        self.number_of_col = unicode(number_of_col)
 
     def set_number_of_row(self, number_of_row):
         self.number_of_row = number_of_row
 
     def set_beg_char(self, begChr):
-        self.begChr = begChr
+        self.begChr = unicode(begChr)
 
     def set_end_char(self, endChr):
-        self.endChr = endChr
+        self.endChr = unicode(endChr)
 
 # handling matrix property
 
@@ -235,10 +235,10 @@ class OMathGroupChr(DocumentStructureNode):
         self.groupChr = groupChr
 
     def set_pos(self, pos):
-        self.pos = pos
+        self.pos = unicode(pos)
 
     def set_vertJc(self, vertJc):
-        self.vertJc = vertJc
+        self.vertJc = unicode(vertJc)
 
 @interface.implementer(IOMathLimUpp)
 class OMathLimUpp(DocumentStructureNode):

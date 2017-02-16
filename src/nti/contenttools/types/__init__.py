@@ -77,6 +77,41 @@ from nti.contenttools.types.math import MMprescripts
 from nti.contenttools.types.math import MMultiscripts
 from nti.contenttools.types.math import MText
 
+from nti.contenttools.types.omath import OMath, OMathFunc, OMathFName
+from nti.contenttools.types.omath import OMathRun
+from nti.contenttools.types.omath import OMathFrac
+from nti.contenttools.types.omath import OMathDenominator
+from nti.contenttools.types.omath import OMathNumerator
+from nti.contenttools.types.omath import OMathRadical
+from nti.contenttools.types.omath import OMathDegree
+from nti.contenttools.types.omath import OMathBase
+from nti.contenttools.types.omath import OMathSuperscript
+from nti.contenttools.types.omath import OMathSup
+from nti.contenttools.types.omath import OMathSubscript
+from nti.contenttools.types.omath import OMathSub
+from nti.contenttools.types.omath import OMathSubSup
+from nti.contenttools.types.omath import OMathNary
+from nti.contenttools.types.omath import OMathNaryPr
+from nti.contenttools.types.omath import OMathDelimiter
+from nti.contenttools.types.omath import OMathDPr
+from nti.contenttools.types.omath import OMathLim
+from nti.contenttools.types.omath import OMathLimLow
+from nti.contenttools.types.omath import OMathBar
+from nti.contenttools.types.omath import OMathAcc
+from nti.contenttools.types.omath import OMathPara
+from nti.contenttools.types.omath import OMathMPr
+from nti.contenttools.types.omath import OMathMcs
+from nti.contenttools.types.omath import OMathMc
+from nti.contenttools.types.omath import OMathMcPr
+from nti.contenttools.types.omath import OMathMatrix
+from nti.contenttools.types.omath import OMathMr
+from nti.contenttools.types.omath import OMathEqArr
+from nti.contenttools.types.omath import OMathSPre
+from nti.contenttools.types.omath import OMathBox
+from nti.contenttools.types.omath import OMathGroupChr
+from nti.contenttools.types.omath import OMathLimUpp
+from nti.contenttools.types.omath import OMathBorderBox
+
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
     # a part of equation (math element)
@@ -164,229 +199,8 @@ class BlockQuote(DocumentStructureNode):
         super(BlockQuote, self).__init__()
         self.source = source
 
+
 class MNone(DocumentStructureNode):
-    pass
-
-class OMath(DocumentStructureNode):
-    pass
-
-
-class OMathRun(DocumentStructureNode):
-    pass
-
-
-class OMathFrac(DocumentStructureNode):
-
-    def __init__(self, frac_type=None):
-        self.frac_type = frac_type
-
-    def set_frac_type(self, frac_type):
-        self.frac_type = frac_type
-
-
-class OMathNumerator(DocumentStructureNode):
-    pass
-
-
-class OMathDenominator(DocumentStructureNode):
-    pass
-
-
-class OMathRadical(DocumentStructureNode):
-    pass
-
-
-class OMathDegree(DocumentStructureNode):
-    pass
-
-
-class OMathBase(DocumentStructureNode):
-    pass
-
-
-class OMathSuperscript(DocumentStructureNode):
-    pass
-
-
-class OMathSup(DocumentStructureNode):
-    pass
-
-
-class OMathSubscript(DocumentStructureNode):
-    pass
-
-
-class OMathSub(DocumentStructureNode):
-    pass
-
-
-class OMathSubSup(DocumentStructureNode):
-    pass
-
-
-class OMathNary(DocumentStructureNode):
-    pass
-
-
-class OMathNaryPr(DocumentStructureNode):
-
-    def __init__(self, chrVal=None, limLocVal=None):
-        self.chrVal = chrVal
-        self.limLocVal = limLocVal
-
-    def set_chr_val(self, chrVal):
-        self.chrVal = chrVal
-
-    def set_lim_loc_val(self, limLocVal):
-        self.limLocVal = limLocVal
-
-
-class OMathDelimiter(DocumentStructureNode):
-    pass
-
-
-class OMathDPr(DocumentStructureNode):
-
-    def __init__(self, begChr=None, endChr=None):
-        self.begChr = begChr
-        self.endChr = endChr
-
-    def set_beg_char(self, begChr):
-        self.begChr = begChr
-
-    def set_end_char(self, endChr):
-        self.endChr = endChr
-
-
-class OMathLim(DocumentStructureNode):
-    pass
-
-
-class OMathLimLow(DocumentStructureNode):
-    pass
-
-
-class OMathBar(DocumentStructureNode):
-
-    def __init__(self, pos=None):
-        self.pos = pos
-
-    def set_bar_pos(self, pos):
-        self.pos = pos
-
-
-class OMathAcc(DocumentStructureNode):
-
-    def __init__(self, accChr=None):
-        self.accChr = accChr
-
-    def set_acc_chr(self, accChr):
-        self.accChr = accChr
-
-
-class OMathPara(DocumentStructureNode):
-    pass
-
-# handling matrix for docx
-
-
-class OMathMatrix(DocumentStructureNode):
-
-    def __init__(
-            self, number_of_col=0, number_of_row=0, begChr=None, endChr=None):
-        self.number_of_col = number_of_col
-        self.number_of_row = number_of_row
-        self.begChr = begChr
-        self.endChr = endChr
-
-    def set_number_of_col(self, number_of_col):
-        self.number_of_col = number_of_col
-
-    def set_number_of_row(self, number_of_row):
-        self.number_of_row = number_of_row
-
-    def set_beg_char(self, begChr):
-        self.begChr = begChr
-
-    def set_end_char(self, endChr):
-        self.endChr = endChr
-
-# handling matrix property
-
-
-class OMathMPr (DocumentStructureNode):
-    pass
-
-
-class OMathMcs (DocumentStructureNode):
-    pass
-
-
-class OMathMc (DocumentStructureNode):
-    pass
-
-
-class OMathMcPr (DocumentStructureNode):
-    pass
-
-# handling matrix row
-
-
-class OMathMr (DocumentStructureNode):
-    pass
-
-# omath: handling function apply function
-
-
-class OMathFunc(DocumentStructureNode):
-    pass
-
-
-class OMathFName(DocumentStructureNode):
-    pass
-
-# omath : handling equation-array function
-
-
-class OMathEqArr(DocumentStructureNode):
-
-    def __init__(self, rowSpace=1):
-        self.rowSpace = rowSpace
-
-    def set_row_space(self, rowSpace):
-        self.rowSpace = rowSpace
-
-
-class OMathSPre(DocumentStructureNode):
-    pass
-
-
-class OMathBox(DocumentStructureNode):
-    pass
-
-
-class OMathGroupChr(DocumentStructureNode):
-
-    def __init__(self, groupChr=None, pos=None, vertJc=None):
-        self.groupChr = groupChr
-        self.pos = pos
-        self.vertJc = vertJc
-
-    def set_groupChr(self, groupChr):
-        self.groupChr = groupChr
-
-    def set_pos(self, pos):
-        self.pos = pos
-
-    def set_vertJc(self, vertJc):
-        self.vertJc = vertJc
-
-
-class OMathLimUpp(DocumentStructureNode):
-    pass
-
-
-class OMathBorderBox(DocumentStructureNode):
     pass
 
 
