@@ -839,6 +839,10 @@ class IOMathDPr(IDocumentStructureNode):
         set end char
         """
 
+class IOMathLim(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:lim>
+    """
 
 class IOMathLimLow(IDocumentStructureNode):
     """
@@ -875,6 +879,28 @@ class IOMathAcc(IDocumentStructureNode):
 class IOMathPara(IDocumentStructureNode):
     """
     Node for ooxml element <m:OMathPara>
+    """
+
+# handling matrix property
+
+class IOMathMPr(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:OMathMPr>
+    """
+    
+class IOMathMCs(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:OMathMcs>
+    """
+    
+class IOMathMc(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:OMathMc>
+    """
+    
+class IOMathMcPr(IDocumentStructureNode):
+    """
+    Node for ooxml element <m:OMathMcPr>
     """
 
 # handling matrix for docx
@@ -919,8 +945,6 @@ class IOMathMatrix(IDocumentStructureNode):
         """
 
 # handling matrix row
-
-
 class IOMathMr(IDocumentStructureNode):
     """
     Node for ooxml element <m:mr>
