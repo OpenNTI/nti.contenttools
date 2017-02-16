@@ -16,7 +16,6 @@ from zope import interface
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
-from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
@@ -50,16 +49,14 @@ def get_label(context):
 
 def render_subsubsubsubsection(context, node):
     context.write('\\subsubsubsubsection{')
-    output = render_children_output(node)
-    context.write(output.strip())
+    render_children(context, node)
     context.write('}\n')
     return node
 
 
 def render_subsubsubsection(context, node):
     context.write('\\subsubsubsection{')
-    output = render_children_output(node)
-    context.write(output.strip())
+    render_children(context, node)
     context.write('}\n')
     return node
 
