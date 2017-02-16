@@ -26,6 +26,7 @@ from nti.contenttools.types.media import Video
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestMedia(ContentToolsTestCase):
 
     def test_image(self):
@@ -39,7 +40,7 @@ class TestMedia(ContentToolsTestCase):
         assert_that(node, has_property('equation_image', is_(False)))
         assert_that(node, has_property('inline_image', is_(False)))
         assert_that(node, has_property('predefined_image_path', is_(False)))
-    
+
     def test_docx_image(self):
         node = DocxImage()
         assert_that(node, validly_provides(IDocxImage))
@@ -51,7 +52,7 @@ class TestMedia(ContentToolsTestCase):
         assert_that(node, has_property('equation_image', is_(False)))
         assert_that(node, has_property('inline_image', is_(False)))
         assert_that(node, has_property('predefined_image_path', is_(False)))
-    
+
     def test_video(self):
         node = Video()
         assert_that(node, validly_provides(IVideo))
@@ -61,5 +62,3 @@ class TestMedia(ContentToolsTestCase):
         assert_that(node, has_property('thumbnail', is_(u'')))
         assert_that(node, has_property('width', is_(0)))
         assert_that(node, has_property('height', is_(0)))
-        
-        
