@@ -676,7 +676,7 @@ class IMMenclose(IDocumentStructureNode):
                            required=False)
 
 
-class IMMprescripts(IDocumentStructureNode):
+class IMprescripts(IDocumentStructureNode):
 
     sub = Object(IMSub, title="subscript",
                  required=False)
@@ -693,7 +693,7 @@ class IMMultiscripts(IDocumentStructureNode):
     base = Object(IDocumentStructureNode, title="base",
                   required=False)
 
-    prescripts = Object(IMMprescripts, title="prescript",
+    prescripts = Object(IMprescripts, title="prescript",
                         required=False)
 
 
