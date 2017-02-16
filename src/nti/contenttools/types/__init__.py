@@ -51,6 +51,9 @@ from nti.contenttools.types.table import THead
 from nti.contenttools.types.table import TFoot
 from nti.contenttools.types.table import Table
 
+from nti.contenttools.types.media import Image
+from nti.contenttools.types.media import DocxImage
+from nti.contenttools.types.media import Video
 
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
@@ -138,35 +141,6 @@ class BlockQuote(DocumentStructureNode):
     def __init__(self, source=''):
         super(BlockQuote, self).__init__()
         self.source = source
-
-
-class Image(DocumentStructureNode):
-
-    def __init__(self, path=''):
-        super(Image, self).__init__()
-        self.path = u''
-        self.caption = u''
-        self.width = 0
-        self.height = 0
-        self.equation_image = False
-        self.inline_image = False
-        self.predefined_image_path = False
-
-
-class DocxImage(Image):
-    pass
-
-
-class Video(DocumentStructureNode):
-
-    def __init__(self, path=''):
-        super(Video, self).__init__()
-        self.path = u''
-        self.thumbnail = u''
-        self.caption = u''
-        self.width = 0
-        self.height = 0
-
 
 class Math(DocumentStructureNode):
 
