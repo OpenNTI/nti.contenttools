@@ -14,7 +14,7 @@ try:
 except ImportError:
     from threading import local
 
-
+# TODO: This should be removed
 class ScopedRegistry(local):
     pass
 scoped_registry = ScopedRegistry()
