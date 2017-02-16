@@ -109,11 +109,14 @@ class TestMath(ContentToolsTestCase):
         node = MSpace()
         assert_that(node, validly_provides(IMSpace))
         assert_that(node, verifiably_provides(IMSpace))
+        assert_that(node, has_property('width', is_(0)))
+        assert_that(node, has_property('height', is_(0)))
 
     def test_mtable(self):
         node = Mtable()
         assert_that(node, validly_provides(IMTable))
         assert_that(node, verifiably_provides(IMTable))
+        assert_that(node, has_property('number_of_col', is_(0)))
 
     def test_mtd(self):
         node = Mtd()
@@ -124,6 +127,7 @@ class TestMath(ContentToolsTestCase):
         node = Mtr()
         assert_that(node, validly_provides(IMtr))
         assert_that(node, verifiably_provides(IMtr))
+        assert_that(node, has_property('number_of_col', is_(0)))
 
     def test_mfrac(self):
         node = Mfrac()
@@ -159,16 +163,21 @@ class TestMath(ContentToolsTestCase):
         node = MMenclose()
         assert_that(node, validly_provides(IMMenclose))
         assert_that(node, verifiably_provides(IMMenclose))
-
+        assert_that(node, has_property('notation', is_(None)))
+        
     def test_mprescripts(self):
         node = MMprescripts()
         assert_that(node, validly_provides(IMprescripts))
         assert_that(node, verifiably_provides(IMprescripts))
+        assert_that(node, has_property('sub', is_(None)))
+        assert_that(node, has_property('sup', is_(None)))
 
     def test_mmultiscripts(self):
         node = MMultiscripts()
         assert_that(node, validly_provides(IMMultiscripts))
         assert_that(node, verifiably_provides(IMMultiscripts))
+        assert_that(node, has_property('base', is_(None)))
+        assert_that(node, has_property('prescripts', is_(None)))
 
     def test_mtext(self):
         node = MText()
