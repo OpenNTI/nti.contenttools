@@ -12,12 +12,12 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IRow
 from nti.contenttools.types.interfaces import ICell
 from nti.contenttools.types.interfaces import ITBody
 from nti.contenttools.types.interfaces import ITHead
 from nti.contenttools.types.interfaces import ITFoot
+from nti.contenttools.types.interfaces import ITable
 
 from nti.contenttools.types.node import DocumentStructureNode
 

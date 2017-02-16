@@ -12,14 +12,14 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from nti.contenttools.types.interfaces import IList
-from nti.contenttools.types.interfaces import IUnorderedList
-from nti.contenttools.types.interfaces import IOrderedList
-from nti.contenttools.types.interfaces import IItem
-from nti.contenttools.types.interfaces import IDescriptionList
-from nti.contenttools.types.interfaces import IItemWithDesc
-from nti.contenttools.types.interfaces import IDT
 from nti.contenttools.types.interfaces import IDD
+from nti.contenttools.types.interfaces import IDT
+from nti.contenttools.types.interfaces import IItem
+from nti.contenttools.types.interfaces import IList
+from nti.contenttools.types.interfaces import IOrderedList
+from nti.contenttools.types.interfaces import IItemWithDesc
+from nti.contenttools.types.interfaces import IUnorderedList
+from nti.contenttools.types.interfaces import IDescriptionList
 
 from nti.contenttools.types.node import DocumentStructureNode
 

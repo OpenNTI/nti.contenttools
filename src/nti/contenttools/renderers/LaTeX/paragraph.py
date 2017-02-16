@@ -114,10 +114,15 @@ def render_paragraph(context, node):
     result = True
     code_style = False
     styles = list(node.styles or ())
+    if len(styles) > 1:
+        logger.warn("Multiple style in paragraph node, %s", 
+                    styles)
     style = styles[0] if styles else None
 
     # handle styles
-    if style in STYLES:
+    if style is None:
+        result = False
+    elif style in STYLES:
         style_render = STYLES[style]
         style_render(context, node)
     elif style in [u'Code', u'cCode']:
@@ -139,6 +144,10 @@ def render_paragraph(context, node):
     elif style not in IGNORED_STYLES:
         logger.warn('Unhandled paragraph style: %s' % style)
         result = False
+
+    if not result:
+        result = True
+        render_children(context, node)
 
     if result and not code_style:
         context.write(u'\n\n')
