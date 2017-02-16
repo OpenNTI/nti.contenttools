@@ -63,108 +63,113 @@ from nti.contenttools.types.math import MText
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestMath(ContentToolsTestCase):
 
     def test_math(self):
         node = Math()
         assert_that(node, validly_provides(IMath))
         assert_that(node, verifiably_provides(IMath))
-    
+        assert_that(node, has_property('equation_type', is_(None)))
+
     def test_mrow(self):
         node = MRow()
         assert_that(node, validly_provides(IMRow))
         assert_that(node, verifiably_provides(IMRow))
-    
+
     def test_sup(self):
         node = MSup()
         assert_that(node, validly_provides(IMSup))
         assert_that(node, verifiably_provides(IMSup))
-    
+
     def test_sub(self):
         node = MSub()
         assert_that(node, validly_provides(IMSub))
         assert_that(node, verifiably_provides(IMSub))
-    
+
     def test_sub_sup(self):
         node = MSubSup()
         assert_that(node, validly_provides(IMSubSup))
         assert_that(node, verifiably_provides(IMSubSup))
-        
+
     def test_math_run(self):
         node = MathRun()
         assert_that(node, validly_provides(IMathRun))
         assert_that(node, verifiably_provides(IMathRun))
-    
+
     def test_mfenced(self):
         node = MFenced()
         assert_that(node, validly_provides(IMFenced))
         assert_that(node, verifiably_provides(IMFenced))
-    
+        assert_that(node, has_property('opener', is_(u'')))
+        assert_that(node, has_property('close', is_(u'')))
+        assert_that(node, has_property('separators', is_(u'')))
+        
     def test_mspace(self):
         node = MSpace()
         assert_that(node, validly_provides(IMSpace))
         assert_that(node, verifiably_provides(IMSpace))
-        
+
     def test_mtable(self):
         node = Mtable()
         assert_that(node, validly_provides(IMTable))
         assert_that(node, verifiably_provides(IMTable))
-    
+
     def test_mtd(self):
         node = Mtd()
         assert_that(node, validly_provides(IMtd))
         assert_that(node, verifiably_provides(IMtd))
-    
+
     def test_mtr(self):
         node = Mtr()
         assert_that(node, validly_provides(IMtr))
         assert_that(node, verifiably_provides(IMtr))
-    
+
     def test_mfrac(self):
         node = Mfrac()
         assert_that(node, validly_provides(IMFrac))
         assert_that(node, verifiably_provides(IMFrac))
-    
+
     def test_msqrt(self):
         node = Msqrt()
         assert_that(node, validly_provides(IMsqrt))
         assert_that(node, verifiably_provides(IMsqrt))
-    
+
     def test_root(self):
         node = Mroot()
         assert_that(node, validly_provides(IMRoot))
         assert_that(node, verifiably_provides(IMRoot))
-    
+
     def test_munder(self):
         node = MUnder()
         assert_that(node, validly_provides(IMUnder))
         assert_that(node, verifiably_provides(IMUnder))
-    
+
     def test_munderover(self):
         node = MUnderover()
         assert_that(node, validly_provides(IMUnderover))
         assert_that(node, verifiably_provides(IMUnderover))
-    
+
     def test_mover(self):
         node = MOver()
         assert_that(node, validly_provides(IMOver))
         assert_that(node, verifiably_provides(IMOver))
-    
+
     def test_menclose(self):
         node = MMenclose()
         assert_that(node, validly_provides(IMMenclose))
         assert_that(node, verifiably_provides(IMMenclose))
-        
+
     def test_mprescripts(self):
         node = MMprescripts()
         assert_that(node, validly_provides(IMprescripts))
         assert_that(node, verifiably_provides(IMprescripts))
-    
+
     def test_mmultiscripts(self):
         node = MMultiscripts()
         assert_that(node, validly_provides(IMMultiscripts))
         assert_that(node, verifiably_provides(IMMultiscripts))
-    
+
     def test_mtext(self):
         node = MText()
         assert_that(node, validly_provides(IMText))
