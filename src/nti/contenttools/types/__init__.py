@@ -55,6 +55,28 @@ from nti.contenttools.types.media import Image
 from nti.contenttools.types.media import DocxImage
 from nti.contenttools.types.media import Video
 
+from nti.contenttools.types.math import Math
+from nti.contenttools.types.math import MRow
+from nti.contenttools.types.math import MSup
+from nti.contenttools.types.math import MSub
+from nti.contenttools.types.math import MSubSup
+from nti.contenttools.types.math import MathRun
+from nti.contenttools.types.math import MFenced
+from nti.contenttools.types.math import MSpace
+from nti.contenttools.types.math import Mtable
+from nti.contenttools.types.math import Mtr
+from nti.contenttools.types.math import Mtd
+from nti.contenttools.types.math import Mfrac
+from nti.contenttools.types.math import Msqrt
+from nti.contenttools.types.math import Mroot
+from nti.contenttools.types.math import MUnder
+from nti.contenttools.types.math import MUnderover
+from nti.contenttools.types.math import MOver
+from nti.contenttools.types.math import MMenclose
+from nti.contenttools.types.math import MMprescripts
+from nti.contenttools.types.math import MMultiscripts
+from nti.contenttools.types.math import MText
+
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
     # a part of equation (math element)
@@ -142,120 +164,8 @@ class BlockQuote(DocumentStructureNode):
         super(BlockQuote, self).__init__()
         self.source = source
 
-class Math(DocumentStructureNode):
-
-    def __init__(self):
-        self.equation_type = None
-
-
-class MRow(DocumentStructureNode):
-    pass
-
-
-class MSup(DocumentStructureNode):
-    pass
-
-
-class MSub(DocumentStructureNode):
-    pass
-
-
-class MSubSup(DocumentStructureNode):
-    pass
-
-
-class MathRun(DocumentStructureNode):
-    pass
-
-
-class MFenced(DocumentStructureNode):
-
-    def __init__(self, opener=u'', close=u'', separators=u''):
-        self.opener = opener
-        self.close = close
-        self.separators = separators
-
-
-class MSpace(DocumentStructureNode):
-
-    def __init__(self, width=0, height=0):
-        self.width = width
-        self.height = height
-
-
-class Mtable(DocumentStructureNode):
-
-    def __init__(self, number_of_col=0):
-        self.number_of_col = number_of_col
-
-    def set_number_of_col(self, number_of_col):
-        self.number_of_col = number_of_col
-
-
-class Mtr(DocumentStructureNode):
-
-    def __init__(self, number_of_col=0):
-        self.number_of_col = number_of_col
-
-    def set_number_of_col(self, number_of_col):
-        self.number_of_col = number_of_col
-
-
-class Mtd (DocumentStructureNode):
-    pass
-
-
-class Mfrac(DocumentStructureNode):
-    pass
-
-
-class Msqrt(DocumentStructureNode):
-    pass
-
-
-class Mroot(DocumentStructureNode):
-    pass
-
-
-class MUnder(DocumentStructureNode):
-    pass
-
-
-class MUnderover(DocumentStructureNode):
-    pass
-
-
-class MOver(DocumentStructureNode):
-    pass
-
-
-class MMenclose(DocumentStructureNode):
-
-    def __init__(self):
-        self.notation = None
-
-
-class MMultiscripts(DocumentStructureNode):
-
-    def __init__(self):
-        self.base = None
-        self.prescripts = None
-
-
 class MNone(DocumentStructureNode):
     pass
-
-
-class MMprescripts(DocumentStructureNode):
-
-    def __init__(self):
-        self.sub = None
-        self.sup = None
-
-
-class MText(DocumentStructureNode):
-    pass
-
 
 class OMath(DocumentStructureNode):
     pass
