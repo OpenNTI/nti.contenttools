@@ -113,6 +113,11 @@ from nti.contenttools.types.omath import OMathGroupChr
 from nti.contenttools.types.omath import OMathLimUpp
 from nti.contenttools.types.omath import OMathBorderBox
 
+from nti.contenttools.types.note import Note
+from nti.contenttools.types.note import NoteInteractive
+from nti.contenttools.types.note import NoteInteractiveImage
+
+
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
     # a part of equation (math element)
@@ -155,15 +160,6 @@ class TextNode(_Node, PlainTextContentFragment):
 
 class Newline(DocumentStructureNode):
     pass
-
-
-class Note(DocumentStructureNode):
-
-    def __init__(self, type_=u'', rels=None, notes=None):
-        super(Note, self).__init__()
-        self.type = type_
-        self.rels = rels
-        self.notes = notes
 
 
 class Hyperlink(DocumentStructureNode):
@@ -223,41 +219,6 @@ class AlternateContent(DocumentStructureNode):
 
 class TextBoxContent(DocumentStructureNode):
     pass
-
-
-class NoteInteractive(DocumentStructureNode):
-
-    def __init__(
-            self, image_path='', label='', link=None, caption='', notes=''):
-        self.image_path = image_path
-        self.label = label
-        self.link = link
-        self.caption = caption
-        self.notes = notes
-        self.complete_image_path = None
-
-    def set_image_path(self, image_path):
-        self.image_path = image_path
-
-    def set_label(self, label):
-        self.label = label
-
-    def set_link(self, link):
-        self.link = link
-
-    def set_caption(self, caption):
-        self.caption = caption
-
-    def set_notes(self, notes):
-        self.notes = notes
-
-
-class NoteInteractiveImage(DocumentStructureNode):
-
-    def __init__(self, path=''):
-        super(NoteInteractiveImage, self).__init__()
-        self.path = u''
-        self.caption = u''
 
 
 class Glossary(DocumentStructureNode):
