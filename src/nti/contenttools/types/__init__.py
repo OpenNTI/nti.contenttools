@@ -125,6 +125,10 @@ from nti.contenttools.types.glossary import GlossaryDD
 from nti.contenttools.types.glossary import GlossaryTerm
 from nti.contenttools.types.glossary import GlossaryDefinition
 
+from nti.contenttools.types.footnote import Footnote
+from nti.contenttools.types.footnote import FootnoteText
+from nti.contenttools.types.footnote import FootnoteMark
+
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
     # a part of equation (math element)
@@ -226,8 +230,6 @@ class AlternateContent(DocumentStructureNode):
 
 class TextBoxContent(DocumentStructureNode):
     pass
-
-
 
 
 class Exercise(DocumentStructureNode):
@@ -433,28 +435,6 @@ class CNXProblemSolution(DocumentStructureNode):
     def __init__(self):
         self.title = None
         self.label = None
-
-
-class Footnote(DocumentStructureNode):
-
-    def __init__(self):
-        self.label = None
-        self.text = None
-
-
-class FootnoteText(DocumentStructureNode):
-
-    def __init__(self):
-        self.text = None
-        self.label = None
-        self.num = None
-
-
-class FootnoteMark(DocumentStructureNode):
-
-    def __init__(self):
-        self.text = None
-        self.num = None
 
 
 class PreTag(DocumentStructureNode):
