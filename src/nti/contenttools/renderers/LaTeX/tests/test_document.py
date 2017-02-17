@@ -17,6 +17,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.types.document import Body
 from nti.contenttools.types.document import Document
 from nti.contenttools.types.document import EPUBBody
+from nti.contenttools.types.sectioning import Section
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -37,6 +38,16 @@ class TestDocument(ContentToolsTestCase):
         output = render_output(body)
         assert_that(output,
                     is_(u'\\begin{document}\n\n\\end{document}\n'))
+    
+    def test_body_with_children(self):
+        body = Body()
+        section_1 = Section(title='Adventure', label='adventure101')
+        section_2 = Section(title='Climate', label='climate101')
+        body.add(section_1) 
+        body.add(section_2)
+        output = render_output(body)
+        assert_that(output,
+                    is_(u'\\begin{document}\n\section{Adventure}\n\label{adventure101}\n\section{Climate}\n\label{climate101}\n\n\\end{document}\n'))
         
     def test_epub_body(self):
         body = EPUBBody()
