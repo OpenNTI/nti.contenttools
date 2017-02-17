@@ -51,6 +51,7 @@ from nti.contenttools.types.table import THead
 from nti.contenttools.types.table import TFoot
 from nti.contenttools.types.table import Table
 
+from nti.contenttools.types.media import Figure
 from nti.contenttools.types.media import Image
 from nti.contenttools.types.media import DocxImage
 from nti.contenttools.types.media import Video
@@ -257,23 +258,6 @@ class NoteInteractiveImage(DocumentStructureNode):
         super(NoteInteractiveImage, self).__init__()
         self.path = u''
         self.caption = u''
-
-
-class Figure(DocumentStructureNode):
-
-    def __init__(self, caption=None, label=None):
-        self.caption = caption
-        self.label = label
-        self.image_id = None
-        self.image_alt = None
-        self.data_type = None
-        self.title = None
-
-    def set_caption(self, caption):
-        self.caption = caption
-
-    def set_label(self, label):
-        self.label = label
 
 
 class Glossary(DocumentStructureNode):
