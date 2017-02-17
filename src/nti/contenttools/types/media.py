@@ -15,6 +15,7 @@ from nti.contenttools.types.interfaces import IDocxImage
 from nti.contenttools.types.interfaces import IImage
 from nti.contenttools.types.interfaces import IVideo
 from nti.contenttools.types.interfaces import IFigure
+from nti.contenttools.types.interfaces import IEquationImage
 
 from nti.contenttools.types.node import DocumentStructureNode
 
@@ -41,3 +42,7 @@ class Figure(DocumentStructureNode):
 
     def set_label(self, label):
         self.label = label
+
+@interface.implementer(IEquationImage)
+class EquationImage(DocumentStructureNode):
+    createFieldProperties(IEquationImage)
