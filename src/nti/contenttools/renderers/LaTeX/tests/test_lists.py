@@ -24,6 +24,8 @@ from nti.contenttools.types.lists import OrderedList
 from nti.contenttools.types.lists import UnorderedList
 from nti.contenttools.types.lists import DescriptionList
 
+from nti.contenttools.types.run import Run
+
 from nti.contenttools.tests import ContentToolsTestCase
 
 class TestLists(ContentToolsTestCase):
@@ -35,6 +37,12 @@ class TestLists(ContentToolsTestCase):
 
     def test_dt(self):
         node = DT()
+        output = render_output(node)
+        assert_that(output, is_(u'\\item []  \n'))
+    
+    def test_dt_with_desc(self):
+        node = DT()
+        node.desc = Run()
         output = render_output(node)
         assert_that(output, is_(u'\\item []  \n'))
 

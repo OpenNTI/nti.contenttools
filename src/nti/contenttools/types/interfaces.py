@@ -352,11 +352,11 @@ class IItemWithDesc(IItem):
 
 class IDT(IDocumentStructureNode):
 
-    desc = ValidTextLine(title="Description",
-                         required=False)
+    desc = Object(IRunNode, title="Description",
+                  required=False)
 
     type_ = ValidTextLine(title="Description Type",
-                         required=False)
+                          required=False)
 
     def set_description(desc):
         """
@@ -1097,8 +1097,8 @@ class INoteInteractive(IDocumentStructureNode):
                             default=u'')
 
     notes = ValidTextLine(title="Notes",
-                               required=True,
-                               default=u'')
+                          required=True,
+                          default=u'')
 
     complete_image_path = ValidTextLine(title="Complete image path",
                                         required=True,
