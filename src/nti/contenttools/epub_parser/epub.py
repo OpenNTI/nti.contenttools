@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: epub.py 58552 2015-01-29 23:10:30Z egawati.panjei $
+.. $Id$
 
 Parse each index.cnxml.html found in each module to latex format
 

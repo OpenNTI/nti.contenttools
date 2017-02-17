@@ -17,10 +17,10 @@ from nti.schema.field import Int
 from nti.schema.field import Bool
 from nti.schema.field import Dict
 from nti.schema.field import Object
+from nti.schema.field import Variant
 from nti.schema.field import ListOrTuple
 from nti.schema.field import IndexedIterable
 from nti.schema.field import TextLine as ValidTextLine
-from nti.schema.field import Variant
 
 
 class _INode(IContained):
@@ -355,8 +355,8 @@ class IDT(IDocumentStructureNode):
     desc = Object(IRunNode, title="Description",
                   required=False)
 
-    type_ = ValidTextLine(title="Description Type",
-                          required=False)
+    type = ValidTextLine(title="Description Type",
+                         required=False)
 
     def set_description(desc):
         """
@@ -394,7 +394,7 @@ class ITable(IDocumentStructureNode):
     border = ListOrTuple(title="TableBorder",
                          required=False)
 
-    type_ = ValidTextLine(title="Table Type",
+    type = ValidTextLine(title="Table Type",
                          required=False)
 
     alignment = ValidTextLine(title="Table Alignment",
@@ -447,7 +447,7 @@ class IRow(IDocumentStructureNode):
                   required=True,
                   default=False)
 
-    type_ = ValidTextLine(title="Row Type",
+    type = ValidTextLine(title="Row Type",
                          required=False)
 
     def set_number_of_col(number_of_col):

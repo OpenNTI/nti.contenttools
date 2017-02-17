@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: media.py 106584 2017-02-15 04:19:57Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -28,6 +28,7 @@ from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.schema.fieldproperty import createFieldProperties
 
+
 @interface.implementer(IExercise)
 class Exercise(DocumentStructureNode):
     createFieldProperties(IExercise)
@@ -40,6 +41,7 @@ class Exercise(DocumentStructureNode):
 
     def set_label(self, label):
         self.label = label
+
 
 @interface.implementer(IProblem)
 class Problem (DocumentStructureNode):
@@ -57,6 +59,7 @@ class Problem (DocumentStructureNode):
     def set_label(self, label):
         self.label = label
 
+
 @interface.implementer(ISolution)
 class Solution (DocumentStructureNode):
     createFieldProperties(ISolution)
@@ -70,6 +73,7 @@ class Solution (DocumentStructureNode):
     def set_problem_type(self, problem_type):
         self.problem_type = problem_type
 
+
 @interface.implementer(IMultipleChoices)
 class MultipleChoices(DocumentStructureNode):
     createFieldProperties(IMultipleChoices)
@@ -80,29 +84,36 @@ class MultipleChoices(DocumentStructureNode):
     def set_choices(self, choices):
         self.choices = choices
 
+
 @interface.implementer(IChapterExercise)
 class ChapterExercise(DocumentStructureNode):
     createFieldProperties(IChapterExercise)
+
 
 @interface.implementer(IExerciseSection)
 class ExerciseSection(DocumentStructureNode):
     createFieldProperties(IExerciseSection)
 
+
 @interface.implementer(IExerciseElement)
 class ExerciseElement(DocumentStructureNode):
     createFieldProperties(IExerciseElement)
+
 
 @interface.implementer(IExerciseDiv)
 class ExerciseDiv(DocumentStructureNode):
     createFieldProperties(IExerciseDiv)
 
+
 @interface.implementer(IExample)
 class Example(DocumentStructureNode):
     createFieldProperties(IExample)
 
+
 @interface.implementer(IProblemExercise)
 class ProblemExercise(DocumentStructureNode):
     createFieldProperties(IProblemExercise)
+
 
 @interface.implementer(IExerciseCheck)
 class ExerciseCheck(DocumentStructureNode):
@@ -114,7 +125,7 @@ class ExerciseCheck(DocumentStructureNode):
     def set_solution(self, solution):
         self.solution = solution
 
+
 @interface.implementer(IEndOfChapterSolution)
 class EndOfChapterSolution(DocumentStructureNode):
     createFieldProperties(IEndOfChapterSolution)
-

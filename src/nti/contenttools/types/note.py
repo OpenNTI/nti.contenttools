@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: note.py 106584 2017-02-15 04:19:57Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -14,9 +14,10 @@ from zope import interface
 from nti.contenttools.types.interfaces import INote
 from nti.contenttools.types.interfaces import INoteInteractive
 from nti.contenttools.types.interfaces import INoteInteractiveImage
+
 from nti.contenttools.types.interfaces import IOpenstaxNote
-from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 from nti.contenttools.types.interfaces import IOpenstaxNoteBody
+from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 
 from nti.contenttools.types.node import DocumentStructureNode
 
@@ -51,7 +52,8 @@ class NoteInteractive(DocumentStructureNode):
 @interface.implementer(INoteInteractiveImage)
 class NoteInteractiveImage(DocumentStructureNode):
     createFieldProperties(INoteInteractiveImage)
-    
+
+
 @interface.implementer(IOpenstaxNote)
 class OpenstaxNote (DocumentStructureNode):
     createFieldProperties(IOpenstaxNote)
@@ -65,11 +67,12 @@ class OpenstaxNote (DocumentStructureNode):
     def set_label(self, label):
         self.label = label
 
+
 @interface.implementer(IOpenstaxExampleNote)
 class OpenstaxExampleNote(OpenstaxNote):
     createFieldProperties(IOpenstaxExampleNote)
 
+
 @interface.implementer(IOpenstaxNoteBody)
 class OpenstaxNoteBody(DocumentStructureNode):
     createFieldProperties(IOpenstaxNoteBody)
-

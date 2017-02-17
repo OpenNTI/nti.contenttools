@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: footnote.py 106584 2017-02-15 04:19:57Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -19,13 +19,16 @@ from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.schema.fieldproperty import createFieldProperties
 
+
 @interface.implementer(IFootnote)
 class Footnote(DocumentStructureNode):
     createFieldProperties(IFootnote)
 
+
 @interface.implementer(IFootnoteText)
 class FootnoteText(DocumentStructureNode):
     createFieldProperties(IFootnoteText)
+
 
 @interface.implementer(IFootnoteMark)
 class FootnoteMark(DocumentStructureNode):

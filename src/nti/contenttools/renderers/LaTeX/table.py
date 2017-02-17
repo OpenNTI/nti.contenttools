@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: table.py 65711 2015-05-20 21:08:17Z egawati.panjei $
+.. $Id$
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
@@ -11,9 +11,9 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
-from nti.contenttools.renderers.LaTeX.base import render_children_output
-
 from nti.contenttools.renderers.interfaces import IRenderer
+
+from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 from nti.contenttools.types.interfaces import IRow
 from nti.contenttools.types.interfaces import ICell
@@ -29,11 +29,13 @@ from nti.contenttools.types.table import THead
 def set_number_of_table_col(node):
     header_index = find_table_child(THead, node)
     if header_index is not None:
-        node.set_number_of_col_header(node.children[header_index].number_of_col)
+        ncol = node.children[header_index].number_of_col
+        node.set_number_of_col_header(ncol)
 
     body_index = find_table_child(TBody, node)
     if body_index is not None:
-        node.set_number_of_col_body(node.children[body_index].number_of_col)
+        ncol = node.children[body_index].number_of_col
+        node.set_number_of_col_body(ncol)
 
 
 def find_table_child(type_, me):
@@ -51,7 +53,7 @@ def get_string_col(number_of_col, border):
     if border and number_of_col > 0:
         cols_append(u'|')
 
-    for i in range(number_of_col):
+    for unused in range(number_of_col):
         if border:
             cols_append(u'l|')
         else:
@@ -145,6 +147,7 @@ def get_multicolumn(col_span, border, first_cell, cell_string):
 
 
 def render_html_tbody(context, node):
+    # TODO: Write directly of buffer
     result = render_children_output(node)
     if node.border is not None:
         result = u'\\hline\n%s' % (result)
@@ -152,6 +155,7 @@ def render_html_tbody(context, node):
 
 
 def render_html_theader(context, node):
+    # TODO: Write directly of buffer
     parent = node.__parent__
     if parent:
         result = u'\\hline %s \\hline\n' if parent.border else u'%s'
@@ -160,6 +164,7 @@ def render_html_theader(context, node):
 
 
 def render_html_tfooter(context, node):
+    # TODO: Write directly of buffer
     parent = node.__parent__
     if parent:
         result = u'\\hline %s \\hline\n' if parent.border else u'%s'
