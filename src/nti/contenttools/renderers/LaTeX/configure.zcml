@@ -101,4 +101,8 @@
 			 for="nti.contenttools.types.interfaces.ITable"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".table.HTMLTableRowRenderer"
+			 for="nti.contenttools.types.interfaces.IRow"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
