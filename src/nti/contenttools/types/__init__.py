@@ -117,6 +117,13 @@ from nti.contenttools.types.note import Note
 from nti.contenttools.types.note import NoteInteractive
 from nti.contenttools.types.note import NoteInteractiveImage
 
+from nti.contenttools.types.glossary import Glossary
+from nti.contenttools.types.glossary import GlossaryList
+from nti.contenttools.types.glossary import GlossaryItem
+from nti.contenttools.types.glossary import GlossaryDT
+from nti.contenttools.types.glossary import GlossaryDD
+from nti.contenttools.types.glossary import GlossaryTerm
+
 
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
@@ -221,46 +228,6 @@ class TextBoxContent(DocumentStructureNode):
     pass
 
 
-class Glossary(DocumentStructureNode):
-
-    def __init__(self, title=None, filename=None, glossary_dict=None):
-        self.title = title
-        self.filename = filename
-        self.glossary_dict = glossary_dict
-
-    def set_title(self, title):
-        self.title = title
-
-    def set_filename(self, filename):
-        self.filename = filename
-
-    def set_glossary_dict(self, glossary_dict):
-        self.glossary_dict = glossary_dict
-
-
-class GlossaryList(DocumentStructureNode):
-    pass
-
-
-class GlossaryItem(DocumentStructureNode):
-    pass
-
-
-class GlossaryDT(DocumentStructureNode):
-
-    def __init__(self, desc=None):
-        self.desc = desc
-
-    def set_description(self, desc):
-        self.desc = desc
-
-
-class GlossaryDD(DocumentStructureNode):
-    pass
-
-
-class GlossaryTerm(DocumentStructureNode):
-    pass
 
 
 class Exercise(DocumentStructureNode):
