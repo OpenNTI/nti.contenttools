@@ -84,7 +84,7 @@ def render_item_with_description(context, node):
 
 def render_dt(context, node):
     if node.desc:
-        desc = render_iterable(context, node.desc)
+        desc = render_children_output(node.desc) 
     else:
         desc = u''
     item = render_children_output(node)
