@@ -394,7 +394,7 @@ class ITable(IDocumentStructureNode):
     border = ListOrTuple(title="TableBorder",
                          required=False)
 
-    type = ValidTextLine(title="Table Type",
+    type_ = ValidTextLine(title="Table Type",
                          required=False)
 
     alignment = ValidTextLine(title="Table Alignment",
@@ -447,7 +447,7 @@ class IRow(IDocumentStructureNode):
                   required=True,
                   default=False)
 
-    type = ValidTextLine(title="Row Type",
+    type_ = ValidTextLine(title="Row Type",
                          required=False)
 
     def set_number_of_col(number_of_col):

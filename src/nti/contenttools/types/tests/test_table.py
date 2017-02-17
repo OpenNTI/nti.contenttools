@@ -44,7 +44,7 @@ class TestTable(ContentToolsTestCase):
         assert_that(node, has_property('caption', is_(None)))
         assert_that(node, has_property('label', is_(None)))
         assert_that(node, has_property('border', is_(None)))
-        assert_that(node, has_property('type', is_(None)))
+        assert_that(node, has_property('type_', is_(None)))
         assert_that(node, has_property('alignment', is_(u'left')))
 
     def test_row(self):
@@ -53,7 +53,7 @@ class TestTable(ContentToolsTestCase):
         assert_that(node, verifiably_provides(IRow))
         assert_that(node, has_property('number_of_col', is_(0)))
         assert_that(node, has_property('border', is_(False)))
-        assert_that(node, has_property('type', is_(None)))
+        assert_that(node, has_property('type_', is_(None)))
 
     def test_cell(self):
         node = Cell()

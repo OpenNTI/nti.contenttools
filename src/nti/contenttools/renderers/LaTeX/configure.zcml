@@ -95,4 +95,10 @@
 			 for="nti.contenttools.types.interfaces.IDescriptionList"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+			 
+	<!-- HTML based Table -->
+	<adapter factory=".table.HTMLTableRenderer"
+			 for="nti.contenttools.types.interfaces.ITable"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
