@@ -43,21 +43,29 @@ class TestCNX(ContentToolsTestCase):
         node = CNXCollection()
         assert_that(node, validly_provides(ICNXCollection))
         assert_that(node, verifiably_provides(ICNXCollection))
+        assert_that(node, has_property('metadata', is_(None)))
+        assert_that(node, has_property('content', is_(None)))
 
     def test_cnx_subcollection(self):
         node = CNXSubcollection()
         assert_that(node, validly_provides(ICNXSubcollection))
         assert_that(node, verifiably_provides(ICNXSubcollection))
+        assert_that(node, has_property('title', is_(None)))
+        assert_that(node, has_property('content', is_(None)))
 
     def test_cnx_content(self):
         node = CNXContent()
         assert_that(node, validly_provides(ICNXContent))
         assert_that(node, verifiably_provides(ICNXContent))
+        assert_that(node, has_property('modules', is_(None)))
+        assert_that(node, has_property('subcollections', is_(None)))
 
     def test_cnx_module(self):
         node = CNXModule()
         assert_that(node, validly_provides(ICNXModule))
         assert_that(node, verifiably_provides(ICNXModule))
+        assert_that(node, has_property('document', is_(None)))
+        assert_that(node, has_property('title', is_(None)))
 
     def test_cnx_html_body(self):
         node = CNXHTMLBody()
@@ -73,3 +81,5 @@ class TestCNX(ContentToolsTestCase):
         node = CNXProblemSolution()
         assert_that(node, validly_provides(ICNXProblemSolution))
         assert_that(node, verifiably_provides(ICNXProblemSolution))
+        assert_that(node, has_property('title', is_(None)))
+        assert_that(node, has_property('label', is_(None)))
