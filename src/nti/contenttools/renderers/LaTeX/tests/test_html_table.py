@@ -34,3 +34,8 @@ class TestHTMLTable(ContentToolsTestCase):
         node = Row()
         output = render_output(node)
         assert_that(output, is_(u'\\\\\n'))
+    
+    def test_html_table_cell(self):
+        node = Cell()
+        output = render_output(node)
+        assert_that(output, is_(u' ~ '))
