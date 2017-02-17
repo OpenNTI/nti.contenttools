@@ -51,21 +51,32 @@ class TestExercise(ContentToolsTestCase):
         node = Exercise()
         assert_that(node, validly_provides(IExercise))
         assert_that(node, verifiably_provides(IExercise))
+        assert_that(node, has_property('solution', is_(None)))
+        assert_that(node, has_property('problem', is_(None)))
 
     def test_problem(self):
         node = Problem()
         assert_that(node, validly_provides(IProblem))
         assert_that(node, verifiably_provides(IProblem))
+        assert_that(node, has_property('question', is_(None)))
+        assert_that(node, has_property('solution', is_(None)))
+        assert_that(node, has_property('label', is_(None)))
+        assert_that(node, has_property('problem_type', is_(None)))
 
     def test_solution(self):
         node = Solution()
         assert_that(node, validly_provides(ISolution))
         assert_that(node, verifiably_provides(ISolution))
+        assert_that(node, has_property('solution', is_(None)))
+        assert_that(node, has_property('label', is_(None)))
+        assert_that(node, has_property('problem_type', is_(None)))
 
     def test_multiple_choices(self):
         node = MultipleChoices()
         assert_that(node, validly_provides(IMultipleChoices))
         assert_that(node, verifiably_provides(IMultipleChoices))
+        assert_that(node, has_property('solution', is_(None)))
+        assert_that(node, has_property('choices', is_(None)))
 
     def test_chapter_exercise(self):
         node = ChapterExercise()
@@ -91,6 +102,9 @@ class TestExercise(ContentToolsTestCase):
         node = ProblemExercise()
         assert_that(node, validly_provides(IProblemExercise))
         assert_that(node, verifiably_provides(IProblemExercise))
+        assert_that(node, has_property('problem_type', is_(None)))
+        assert_that(node, has_property('title', is_(None)))
+        assert_that(node, has_property('label', is_(None)))
 
     def test_example(self):
         node = Example()
@@ -101,8 +115,13 @@ class TestExercise(ContentToolsTestCase):
         node = ExerciseCheck()
         assert_that(node, validly_provides(IExerciseCheck))
         assert_that(node, verifiably_provides(IExerciseCheck))
+        assert_that(node, has_property('title', is_(None)))
+        assert_that(node, has_property('solution', is_(None)))
 
-    def test_(self):
+    def test_end_of_chapter_solution(self):
         node = EndOfChapterSolution()
         assert_that(node, validly_provides(IEndOfChapterSolution))
         assert_that(node, verifiably_provides(IEndOfChapterSolution))
+        assert_that(node, has_property('title', is_(None)))
+        assert_that(node, has_property('label', is_(None)))
+        assert_that(node, has_property('body', is_(None)))
