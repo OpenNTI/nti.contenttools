@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: list.py 65711 2015-05-20 21:08:17Z egawati.panjei $
+.. $Id: table.py 65711 2015-05-20 21:08:17Z egawati.panjei $
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
@@ -86,7 +86,7 @@ def process_table_html(context, node, string_col):
         return result % (string_col, body)
     elif node.type_ == u'simplelist':
         result = u'\n%s\n\\newline '
-        return result % (body)
+    return result % (body)
 
 
 def render_html_table(context, node):
