@@ -19,13 +19,14 @@ from nti.testing.matchers import verifiably_provides
 from nti.contenttools.types.interfaces import IDocxImage
 from nti.contenttools.types.interfaces import IImage
 from nti.contenttools.types.interfaces import IVideo
+from nti.contenttools.types.interfaces import IFigure
 
 from nti.contenttools.types.media import Image
 from nti.contenttools.types.media import DocxImage
 from nti.contenttools.types.media import Video
+from nti.contenttools.types.media import Figure
 
 from nti.contenttools.tests import ContentToolsTestCase
-
 
 class TestMedia(ContentToolsTestCase):
 
@@ -62,3 +63,10 @@ class TestMedia(ContentToolsTestCase):
         assert_that(node, has_property('thumbnail', is_(u'')))
         assert_that(node, has_property('width', is_(0)))
         assert_that(node, has_property('height', is_(0)))
+    
+    def test_figure(self):
+        node = Figure()
+        assert_that(node, validly_provides(IFigure))
+        assert_that(node, verifiably_provides(IFigure))
+        assert_that(node, has_property('caption', is_(None)))
+        assert_that(node, has_property('label', is_(None)))

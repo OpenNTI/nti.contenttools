@@ -14,7 +14,7 @@ from zope import interface
 from nti.contenttools.types.interfaces import IDocxImage
 from nti.contenttools.types.interfaces import IImage
 from nti.contenttools.types.interfaces import IVideo
-
+from nti.contenttools.types.interfaces import IFigure
 
 from nti.contenttools.types.node import DocumentStructureNode
 
@@ -31,3 +31,13 @@ class DocxImage(Image):
 @interface.implementer(IVideo)
 class Video(DocumentStructureNode):
     createFieldProperties(IVideo)
+
+@interface.implementer(IFigure)
+class Figure(DocumentStructureNode):
+    createFieldProperties(IFigure)
+    
+    def set_caption(self, caption):
+        self.caption = caption
+
+    def set_label(self, label):
+        self.label = label
