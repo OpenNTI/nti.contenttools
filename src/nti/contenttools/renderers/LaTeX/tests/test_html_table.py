@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from __future__ import print_function, unicode_literals, absolute_import, division
+
+__docformat__ = "restructuredtext en"
+
+# disable: accessing protected members, too many methods
+# pylint: disable=W0212,R0904
+
+from hamcrest import is_
+from hamcrest import is_not
+from hamcrest import assert_that
+does_not = is_not
+
+from nti.contenttools.renderers.LaTeX.base import render_output
+
+from nti.contenttools.types.table import Row
+from nti.contenttools.types.table import Cell
+from nti.contenttools.types.table import TBody
+from nti.contenttools.types.table import THead
+from nti.contenttools.types.table import TFoot
+from nti.contenttools.types.table import Table
+
+from nti.contenttools.tests import ContentToolsTestCase
+
+class TestHTMLTable(ContentToolsTestCase):
+    def test_html_table(self):
+        node = Table()
+        output = render_output(node)
+        assert_that(output, is_(u'\n\\begin{table}\n\\begin{tabular}{}\n\\end{tabular}\n\\end{table}\n'))
