@@ -137,6 +137,19 @@ from nti.contenttools.types.cnx import CNXHTMLBody
 from nti.contenttools.types.cnx import CNXGlossary
 from nti.contenttools.types.cnx import CNXProblemSolution
 
+from nti.contenttools.types.exercise import Exercise
+from nti.contenttools.types.exercise import Problem
+from nti.contenttools.types.exercise import Solution
+from nti.contenttools.types.exercise import MultipleChoices
+from nti.contenttools.types.exercise import ChapterExercise
+from nti.contenttools.types.exercise import ExerciseSection
+from nti.contenttools.types.exercise import ExerciseElement
+from nti.contenttools.types.exercise import ExerciseDiv
+from nti.contenttools.types.exercise import Example
+from nti.contenttools.types.exercise import ProblemExercise
+from nti.contenttools.types.exercise import ExerciseCheck
+from nti.contenttools.types.exercise import EndOfChapterSolution
+
 
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
@@ -239,126 +252,6 @@ class AlternateContent(DocumentStructureNode):
 
 class TextBoxContent(DocumentStructureNode):
     pass
-
-
-class Exercise(DocumentStructureNode):
-
-    def __init__(self, problem=None, solution=None, label=None):
-        self.problem = problem
-        self.solution = solution
-        self.label = label
-
-    def set_problem(self, problem):
-        self.problem = problem
-
-    def set_solution(self, solution):
-        self.solution = solution
-
-    def set_label(self, label):
-        self.label = label
-
-
-class Problem (DocumentStructureNode):
-
-    def __init__(
-            self, question=None, problem_type=None, solution=None, label=None):
-        self.question = question
-        self.problem_type = problem_type
-        self.solution = solution
-        self.label = label
-
-    def set_question(self, question):
-        self.question = question
-
-    def set_problem_type(self, problem_type):
-        self.problem_type = problem_type
-
-    def set_solution(self, solution):
-        self.solution = solution
-
-    def set_label(self, label):
-        self.label = label
-
-
-class Solution (DocumentStructureNode):
-
-    def __init__(self, solution=None, label=None, problem_type=None):
-        self.solution = solution
-        self.label = label
-        self.problem_type = problem_type
-
-    def set_solution(self, solution):
-        self.solution = solution
-
-    def set_label(self, label):
-        self.label = label
-
-    def set_problem_type(self, problem_type):
-        self.problem_type = problem_type
-
-
-class MultipleChoices(DocumentStructureNode):
-
-    def __init__(self, solution=None, choices=None):
-        self.solution = solution
-        self.choices = choices
-
-    def set_solution(self, solution):
-        self.solution = solution
-
-    def set_choices(self, choices):
-        self.choices = choices
-
-
-class ChapterExercise(DocumentStructureNode):
-    pass
-
-
-class ExerciseSection(DocumentStructureNode):
-    pass
-
-
-class ExerciseElement(DocumentStructureNode):
-    pass
-
-
-class ExerciseDiv(DocumentStructureNode):
-    pass
-
-
-class Example(DocumentStructureNode):
-    pass
-
-
-class ProblemExercise(DocumentStructureNode):
-
-    def __init__(self, title=None, problem_type=None, label=None):
-        super(ProblemExercise, self).__init__()
-        self.title = title
-        self.problem_type = problem_type
-        self.label = label
-
-
-class ExerciseCheck(DocumentStructureNode):
-
-    def __init__(self, title=None, solution=None):
-        self.title = title
-        self.solution = solution
-
-    def set_title(self, title):
-        self.title = title
-
-    def set_solution(self, solution):
-        self.solution = solution
-
-
-class EndOfChapterSolution(DocumentStructureNode):
-
-    def __init__(self, label=None, title=None, body=None):
-        super(EndOfChapterSolution, self).__init__
-        self.label = label
-        self.title = title
-        self.body = body
 
 
 class OpenstaxNote (DocumentStructureNode):
