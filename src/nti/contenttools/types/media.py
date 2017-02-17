@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: node.py 106584 2017-02-15 04:19:57Z carlos.sanchez $
+.. $Id: media.py 106584 2017-02-15 04:19:57Z carlos.sanchez $
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
