@@ -13,7 +13,6 @@ from zope import interface
 
 from nti.contenttools.renderers.LaTeX.base import render_environment
 from nti.contenttools.renderers.LaTeX.base import render_children_output
-from nti.contenttools.renderers.LaTeX.base import render_iterable
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
