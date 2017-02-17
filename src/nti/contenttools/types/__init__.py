@@ -129,6 +129,15 @@ from nti.contenttools.types.footnote import Footnote
 from nti.contenttools.types.footnote import FootnoteText
 from nti.contenttools.types.footnote import FootnoteMark
 
+from nti.contenttools.types.cnx import CNXCollection
+from nti.contenttools.types.cnx import CNXSubcollection
+from nti.contenttools.types.cnx import CNXContent
+from nti.contenttools.types.cnx import CNXModule
+from nti.contenttools.types.cnx import CNXHTMLBody
+from nti.contenttools.types.cnx import CNXGlossary
+from nti.contenttools.types.cnx import CNXProblemSolution
+
+
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
     # a part of equation (math element)
@@ -392,49 +401,6 @@ class OpenstaxAttributions(DocumentStructureNode):
 
 class OpenstaxTitle(DocumentStructureNode):
     pass
-
-
-class CNXCollection(DocumentStructureNode):
-
-    def __init__(self):
-        self.content = None
-        self.metadata = None
-
-
-class CNXSubcollection(DocumentStructureNode):
-
-    def __init__(self):
-        self.content = None
-        self.title = None
-
-
-class CNXContent(DocumentStructureNode):
-
-    def __init__(self):
-        self.modules = []
-        self.subcollections = []
-
-
-class CNXModule(DocumentStructureNode):
-
-    def __init__(self):
-        self.document = None
-        self.title = None
-
-
-class CNXHTMLBody(DocumentStructureNode):
-    pass
-
-
-class CNXGlossary(DocumentStructureNode):
-    pass
-
-
-class CNXProblemSolution(DocumentStructureNode):
-
-    def __init__(self):
-        self.title = None
-        self.label = None
 
 
 class PreTag(DocumentStructureNode):
