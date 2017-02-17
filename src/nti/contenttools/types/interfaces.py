@@ -355,7 +355,7 @@ class IDT(IDocumentStructureNode):
     desc = ValidTextLine(title="Description",
                          required=False)
 
-    type = ValidTextLine(title="Description Type",
+    type_ = ValidTextLine(title="Description Type",
                          required=False)
 
     def set_description(desc):

@@ -86,7 +86,7 @@ class TestLists(ContentToolsTestCase):
         assert_that(node, validly_provides(IDT))
         assert_that(node, verifiably_provides(IDT))
         assert_that(node, has_property('desc', is_(None)))
-        assert_that(node, has_property('type', is_(None)))
+        assert_that(node, has_property('type_', is_(None)))
 
     def test_dd(self):
         node = DD()

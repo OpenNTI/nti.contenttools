@@ -61,5 +61,30 @@
 		 for="nti.contenttools.types.interfaces.IRunNode"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
-
+		 
+	<!-- Lists -->
+	<adapter factory=".lists.DDRenderer"
+			 for="nti.contenttools.types.interfaces.IDD"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".lists.DTRenderer"
+			 for="nti.contenttools.types.interfaces.IDT"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".lists.ItemRenderer"
+			 for="nti.contenttools.types.interfaces.IItem"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".lists.ListRenderer"
+			 for="nti.contenttools.types.interfaces.IList"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".lists.UnorderedListRenderer"
+			 for="nti.contenttools.types.interfaces.IUnorderedList"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".lists.OrderedListRenderer"
+			 for="nti.contenttools.types.interfaces.IOrderedList"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
