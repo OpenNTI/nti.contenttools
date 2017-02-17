@@ -69,13 +69,13 @@ class TestLists(ContentToolsTestCase):
         assert_that(
             output,
             is_(u'\\begin{enumerate}[start=0]\n\item  \n\n\\end{enumerate}\n'))
-    
+
     def test_item_with_description(self):
         node = ItemWithDesc()
         output = render_output(node)
         assert_that(output, is_(u''))
-    
+
     def test_description_list(self):
         node = DescriptionList()
         output = render_output(node)
-        assert_that(output, is_(u''))
+        assert_that(output, is_('\\begin{description}\n\n\\end{description}\n'))
