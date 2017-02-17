@@ -39,3 +39,18 @@ class TestHTMLTable(ContentToolsTestCase):
         node = Cell()
         output = render_output(node)
         assert_that(output, is_(u' ~ '))
+    
+    def test_html_tbody(self):
+        node = TBody()
+        output = render_output(node)
+        assert_that(output, is_(u'\hline\n'))
+    
+    def test_html_tfooter(self):
+        node = TFoot()
+        output = render_output(node)
+        assert_that(output, is_(u''))
+    
+    def test_html_theader(self):
+        node = THead()
+        output = render_output(node)
+        assert_that(output, is_(u''))
