@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: math.py 106584 2017-02-15 04:19:57Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -11,27 +11,28 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from nti.contenttools.types.interfaces import IMtd
+from nti.contenttools.types.interfaces import IMtr
 from nti.contenttools.types.interfaces import IMath
 from nti.contenttools.types.interfaces import IMRow
 from nti.contenttools.types.interfaces import IMSup
 from nti.contenttools.types.interfaces import IMSub
-from nti.contenttools.types.interfaces import IMSubSup
-from nti.contenttools.types.interfaces import IMathRun
-from nti.contenttools.types.interfaces import IMFenced
+from nti.contenttools.types.interfaces import IMFrac
+from nti.contenttools.types.interfaces import IMOver
+from nti.contenttools.types.interfaces import IMRoot
+from nti.contenttools.types.interfaces import IMText
+from nti.contenttools.types.interfaces import IMsqrt
 from nti.contenttools.types.interfaces import IMSpace
 from nti.contenttools.types.interfaces import IMTable
-from nti.contenttools.types.interfaces import IMtr
-from nti.contenttools.types.interfaces import IMtd
-from nti.contenttools.types.interfaces import IMFrac
-from nti.contenttools.types.interfaces import IMsqrt
-from nti.contenttools.types.interfaces import IMRoot
 from nti.contenttools.types.interfaces import IMUnder
-from nti.contenttools.types.interfaces import IMUnderover
-from nti.contenttools.types.interfaces import IMOver
+from nti.contenttools.types.interfaces import IMathRun
+from nti.contenttools.types.interfaces import IMFenced
+from nti.contenttools.types.interfaces import IMSubSup
 from nti.contenttools.types.interfaces import IMMenclose
+from nti.contenttools.types.interfaces import IMUnderover
 from nti.contenttools.types.interfaces import IMprescripts
 from nti.contenttools.types.interfaces import IMMultiscripts
-from nti.contenttools.types.interfaces import IMText
+
 
 from nti.contenttools.types.node import DocumentStructureNode
 

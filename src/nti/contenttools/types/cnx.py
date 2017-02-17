@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: paragraph.py 106646 2017-02-15 19:47:11Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -19,36 +19,41 @@ from nti.contenttools.types.interfaces import ICNXHTMLBody
 from nti.contenttools.types.interfaces import ICNXGlossary
 from nti.contenttools.types.interfaces import ICNXProblemSolution
 
-
 from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.schema.fieldproperty import createFieldProperties
+
 
 @interface.implementer(ICNXCollection)
 class CNXCollection(DocumentStructureNode):
     createFieldProperties(ICNXCollection)
 
+
 @interface.implementer(ICNXSubcollection)
 class CNXSubcollection(DocumentStructureNode):
     createFieldProperties(ICNXSubcollection)
+
 
 @interface.implementer(ICNXContent)
 class CNXContent(DocumentStructureNode):
     createFieldProperties(ICNXContent)
 
+
 @interface.implementer(ICNXModule)
 class CNXModule(DocumentStructureNode):
     createFieldProperties(ICNXModule)
+
 
 @interface.implementer(ICNXHTMLBody)
 class CNXHTMLBody(DocumentStructureNode):
     createFieldProperties(ICNXHTMLBody)
 
+
 @interface.implementer(ICNXGlossary)
 class CNXGlossary(DocumentStructureNode):
     createFieldProperties(ICNXGlossary)
 
+
 @interface.implementer(ICNXProblemSolution)
 class CNXProblemSolution(DocumentStructureNode):
     createFieldProperties(ICNXProblemSolution)
-

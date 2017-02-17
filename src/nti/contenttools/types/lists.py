@@ -23,6 +23,8 @@ from nti.contenttools.types.interfaces import IDescriptionList
 
 from nti.contenttools.types.node import DocumentStructureNode
 
+from nti.property.property import alias
+
 from nti.schema.fieldproperty import createFieldProperties
 
 
@@ -59,6 +61,9 @@ class ItemWithDesc(Item):
 @interface.implementer(IDT)
 class DT(DocumentStructureNode):
     createFieldProperties(IDT)
+
+    type_ = alias('type')
+    description = alias('desc')
 
     def set_description(self, desc):
         self.desc = desc

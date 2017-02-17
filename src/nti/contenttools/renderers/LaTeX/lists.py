@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: list.py 65711 2015-05-20 21:08:17Z egawati.panjei $
+.. $Id$
 """
+
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
@@ -11,6 +12,7 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
+from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_environment
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
@@ -28,7 +30,6 @@ from nti.contenttools.types.interfaces import IDescriptionList
 
 def render_unordered_list(context, node):
     return render_environment(context, u'itemize', node)
-    
 
 
 def render_ordered_list(context, node):
@@ -53,23 +54,26 @@ def render_ordered_list(context, node):
     if optional:
         optional = u'[' + optional + u']'
 
+    # TODO: Why do we check the output?
+    # can we check the node itself
     check = render_children_output(node)
     if u'\\item' in check:
-        return render_environment(context, u'enumerate', node, optional)
+        render_environment(context, u'enumerate', node, optional)
     else:
-        return check
+        context.write(check)
+    return node
 
 
 def render_list(context, node):
     return render_environment(context, u'itemize', node)
-    
 
 
 def render_item(context, node):
     desc = render_children_output(node)
     if u'\\chapter' in desc:
-        return desc
-    context.write(u'\\item %s \n' % desc)
+        context.write(desc)
+    else:
+        context.write(u'\\item %s \n' % desc)
     return node
 
 
@@ -78,24 +82,26 @@ def render_description_list(context, node):
 
 
 def render_item_with_description(context, node):
-    return render_children_output(node)
+    return render_children(context, node)
 
 
 def render_dt(context, node):
+    desc = u''
     if node.desc:
-        desc = render_children_output(node.desc) 
+        desc = render_children_output(node.desc)
+    if node.type is None:
+        context.write(u'\\item [')
+        render_children(context, node)
+        context.write(u'] %s \n' % desc)
     else:
-        desc = u''
-    item = render_children_output(node)
-    if node.type_ is None:
-        context.write(u'\\item [%s] %s \n' % (item, desc))
-    else:
-        context.write(u'\\item [%s] \\hfill \\\\\n%s \n' % (item, desc))
+        context.write(u'\\item [')
+        render_children(context, node)
+        context.write(u'] \\hfill \\\\\n%s \n' % desc)
     return node
 
 
 def render_dd(context, node):
-    return render_children_output(node)
+    return render_children(context, node)
 
 
 @interface.implementer(IRenderer)

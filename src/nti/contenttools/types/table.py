@@ -5,7 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -21,12 +20,16 @@ from nti.contenttools.types.interfaces import ITable
 
 from nti.contenttools.types.node import DocumentStructureNode
 
+from nti.property.property import alias
+
 from nti.schema.fieldproperty import createFieldProperties
 
 
 @interface.implementer(ITable)
 class Table(DocumentStructureNode):
     createFieldProperties(ITable)
+
+    type_ = alias('type')
 
     def set_number_of_col_header(self, number_of_col_header):
         self.number_of_col_header = number_of_col_header
@@ -53,6 +56,8 @@ class Table(DocumentStructureNode):
 @interface.implementer(IRow)
 class Row(DocumentStructureNode):
     createFieldProperties(IRow)
+
+    type_ = alias('type')
 
     def set_number_of_col(self, number_of_col):
         self.number_of_col = number_of_col
