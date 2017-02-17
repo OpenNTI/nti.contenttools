@@ -150,6 +150,10 @@ from nti.contenttools.types.exercise import ProblemExercise
 from nti.contenttools.types.exercise import ExerciseCheck
 from nti.contenttools.types.exercise import EndOfChapterSolution
 
+from nti.contenttools.types.note import OpenstaxNote
+from nti.contenttools.types.note import OpenstaxExampleNote
+from nti.contenttools.types.note import OpenstaxNoteBody
+
 
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
@@ -254,29 +258,6 @@ class TextBoxContent(DocumentStructureNode):
     pass
 
 
-class OpenstaxNote (DocumentStructureNode):
-
-    def __init__(self, title=None, body=None, label=None):
-        self.title = title
-        self.body = body
-        self.label = label
-
-    def set_title(self, title):
-        self.title = title
-
-    def set_body(self, body):
-        self.body = body
-
-    def set_label(self, label):
-        self.label = label
-
-
-class OpenstaxExampleNote(OpenstaxNote):
-    pass
-
-
-class OpenstaxNoteBody(DocumentStructureNode):
-    pass
 
 
 class EquationImage(DocumentStructureNode):
