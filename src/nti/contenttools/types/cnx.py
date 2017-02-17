@@ -26,7 +26,7 @@ from nti.schema.fieldproperty import createFieldProperties
 
 @interface.implementer(ICNXCollection)
 class CNXCollection(DocumentStructureNode):
-    createFieldProperties()
+    createFieldProperties(ICNXCollection)
 
 @interface.implementer(ICNXSubcollection)
 class CNXSubcollection(DocumentStructureNode):
