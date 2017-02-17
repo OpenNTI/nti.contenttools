@@ -1096,7 +1096,7 @@ class INoteInteractive(IDocumentStructureNode):
                             required=True,
                             default=u'')
 
-    image_path = ValidTextLine(title="Notes",
+    notes = ValidTextLine(title="Notes",
                                required=True,
                                default=u'')
 
