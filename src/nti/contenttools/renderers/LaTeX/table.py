@@ -130,14 +130,18 @@ def render_html_tbody(context, node):
     context.write(result)
 
 def render_html_theader(context, node):
-    result = u'\\hline %s \\hline\n' if node.__parent__.border else u'%s'
-    base = render_children_output(node)
-    context.write(result %(base))
+    parent = node.__parent__
+    if parent:
+        result = u'\\hline %s \\hline\n' if parent.border else u'%s'
+        base = render_children_output(node)
+        context.write(result %(base))
 
 def render_html_tfooter(context, node):
-    result = u'\\hline %s \\hline\n' if node.__parent__.border else u'%s'
-    base = render_children_output(node)
-    context.write(result %(base))
+    parent = node.__parent__
+    if parent:
+        result = u'\\hline %s \\hline\n' if parent.border else u'%s'
+        base = render_children_output(node)
+        context.write(result %(base))
 
 
 @interface.implementer(IRenderer)

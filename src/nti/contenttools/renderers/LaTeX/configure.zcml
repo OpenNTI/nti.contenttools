@@ -109,4 +109,16 @@
 			 for="nti.contenttools.types.interfaces.ICell"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".table.HMTLTBodyRenderer"
+			 for="nti.contenttools.types.interfaces.ITBody"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".table.HMTLTFooterRenderer"
+			 for="nti.contenttools.types.interfaces.ITFoot"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".table.HMTLTHeaderRenderer"
+			 for="nti.contenttools.types.interfaces.ITHead"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
