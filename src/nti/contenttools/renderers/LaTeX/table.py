@@ -113,7 +113,7 @@ def render_html_table_cell(context, node):
         result = u' ~ '
     elif node.colspan > 1:
         result = get_multicolumn(node.colspan, node.border, node.is_first_cell_in_the_row, result)
-    return result
+    context.write(result)
 
 
 def get_multicolumn(col_span, border, first_cell, cell_string):
@@ -127,17 +127,17 @@ def render_html_tbody(context, node):
     result = render_children_output(node)
     if node.border is not None:
         result =  u'\\hline\n%s' %(result)
-    return result
+    context.write(result)
 
 def render_html_theader(context, node):
     result = u'\\hline %s \\hline\n' if node.__parent__.border else u'%s'
     base = render_children_output(node)
-    return result %(base)
+    context.write(result %(base))
 
 def render_html_tfooter(context, node):
     result = u'\\hline %s \\hline\n' if node.__parent__.border else u'%s'
     base = render_children_output(node)
-    return result %(base)
+    context.write(result %(base))
 
 
 @interface.implementer(IRenderer)
