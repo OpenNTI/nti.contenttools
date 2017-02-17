@@ -24,32 +24,36 @@ from nti.contenttools.types.table import Table
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestHTMLTable(ContentToolsTestCase):
+
     def test_html_table(self):
         node = Table()
         output = render_output(node)
-        assert_that(output, is_(u'\n\\begin{table}\n\\begin{tabular}{}\n\\end{tabular}\n\\end{table}\n'))
-    
+        assert_that(
+            output,
+            is_(u'\n\\begin{table}\n\\begin{tabular}{}\n\\end{tabular}\n\\end{table}\n'))
+
     def test_html_table_row(self):
         node = Row()
         output = render_output(node)
         assert_that(output, is_(u'\\\\\n'))
-    
+
     def test_html_table_cell(self):
         node = Cell()
         output = render_output(node)
         assert_that(output, is_(u' ~ '))
-    
+
     def test_html_tbody(self):
         node = TBody()
         output = render_output(node)
         assert_that(output, is_(u'\hline\n'))
-    
+
     def test_html_tfooter(self):
         node = TFoot()
         output = render_output(node)
         assert_that(output, is_(u''))
-    
+
     def test_html_theader(self):
         node = THead()
         output = render_output(node)
