@@ -123,7 +123,7 @@ from nti.contenttools.types.glossary import GlossaryItem
 from nti.contenttools.types.glossary import GlossaryDT
 from nti.contenttools.types.glossary import GlossaryDD
 from nti.contenttools.types.glossary import GlossaryTerm
-
+from nti.contenttools.types.glossary import GlossaryDefinition
 
 def _to_latex(text, type_text):
     # replace special unicode in TextNode with latex tag when text is
@@ -433,13 +433,6 @@ class CNXProblemSolution(DocumentStructureNode):
     def __init__(self):
         self.title = None
         self.label = None
-
-
-class GlossaryDefinition(DocumentStructureNode):
-
-    def __init__(self):
-        self.term = None
-        self.meaning = None
 
 
 class Footnote(DocumentStructureNode):
