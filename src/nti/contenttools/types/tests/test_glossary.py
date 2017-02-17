@@ -24,6 +24,7 @@ from nti.contenttools.types.interfaces import IGlossaryItem
 from nti.contenttools.types.interfaces import IGlossaryDT
 from nti.contenttools.types.interfaces import IGlossaryDD
 from nti.contenttools.types.interfaces import IGlossaryTerm
+from nti.contenttools.types.interfaces import IGlossaryDefinition
 
 from nti.contenttools.types.glossary import Glossary
 from nti.contenttools.types.glossary import GlossaryList
@@ -31,6 +32,7 @@ from nti.contenttools.types.glossary import GlossaryItem
 from nti.contenttools.types.glossary import GlossaryDT
 from nti.contenttools.types.glossary import GlossaryDD
 from nti.contenttools.types.glossary import GlossaryTerm
+from nti.contenttools.types.glossary import GlossaryDefinition
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -66,3 +68,8 @@ class TestGlossary(ContentToolsTestCase):
         node = GlossaryTerm()
         assert_that(node, validly_provides(IGlossaryTerm))
         assert_that(node, verifiably_provides(IGlossaryTerm))
+    
+    def test_glossary_definition(self):
+        node = GlossaryDefinition()
+        assert_that(node, validly_provides(IGlossaryDefinition))
+        assert_that(node, verifiably_provides(IGlossaryDefinition))
