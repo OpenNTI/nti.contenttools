@@ -87,4 +87,12 @@
 			 for="nti.contenttools.types.interfaces.IOrderedList"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".lists.ItemWithDescriptionRenderer"
+			 for="nti.contenttools.types.interfaces.IItemWithDesc"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".lists.DescriptionListRenderer"
+			 for="nti.contenttools.types.interfaces.IDescriptionList"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
