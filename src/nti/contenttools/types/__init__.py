@@ -55,6 +55,7 @@ from nti.contenttools.types.media import Figure
 from nti.contenttools.types.media import Image
 from nti.contenttools.types.media import DocxImage
 from nti.contenttools.types.media import Video
+from nti.contenttools.types.media import EquationImage
 
 from nti.contenttools.types.math import Math
 from nti.contenttools.types.math import MRow
@@ -256,17 +257,6 @@ class AlternateContent(DocumentStructureNode):
 
 class TextBoxContent(DocumentStructureNode):
     pass
-
-
-
-
-class EquationImage(DocumentStructureNode):
-
-    def __init__(self, label=None, image=None, text=None):
-        super(EquationImage, self).__init__()
-        self.label = label
-        self.image = image
-        self.text = text
 
 
 class OpenstaxAttributions(DocumentStructureNode):
