@@ -21,10 +21,16 @@ from nti.testing.matchers import verifiably_provides
 from nti.contenttools.types.interfaces import INote
 from nti.contenttools.types.interfaces import INoteInteractive
 from nti.contenttools.types.interfaces import INoteInteractiveImage
+from nti.contenttools.types.interfaces import IOpenstaxNote
+from nti.contenttools.types.interfaces import IOpenstaxExampleNote
+from nti.contenttools.types.interfaces import IOpenstaxNoteBody
 
 from nti.contenttools.types.note import Note
 from nti.contenttools.types.note import NoteInteractive
 from nti.contenttools.types.note import NoteInteractiveImage
+from nti.contenttools.types.note import OpenstaxNote
+from nti.contenttools.types.note import OpenstaxExampleNote
+from nti.contenttools.types.note import OpenstaxNoteBody
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -53,4 +59,21 @@ class TestNote(ContentToolsTestCase):
         assert_that(node, verifiably_provides(INoteInteractiveImage))
         assert_that(node, has_property('caption', is_(u'')))
         assert_that(node, has_property('path', is_(u'')))
-        
+    
+    def test_openstax_note(self):
+        node = OpenstaxNote()
+        assert_that(node, validly_provides(IOpenstaxNote))
+        assert_that(node, verifiably_provides(IOpenstaxNote))
+        assert_that(node, has_property('title', is_(None)))
+        assert_that(node, has_property('label', is_(None)))
+        assert_that(node, has_property('body', is_(None)))
+    
+    def test_openstax_example_note(self):
+        node = OpenstaxExampleNote()
+        assert_that(node, validly_provides(IOpenstaxExampleNote))
+        assert_that(node, verifiably_provides(IOpenstaxExampleNote))
+    
+    def test_openstax_note_body(self):
+        node = OpenstaxNoteBody()
+        assert_that(node, validly_provides(IOpenstaxNoteBody))
+        assert_that(node, verifiably_provides(IOpenstaxNoteBody))
