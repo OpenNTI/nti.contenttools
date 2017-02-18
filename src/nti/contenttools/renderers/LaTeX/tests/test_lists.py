@@ -42,6 +42,7 @@ class TestLists(ContentToolsTestCase):
     
     def test_dt_with_desc(self):
         node = DT()
+        #todo : check with TextNode
         node.desc = Run()
         output = render_output(node)
         assert_that(output, is_(u'\\item []  \n'))
