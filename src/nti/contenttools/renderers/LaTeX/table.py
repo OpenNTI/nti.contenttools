@@ -13,7 +13,8 @@ from zope import interface
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
-from nti.contenttools.renderers.LaTeX.base import render_children_output
+from nti.contenttools.renderers.LaTeX.base import render_children_output,\
+    render_children
 
 from nti.contenttools.types.interfaces import IRow
 from nti.contenttools.types.interfaces import ICell
@@ -147,30 +148,26 @@ def get_multicolumn(col_span, border, first_cell, cell_string):
 
 
 def render_html_tbody(context, node):
-    # TODO: Write directly of buffer
-    result = render_children_output(node)
-    if node.border is not None:
-        result = u'\\hline\n%s' % (result)
-    context.write(result)
+    context.write(u'\\hline\n')
+    render_children(context, node)
+    return node
 
 
 def render_html_theader(context, node):
-    # TODO: Write directly of buffer
     parent = node.__parent__
     if parent:
-        result = u'\\hline %s \\hline\n' if parent.border else u'%s'
-        base = render_children_output(node)
-        context.write(result % (base))
-
-
+        context.write(u'\\hline ')
+        render_children(context, node)
+        context.write(u' \\hline\n')
+    return node
+        
 def render_html_tfooter(context, node):
-    # TODO: Write directly of buffer
     parent = node.__parent__
     if parent:
-        result = u'\\hline %s \\hline\n' if parent.border else u'%s'
-        base = render_children_output(node)
-        context.write(result % (base))
-
+        context.write(u'\\hline ')
+        render_children(context, node)
+        context.write(u' \\hline\n')
+    return node
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
