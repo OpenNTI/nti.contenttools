@@ -83,6 +83,7 @@ def render_description_list(context, node):
 
 def render_item_with_description(context, node):
     return render_children(context, node)
+    
 
 
 def render_dt(context, node):
