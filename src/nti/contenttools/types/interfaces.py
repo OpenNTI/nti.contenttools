@@ -352,7 +352,7 @@ class IItemWithDesc(IItem):
 
 class IDT(IDocumentStructureNode):
 
-    desc = Object(IRunNode, title="Description",
+    desc = Object(IDocumentStructureNode, title="Description",
                   required=False)
 
     type = ValidTextLine(title="Description Type",
