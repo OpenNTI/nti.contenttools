@@ -1488,15 +1488,15 @@ class IEquationImage(IDocumentStructureNode):
     Node for equation image
     """
 
-    label = Object(IRunNode,
+    label = Object(IDocumentStructureNode,
                    title="Label",
                    required=False)
 
-    text = Object(IRunNode,
+    text = Object(IDocumentStructureNode,
                   title="Text",
                   required=False)
 
-    image = Object(IRunNode,
+    image = Object(IDocumentStructureNode,
                    title="Image",
                    required=False)
 
@@ -1586,11 +1586,11 @@ class IGlossaryDefinition(IDocumentStructureNode):
     """
     Node for glossary definition
     """
-    term = Object(IRunNode,
+    term = Object(IDocumentStructureNode,
                   title="Term",
                   required=False)
 
-    meaning = Object(IRunNode,
+    meaning = Object(IDocumentStructureNode,
                      title="Meaning",
                      required=False)
 
@@ -1600,7 +1600,7 @@ class IFootnoteText(IDocumentStructureNode):
     Node for footnote text.
     """
 
-    text = Object(IRunNode, title="Title",
+    text = Object(IDocumentStructureNode, title="Title",
                   required=False)
 
     label = ValidTextLine(title="Label",
@@ -1615,7 +1615,7 @@ class IFootnoteMark(IDocumentStructureNode):
     Node for footnote text.
     """
 
-    text = Object(IRunNode, title="Title",
+    text = Object(IDocumentStructureNode, title="Title",
                   required=False)
 
     num = ValidTextLine(title="Num",
