@@ -160,7 +160,8 @@ def render_html_theader(context, node):
         render_children(context, node)
         context.write(u' \\hline\n')
     return node
-        
+
+
 def render_html_tfooter(context, node):
     parent = node.__parent__
     if parent:
@@ -168,6 +169,7 @@ def render_html_tfooter(context, node):
         render_children(context, node)
         context.write(u' \\hline\n')
     return node
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
