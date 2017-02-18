@@ -384,9 +384,9 @@ class ITable(IDocumentStructureNode):
     number_of_col_body = Int(title="Number of Column Body",
                              required=True,
                              default=0)
-
-    caption = ValidTextLine(title="Table Caption",
-                            required=False)
+    caption = Variant((Object(IDocumentStructureNode,title="Table Caption"),
+                       ValidTextLine(title="Table Caption")),
+                      required=False)
 
     label = ValidTextLine(title="Table Label",
                           required=False)
