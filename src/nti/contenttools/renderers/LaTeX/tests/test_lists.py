@@ -102,3 +102,12 @@ class TestLists(ContentToolsTestCase):
         node.add(child)
         output = render_output(node)
         assert_that(output, is_(u'\\begin{description}\n\item []  \n\n\\end{description}\n'))
+    
+    def test_description_list_with_dt(self):
+        node = DescriptionList()
+        dt = DT()
+        dd = DD()
+        dt.desc =dd
+        node.add(dt)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{description}\n\item []  \n\n\\end{description}\n'))
