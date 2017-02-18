@@ -56,10 +56,17 @@ class TestLists(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output, is_(u'\\begin{itemize}\n\n\\end{itemize}\n'))
 
-    def test_unordered_list(self):
+    def test_unordered_list_without_item(self):
         node = UnorderedList()
         output = render_output(node)
         assert_that(output, is_(u'\\begin{itemize}\n\n\\end{itemize}\n'))
+    
+    def test_unordered_list(self):
+        node = UnorderedList()
+        child = Item()
+        node.add(child)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{itemize}\n\item  \n\n\end{itemize}\n'))
 
     def test_ordered_list_without_item(self):
         node = OrderedList()
