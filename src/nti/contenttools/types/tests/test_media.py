@@ -16,16 +16,16 @@ does_not = is_not
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
-from nti.contenttools.types.interfaces import IDocxImage
 from nti.contenttools.types.interfaces import IImage
 from nti.contenttools.types.interfaces import IVideo
 from nti.contenttools.types.interfaces import IFigure
+from nti.contenttools.types.interfaces import IDocxImage
 from nti.contenttools.types.interfaces import IEquationImage
 
 from nti.contenttools.types.media import Image
-from nti.contenttools.types.media import DocxImage
 from nti.contenttools.types.media import Video
 from nti.contenttools.types.media import Figure
+from nti.contenttools.types.media import DocxImage
 from nti.contenttools.types.media import EquationImage
 
 from nti.contenttools.tests import ContentToolsTestCase

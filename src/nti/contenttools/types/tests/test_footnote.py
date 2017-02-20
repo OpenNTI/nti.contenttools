@@ -26,14 +26,16 @@ from nti.contenttools.types.footnote import FootnoteMark
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestFootnote(ContentToolsTestCase):
+
     def test_footnote(self):
         node = Footnote()
         assert_that(node, validly_provides(IFootnote))
         assert_that(node, verifiably_provides(IFootnote))
         assert_that(node, has_property('text', is_(None)))
         assert_that(node, has_property('label', is_(None)))
-        
+
     def test_footnote_text(self):
         node = FootnoteText()
         assert_that(node, validly_provides(IFootnoteText))
@@ -41,7 +43,7 @@ class TestFootnote(ContentToolsTestCase):
         assert_that(node, has_property('text', is_(None)))
         assert_that(node, has_property('label', is_(None)))
         assert_that(node, has_property('num', is_(None)))
-    
+
     def test_footnote_mark(self):
         node = FootnoteMark()
         assert_that(node, validly_provides(IFootnoteMark))

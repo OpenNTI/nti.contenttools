@@ -8,9 +8,7 @@ __docformat__ = "restructuredtext en"
 # pylint: disable=W0212,R0904
 
 from hamcrest import is_
-from hamcrest import none
 from hamcrest import is_not
-from hamcrest import has_length
 from hamcrest import assert_that
 from hamcrest import has_property
 does_not = is_not
@@ -21,16 +19,18 @@ from nti.testing.matchers import verifiably_provides
 from nti.contenttools.types.interfaces import INote
 from nti.contenttools.types.interfaces import INoteInteractive
 from nti.contenttools.types.interfaces import INoteInteractiveImage
+
 from nti.contenttools.types.interfaces import IOpenstaxNote
-from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 from nti.contenttools.types.interfaces import IOpenstaxNoteBody
+from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 
 from nti.contenttools.types.note import Note
 from nti.contenttools.types.note import NoteInteractive
 from nti.contenttools.types.note import NoteInteractiveImage
+
 from nti.contenttools.types.note import OpenstaxNote
-from nti.contenttools.types.note import OpenstaxExampleNote
 from nti.contenttools.types.note import OpenstaxNoteBody
+from nti.contenttools.types.note import OpenstaxExampleNote
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -59,7 +59,7 @@ class TestNote(ContentToolsTestCase):
         assert_that(node, verifiably_provides(INoteInteractiveImage))
         assert_that(node, has_property('caption', is_(u'')))
         assert_that(node, has_property('path', is_(u'')))
-    
+
     def test_openstax_note(self):
         node = OpenstaxNote()
         assert_that(node, validly_provides(IOpenstaxNote))
@@ -67,12 +67,12 @@ class TestNote(ContentToolsTestCase):
         assert_that(node, has_property('title', is_(None)))
         assert_that(node, has_property('label', is_(None)))
         assert_that(node, has_property('body', is_(None)))
-    
+
     def test_openstax_example_note(self):
         node = OpenstaxExampleNote()
         assert_that(node, validly_provides(IOpenstaxExampleNote))
         assert_that(node, verifiably_provides(IOpenstaxExampleNote))
-    
+
     def test_openstax_note_body(self):
         node = OpenstaxNoteBody()
         assert_that(node, validly_provides(IOpenstaxNoteBody))
