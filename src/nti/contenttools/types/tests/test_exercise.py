@@ -16,30 +16,30 @@ does_not = is_not
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
-from nti.contenttools.types.interfaces import IExercise
+from nti.contenttools.types.interfaces import IExample
 from nti.contenttools.types.interfaces import IProblem
+from nti.contenttools.types.interfaces import IExercise
 from nti.contenttools.types.interfaces import ISolution
-from nti.contenttools.types.interfaces import IMultipleChoices
+from nti.contenttools.types.interfaces import IExerciseDiv
+from nti.contenttools.types.interfaces import IExerciseCheck
 from nti.contenttools.types.interfaces import IChapterExercise
 from nti.contenttools.types.interfaces import IExerciseSection
 from nti.contenttools.types.interfaces import IExerciseElement
-from nti.contenttools.types.interfaces import IExerciseDiv
-from nti.contenttools.types.interfaces import IExample
+from nti.contenttools.types.interfaces import IMultipleChoices
 from nti.contenttools.types.interfaces import IProblemExercise
-from nti.contenttools.types.interfaces import IExerciseCheck
 from nti.contenttools.types.interfaces import IEndOfChapterSolution
 
-from nti.contenttools.types.exercise import Exercise
+from nti.contenttools.types.exercise import Example
 from nti.contenttools.types.exercise import Problem
+from nti.contenttools.types.exercise import Exercise
 from nti.contenttools.types.exercise import Solution
+from nti.contenttools.types.exercise import ExerciseDiv
+from nti.contenttools.types.exercise import ExerciseCheck
 from nti.contenttools.types.exercise import MultipleChoices
 from nti.contenttools.types.exercise import ChapterExercise
 from nti.contenttools.types.exercise import ExerciseSection
 from nti.contenttools.types.exercise import ExerciseElement
-from nti.contenttools.types.exercise import ExerciseDiv
-from nti.contenttools.types.exercise import Example
 from nti.contenttools.types.exercise import ProblemExercise
-from nti.contenttools.types.exercise import ExerciseCheck
 from nti.contenttools.types.exercise import EndOfChapterSolution
 
 from nti.contenttools.tests import ContentToolsTestCase
