@@ -16,49 +16,50 @@ does_not = is_not
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
+from nti.contenttools.types.interfaces import IMtr
+from nti.contenttools.types.interfaces import IMtd
 from nti.contenttools.types.interfaces import IMath
 from nti.contenttools.types.interfaces import IMRow
 from nti.contenttools.types.interfaces import IMSup
 from nti.contenttools.types.interfaces import IMSub
-from nti.contenttools.types.interfaces import IMSubSup
-from nti.contenttools.types.interfaces import IMathRun
-from nti.contenttools.types.interfaces import IMFenced
+from nti.contenttools.types.interfaces import IMFrac
+from nti.contenttools.types.interfaces import IMRoot
+from nti.contenttools.types.interfaces import IMOver
+from nti.contenttools.types.interfaces import IMsqrt
+from nti.contenttools.types.interfaces import IMText
+from nti.contenttools.types.interfaces import IMUnder
 from nti.contenttools.types.interfaces import IMSpace
 from nti.contenttools.types.interfaces import IMTable
-from nti.contenttools.types.interfaces import IMtr
-from nti.contenttools.types.interfaces import IMtd
-from nti.contenttools.types.interfaces import IMFrac
-from nti.contenttools.types.interfaces import IMsqrt
-from nti.contenttools.types.interfaces import IMRoot
-from nti.contenttools.types.interfaces import IMUnder
-from nti.contenttools.types.interfaces import IMUnderover
-from nti.contenttools.types.interfaces import IMOver
+from nti.contenttools.types.interfaces import IMathRun
+from nti.contenttools.types.interfaces import IMFenced
+from nti.contenttools.types.interfaces import IMSubSup
 from nti.contenttools.types.interfaces import IMMenclose
-from nti.contenttools.types.interfaces import IMprescripts
+from nti.contenttools.types.interfaces import IMUnderover
+from nti.contenttools.types.interfaces import IMMprescripts
 from nti.contenttools.types.interfaces import IMMultiscripts
-from nti.contenttools.types.interfaces import IMText
 
+from nti.contenttools.types.math import Mtr
+from nti.contenttools.types.math import Mtd
 from nti.contenttools.types.math import Math
 from nti.contenttools.types.math import MRow
 from nti.contenttools.types.math import MSup
 from nti.contenttools.types.math import MSub
-from nti.contenttools.types.math import MSubSup
-from nti.contenttools.types.math import MathRun
-from nti.contenttools.types.math import MFenced
+from nti.contenttools.types.math import MFrac
+from nti.contenttools.types.math import MRoot
+from nti.contenttools.types.math import MOver
+from nti.contenttools.types.math import Msqrt
+from nti.contenttools.types.math import MText
+from nti.contenttools.types.math import MUnder
 from nti.contenttools.types.math import MSpace
 from nti.contenttools.types.math import Mtable
-from nti.contenttools.types.math import Mtr
-from nti.contenttools.types.math import Mtd
-from nti.contenttools.types.math import Mfrac
-from nti.contenttools.types.math import Msqrt
-from nti.contenttools.types.math import Mroot
-from nti.contenttools.types.math import MUnder
-from nti.contenttools.types.math import MUnderover
-from nti.contenttools.types.math import MOver
+from nti.contenttools.types.math import MathRun
+from nti.contenttools.types.math import MFenced
+from nti.contenttools.types.math import MSubSup
 from nti.contenttools.types.math import MMenclose
+from nti.contenttools.types.math import MUnderover
 from nti.contenttools.types.math import MMprescripts
 from nti.contenttools.types.math import MMultiscripts
-from nti.contenttools.types.math import MText
+
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -129,7 +130,7 @@ class TestMath(ContentToolsTestCase):
         assert_that(node, has_property('number_of_col', is_(0)))
 
     def test_mfrac(self):
-        node = Mfrac()
+        node = MFrac()
         assert_that(node, validly_provides(IMFrac))
         assert_that(node, verifiably_provides(IMFrac))
 
@@ -139,7 +140,7 @@ class TestMath(ContentToolsTestCase):
         assert_that(node, verifiably_provides(IMsqrt))
 
     def test_root(self):
-        node = Mroot()
+        node = MRoot()
         assert_that(node, validly_provides(IMRoot))
         assert_that(node, verifiably_provides(IMRoot))
 
@@ -166,8 +167,8 @@ class TestMath(ContentToolsTestCase):
 
     def test_mprescripts(self):
         node = MMprescripts()
-        assert_that(node, validly_provides(IMprescripts))
-        assert_that(node, verifiably_provides(IMprescripts))
+        assert_that(node, validly_provides(IMMprescripts))
+        assert_that(node, verifiably_provides(IMMprescripts))
         assert_that(node, has_property('sub', is_(None)))
         assert_that(node, has_property('sup', is_(None)))
 

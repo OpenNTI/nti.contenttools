@@ -35,10 +35,10 @@ from nti.contenttools.types.exercise import Exercise
 from nti.contenttools.types.exercise import Solution
 from nti.contenttools.types.exercise import ExerciseDiv
 from nti.contenttools.types.exercise import ExerciseCheck
-from nti.contenttools.types.exercise import MultipleChoices
 from nti.contenttools.types.exercise import ChapterExercise
 from nti.contenttools.types.exercise import ExerciseSection
 from nti.contenttools.types.exercise import ExerciseElement
+from nti.contenttools.types.exercise import MultipleChoices
 from nti.contenttools.types.exercise import ProblemExercise
 from nti.contenttools.types.exercise import EndOfChapterSolution
 

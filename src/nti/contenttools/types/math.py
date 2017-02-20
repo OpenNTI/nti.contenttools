@@ -96,12 +96,12 @@ class Mtr(DocumentStructureNode):
 
 
 @interface.implementer(IMtd)
-class Mtd (DocumentStructureNode):
+class Mtd(DocumentStructureNode):
     createFieldProperties(IMtd)
 
 
 @interface.implementer(IMFrac)
-class Mfrac(DocumentStructureNode):
+class MFrac(DocumentStructureNode):
     createFieldProperties(IMFrac)
 
 
@@ -111,7 +111,7 @@ class Msqrt(DocumentStructureNode):
 
 
 @interface.implementer(IMRoot)
-class Mroot(DocumentStructureNode):
+class MRoot(DocumentStructureNode):
     createFieldProperties(IMRoot)
 
 
@@ -140,9 +140,9 @@ class MMultiscripts(DocumentStructureNode):
     createFieldProperties(IMMultiscripts)
 
 
-@interface.implementer(IMprescripts)
+@interface.implementer(IMMprescripts)
 class MMprescripts(DocumentStructureNode):
-    createFieldProperties(IMprescripts)
+    createFieldProperties(IMMprescripts)
 
 
 @interface.implementer(IMText)
