@@ -384,7 +384,7 @@ class ITable(IDocumentStructureNode):
     number_of_col_body = Int(title="Number of Column Body",
                              required=True,
                              default=0)
-    caption = Variant((Object(IDocumentStructureNode,title="Table Caption"),
+    caption = Variant((Object(IDocumentStructureNode, title="Table Caption"),
                        ValidTextLine(title="Table Caption")),
                       required=False)
 
@@ -677,7 +677,7 @@ class IMMenclose(IDocumentStructureNode):
                            required=False)
 
 
-class IMprescripts(IDocumentStructureNode):
+class IMMprescripts(IDocumentStructureNode):
 
     sub = Object(IMSub, title="subscript",
                  required=False)
@@ -694,7 +694,7 @@ class IMMultiscripts(IDocumentStructureNode):
     base = Object(IDocumentStructureNode, title="base",
                   required=False)
 
-    prescripts = Object(IMprescripts, title="prescript",
+    prescripts = Object(IMMprescripts, title="prescript",
                         required=False)
 
 
@@ -1461,7 +1461,7 @@ class IOpenstaxNoteBody(IDocumentStructureNode):
     """
 
 
-class IOpenstaxNote (IDocumentStructureNode):
+class IOpenstaxNote(IDocumentStructureNode):
     """
     Node for openstax note
     This is mostly used when parsing openstax epub to latex.
