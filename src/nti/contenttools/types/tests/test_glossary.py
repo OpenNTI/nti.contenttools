@@ -7,12 +7,8 @@ __docformat__ = "restructuredtext en"
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
 
-from hamcrest import is_
-from hamcrest import none
 from hamcrest import is_not
-from hamcrest import has_length
 from hamcrest import assert_that
-from hamcrest import has_property
 does_not = is_not
 
 from nti.testing.matchers import validly_provides
@@ -68,7 +64,7 @@ class TestGlossary(ContentToolsTestCase):
         node = GlossaryTerm()
         assert_that(node, validly_provides(IGlossaryTerm))
         assert_that(node, verifiably_provides(IGlossaryTerm))
-    
+
     def test_glossary_definition(self):
         node = GlossaryDefinition()
         assert_that(node, validly_provides(IGlossaryDefinition))

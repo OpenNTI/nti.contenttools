@@ -16,23 +16,21 @@ does_not = is_not
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
-from nti.contenttools.types.interfaces import IParagraph
-
-from nti.contenttools.types.interfaces import ICNXCollection
-from nti.contenttools.types.interfaces import ICNXSubcollection
-from nti.contenttools.types.interfaces import ICNXContent
-from nti.contenttools.types.interfaces import ICNXModule
-from nti.contenttools.types.interfaces import ICNXHTMLBody
-from nti.contenttools.types.interfaces import ICNXGlossary
-from nti.contenttools.types.interfaces import ICNXProblemSolution
-
-from nti.contenttools.types.cnx import CNXCollection
-from nti.contenttools.types.cnx import CNXSubcollection
-from nti.contenttools.types.cnx import CNXContent
 from nti.contenttools.types.cnx import CNXModule
+from nti.contenttools.types.cnx import CNXContent
 from nti.contenttools.types.cnx import CNXHTMLBody
 from nti.contenttools.types.cnx import CNXGlossary
+from nti.contenttools.types.cnx import CNXCollection
+from nti.contenttools.types.cnx import CNXSubcollection
 from nti.contenttools.types.cnx import CNXProblemSolution
+
+from nti.contenttools.types.interfaces import ICNXModule
+from nti.contenttools.types.interfaces import ICNXContent
+from nti.contenttools.types.interfaces import ICNXHTMLBody
+from nti.contenttools.types.interfaces import ICNXGlossary
+from nti.contenttools.types.interfaces import ICNXCollection
+from nti.contenttools.types.interfaces import ICNXSubcollection
+from nti.contenttools.types.interfaces import ICNXProblemSolution
 
 from nti.contenttools.tests import ContentToolsTestCase
 
