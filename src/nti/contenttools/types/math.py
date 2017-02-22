@@ -30,7 +30,7 @@ from nti.contenttools.types.interfaces import IMFenced
 from nti.contenttools.types.interfaces import IMSubSup
 from nti.contenttools.types.interfaces import IMMenclose
 from nti.contenttools.types.interfaces import IMUnderover
-from nti.contenttools.types.interfaces import IMprescripts
+from nti.contenttools.types.interfaces import IMMprescripts
 from nti.contenttools.types.interfaces import IMMultiscripts
 
 
