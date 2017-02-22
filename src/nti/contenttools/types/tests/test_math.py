@@ -129,7 +129,7 @@ class TestMath(ContentToolsTestCase):
         assert_that(node, verifiably_provides(IMtr))
         assert_that(node, has_property('number_of_col', is_(0)))
 
-    def test_mfrac(self):
+    def test_MFrac(self):
         node = MFrac()
         assert_that(node, validly_provides(IMFrac))
         assert_that(node, verifiably_provides(IMFrac))
