@@ -560,7 +560,7 @@ class IMSup(IDocumentStructureNode):
 
 class IMSub(IDocumentStructureNode):
     """
-    Node for MathML element <>
+    Node for MathML element <msub>
     """
 
 
