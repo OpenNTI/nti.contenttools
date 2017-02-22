@@ -121,4 +121,22 @@
 			 for="nti.contenttools.types.interfaces.ITHead"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	
+	<!-- Math ML -->
+	<adapter factory=".math.MathRenderer"
+			 for="nti.contenttools.types.interfaces.IMath"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".math.MRowRenderer"
+			 for="nti.contenttools.types.interfaces.IMRow"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".math.MFencedRenderer"
+			 for="nti.contenttools.types.interfaces.IMFenced"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".math.MathRunRenderer"
+			 for="nti.contenttools.types.interfaces.IMathRun"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
