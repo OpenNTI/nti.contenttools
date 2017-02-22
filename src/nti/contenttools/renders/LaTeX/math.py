@@ -131,10 +131,10 @@ def math_td_html_rendered(self):
 
 def math_frac_html_rendered(self):
 	"""
-	to render <mfrac> element
+	to render <MFrac> element
 	"""
 	if len(self.children) != 2 :
-		logger.warn("<mfrac> should only have 2 children")
+		logger.warn("<MFrac> should only have 2 children")
 		return u''
 	else:
 		return u'\\frac{%s}{%s}' %(self.children[0].render(), self.children[1].render())
@@ -179,12 +179,12 @@ def math_msqrt_html_rendered(self):
 	"""
 	return u'\\sqrt{%s}' %(base_renderer(self))
 
-def math_mroot_html_rendered(self):
+def math_MRoot_html_rendered(self):
 	"""
-	to render <mroot> element
+	to render <MRoot> element
 	"""
 	if len(self.children) != 2:
-		logger.warn("<mroot> should only have 2 children")
+		logger.warn("<MRoot> should only have 2 children")
 		return u''
 	else:
 		return u'\\sqrt[%s]{%s}' %(self.children[1].render(), self.children[0].render())

@@ -108,7 +108,7 @@ class Mtd(types.Mtd):
         return me
 
 
-class Mfrac (types.Mfrac):
+class MFrac (types.MFrac):
 
     @classmethod
     def process(cls, element):
@@ -153,7 +153,7 @@ class MSqrt(types.Msqrt):
         return me
 
 
-class MRoot(types.Mroot):
+class MRoot(types.MRoot):
 
     @classmethod
     def process(cls, element):
@@ -251,15 +251,15 @@ def _process_mtd_elements(element):
     return Mtd.process(element)
 
 
-def _process_mfrac_elements(element):
-    return Mfrac.process(element)
+def _process_MFrac_elements(element):
+    return MFrac.process(element)
 
 
 def _process_msqrt_elements(element):
     return MSqrt.process(element)
 
 
-def _process_mroot_elements(element):
+def _process_MRoot_elements(element):
     return MRoot.process(element)
 
 
@@ -305,16 +305,16 @@ def check_child_element_type(me, child):
         pass
     elif child.tag == 'msubsup':
         me.add_child(_process_msubsup_elements(child))
-    elif child.tag == 'mfrac':
-        me.add_child(_process_mfrac_elements(child))
+    elif child.tag == 'MFrac':
+        me.add_child(_process_MFrac_elements(child))
     elif child.tag == 'mover':
         me.add_child(_process_mover_elements(child))
     elif child.tag == 'mtable':
         me.add_child(_process_mtable_elements(child))
     elif child.tag == 'msqrt':
         me.add_child(_process_msqrt_elements(child))
-    elif child.tag == 'mroot':
-        me.add_child(_process_mroot_elements(child))
+    elif child.tag == 'MRoot':
+        me.add_child(_process_MRoot_elements(child))
     elif child.tag == 'mtext':
         me.add_child(MText.process(child))
     elif child.tag == 'munderover':

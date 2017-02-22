@@ -637,7 +637,7 @@ class IMtd (IDocumentStructureNode):
 
 class IMFrac(IDocumentStructureNode):
     """
-    Node for MathML element <mfrac>
+    Node for MathML element <MFrac>
     """
 
 
@@ -649,7 +649,7 @@ class IMsqrt(IDocumentStructureNode):
 
 class IMRoot(IDocumentStructureNode):
     """
-    Node for MathML element <mroot>
+    Node for MathML element <MRoot>
     """
 
 
