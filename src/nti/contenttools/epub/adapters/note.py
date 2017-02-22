@@ -24,7 +24,7 @@ class OpenstaxNote (types.OpenstaxNote):
 		me = cls()
 		id_ = u''
 		if 'id' in element.attrib.keys() :
-			id_ = element.attrib['id']
+			id_ = unicode(element.attrib['id'])
 			me.set_label(id_)
 		for child in element:
 			if child.tag  == 'div' and child.attrib['class'] == 'title':
@@ -46,7 +46,7 @@ class OpenstaxExampleNote (types.OpenstaxExampleNote):
 		me = cls()
 		id_ = u''
 		if 'id' in element.attrib.keys():
-			id_ = element.attrib['id']
+			id_ = unicode(element.attrib['id'])
 			me.set_label(id_)
 		title = None
 		if 'title' in element.attrib.keys():

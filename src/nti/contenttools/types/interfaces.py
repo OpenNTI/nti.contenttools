@@ -1466,11 +1466,21 @@ class IOpenstaxNote(IDocumentStructureNode):
     Node for openstax note
     This is mostly used when parsing openstax epub to latex.
     """
-    title = ValidTextLine(title="Title",
-                          required=False)
+    title = Variant(
+        (Object(
+            IDocumentStructureNode,
+            title="Title"),
+        ValidTextLine(
+            title="Title")),
+        required=False)
 
-    label = ValidTextLine(title="Label",
-                          required=False)
+    label = Variant(
+        (Object(
+            IDocumentStructureNode,
+            title="Label"),
+        ValidTextLine(
+            title="Label")),
+        required=False)
 
     body = Object(IOpenstaxNoteBody,
                   title="Openstax Note Body",
