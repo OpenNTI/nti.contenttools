@@ -1325,12 +1325,15 @@ class IProblem(IDocumentStructureNode):
     """
 
     question = Variant((Object(IDocumentStructureNode),
-                        Object(IList)),
+                        ListOrTuple()),
                        title="Question",
                        required=False)
 
-    solution = ValidTextLine(title="Solution",
-                             required=False)
+    solution = Variant((Object(IDocumentStructureNode),
+                        ListOrTuple(),
+                        ValidTextLine()),
+                       title="Solution",
+                       required=False)
 
     label = Variant(
         (Object(
@@ -1370,11 +1373,17 @@ class IExercise(IDocumentStructureNode):
     This is mostly used when parsing openstax epub to latex.
     """
 
-    problem = Object(IProblem, title="Problem",
-                     required=False)
-
-    solution = Object(ISolution, title="Solution",
+    problem = Variant((Object(IDocumentStructureNode),
+                       ListOrTuple(),
+                       ValidTextLine()),
+                      title="Problem",
                       required=False)
+
+    solution = Variant((Object(IDocumentStructureNode),
+                        ListOrTuple(),
+                        ValidTextLine()),
+                       title="Solution",
+                       required=False)
 
     def set_problem(problem):
         """

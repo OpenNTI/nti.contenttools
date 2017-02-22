@@ -291,7 +291,7 @@ def process_problem_exercise(element, epub, problem_type) :
 	id_ = u''
 	if 'id' in element.attrib.keys():
 		id_ = element.attrib['id']
-		el.label = id_
+		el.label = unicode(id_)
 	return el
 
 class ProblemExercise(types.ProblemExercise):
