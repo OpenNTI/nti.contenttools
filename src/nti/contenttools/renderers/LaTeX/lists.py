@@ -55,8 +55,6 @@ def render_ordered_list(context, node):
     if optional:
         optional = u'[' + optional + u']'
 
-    # TODO: Why do we check the output?
-    # can we check the node itself
     check = search_node(IItem, node)
     if check:
         render_environment(context, u'enumerate', node, optional)
