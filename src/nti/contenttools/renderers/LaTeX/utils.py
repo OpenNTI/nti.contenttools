@@ -24,3 +24,18 @@ def create_label(name, value):
     """
     value = re.sub(FORBIDDEN_CHARACTERS, '_', value)
     return u'\\label{%s:%s}' % (name, value)
+
+
+def search_node(NodeInterface, root):
+    """
+    traverse nodes under the root
+    return true if there is node providing the giving interface NodeInterface
+    otherwise return false
+    """
+    found = False
+    for node in root:
+        if NodeInterface.providedBy(node):
+            return True
+        else:
+            found = search_node(NodeInterface, node)
+    return found
