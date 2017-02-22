@@ -200,7 +200,7 @@ class Problem(types.Problem):
 				question  = Paragraph.process(child, epub)
 				list_of_question.append(question)
 			elif child.tag == 'span':
-				label = child.attrib['id']
+				label = unicode(child.attrib['id'])
 				me.set_label(label)
 			elif child.tag == 'div' and child.attrib['class'] in ['solution labeled', 'solution']:
 				solution = Solution.process(child, epub)
