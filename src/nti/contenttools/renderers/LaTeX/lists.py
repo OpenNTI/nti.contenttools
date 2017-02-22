@@ -27,6 +27,7 @@ from nti.contenttools.types.interfaces import IItemWithDesc
 from nti.contenttools.types.interfaces import IUnorderedList
 from nti.contenttools.types.interfaces import IDescriptionList
 
+from nti.contenttools.renderers.LaTeX.utils import search_node
 
 def render_unordered_list(context, node):
     return render_environment(context, u'itemize', node)
@@ -56,11 +57,11 @@ def render_ordered_list(context, node):
 
     # TODO: Why do we check the output?
     # can we check the node itself
-    check = render_children_output(node)
-    if u'\\item' in check:
+    check = search_node(IItem, node)
+    if check:
         render_environment(context, u'enumerate', node, optional)
     else:
-        context.write(check)
+        render_children(context, node)
     return node
 
 
