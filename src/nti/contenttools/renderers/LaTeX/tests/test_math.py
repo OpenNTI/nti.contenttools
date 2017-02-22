@@ -53,8 +53,8 @@ class TestMath(ContentToolsTestCase):
     def test_mfenced(self):
         node = MFenced()
         output = render_output(node)
-        assert_that(output, is_(u'')) 
-    
+        assert_that(output, is_(u''))
+        
     def test_math_run(self):
         node = MathRun()
         output = render_output(node)

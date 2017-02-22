@@ -88,17 +88,17 @@ def render_mfenced(context, node):
 
 def set_matrix_border(context, node):
     if node.opener == u'[':
-        context.writer(u'\\begin{bmatrix}\n')
+        context.write(u'\\begin{bmatrix}\n')
         render_children(context, node)
-        context.writer(u'\\end{bmatrix}\n')
+        context.write(u'\\end{bmatrix}\n')
     elif node.opener == u'(':
-        context.writer(u'\\begin{pmatrix}\n')
+        context.write(u'\\begin{pmatrix}\n')
         render_children(context, node)
-        context.writer(u'\\end{pmatrix}\n')
+        context.write(u'\\end{pmatrix}\n')
     else:
-        context.writer(u'\\begin{matrix}\n')
+        context.write(u'\\begin{matrix}\n')
         render_children(context, node)
-        context.writer(u'\\end{matrix}\n')
+        context.write(u'\\end{matrix}\n')
     return node
 
 def set_mfenced_without_border(context, node):
