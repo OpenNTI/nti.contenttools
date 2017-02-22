@@ -47,7 +47,7 @@ class TestNote(ContentToolsTestCase):
         assert_that(node, validly_provides(INoteInteractive))
         assert_that(node, verifiably_provides(INoteInteractive))
         assert_that(node, has_property('image_path', is_(u'')))
-        assert_that(node, has_property('label', is_(u'')))
+        assert_that(node, has_property('label', is_(None)))
         assert_that(node, has_property('link', is_(None)))
         assert_that(node, has_property('caption', is_(u'')))
         assert_that(node, has_property('notes', is_(u'')))
