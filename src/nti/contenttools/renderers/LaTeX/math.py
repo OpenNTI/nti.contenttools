@@ -16,6 +16,8 @@ from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_environment
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
+from nti.contenttools.renderers.interfaces import IRenderer
+
 from nti.contenttools.types.interfaces import IMtd
 from nti.contenttools.types.interfaces import IMtr
 from nti.contenttools.types.interfaces import IMath
@@ -106,9 +108,38 @@ def set_mfenced_without_border(context, node):
     return node
     
 
-def render_mrun(context, node):
+def render_math_run(context, node):
     """
     render MathRun node
     """
     return render_children(context, node)
 
+@interface.implementer(IRenderer)
+class RendererMixin(object):
+
+    func = None
+
+    def __init__(self, node):
+        self.node = node
+
+    def render(self, context, node=None):
+        node = self.node if node is None else node
+        return self.func(context, node)
+    __call__ = render
+
+
+@component.adapter(IMath)
+class MathRenderer(RendererMixin):
+    func = staticmethod(render_math_html)
+
+@component.adapter(IMRow)
+class MRowRenderer(RendererMixin):
+    func = staticmethod(render_mrow)
+
+@component.adapter(IMFenced)
+class MFencedRenderer(RendererMixin):
+    func = staticmethod(render_mfenced)
+
+@component.adapter(IMathRun)
+class MathRunRenderer(RendererMixin):
+    func = staticmethod(render_math_run)
