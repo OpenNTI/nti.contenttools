@@ -19,6 +19,9 @@ from nti.contenttools.types.math import Math
 from nti.contenttools.types.math import MRow
 from nti.contenttools.types.math import MathRun
 from nti.contenttools.types.math import MFenced
+from nti.contenttools.types.math import Mtable
+from nti.contenttools.types.math import Mtr
+from nti.contenttools.types.math import Mtd
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -42,5 +45,20 @@ class TestMath(ContentToolsTestCase):
 
     def test_math_run(self):
         node = MathRun()
+        output = render_output(node)
+        assert_that(output, is_(u''))
+    
+    def test_mtable(self):
+        node = Mtable()
+        output = render_output(node)
+        assert_that(output, is_('\\begin{array}{}\n\\end{array}'))
+    
+    def test_mtr(self):
+        node = Mtr()
+        output = render_output(node)
+        assert_that(output, is_('\\\\\n'))
+    
+    def test_mtd(self):
+        node = Mtd()
         output = render_output(node)
         assert_that(output, is_(u''))
