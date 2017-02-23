@@ -16,13 +16,14 @@ from nti.contenttools.renderers.LaTeX.base import render_children
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
+from nti.contenttools.types.interfaces import IMtr
+from nti.contenttools.types.interfaces import IMtd
 from nti.contenttools.types.interfaces import IMath
 from nti.contenttools.types.interfaces import IMRow
 from nti.contenttools.types.interfaces import IMTable
-from nti.contenttools.types.interfaces import IMathRun
 from nti.contenttools.types.interfaces import IMFenced
-from nti.contenttools.types.interfaces import IMtr
-from nti.contenttools.types.interfaces import IMtd
+from nti.contenttools.types.interfaces import IMathRun
+
 
 """
 rendering MathML element
@@ -54,11 +55,11 @@ def render_mfenced(context, node):
     """
     render element <mfenced>
     """
-    if len(node.children) > 0:
+    if node.children:
         if IMTable.providedBy(node.children[0]):
             return set_matrix_border(context, node)
         elif IMRow.providedBy(node.children[0]):
-            if node.children[0].children:
+            if node.children[0].children or ():
                 if IMTable.providedBy(node.children[0].children[0]):
                     return set_matrix_border(context, node)
                 else:
@@ -110,7 +111,7 @@ def render_mtable(context, node):
     string_col = u''
     for unused in range(number_of_col):
         string_col = string_col + u' l '
-    
+
     if node.__parent__:
         if IMFenced.providedBy(node.__parent__):
             return render_children(context, node)
@@ -121,26 +122,29 @@ def render_mtable(context, node):
                 else:
                     return set_array_environment(context, node, string_col)
             else:
-                return set_array_environment(context, node, string_col)    
+                return set_array_environment(context, node, string_col)
         else:
             return set_array_environment(context, node, string_col)
     else:
         return set_array_environment(context, node, string_col)
-       
-def set_array_environment(context,node,string_col):
-    string_col = u'\\begin{array}{%s}\n' %(string_col)
+
+
+def set_array_environment(context, node, string_col):
+    string_col = u'\\begin{array}{%s}\n' % (string_col)
     context.write(string_col)
     render_children(context, node)
     context.write(u'\\end{array}')
     return node
 
-def render_mtr(context,node):
+
+def render_mtr(context, node):
     """
     render <mtr> element
     """
     render_children(context, node)
     context.write(u'\\\\\n')
     return node
+
 
 def render_mtd(context, node):
     """
@@ -181,14 +185,17 @@ class MFencedRenderer(RendererMixin):
 @component.adapter(IMathRun)
 class MathRunRenderer(RendererMixin):
     func = staticmethod(render_math_run)
-    
+
+
 @component.adapter(IMTable)
 class MTableRenderer(RendererMixin):
     func = staticmethod(render_mtable)
 
+
 @component.adapter(IMtr)
 class MtrRenderer(RendererMixin):
     func = staticmethod(render_mtr)
+
 
 @component.adapter(IMtd)
 class MtdRenderer(RendererMixin):

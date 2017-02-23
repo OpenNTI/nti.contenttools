@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from pty import CHILD
-
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -16,13 +14,13 @@ does_not = is_not
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
-from nti.contenttools.types.math import Math
-from nti.contenttools.types.math import MRow
-from nti.contenttools.types.math import MathRun
-from nti.contenttools.types.math import MFenced
-from nti.contenttools.types.math import Mtable
 from nti.contenttools.types.math import Mtr
 from nti.contenttools.types.math import Mtd
+from nti.contenttools.types.math import Math
+from nti.contenttools.types.math import MRow
+from nti.contenttools.types.math import Mtable
+from nti.contenttools.types.math import MFenced
+from nti.contenttools.types.math import MathRun
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -43,14 +41,14 @@ class TestMath(ContentToolsTestCase):
         node = MFenced()
         output = render_output(node)
         assert_that(output, is_(u''))
-    
+
     def test_mfenced_with_mtable(self):
         node = MFenced()
         child = Mtable()
         node.add(child)
         output = render_output(node)
         assert_that(output, is_(u'\\begin{matrix}\n\\end{matrix}\n'))
-    
+
     def test_mfenced_bmatrix(self):
         node = MFenced()
         node.opener = u'['
@@ -58,7 +56,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child)
         output = render_output(node)
         assert_that(output, is_(u'\\begin{bmatrix}\n\\end{bmatrix}\n'))
-    
+
     def test_mfenced_pmatrix(self):
         node = MFenced()
         node.opener = u'('
@@ -66,7 +64,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child)
         output = render_output(node)
         assert_that(output, is_(u'\\begin{pmatrix}\n\\end{pmatrix}\n'))
-    
+
     def test_mfenced_with_mrow_mtable(self):
         node = MFenced()
         child = MRow()
@@ -80,22 +78,22 @@ class TestMath(ContentToolsTestCase):
         node = MathRun()
         output = render_output(node)
         assert_that(output, is_(u''))
-    
+
     def test_mtable(self):
         node = Mtable()
         output = render_output(node)
         assert_that(output, is_('\\begin{array}{}\n\\end{array}'))
-    
+
     def test_mtr(self):
         node = Mtr()
         output = render_output(node)
         assert_that(output, is_('\\\\\n'))
-    
+
     def test_mtd(self):
         node = Mtd()
         output = render_output(node)
         assert_that(output, is_(u''))
-    
+
     def test_mtable_with_mtr_mtd(self):
         node = Mtable()
         node.number_of_col = 1
@@ -105,4 +103,3 @@ class TestMath(ContentToolsTestCase):
         node.add(child)
         output = render_output(node)
         assert_that(output, is_(u'\\begin{array}{ l }\n\\\\\n\\end{array}'))
-        
