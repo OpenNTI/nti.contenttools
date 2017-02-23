@@ -139,4 +139,16 @@
 			 for="nti.contenttools.types.interfaces.IMathRun"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".math.MTableRenderer"
+			 for="nti.contenttools.types.interfaces.IMTable"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".math.MtrRenderer"
+			 for="nti.contenttools.types.interfaces.IMtr"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".math.MtdRenderer"
+			 for="nti.contenttools.types.interfaces.IMtd"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
