@@ -98,10 +98,11 @@ class TestMath(ContentToolsTestCase):
     
     def test_mtable_with_mtr_mtd(self):
         node = Mtable()
+        node.number_of_col = 1
         child = Mtr()
         grandchild = Mtd()
         child.add(grandchild)
         node.add(child)
         output = render_output(node)
-        assert_that(output, is_(u'\\begin{array}{}\n\\\\\n\\end{array}'))
+        assert_that(output, is_(u'\\begin{array}{ l }\n\\\\\n\\end{array}'))
         
