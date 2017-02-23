@@ -13,8 +13,8 @@ from zope import interface
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
-from nti.contenttools.renderers.LaTeX.base import render_children_output,\
-    render_children
+from nti.contenttools.renderers.LaTeX.base import render_children
+from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 from nti.contenttools.types.interfaces import IRow
 from nti.contenttools.types.interfaces import ICell

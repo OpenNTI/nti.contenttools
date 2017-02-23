@@ -12,10 +12,10 @@ logger = __import__('logging').getLogger(__name__)
 from zope import interface
 
 from nti.contenttools.types.interfaces import IGlossary
-from nti.contenttools.types.interfaces import IGlossaryList
-from nti.contenttools.types.interfaces import IGlossaryItem
 from nti.contenttools.types.interfaces import IGlossaryDT
 from nti.contenttools.types.interfaces import IGlossaryDD
+from nti.contenttools.types.interfaces import IGlossaryItem
+from nti.contenttools.types.interfaces import IGlossaryList
 from nti.contenttools.types.interfaces import IGlossaryTerm
 from nti.contenttools.types.interfaces import IGlossaryDefinition
 
