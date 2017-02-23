@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -28,6 +27,7 @@ from nti.contenttools.types.run import Run
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestLists(ContentToolsTestCase):
 
     def test_dd(self):
@@ -39,10 +39,10 @@ class TestLists(ContentToolsTestCase):
         node = DT()
         output = render_output(node)
         assert_that(output, is_(u'\\item []  \n'))
-    
+
     def test_dt_with_desc(self):
         node = DT()
-        #todo : check with TextNode
+        # todo : check with TextNode
         node.desc = Run()
         output = render_output(node)
         assert_that(output, is_(u'\\item []  \n'))
@@ -61,13 +61,14 @@ class TestLists(ContentToolsTestCase):
         node = UnorderedList()
         output = render_output(node)
         assert_that(output, is_(u'\\begin{itemize}\n\n\\end{itemize}\n'))
-    
+
     def test_unordered_list(self):
         node = UnorderedList()
         child = Item()
         node.add(child)
         output = render_output(node)
-        assert_that(output, is_(u'\\begin{itemize}\n\item  \n\n\end{itemize}\n'))
+        assert_that(output,
+                    is_(u'\\begin{itemize}\n\item  \n\n\end{itemize}\n'))
 
     def test_ordered_list_without_item(self):
         node = OrderedList()
@@ -79,9 +80,8 @@ class TestLists(ContentToolsTestCase):
         child = Item()
         node.add(child)
         output = render_output(node)
-        assert_that(
-            output,
-            is_(u'\\begin{enumerate}[start=0]\n\item  \n\n\\end{enumerate}\n'))
+        assert_that(output,
+                    is_(u'\\begin{enumerate}[start=0]\n\item  \n\n\\end{enumerate}\n'))
 
     def test_item_with_description(self):
         node = ItemWithDesc()
@@ -91,24 +91,27 @@ class TestLists(ContentToolsTestCase):
     def test_description_list(self):
         node = DescriptionList()
         output = render_output(node)
-        assert_that(output, is_('\\begin{description}\n\n\\end{description}\n'))
-    
+        assert_that(output,
+                    is_('\\begin{description}\n\n\\end{description}\n'))
+
     def test_description_list_with_item_desc(self):
         node = DescriptionList()
         child = ItemWithDesc()
         dt = DT()
         dd = DD()
-        dt.desc =dd
+        dt.desc = dd
         child.add(dt)
         node.add(child)
         output = render_output(node)
-        assert_that(output, is_(u'\\begin{description}\n\item []  \n\n\\end{description}\n'))
-    
+        assert_that(output,
+                    is_(u'\\begin{description}\n\item []  \n\n\\end{description}\n'))
+
     def test_description_list_with_dt(self):
         node = DescriptionList()
         dt = DT()
         dd = DD()
-        dt.desc =dd
+        dt.desc = dd
         node.add(dt)
         output = render_output(node)
-        assert_that(output, is_(u'\\begin{description}\n\item []  \n\n\\end{description}\n'))
+        assert_that(output,
+                    is_(u'\\begin{description}\n\item []  \n\n\\end{description}\n'))

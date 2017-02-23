@@ -46,10 +46,10 @@ from nti.contenttools.types.sectioning import SubSubSubSubSection
 
 from nti.contenttools.types.table import Row
 from nti.contenttools.types.table import Cell
+from nti.contenttools.types.table import Table
 from nti.contenttools.types.table import TBody
 from nti.contenttools.types.table import THead
 from nti.contenttools.types.table import TFoot
-from nti.contenttools.types.table import Table
 
 from nti.contenttools.types.media import Image
 from nti.contenttools.types.media import Video

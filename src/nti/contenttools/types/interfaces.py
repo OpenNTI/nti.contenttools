@@ -114,13 +114,10 @@ class IChapter(IDocumentStructureNode):
                           required=True,
                           default=u'')
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     def set_title(title):
         """
@@ -143,13 +140,10 @@ class ISection(IDocumentStructureNode):
                           required=True,
                           default=u'')
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     data_depth = Int(title="Data depth",
                      required=False)
@@ -164,13 +158,10 @@ class ISubSection(ISection):
                           required=True,
                           default=u'')
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
 
 class ISubSubSection(ISection):
@@ -193,13 +184,10 @@ class ISubSubSubSubSection(ISection):
 
 class IParagraph(IDocumentStructureNode):
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     element_type = ValidTextLine(title="Element Type",
                                  required=False)
@@ -246,13 +234,10 @@ class ISidebar(IDocumentStructureNode):
     title = ValidTextLine(title="Sidebar Title",
                           required=False)
 
-    label = label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = label = Variant((Object(IDocumentStructureNode,
+                                    title="Label"),
+                             ValidTextLine(title="Label")),
+                            required=False)
 
     type = ValidTextLine(title="Sidebar Type",
                          required=False)
@@ -411,13 +396,10 @@ class ITable(IDocumentStructureNode):
                        ValidTextLine(title="Table Caption")),
                       required=False)
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     border = ListOrTuple(title="TableBorder",
                          required=False)
@@ -1113,13 +1095,10 @@ class INoteInteractive(IDocumentStructureNode):
                                required=True,
                                default=u'')
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     link = ValidTextLine(title="Link",
                          required=False)
@@ -1181,13 +1160,10 @@ class IFigure(IDocumentStructureNode):
     Node for figure environment
     """
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     caption = ValidTextLine(title="Caption",
                             required=False)
@@ -1291,13 +1267,10 @@ class ISolution (IDocumentStructureNode):
     solution = ValidTextLine(title="Solution",
                              required=False)
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     problem_type = ValidTextLine(title="Problem Type",
                                  required=False)
@@ -1335,13 +1308,10 @@ class IProblem(IDocumentStructureNode):
                        title="Solution",
                        required=False)
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     problem_type = ValidTextLine(title="Problem Type",
                                  required=False)
@@ -1467,21 +1437,15 @@ class IProblemExercise(IDocumentStructureNode):
     problem_type = ValidTextLine(title="Problem type",
                                  required=False)
 
-    title = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Title"),
-         ValidTextLine(
-            title="Title")),
-        required=False)
+    title = Variant((Object(IDocumentStructureNode,
+                            title="Title"),
+                     ValidTextLine(title="Title")),
+                    required=False)
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
 
 class IExerciseCheck(IDocumentStructureNode):
@@ -1515,13 +1479,10 @@ class IEndOfChapterSolution(IDocumentStructureNode):
     title = ValidTextLine(title="Title",
                           required=False)
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     body = Object(IDocumentStructureNode,
                   title="Chapter Solution Body",
@@ -1539,21 +1500,15 @@ class IOpenstaxNote(IDocumentStructureNode):
     Node for openstax note
     This is mostly used when parsing openstax epub to latex.
     """
-    title = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Title"),
-         ValidTextLine(
-            title="Title")),
-        required=False)
+    title = Variant((Object(IDocumentStructureNode,
+                            title="Title"),
+                     ValidTextLine(title="Title")),
+                    required=False)
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     body = Object(IOpenstaxNoteBody,
                   title="Openstax Note Body",
@@ -1571,13 +1526,10 @@ class IEquationImage(IDocumentStructureNode):
     Node for equation image
     """
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     text = Object(IDocumentStructureNode,
                   title="Text",
@@ -1665,13 +1617,10 @@ class ICNXProblemSolution(IDocumentStructureNode):
     title = Object(INode, title="Title",
                    required=False)
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
 
 class IGlossaryDefinition(IDocumentStructureNode):
@@ -1695,13 +1644,10 @@ class IFootnoteText(IDocumentStructureNode):
     text = Object(IDocumentStructureNode, title="Title",
                   required=False)
 
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     num = ValidTextLine(title="Num",
                         required=False)
@@ -1725,13 +1671,11 @@ class IFootnote(IDocumentStructureNode):
     """
     text = Object(IRunNode, title="Title",
                   required=False)
-    label = Variant(
-        (Object(
-            IDocumentStructureNode,
-            title="Label"),
-         ValidTextLine(
-            title="Label")),
-        required=False)
+
+    label = Variant((Object(IDocumentStructureNode,
+                            title="Label"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
 
 class IPreTag(IDocumentStructureNode):

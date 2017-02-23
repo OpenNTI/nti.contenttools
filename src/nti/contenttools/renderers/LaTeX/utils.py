@@ -26,7 +26,7 @@ def create_label(name, value):
     return u'\\label{%s:%s}' % (name, value)
 
 
-def search_node(NodeInterface, root):
+def search_node(provided, root):
     """
     traverse nodes under the root
     return true if there is node providing the giving interface NodeInterface
@@ -34,8 +34,8 @@ def search_node(NodeInterface, root):
     """
     found = False
     for node in root:
-        if NodeInterface.providedBy(node):
+        if provided.providedBy(node):
             return True
         else:
-            found = search_node(NodeInterface, node)
+            found = search_node(provided, node)
     return found

@@ -11,17 +11,17 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from nti.contenttools.types.interfaces import IExercise
 from nti.contenttools.types.interfaces import IProblem
+from nti.contenttools.types.interfaces import IExample
+from nti.contenttools.types.interfaces import IExercise
 from nti.contenttools.types.interfaces import ISolution
+from nti.contenttools.types.interfaces import IExerciseDiv
+from nti.contenttools.types.interfaces import IExerciseCheck
 from nti.contenttools.types.interfaces import IMultipleChoices
+from nti.contenttools.types.interfaces import IProblemExercise
 from nti.contenttools.types.interfaces import IChapterExercise
 from nti.contenttools.types.interfaces import IExerciseSection
 from nti.contenttools.types.interfaces import IExerciseElement
-from nti.contenttools.types.interfaces import IExerciseDiv
-from nti.contenttools.types.interfaces import IExample
-from nti.contenttools.types.interfaces import IProblemExercise
-from nti.contenttools.types.interfaces import IExerciseCheck
 from nti.contenttools.types.interfaces import IEndOfChapterSolution
 
 from nti.contenttools.types.node import DocumentStructureNode

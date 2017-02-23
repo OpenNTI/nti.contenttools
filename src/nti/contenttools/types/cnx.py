@@ -11,12 +11,12 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from nti.contenttools.types.interfaces import ICNXCollection
-from nti.contenttools.types.interfaces import ICNXSubcollection
-from nti.contenttools.types.interfaces import ICNXContent
 from nti.contenttools.types.interfaces import ICNXModule
+from nti.contenttools.types.interfaces import ICNXContent
 from nti.contenttools.types.interfaces import ICNXHTMLBody
 from nti.contenttools.types.interfaces import ICNXGlossary
+from nti.contenttools.types.interfaces import ICNXCollection
+from nti.contenttools.types.interfaces import ICNXSubcollection
 from nti.contenttools.types.interfaces import ICNXProblemSolution
 
 from nti.contenttools.types.node import DocumentStructureNode
