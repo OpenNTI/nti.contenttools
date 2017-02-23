@@ -21,7 +21,8 @@ from nti.contenttools.types.interfaces import IMRow
 from nti.contenttools.types.interfaces import IMTable
 from nti.contenttools.types.interfaces import IMathRun
 from nti.contenttools.types.interfaces import IMFenced
-
+from nti.contenttools.types.interfaces import IMtr
+from nti.contenttools.types.interfaces import IMtd
 
 """
 rendering MathML element
@@ -101,6 +102,53 @@ def render_math_run(context, node):
     return render_children(context, node)
 
 
+def render_mtable(context, node):
+    """
+    render <mtable> element
+    """
+    number_of_col = int(node.number_of_col)
+    string_col = u''
+    for unused in range(number_of_col):
+        string_col = string_col + u' l '
+    
+    if node.__parent__:
+        if IMFenced.providedBy(node.__parent__):
+            return render_children(context, node)
+        elif IMRow.providedBy(node.__parent__):
+            if node.__parent__.__parent__:
+                if IMFenced.providedBy(node.__parent__.__parent__):
+                    return render_children(context, node)
+                else:
+                    return set_array_environment(context, node, string_col)
+            else:
+                return set_array_environment(context, node, string_col)    
+        else:
+            return set_array_environment(context, node, string_col)
+    else:
+        return set_array_environment(context, node, string_col)
+       
+def set_array_environment(context,node,string_col):
+    string_col = u'\\begin{array}{%s}\n' %(string_col)
+    context.write(string_col)
+    render_children(context, node)
+    context.write(u'\\end{array}')
+    return node
+
+def render_mtr(context,node):
+    """
+    render <mtr> element
+    """
+    render_children(context, node)
+    context.write(u'\\\\\n')
+    return node
+
+def render_mtd(context, node):
+    """
+    to render <mtd> element
+    """
+    return render_children(context, node)
+
+
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -133,3 +181,15 @@ class MFencedRenderer(RendererMixin):
 @component.adapter(IMathRun)
 class MathRunRenderer(RendererMixin):
     func = staticmethod(render_math_run)
+    
+@component.adapter(IMTable)
+class MTableRenderer(RendererMixin):
+    func = staticmethod(render_mtable)
+
+@component.adapter(IMtr)
+class MtrRenderer(RendererMixin):
+    func = staticmethod(render_mtr)
+
+@component.adapter(IMtd)
+class MtdRenderer(RendererMixin):
+    func = staticmethod(render_mtd)
