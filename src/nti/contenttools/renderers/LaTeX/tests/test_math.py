@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from pty import CHILD
 
 __docformat__ = "restructuredtext en"
 
@@ -42,6 +43,38 @@ class TestMath(ContentToolsTestCase):
         node = MFenced()
         output = render_output(node)
         assert_that(output, is_(u''))
+    
+    def test_mfenced_with_mtable(self):
+        node = MFenced()
+        child = Mtable()
+        node.add(child)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{matrix}\n\\end{matrix}\n'))
+    
+    def test_mfenced_bmatrix(self):
+        node = MFenced()
+        node.opener = u'['
+        child = Mtable()
+        node.add(child)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{bmatrix}\n\\end{bmatrix}\n'))
+    
+    def test_mfenced_pmatrix(self):
+        node = MFenced()
+        node.opener = u'('
+        child = Mtable()
+        node.add(child)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{pmatrix}\n\\end{pmatrix}\n'))
+    
+    def test_mfenced_with_mrow_mtable(self):
+        node = MFenced()
+        child = MRow()
+        grandchild = Mtable()
+        child.add(grandchild)
+        node.add(child)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{matrix}\n\\end{matrix}\n'))
 
     def test_math_run(self):
         node = MathRun()
@@ -62,3 +95,13 @@ class TestMath(ContentToolsTestCase):
         node = Mtd()
         output = render_output(node)
         assert_that(output, is_(u''))
+    
+    def test_mtable_with_mtr_mtd(self):
+        node = Mtable()
+        child = Mtr()
+        grandchild = Mtd()
+        child.add(grandchild)
+        node.add(child)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{array}{}\n\\\\\n\\end{array}'))
+        
