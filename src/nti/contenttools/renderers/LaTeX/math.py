@@ -13,6 +13,7 @@ from zope import component
 from zope import interface
 
 from nti.contenttools.renderers.LaTeX.base import render_children
+from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
@@ -24,6 +25,9 @@ from nti.contenttools.types.interfaces import IMTable
 from nti.contenttools.types.interfaces import IMFenced
 from nti.contenttools.types.interfaces import IMathRun
 from nti.contenttools.types.interfaces import IMFrac
+from nti.contenttools.types.interfaces import IMSub
+from nti.contenttools.types.interfaces import IMSup
+from nti.contenttools.types.interfaces import IMSubSup
 
 
 """
@@ -155,7 +159,7 @@ def render_mtd(context, node):
 
 def render_mfrac(context, node):
     """
-    to render <mfrac> element
+    render <mfrac> element
     """
     if len(node.children) != 2:
         logger.warn("<MFrac> should only have 2 children")
@@ -166,8 +170,57 @@ def render_mfrac(context, node):
         render_children(context, node.children[1])
         context.write(u'}')
     return node
-        
-        
+
+def render_msub(context, node):
+    """
+    render <msub> element
+    """
+    if len(node.children) != 2 :
+        logger.warn('<msub> element should have 2 children')
+    else:
+        context.write(u'{')
+        render_children(context, node.children[0])
+        context.write(u'}_{')
+        render_children(context, node.children[1])
+        context.write(u'}')
+    return node
+
+def render_msup(context, node):
+    """
+    render <msup> element
+    """
+    if len(node.children) != 2 :
+        logger.warn('<msup> element should have 2 children')
+    else:
+        context.write(u'{')
+        render_children(context, node.children[0])
+        context.write(u'}^{')
+        render_children(context, node.children[1])
+        context.write(u'}')
+    return node
+
+def render_msubsup(context, node):
+    """
+    render <msubsup> element
+    """
+    check = render_children_output(node.children[0])
+    if len(node.children) != 3:
+        logger.warn("<msubsup> should only have 3 children")
+    elif u'int' in check:
+        context.write(u'\\int_')
+        render_children(context, node.children[1])
+        context.write(u'^\\')
+        render_children(context, node.children[2])
+    else:
+        context.write(u'{')
+        render_children(context, node.children[0])
+        context.write(u'}_{')
+        render_children(context, node.children[1])
+        context.write(u'}^{')
+        render_children(context, node.children[2])
+        context.write(u'}')
+    return node   
+    
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -219,3 +272,15 @@ class MtdRenderer(RendererMixin):
 @component.adapter(IMFrac)
 class MFracRenderer(RendererMixin):
     func = staticmethod(render_mfrac)
+
+@component.adapter(IMSub)
+class MSubRenderer(RendererMixin):
+    func = staticmethod(render_msub)
+
+@component.adapter(IMSup)
+class MSupRenderer(RendererMixin):
+    func = staticmethod(render_msup)
+
+@component.adapter(IMSubSup)
+class MSubSupRenderer(RendererMixin):
+    func = staticmethod(render_msubsup)

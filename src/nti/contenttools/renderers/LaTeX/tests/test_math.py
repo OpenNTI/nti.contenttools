@@ -22,6 +22,9 @@ from nti.contenttools.types.math import Mtable
 from nti.contenttools.types.math import MFenced
 from nti.contenttools.types.math import MathRun
 from nti.contenttools.types.math import MFrac
+from nti.contenttools.types.math import MSub
+from nti.contenttools.types.math import MSup
+from nti.contenttools.types.math import MSubSup
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -113,3 +116,33 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_('\\frac{}{}'))
+    
+    def test_msub(self):
+        node = MSub()
+        child_1 = MathRun()
+        child_2 = MathRun()
+        node.add(child_1)
+        node.add(child_2)
+        output = render_output(node)
+        assert_that(output, is_(u'{}_{}'))
+    
+    def test_msup(self):
+        node = MSup()
+        child_1 = MathRun()
+        child_2 = MathRun()
+        node.add(child_1)
+        node.add(child_2)
+        output = render_output(node)
+        assert_that(output, is_(u'{}^{}'))
+    
+    def test_msubsup(self):
+        node = MSubSup()
+        child_1 = MathRun()
+        child_2 = MathRun()
+        child_3 = MathRun()
+        node.add(child_1)
+        node.add(child_2)
+        node.add(child_3)
+        output = render_output(node)
+        assert_that(output, is_(u'{}_{}^{}'))
+        
