@@ -27,6 +27,7 @@ from nti.contenttools.types.math import MSup
 from nti.contenttools.types.math import MSubSup
 from nti.contenttools.types.math import Msqrt
 from nti.contenttools.types.math import MRoot
+from nti.contenttools.types.math import MUnder
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -161,4 +162,13 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'\sqrt[]{}'))
+    
+    def test_munder(self):
+        node = MUnder()
+        child_1 = MathRun()
+        child_2 = MathRun()
+        node.add(child_1)
+        node.add(child_2)
+        output = render_output(node)
+        assert_that(output, is_(u'\underset{}{}'))
         

@@ -30,6 +30,7 @@ from nti.contenttools.types.interfaces import IMSup
 from nti.contenttools.types.interfaces import IMSubSup
 from nti.contenttools.types.interfaces import IMRoot
 from nti.contenttools.types.interfaces import IMsqrt
+from nti.contenttools.types.interfaces import IMUnder
 
 """
 rendering MathML element
@@ -248,8 +249,34 @@ def render_mroot(context, node):
         render_children(context, node.children[1])
         context.write(u'}')
     return node
+
+def render_munder(context, node):
+    """
+    render <munder> element
+    """
+    if len(node.children) == 2:
+        base_1 = render_children_output(node.children[0])
+        base_2 = render_children_output(node.children[1])
+        if u'23df' in base_2.lower() or u'\u23df' in unicode(base_2).split():
+            context.write(u'\\underbracket{')
+            context.write(base_1)
+            context.write(u'}')
+        elif u'\u220f' in unicode(base_1).split() or u'\\prod' in base_1:
+            context.write(u'\\prod{')
+            context.write(base_2)
+            context.write(u'}')
+        else:
+            context.write(u'\\underset{')
+            context.write(base_2)
+            context.write(u'}{')
+            context.write(base_1)
+            context.write(u'}')
+    else:
+        logger.warn("mathml <munder> element should have 2 children")
     
-    
+    return node
+            
+            
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -325,3 +352,7 @@ class MSqrtRenderer(RendererMixin):
 @component.adapter(IMRoot)
 class MRootRenderer(RendererMixin):
     func = staticmethod(render_mroot)
+
+@component.adapter(IMUnder)
+class MUnderRenderer(RendererMixin):
+    func = staticmethod(render_munder)
