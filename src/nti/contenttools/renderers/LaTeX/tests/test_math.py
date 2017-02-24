@@ -21,6 +21,7 @@ from nti.contenttools.types.math import MRow
 from nti.contenttools.types.math import Mtable
 from nti.contenttools.types.math import MFenced
 from nti.contenttools.types.math import MathRun
+from nti.contenttools.types.math import MFrac
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -103,3 +104,12 @@ class TestMath(ContentToolsTestCase):
         node.add(child)
         output = render_output(node)
         assert_that(output, is_(u'\\begin{array}{ l }\n\\\\\n\\end{array}'))
+    
+    def test_mfrac(self):
+        node = MFrac()
+        child_1 = MathRun()
+        child_2 = MathRun()
+        node.add(child_1)
+        node.add(child_2)
+        output = render_output(node)
+        assert_that(output, is_('\\frac{}{}'))

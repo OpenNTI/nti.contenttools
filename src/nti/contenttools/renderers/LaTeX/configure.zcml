@@ -151,4 +151,8 @@
 			 for="nti.contenttools.types.interfaces.IMtd"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".math.MFracRenderer"
+			 for="nti.contenttools.types.interfaces.IMFrac"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
