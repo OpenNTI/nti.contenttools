@@ -18,16 +18,16 @@ from nti.contenttools.types.math import Mtr
 from nti.contenttools.types.math import Mtd
 from nti.contenttools.types.math import Math
 from nti.contenttools.types.math import MRow
-from nti.contenttools.types.math import Mtable
-from nti.contenttools.types.math import MFenced
-from nti.contenttools.types.math import MathRun
-from nti.contenttools.types.math import MFrac
 from nti.contenttools.types.math import MSub
 from nti.contenttools.types.math import MSup
-from nti.contenttools.types.math import MSubSup
+from nti.contenttools.types.math import MFrac
 from nti.contenttools.types.math import Msqrt
 from nti.contenttools.types.math import MRoot
+from nti.contenttools.types.math import Mtable
 from nti.contenttools.types.math import MUnder
+from nti.contenttools.types.math import MFenced
+from nti.contenttools.types.math import MathRun
+from nti.contenttools.types.math import MSubSup
 from nti.contenttools.types.math import MUnderover
 
 from nti.contenttools.tests import ContentToolsTestCase
