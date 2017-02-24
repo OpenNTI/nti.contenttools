@@ -228,6 +228,7 @@ def render_msubsup(context, node):
         context.write(u'}')
     return node
 
+
 def render_msqrt(context, node):
     """
     render <msqrt> element
@@ -236,7 +237,8 @@ def render_msqrt(context, node):
     render_children(context, node)
     context.write(u'}')
     return node
-    
+
+
 def render_mroot(context, node):
     """
     render <mroot> element
@@ -250,6 +252,7 @@ def render_mroot(context, node):
         render_children(context, node.children[1])
         context.write(u'}')
     return node
+
 
 def render_munder(context, node):
     """
@@ -274,14 +277,15 @@ def render_munder(context, node):
             context.write(u'}')
     else:
         logger.warn("mathml <munder> element should have 2 children")
-    
+
     return node
+
 
 def render_munderover(context, node):
     """
     render <munderover> element
     """
-    if len(node.children) == 3 :
+    if len(node.children) == 3:
         token = render_children_output(node.children[0])
         if u'\u2211' in unicode(token.split()) or u'\\sum' in token:
             context.write(u'\\sum_{')
@@ -301,7 +305,7 @@ def render_munderover(context, node):
             context.write(u'}^{')
             render_children(context, node.children[2])
             context.write(u'}')
-        else :
+        else:
             context.write(u'\\overset{')
             render_children(context, node.children[2])
             context.write(u'}{\\underset{')
@@ -311,8 +315,9 @@ def render_munderover(context, node):
             context.write(u'}}')
     else:
         logger.warn(u'The number <munder> element child is not 3')
-    return node            
-            
+    return node
+
+
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -381,18 +386,22 @@ class MSupRenderer(RendererMixin):
 class MSubSupRenderer(RendererMixin):
     func = staticmethod(render_msubsup)
 
+
 @component.adapter(IMsqrt)
 class MSqrtRenderer(RendererMixin):
     func = staticmethod(render_msqrt)
+
 
 @component.adapter(IMRoot)
 class MRootRenderer(RendererMixin):
     func = staticmethod(render_mroot)
 
+
 @component.adapter(IMUnder)
 class MUnderRenderer(RendererMixin):
     func = staticmethod(render_munder)
-    
+
+
 @component.adapter(IMUnderover)
 class MUnderoverRenderer(RendererMixin):
     func = staticmethod(render_munderover)

@@ -111,7 +111,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child)
         output = render_output(node)
         assert_that(output, is_(u'\\begin{array}{ l }\n\\\\\n\\end{array}'))
-    
+
     def test_mfrac(self):
         node = MFrac()
         child_1 = MathRun()
@@ -120,7 +120,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_('\\frac{}{}'))
-    
+
     def test_msub(self):
         node = MSub()
         child_1 = MathRun()
@@ -129,7 +129,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'{}_{}'))
-    
+
     def test_msup(self):
         node = MSup()
         child_1 = MathRun()
@@ -138,7 +138,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'{}^{}'))
-    
+
     def test_msubsup(self):
         node = MSubSup()
         child_1 = MathRun()
@@ -149,12 +149,12 @@ class TestMath(ContentToolsTestCase):
         node.add(child_3)
         output = render_output(node)
         assert_that(output, is_(u'{}_{}^{}'))
-    
+
     def test_msqrt(self):
         node = Msqrt()
         output = render_output(node)
         assert_that(output, is_(u'\\sqrt{}'))
-    
+
     def test_mroot(self):
         node = MRoot()
         child_1 = MathRun()
@@ -163,8 +163,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'\\sqrt[]{}'))
-    
-        
+
     def test_munder(self):
         node = MUnder()
         child_1 = MathRun()
@@ -173,7 +172,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'\\underset{}{}'))
-    
+
     def test_munderover(self):
         node = MUnderover()
         child_1 = MathRun()
@@ -184,4 +183,3 @@ class TestMath(ContentToolsTestCase):
         node.add(child_3)
         output = render_output(node)
         assert_that(output, is_(u'\\overset{}{\\underset{}{}}'))
-        
