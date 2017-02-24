@@ -157,6 +157,7 @@ def render_mtd(context, node):
     """
     return render_children(context, node)
 
+
 def render_mfrac(context, node):
     """
     render <mfrac> element
@@ -171,11 +172,12 @@ def render_mfrac(context, node):
         context.write(u'}')
     return node
 
+
 def render_msub(context, node):
     """
     render <msub> element
     """
-    if len(node.children) != 2 :
+    if len(node.children) != 2:
         logger.warn('<msub> element should have 2 children')
     else:
         context.write(u'{')
@@ -185,11 +187,12 @@ def render_msub(context, node):
         context.write(u'}')
     return node
 
+
 def render_msup(context, node):
     """
     render <msup> element
     """
-    if len(node.children) != 2 :
+    if len(node.children) != 2:
         logger.warn('<msup> element should have 2 children')
     else:
         context.write(u'{')
@@ -198,6 +201,7 @@ def render_msup(context, node):
         render_children(context, node.children[1])
         context.write(u'}')
     return node
+
 
 def render_msubsup(context, node):
     """
@@ -219,8 +223,9 @@ def render_msubsup(context, node):
         context.write(u'}^{')
         render_children(context, node.children[2])
         context.write(u'}')
-    return node   
-    
+    return node
+
+
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -269,17 +274,21 @@ class MtrRenderer(RendererMixin):
 class MtdRenderer(RendererMixin):
     func = staticmethod(render_mtd)
 
+
 @component.adapter(IMFrac)
 class MFracRenderer(RendererMixin):
     func = staticmethod(render_mfrac)
+
 
 @component.adapter(IMSub)
 class MSubRenderer(RendererMixin):
     func = staticmethod(render_msub)
 
+
 @component.adapter(IMSup)
 class MSupRenderer(RendererMixin):
     func = staticmethod(render_msup)
+
 
 @component.adapter(IMSubSup)
 class MSubSupRenderer(RendererMixin):

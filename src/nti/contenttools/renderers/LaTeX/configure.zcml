@@ -155,7 +155,7 @@
 			 for="nti.contenttools.types.interfaces.IMFrac"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
-		<adapter factory=".math.MSubRenderer"
+	<adapter factory=".math.MSubRenderer"
 			 for="nti.contenttools.types.interfaces.IMSub"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
