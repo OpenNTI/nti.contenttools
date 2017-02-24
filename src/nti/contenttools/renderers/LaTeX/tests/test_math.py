@@ -25,6 +25,8 @@ from nti.contenttools.types.math import MFrac
 from nti.contenttools.types.math import MSub
 from nti.contenttools.types.math import MSup
 from nti.contenttools.types.math import MSubSup
+from nti.contenttools.types.math import Msqrt
+from nti.contenttools.types.math import MRoot
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -145,4 +147,18 @@ class TestMath(ContentToolsTestCase):
         node.add(child_3)
         output = render_output(node)
         assert_that(output, is_(u'{}_{}^{}'))
+    
+    def test_msqrt(self):
+        node = Msqrt()
+        output = render_output(node)
+        assert_that(output, is_(u'\sqrt{}'))
+    
+    def test_mroot(self):
+        node = MRoot()
+        child_1 = MathRun()
+        child_2 = MathRun()
+        node.add(child_1)
+        node.add(child_2)
+        output = render_output(node)
+        assert_that(output, is_(u'\sqrt[]{}'))
         
