@@ -152,7 +152,7 @@ class TestMath(ContentToolsTestCase):
     def test_msqrt(self):
         node = Msqrt()
         output = render_output(node)
-        assert_that(output, is_(u'\sqrt{}'))
+        assert_that(output, is_(u'\\sqrt{}'))
     
     def test_mroot(self):
         node = MRoot()
@@ -161,8 +161,9 @@ class TestMath(ContentToolsTestCase):
         node.add(child_1)
         node.add(child_2)
         output = render_output(node)
-        assert_that(output, is_(u'\sqrt[]{}'))
+        assert_that(output, is_(u'\\sqrt[]{}'))
     
+        
     def test_munder(self):
         node = MUnder()
         child_1 = MathRun()
@@ -170,5 +171,5 @@ class TestMath(ContentToolsTestCase):
         node.add(child_1)
         node.add(child_2)
         output = render_output(node)
-        assert_that(output, is_(u'\underset{}{}'))
+        assert_that(output, is_(u'\\underset{}{}'))
         
