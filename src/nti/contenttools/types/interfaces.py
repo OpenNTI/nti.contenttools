@@ -268,16 +268,13 @@ class IImage(IDocumentStructureNode):
                  default=0)
 
     equation_image = Bool(title="Equation Image Type",
-                          required=True,
-                          default=False)
+                          required=False)
 
     inline_image = Bool(title="Inline Image Type",
-                        required=True,
-                        default=False)
+                        required=False)
 
     predefined_image_path = Bool(title="Predifined Image Path",
-                                 required=True,
-                                 default=False)
+                                 required=False)
 
 
 class IDocxImage(IImage):
