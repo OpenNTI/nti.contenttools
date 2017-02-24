@@ -33,7 +33,6 @@ from nti.contenttools.types.interfaces import IMUnderover
 from nti.contenttools.types.interfaces import IMMprescripts
 from nti.contenttools.types.interfaces import IMMultiscripts
 
-
 from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.schema.fieldproperty import createFieldProperties

@@ -21,16 +21,16 @@ from nti.contenttools.types.interfaces import IMtr
 from nti.contenttools.types.interfaces import IMtd
 from nti.contenttools.types.interfaces import IMath
 from nti.contenttools.types.interfaces import IMRow
-from nti.contenttools.types.interfaces import IMTable
-from nti.contenttools.types.interfaces import IMFenced
-from nti.contenttools.types.interfaces import IMathRun
-from nti.contenttools.types.interfaces import IMFrac
 from nti.contenttools.types.interfaces import IMSub
 from nti.contenttools.types.interfaces import IMSup
-from nti.contenttools.types.interfaces import IMSubSup
+from nti.contenttools.types.interfaces import IMFrac
 from nti.contenttools.types.interfaces import IMRoot
 from nti.contenttools.types.interfaces import IMsqrt
+from nti.contenttools.types.interfaces import IMTable
 from nti.contenttools.types.interfaces import IMUnder
+from nti.contenttools.types.interfaces import IMFenced
+from nti.contenttools.types.interfaces import IMathRun
+from nti.contenttools.types.interfaces import IMSubSup
 from nti.contenttools.types.interfaces import IMUnderover
 
 """
