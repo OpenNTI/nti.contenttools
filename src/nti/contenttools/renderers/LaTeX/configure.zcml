@@ -155,4 +155,16 @@
 			 for="nti.contenttools.types.interfaces.IMFrac"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+		<adapter factory=".math.MSubRenderer"
+			 for="nti.contenttools.types.interfaces.IMSub"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".math.MSupRenderer"
+			 for="nti.contenttools.types.interfaces.IMSup"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".math.MSubSupRenderer"
+			 for="nti.contenttools.types.interfaces.IMSubSup"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
