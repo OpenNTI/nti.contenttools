@@ -19,7 +19,7 @@ def openstax_note_renderer(self):
 	body = self.body.render().rstrip().lstrip()
 	if self.label is None:
 		return u'\n\\begin{sidebar}{%s}\n%s\n\\end{sidebar}\\newline\n' %(title, body)
-	elif isinstance(self.label, str):
+	elif isinstance(self.label, str) or isinstance(self.label, unicode):
 		return u'\n\\begin{sidebar}{%s}\\label{%s}\n%s\n\\end{sidebar}\\newline\n' %(title, self.label, body)
 
 def openstax_example_note_renderer(self):

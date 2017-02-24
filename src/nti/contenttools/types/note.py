@@ -55,7 +55,7 @@ class NoteInteractiveImage(DocumentStructureNode):
 
 
 @interface.implementer(IOpenstaxNote)
-class OpenstaxNote (DocumentStructureNode):
+class OpenstaxNote(DocumentStructureNode):
     createFieldProperties(IOpenstaxNote)
 
     def set_title(self, title):
