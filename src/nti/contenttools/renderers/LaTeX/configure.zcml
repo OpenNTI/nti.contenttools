@@ -167,4 +167,12 @@
 			 for="nti.contenttools.types.interfaces.IMSubSup"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".math.MSqrtRenderer"
+			 for="nti.contenttools.types.interfaces.IMsqrt"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".math.MRootRenderer"
+			 for="nti.contenttools.types.interfaces.IMRoot"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>

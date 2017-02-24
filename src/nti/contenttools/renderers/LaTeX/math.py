@@ -28,7 +28,8 @@ from nti.contenttools.types.interfaces import IMFrac
 from nti.contenttools.types.interfaces import IMSub
 from nti.contenttools.types.interfaces import IMSup
 from nti.contenttools.types.interfaces import IMSubSup
-
+from nti.contenttools.types.interfaces import IMRoot
+from nti.contenttools.types.interfaces import IMsqrt
 
 """
 rendering MathML element
@@ -225,7 +226,30 @@ def render_msubsup(context, node):
         context.write(u'}')
     return node
 
-
+def render_msqrt(context, node):
+    """
+    render <msqrt> element
+    """
+    context.write(u'\\sqrt{')
+    render_children(context, node)
+    context.write(u'}')
+    return node
+    
+def render_mroot(context, node):
+    """
+    render <mroot> element
+    """
+    if len(node.children) != 2:
+        logger.warn("<MRoot> should only have 2 children")
+    else:
+        context.write(u'\\sqrt[')
+        render_children(context, node.children[0])
+        context.write(u']{')
+        render_children(context, node.children[1])
+        context.write(u'}')
+    return node
+    
+    
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -293,3 +317,11 @@ class MSupRenderer(RendererMixin):
 @component.adapter(IMSubSup)
 class MSubSupRenderer(RendererMixin):
     func = staticmethod(render_msubsup)
+
+@component.adapter(IMsqrt)
+class MSqrtRenderer(RendererMixin):
+    func = staticmethod(render_msqrt)
+
+@component.adapter(IMRoot)
+class MRootRenderer(RendererMixin):
+    func = staticmethod(render_mroot)
