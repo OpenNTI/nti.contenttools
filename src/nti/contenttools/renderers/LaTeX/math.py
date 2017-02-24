@@ -31,6 +31,7 @@ from nti.contenttools.types.interfaces import IMSubSup
 from nti.contenttools.types.interfaces import IMRoot
 from nti.contenttools.types.interfaces import IMsqrt
 from nti.contenttools.types.interfaces import IMUnder
+from nti.contenttools.types.interfaces import IMUnderover
 
 """
 rendering MathML element
@@ -275,7 +276,42 @@ def render_munder(context, node):
         logger.warn("mathml <munder> element should have 2 children")
     
     return node
-            
+
+def render_munderover(context, node):
+    """
+    render <munderover> element
+    """
+    if len(node.children) == 3 :
+        token = render_children_output(node.children[0])
+        if u'\u2211' in unicode(token.split()) or u'\\sum' in token:
+            context.write(u'\\sum_{')
+            render_children(context, node.children[1])
+            context.write(u'}^{')
+            render_children(context, node.children[2])
+            context.write(u'}')
+        elif u'\u222b' in unicode(token.split()) or u'\\int' in token:
+            context.write(u'int_{')
+            render_children(context, node.children[1])
+            context.write(u'}^{')
+            render_children(context, node.children[2])
+            context.write(u'}')
+        elif u'\u220f' in unicode(token.split()) or u'\\prod' in token:
+            context.write(u'\\prod_{')
+            render_children(context, node.children[1])
+            context.write(u'}^{')
+            render_children(context, node.children[2])
+            context.write(u'}')
+        else :
+            context.write(u'\\overset{')
+            render_children(context, node.children[2])
+            context.write(u'}{\\underset{')
+            render_children(context, node.children[1])
+            context.write(u'}{')
+            context.write(token)
+            context.write(u'}}')
+    else:
+        logger.warn(u'The number <munder> element child is not 3')
+    return node            
             
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -356,3 +392,7 @@ class MRootRenderer(RendererMixin):
 @component.adapter(IMUnder)
 class MUnderRenderer(RendererMixin):
     func = staticmethod(render_munder)
+    
+@component.adapter(IMUnderover)
+class MUnderoverRenderer(RendererMixin):
+    func = staticmethod(render_munderover)

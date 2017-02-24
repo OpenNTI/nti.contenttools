@@ -28,6 +28,7 @@ from nti.contenttools.types.math import MSubSup
 from nti.contenttools.types.math import Msqrt
 from nti.contenttools.types.math import MRoot
 from nti.contenttools.types.math import MUnder
+from nti.contenttools.types.math import MUnderover
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -172,4 +173,15 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'\\underset{}{}'))
+    
+    def test_munderover(self):
+        node = MUnderover()
+        child_1 = MathRun()
+        child_2 = MathRun()
+        child_3 = MathRun()
+        node.add(child_1)
+        node.add(child_2)
+        node.add(child_3)
+        output = render_output(node)
+        assert_that(output, is_(u'\\overset{}{\\underset{}{}}'))
         

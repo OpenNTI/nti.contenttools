@@ -179,4 +179,8 @@
 			 for="nti.contenttools.types.interfaces.IMUnder"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".math.MUnderoverRenderer"
+			 for="nti.contenttools.types.interfaces.IMUnderover"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
