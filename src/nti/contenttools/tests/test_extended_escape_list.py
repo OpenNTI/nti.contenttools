@@ -28,16 +28,16 @@ class TestExtendedEscapeList(ContentToolsTestCase):
 
 	def test_extended_escape_chars(self):
 		plain_text = u"hello from plain µ"
-		latex_tex  = u"hello from plain $\\mu$"
+		latex_tex  = u"hello from plain \xb5"
 		result_tex = PlainTextToLatexFragmentConverter(plain_text, text_scaper='extended')
 		assert_that(result_tex, is_(latex_tex))
 
 		plain_text = u"check arrow ↑"
-		latex_tex  = u"check arrow $\\uparrow$"
+		latex_tex  = u"check arrow \u2191"
 		result_tex = PlainTextToLatexFragmentConverter(plain_text, text_scaper='extended')
 		assert_that(result_tex, is_(latex_tex))
 
 		plain_text = u"hello from plain δ Τ"
-		latex_tex  = u"hello from plain $\\delta$ $\\Tau$"
+		latex_tex  = u"hello from plain \u03b4 \u03a4"
 		result_tex = PlainTextToLatexFragmentConverter(plain_text, text_scaper='extended')
 		assert_that(result_tex, is_(latex_tex))
