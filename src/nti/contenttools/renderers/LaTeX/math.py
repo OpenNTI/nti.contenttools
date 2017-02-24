@@ -23,6 +23,7 @@ from nti.contenttools.types.interfaces import IMRow
 from nti.contenttools.types.interfaces import IMTable
 from nti.contenttools.types.interfaces import IMFenced
 from nti.contenttools.types.interfaces import IMathRun
+from nti.contenttools.types.interfaces import IMFrac
 
 
 """
@@ -152,7 +153,21 @@ def render_mtd(context, node):
     """
     return render_children(context, node)
 
-
+def render_mfrac(context, node):
+    """
+    to render <mfrac> element
+    """
+    if len(node.children) != 2:
+        logger.warn("<MFrac> should only have 2 children")
+    else:
+        context.write(u'\\frac{')
+        render_children(context, node.children[0])
+        context.write(u'}{')
+        render_children(context, node.children[1])
+        context.write(u'}')
+    return node
+        
+        
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -200,3 +215,7 @@ class MtrRenderer(RendererMixin):
 @component.adapter(IMtd)
 class MtdRenderer(RendererMixin):
     func = staticmethod(render_mtd)
+
+@component.adapter(IMFrac)
+class MFracRenderer(RendererMixin):
+    func = staticmethod(render_mfrac)
