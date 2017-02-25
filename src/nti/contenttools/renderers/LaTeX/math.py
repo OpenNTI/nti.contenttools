@@ -288,30 +288,30 @@ def render_munderover(context, node):
     render <munderover> element
     """
     if len(node.children) == 3:
-        token = render_children_output(node.children[0])
+        token = render_output(node.children[0])
         if u'\u2211' in unicode(token.split()) or u'\\sum' in token:
             context.write(u'\\sum_{')
-            render_children(context, node.children[1])
+            render_node(context, node.children[1])
             context.write(u'}^{')
-            render_children(context, node.children[2])
+            render_node(context, node.children[2])
             context.write(u'}')
         elif u'\u222b' in unicode(token.split()) or u'\\int' in token:
             context.write(u'int_{')
-            render_children(context, node.children[1])
+            render_node(context, node.children[1])
             context.write(u'}^{')
-            render_children(context, node.children[2])
+            render_node(context, node.children[2])
             context.write(u'}')
         elif u'\u220f' in unicode(token.split()) or u'\\prod' in token:
             context.write(u'\\prod_{')
-            render_children(context, node.children[1])
+            render_node(context, node.children[1])
             context.write(u'}^{')
-            render_children(context, node.children[2])
+            render_node(context, node.children[2])
             context.write(u'}')
         else:
             context.write(u'\\overset{')
-            render_children(context, node.children[2])
+            render_node(context, node.children[2])
             context.write(u'}{\\underset{')
-            render_children(context, node.children[1])
+            render_node(context, node.children[1])
             context.write(u'}{')
             context.write(token)
             context.write(u'}}')
