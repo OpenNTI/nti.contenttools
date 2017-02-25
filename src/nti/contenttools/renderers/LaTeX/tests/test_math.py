@@ -120,13 +120,13 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_('\\frac{}{}'))
-    
+
     def test_double_frac(self):
         node = MFrac()
         child_1 = MathRun()
         g_child_1 = MFrac()
         gg_child_11 = MathRun()
-        gg_child_12 = MathRun() 
+        gg_child_12 = MathRun()
         g_child_1.add(gg_child_11)
         g_child_1.add(gg_child_12)
         child_1.add(g_child_1)
@@ -144,13 +144,13 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'{}_{}'))
-    
+
     def test_double_msub_1(self):
         node = MSub()
         child_1 = MathRun()
         g_child_1 = MSub()
         gg_child_11 = MathRun()
-        gg_child_12 = MathRun() 
+        gg_child_12 = MathRun()
         g_child_1.add(gg_child_11)
         g_child_1.add(gg_child_12)
         child_1.add(g_child_1)
@@ -159,13 +159,13 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'{{}_{}}_{}'))
-    
+
     def test_double_msub_2(self):
         node = MSub()
         child_1 = MathRun()
         g_child_1 = MSub()
         gg_child_11 = MathRun()
-        gg_child_12 = MathRun() 
+        gg_child_12 = MathRun()
         g_child_1.add(gg_child_11)
         g_child_1.add(gg_child_12)
         child_1.add(g_child_1)
@@ -174,13 +174,13 @@ class TestMath(ContentToolsTestCase):
         node.add(child_1)
         output = render_output(node)
         assert_that(output, is_(u'{}_{{}_{}}'))
-    
+
     def test_double_msup_1(self):
         node = MSup()
         child_1 = MathRun()
         g_child_1 = MSup()
         gg_child_11 = MathRun()
-        gg_child_12 = MathRun() 
+        gg_child_12 = MathRun()
         g_child_1.add(gg_child_11)
         g_child_1.add(gg_child_12)
         child_1.add(g_child_1)
@@ -189,13 +189,13 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'{{}^{}}^{}'))
-        
+
     def test_double_msup_2(self):
         node = MSup()
         child_1 = MathRun()
         g_child_1 = MSup()
         gg_child_11 = MathRun()
-        gg_child_12 = MathRun() 
+        gg_child_12 = MathRun()
         g_child_1.add(gg_child_11)
         g_child_1.add(gg_child_12)
         child_1.add(g_child_1)
@@ -224,13 +224,13 @@ class TestMath(ContentToolsTestCase):
         node.add(child_3)
         output = render_output(node)
         assert_that(output, is_(u'{}_{}^{}'))
-    
+
     def test_double_msubsup_1(self):
         node = MSubSup()
         child_1 = MathRun()
         g_child_1 = MSup()
         gg_child_11 = MathRun()
-        gg_child_12 = MathRun() 
+        gg_child_12 = MathRun()
         g_child_1.add(gg_child_11)
         g_child_1.add(gg_child_12)
         child_1.add(g_child_1)
@@ -241,13 +241,13 @@ class TestMath(ContentToolsTestCase):
         node.add(child_3)
         output = render_output(node)
         assert_that(output, is_(u'{{}^{}}_{}^{}'))
-    
+
     def test_double_msubsup_2(self):
         node = MSubSup()
         child_1 = MathRun()
         g_child_1 = MSub()
         gg_child_11 = MathRun()
-        gg_child_12 = MathRun() 
+        gg_child_12 = MathRun()
         g_child_1.add(gg_child_11)
         g_child_1.add(gg_child_12)
         child_1.add(g_child_1)
@@ -258,13 +258,13 @@ class TestMath(ContentToolsTestCase):
         node.add(child_3)
         output = render_output(node)
         assert_that(output, is_(u'{{}_{}}_{}^{}'))
-    
+
     def test_double_msubsup_3(self):
         node = MSubSup()
         child_1 = MathRun()
         g_child_1 = MSub()
         gg_child_11 = MathRun()
-        gg_child_12 = MathRun() 
+        gg_child_12 = MathRun()
         g_child_1.add(gg_child_11)
         g_child_1.add(gg_child_12)
         child_1.add(g_child_1)
@@ -289,13 +289,13 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'\\sqrt[]{}'))
-    
+
     def test_double_mroot_1(self):
         node = MRoot()
         child_1 = MathRun()
         g_child_1 = MRoot()
         gg_child_11 = MathRun()
-        gg_child_12 = MathRun() 
+        gg_child_12 = MathRun()
         g_child_1.add(gg_child_11)
         g_child_1.add(gg_child_12)
         child_1.add(g_child_1)
@@ -304,13 +304,13 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'\\sqrt[\\sqrt[]{}]{}'))
-    
+
     def test_double_mroot_2(self):
         node = MRoot()
         child_1 = MathRun()
         g_child_1 = MRoot()
         gg_child_11 = MathRun()
-        gg_child_12 = MathRun() 
+        gg_child_12 = MathRun()
         g_child_1.add(gg_child_11)
         g_child_1.add(gg_child_12)
         child_1.add(g_child_1)
@@ -328,13 +328,13 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'\\underset{}{}'))
-    
+
     def test_munder_with_other_element_1(self):
         node = MUnder()
         child_1 = MathRun()
         g_child_1 = MRoot()
         gg_child_11 = MathRun()
-        gg_child_12 = MathRun() 
+        gg_child_12 = MathRun()
         g_child_1.add(gg_child_11)
         g_child_1.add(gg_child_12)
         child_1.add(g_child_1)
@@ -343,20 +343,20 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'\\underset{}{\\sqrt[]{}}'))
-    
+
     def test_munder_with_other_element_2(self):
         node = MUnder()
         child_1 = MathRun()
         g_child_1 = MRoot()
         gg_child_11 = MathRun()
-        gg_child_12 = MathRun() 
+        gg_child_12 = MathRun()
         g_child_1.add(gg_child_11)
         g_child_1.add(gg_child_12)
         child_1.add(g_child_1)
         child_2 = MathRun()
         g_child_2 = MSub()
         gg_child_21 = MathRun()
-        gg_child_22 = MathRun() 
+        gg_child_22 = MathRun()
         g_child_2.add(gg_child_21)
         g_child_2.add(gg_child_22)
         child_2.add(g_child_2)
@@ -364,7 +364,6 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'\\underset{{}_{}}{\\sqrt[]{}}'))
-        
 
     def test_munderover(self):
         node = MUnderover()
