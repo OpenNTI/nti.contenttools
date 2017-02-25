@@ -12,6 +12,7 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
+from nti.contenttools.renderers.LaTeX.base import render_node
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
@@ -169,9 +170,9 @@ def render_mfrac(context, node):
         logger.warn("<MFrac> should only have 2 children")
     else:
         context.write(u'\\frac{')
-        render_children(context, node.children[0])
+        render_node(context, node.children[0])
         context.write(u'}{')
-        render_children(context, node.children[1])
+        render_node(context, node.children[1])
         context.write(u'}')
     return node
 
