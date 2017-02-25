@@ -185,9 +185,9 @@ def render_msub(context, node):
         logger.warn('<msub> element should have 2 children')
     else:
         context.write(u'{')
-        render_children(context, node.children[0])
+        render_node(context, node.children[0])
         context.write(u'}_{')
-        render_children(context, node.children[1])
+        render_node(context, node.children[1])
         context.write(u'}')
     return node
 
