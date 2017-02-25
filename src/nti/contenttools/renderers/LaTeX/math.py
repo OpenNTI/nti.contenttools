@@ -216,16 +216,16 @@ def render_msubsup(context, node):
         logger.warn("<msubsup> should only have 3 children")
     elif u'int' in check:
         context.write(u'\\int_')
-        render_children(context, node.children[1])
+        render_node(context, node.children[1])
         context.write(u'^\\')
-        render_children(context, node.children[2])
+        render_node(context, node.children[2])
     else:
         context.write(u'{')
-        render_children(context, node.children[0])
+        render_node(context, node.children[0])
         context.write(u'}_{')
-        render_children(context, node.children[1])
+        render_node(context, node.children[1])
         context.write(u'}^{')
-        render_children(context, node.children[2])
+        render_node(context, node.children[2])
         context.write(u'}')
     return node
 
