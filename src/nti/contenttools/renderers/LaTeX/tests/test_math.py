@@ -290,10 +290,10 @@ class TestMath(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output, is_(u'\\sqrt[]{}'))
     
-    def test_double_frac(self):
-        node = MFrac()
+    def test_double_mroot_1(self):
+        node = MRoot()
         child_1 = MathRun()
-        g_child_1 = MFrac()
+        g_child_1 = MRoot()
         gg_child_11 = MathRun()
         gg_child_12 = MathRun() 
         g_child_1.add(gg_child_11)
@@ -303,7 +303,22 @@ class TestMath(ContentToolsTestCase):
         node.add(child_1)
         node.add(child_2)
         output = render_output(node)
-        assert_that(output, is_(u'\\frac{\\frac{}{}}{}'))
+        assert_that(output, is_(u'\\sqrt[\\sqrt[]{}]{}'))
+    
+    def test_double_mroot_2(self):
+        node = MRoot()
+        child_1 = MathRun()
+        g_child_1 = MRoot()
+        gg_child_11 = MathRun()
+        gg_child_12 = MathRun() 
+        g_child_1.add(gg_child_11)
+        g_child_1.add(gg_child_12)
+        child_1.add(g_child_1)
+        child_2 = MathRun()
+        node.add(child_2)
+        node.add(child_1)
+        output = render_output(node)
+        assert_that(output, is_(u'\\sqrt[]{\\sqrt[]{}}'))
 
     def test_munder(self):
         node = MUnder()
