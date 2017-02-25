@@ -174,6 +174,36 @@ class TestMath(ContentToolsTestCase):
         node.add(child_1)
         output = render_output(node)
         assert_that(output, is_(u'{}_{{}_{}}'))
+    
+    def test_double_msup_1(self):
+        node = MSup()
+        child_1 = MathRun()
+        g_child_1 = MSup()
+        gg_child_11 = MathRun()
+        gg_child_12 = MathRun() 
+        g_child_1.add(gg_child_11)
+        g_child_1.add(gg_child_12)
+        child_1.add(g_child_1)
+        child_2 = MathRun()
+        node.add(child_1)
+        node.add(child_2)
+        output = render_output(node)
+        assert_that(output, is_(u'{{}^{}}^{}'))
+        
+    def test_double_msup_2(self):
+        node = MSup()
+        child_1 = MathRun()
+        g_child_1 = MSup()
+        gg_child_11 = MathRun()
+        gg_child_12 = MathRun() 
+        g_child_1.add(gg_child_11)
+        g_child_1.add(gg_child_12)
+        child_1.add(g_child_1)
+        child_2 = MathRun()
+        node.add(child_2)
+        node.add(child_1)
+        output = render_output(node)
+        assert_that(output, is_(u'{}^{{}^{}}'))
 
     def test_msup(self):
         node = MSup()
