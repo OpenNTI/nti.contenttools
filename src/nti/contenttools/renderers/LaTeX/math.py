@@ -13,6 +13,7 @@ from zope import component
 from zope import interface
 
 from nti.contenttools.renderers.LaTeX.base import render_node
+from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
@@ -260,8 +261,8 @@ def render_munder(context, node):
     render <munder> element
     """
     if len(node.children) == 2:
-        base_1 = render_children_output(node.children[0])
-        base_2 = render_children_output(node.children[1])
+        base_1 = render_output(node.children[0])
+        base_2 = render_output(node.children[1])
         if u'23df' in base_2.lower() or u'\u23df' in unicode(base_2).split():
             context.write(u'\\underbracket{')
             context.write(base_1)

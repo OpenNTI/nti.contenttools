@@ -328,6 +328,43 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'\\underset{}{}'))
+    
+    def test_munder_with_other_element_1(self):
+        node = MUnder()
+        child_1 = MathRun()
+        g_child_1 = MRoot()
+        gg_child_11 = MathRun()
+        gg_child_12 = MathRun() 
+        g_child_1.add(gg_child_11)
+        g_child_1.add(gg_child_12)
+        child_1.add(g_child_1)
+        child_2 = MathRun()
+        node.add(child_1)
+        node.add(child_2)
+        output = render_output(node)
+        assert_that(output, is_(u'\\underset{}{\\sqrt[]{}}'))
+    
+    def test_munder_with_other_element_2(self):
+        node = MUnder()
+        child_1 = MathRun()
+        g_child_1 = MRoot()
+        gg_child_11 = MathRun()
+        gg_child_12 = MathRun() 
+        g_child_1.add(gg_child_11)
+        g_child_1.add(gg_child_12)
+        child_1.add(g_child_1)
+        child_2 = MathRun()
+        g_child_2 = MSub()
+        gg_child_21 = MathRun()
+        gg_child_22 = MathRun() 
+        g_child_2.add(gg_child_21)
+        g_child_2.add(gg_child_22)
+        child_2.add(g_child_2)
+        node.add(child_1)
+        node.add(child_2)
+        output = render_output(node)
+        assert_that(output, is_(u'\\underset{{}_{}}{\\sqrt[]{}}'))
+        
 
     def test_munderover(self):
         node = MUnderover()
