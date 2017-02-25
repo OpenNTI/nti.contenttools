@@ -200,9 +200,9 @@ def render_msup(context, node):
         logger.warn('<msup> element should have 2 children')
     else:
         context.write(u'{')
-        render_children(context, node.children[0])
+        render_node(context, node.children[0])
         context.write(u'}^{')
-        render_children(context, node.children[1])
+        render_node(context, node.children[1])
         context.write(u'}')
     return node
 
