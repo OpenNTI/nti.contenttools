@@ -435,4 +435,23 @@ class TestMath(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output, is_(u'{_{}^{}}'))
     
+    def test_mmultiscript(self):
+        node = MMprescripts()
+        node_sup = MSup()
+        sup_child_1 = MathRun()
+        sup_child_2 = MathRun()
+        node_sup.add(sup_child_1)
+        node_sup.add(sup_child_2)
+        node_sub = MSub()
+        sub_child_1 = MathRun()
+        sub_child_2 = MathRun()
+        node_sup.add(sub_child_1)
+        node_sup.add(sub_child_2)
+        node.sub = node_sub
+        node.sup = node_sup
+        multiscript_node = MMprescripts()
+        multiscript_node.base = MathRun()
+        multiscript_node.prescript = node
+        output = render_output(node)
+        assert_that(output, is_(u'{_{}^{}}'))
         

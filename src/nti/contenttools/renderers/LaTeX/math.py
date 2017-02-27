@@ -359,8 +359,7 @@ def render_mprescripts(context, node):
         context.write(u'}}')
     else:
         logger.warn('prescripts sub or sup is None')
-    return node
-        
+    return node        
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
