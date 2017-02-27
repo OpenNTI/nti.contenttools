@@ -389,7 +389,7 @@ def render_menclose(context,node):
     """
     render <menclose> element
     """
-    notation = list(node.notation.split)
+    notation = list(node.notation.split())
     for item in notation:
         if item == u'updiagonalstrike':
             #TODO : need to use package : cancel, uncomment if we are able to use cancel

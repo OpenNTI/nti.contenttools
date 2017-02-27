@@ -680,8 +680,9 @@ class IMOver(IDocumentStructureNode):
 
 class IMMenclose(IDocumentStructureNode):
 
-    notation = ListOrTuple(title="Notation",
-                           required=False)
+    notation = Variant((ListOrTuple(title="Notation"),
+                        ValidTextLine(title="Notation")),
+                        required=False)
 
 
 class IMMprescripts(IDocumentStructureNode):

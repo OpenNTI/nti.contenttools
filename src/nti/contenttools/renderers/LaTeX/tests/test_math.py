@@ -31,6 +31,7 @@ from nti.contenttools.types.math import MUnder
 from nti.contenttools.types.math import MFenced
 from nti.contenttools.types.math import MathRun
 from nti.contenttools.types.math import MSubSup
+from nti.contenttools.types.math import MMenclose
 from nti.contenttools.types.math import MUnderover
 from nti.contenttools.types.math import MMultiscripts
 from nti.contenttools.types.math import MMprescripts
@@ -486,4 +487,17 @@ class TestMath(ContentToolsTestCase):
         node = MText()
         output = render_output(node)
         assert_that(output, is_(u''))
+    
+    def test_menclose_updiagonalstrike(self):
+        node = MMenclose()
+        node.notation = u'updiagonalstrike'
+        output = render_output(node)
+        assert_that(output, is_(u'\\cancel{}'))
+    
+    def test_menclose_downdiagonalstrike(self):
+        node = MMenclose()
+        node.notation = u'downdiagonalstrike'
+        output = render_output(node)
+        assert_that(output, is_(u'\\bcancel{}'))
+        
         
