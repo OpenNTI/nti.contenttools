@@ -499,5 +499,22 @@ class TestMath(ContentToolsTestCase):
         node.notation = u'downdiagonalstrike'
         output = render_output(node)
         assert_that(output, is_(u'\\bcancel{}'))
-        
-        
+    
+    def test_menclose_radical(self):
+        node = MMenclose()
+        node.notation = u'radical'
+        output = render_output(node)
+        assert_that(output, is_(u'\\sqrt{}'))
+    
+    def test_menclose_left(self):
+        node = MMenclose()
+        node.notation = u'left'
+        output = render_output(node)
+        assert_that(output, is_(u'\\Big|'))
+    
+    def test_menclose_right(self):
+        node = MMenclose()
+        node.notation = u'right'
+        output = render_output(node)
+        assert_that(output, is_(u'\\Big|'))
+    
