@@ -203,4 +203,8 @@
 			 for="nti.contenttools.types.interfaces.IMText"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".math.MencloseRenderer"
+			 for="nti.contenttools.types.interfaces.IMMenclose"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
