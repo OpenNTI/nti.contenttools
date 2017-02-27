@@ -530,3 +530,20 @@ class TestMath(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output, is_(u'\\underline{}'))
     
+    def test_menclose_horizontalstrike(self):
+        node = MMenclose()
+        node.notation = u'horizontalstrike'
+        output = render_output(node)
+        assert_that(output, is_(u'\\hcancel{}'))
+    
+    def test_menclose_box(self):
+        node = MMenclose()
+        node.notation = u'box'
+        output = render_output(node)
+        assert_that(output, is_(u'\\boxed{}'))
+    
+    def test_menclose_longdiv(self):
+        node = MMenclose()
+        node.notation = u'longdiv'
+        output = render_output(node)
+        assert_that(output, is_(u'\\overline{}'))
