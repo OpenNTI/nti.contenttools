@@ -60,7 +60,6 @@ from nti.contenttools.types.math import MUnderover
 from nti.contenttools.types.math import MMprescripts
 from nti.contenttools.types.math import MMultiscripts
 
-
 from nti.contenttools.tests import ContentToolsTestCase
 
 
