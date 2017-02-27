@@ -518,3 +518,15 @@ class TestMath(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output, is_(u'\\Big|'))
     
+    def test_menclose_top(self):
+        node = MMenclose()
+        node.notation = u'top'
+        output = render_output(node)
+        assert_that(output, is_(u'\\overline{}'))
+    
+    def test_menclose_bottom(self):
+        node = MMenclose()
+        node.notation = u'bottom'
+        output = render_output(node)
+        assert_that(output, is_(u'\\underline{}'))
+    
