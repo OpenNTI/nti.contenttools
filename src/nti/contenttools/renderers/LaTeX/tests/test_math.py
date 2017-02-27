@@ -21,16 +21,17 @@ from nti.contenttools.types.math import MRow
 from nti.contenttools.types.math import MSub
 from nti.contenttools.types.math import MSup
 from nti.contenttools.types.math import MFrac
-from nti.contenttools.types.math import Msqrt
+from nti.contenttools.types.math import MNone
+from nti.contenttools.types.math import MOver
 from nti.contenttools.types.math import MRoot
+from nti.contenttools.types.math import Msqrt
+from nti.contenttools.types.math import MText
 from nti.contenttools.types.math import Mtable
 from nti.contenttools.types.math import MUnder
 from nti.contenttools.types.math import MFenced
 from nti.contenttools.types.math import MathRun
 from nti.contenttools.types.math import MSubSup
 from nti.contenttools.types.math import MUnderover
-from nti.contenttools.types.math import MOver
-from nti.contenttools.types.math import MNone
 from nti.contenttools.types.math import MMultiscripts
 from nti.contenttools.types.math import MMprescripts
 
@@ -475,9 +476,14 @@ class TestMath(ContentToolsTestCase):
         node_sup.add(sub_child_2)
         node.sub = node_sub
         node.sup = node_sup
-        multiscript_node = MMprescripts()
+        multiscript_node = MMultiscripts()
         multiscript_node.base = MathRun()
         multiscript_node.prescript = node
-        output = render_output(node)
+        output = render_output(multiscript_node)
         assert_that(output, is_(u'{_{}^{}}'))
+    
+    def test_mtext(self):
+        node = MText()
+        output = render_output(node)
+        assert_that(output, is_(u''))
         

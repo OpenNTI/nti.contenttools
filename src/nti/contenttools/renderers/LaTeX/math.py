@@ -30,6 +30,7 @@ from nti.contenttools.types.interfaces import IMNone
 from nti.contenttools.types.interfaces import IMOver
 from nti.contenttools.types.interfaces import IMRoot
 from nti.contenttools.types.interfaces import IMsqrt
+from nti.contenttools.types.interfaces import IMText
 from nti.contenttools.types.interfaces import IMTable
 from nti.contenttools.types.interfaces import IMUnder
 from nti.contenttools.types.interfaces import IMFenced
@@ -352,6 +353,9 @@ def render_mmultiscript(context, node):
     return node
 
 def render_mprescripts(context, node):
+    """
+    render <mprescripts> element
+    """
     if node.sub and node.sup:
         context.write(u'{_{')
         render_node(context, node.sub)
@@ -363,9 +367,23 @@ def render_mprescripts(context, node):
     return node
 
 def render_mnone(context, node):
+    """
+    render <none/> element
+    """
     context.write(u'')
-    return node          
+    return node
 
+def render_mtext(context, node):
+    """
+    render <mtext> element
+    """
+    base = render_children_output(node)
+    if base:
+        context.write(u'\\text{')
+        context.write(base)
+        context.write(u'}')
+    return node
+       
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -469,3 +487,7 @@ class MprescriptsRenderer(RendererMixin):
 @component.adapter(IMNone)
 class MNoneRenderer(RendererMixin):
     func = staticmethod(render_mnone)
+    
+@component.adapter(IMText)
+class MTextRenderer(RendererMixin):
+    func = staticmethod(render_mtext)
