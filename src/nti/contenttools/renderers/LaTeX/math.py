@@ -19,7 +19,7 @@ from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
-from nti.contenttools.types.interfaces import IMtr
+from nti.contenttools.types.interfaces import IMtr, IMOver
 from nti.contenttools.types.interfaces import IMtd
 from nti.contenttools.types.interfaces import IMath
 from nti.contenttools.types.interfaces import IMRow
@@ -316,9 +316,25 @@ def render_munderover(context, node):
             context.write(token)
             context.write(u'}}')
     else:
-        logger.warn(u'The number <munder> element child is not 3')
+        logger.warn(u'The number <munderover> element child is not 3')
     return node
 
+def render_mover(context, node):
+    """
+    render <mover> element
+    """
+    base = render_output(node.children[1])
+    if u'23de' in base.lower() or u'\u23de' in unicode(base).split():
+        context.write(u'\\overbracket{')
+        render_node(context, node.children[0])
+        context.write(u'')
+    else:
+        context.write(u'\\overset{')
+        context.write(base)
+        context.write(u'}{')
+        render_node(context,node.children[0])
+        context.write(u'}')
+    return node
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -407,3 +423,7 @@ class MUnderRenderer(RendererMixin):
 @component.adapter(IMUnderover)
 class MUnderoverRenderer(RendererMixin):
     func = staticmethod(render_munderover)
+
+@component.adapter(IMOver)
+class MOverRenderer(RendererMixin):
+    func = staticmethod(render_mover)

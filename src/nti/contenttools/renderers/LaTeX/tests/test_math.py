@@ -29,6 +29,7 @@ from nti.contenttools.types.math import MFenced
 from nti.contenttools.types.math import MathRun
 from nti.contenttools.types.math import MSubSup
 from nti.contenttools.types.math import MUnderover
+from nti.contenttools.types.math import MOver
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -375,3 +376,12 @@ class TestMath(ContentToolsTestCase):
         node.add(child_3)
         output = render_output(node)
         assert_that(output, is_(u'\\overset{}{\\underset{}{}}'))
+        
+    def test_over(self):
+        node = MOver()
+        child_1 = MathRun()
+        child_2 = MathRun()
+        node.add(child_1)
+        node.add(child_2)
+        output = render_output(node)
+        assert_that(output, is_(u'\\overset{}{}'))
