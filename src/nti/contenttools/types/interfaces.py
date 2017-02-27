@@ -706,6 +706,10 @@ class IMText(IDocumentStructureNode):
     Node for handling text in MathML element
     """
 
+class IMNone(IDocumentStructureNode):
+    """
+    Node for handling <none/> element
+    """
 
 class IOMath(IDocumentStructureNode):
     """

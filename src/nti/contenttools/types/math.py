@@ -32,6 +32,7 @@ from nti.contenttools.types.interfaces import IMMenclose
 from nti.contenttools.types.interfaces import IMUnderover
 from nti.contenttools.types.interfaces import IMMprescripts
 from nti.contenttools.types.interfaces import IMMultiscripts
+from nti.contenttools.types.interfaces import IMNone
 
 from nti.contenttools.types.node import DocumentStructureNode
 
@@ -147,3 +148,7 @@ class MMprescripts(DocumentStructureNode):
 @interface.implementer(IMText)
 class MText(DocumentStructureNode):
     createFieldProperties(IMText)
+    
+@interface.implementer(IMNone)
+class MNone(DocumentStructureNode):
+    createFieldProperties(IMNone)

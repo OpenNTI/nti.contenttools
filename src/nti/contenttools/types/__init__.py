@@ -64,6 +64,7 @@ from nti.contenttools.types.math import MRow
 from nti.contenttools.types.math import MSup
 from nti.contenttools.types.math import MSub
 from nti.contenttools.types.math import MFrac
+from nti.contenttools.types.math import MNone
 from nti.contenttools.types.math import MRoot
 from nti.contenttools.types.math import MOver
 from nti.contenttools.types.math import Msqrt
@@ -235,11 +236,6 @@ class BlockQuote(DocumentStructureNode):
     def __init__(self, source=''):
         super(BlockQuote, self).__init__()
         self.source = source
-
-
-class MNone(DocumentStructureNode):
-    pass
-
 
 class CodeLine(DocumentStructureNode):
     pass

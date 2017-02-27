@@ -19,7 +19,7 @@ from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
-from nti.contenttools.types.interfaces import IMtr
+from nti.contenttools.types.interfaces import IMtr, IMNone
 from nti.contenttools.types.interfaces import IMtd
 from nti.contenttools.types.interfaces import IMath
 from nti.contenttools.types.interfaces import IMRow
@@ -359,7 +359,11 @@ def render_mprescripts(context, node):
         context.write(u'}}')
     else:
         logger.warn('prescripts sub or sup is None')
-    return node        
+    return node
+
+def render_mnone(context, node):
+    context.write(u'')
+    return node          
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -460,3 +464,7 @@ class MMultiscriptsRenderer(RendererMixin):
 @component.adapter(IMMprescripts)
 class MprescriptsRenderer(RendererMixin):
     func = staticmethod(render_mprescripts)
+
+@component.adapter(IMNone)
+class MNoneRenderer(RendererMixin):
+    func = staticmethod(render_mnone)

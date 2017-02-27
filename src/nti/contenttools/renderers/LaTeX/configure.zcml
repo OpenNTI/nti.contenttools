@@ -195,4 +195,8 @@
 			 for="nti.contenttools.types.interfaces.IMMprescripts"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".math.MNoneRenderer"
+			 for="nti.contenttools.types.interfaces.IMNone"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
