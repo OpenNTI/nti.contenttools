@@ -451,16 +451,11 @@ class TestMath(ContentToolsTestCase):
         node_sup.add(sub_child_2)
         node.sub = node_sub
         node.sup = node_sup
-        multiscript_node = MMprescripts()
+        multiscript_node = MMultiscripts()
         multiscript_node.base = MathRun()
-        multiscript_node.prescript = node
-        output = render_output(node)
+        multiscript_node.prescripts = node
+        output = render_output(multiscript_node)
         assert_that(output, is_(u'{_{}^{}}'))
-    
-    def test_mnone(self):
-        node = MNone()
-        output = render_output(node)
-        assert_that(output, is_(u''))
     
     def test_mmultiscript_with_mnone(self):
         node = MMprescripts()
@@ -478,9 +473,14 @@ class TestMath(ContentToolsTestCase):
         node.sup = node_sup
         multiscript_node = MMultiscripts()
         multiscript_node.base = MathRun()
-        multiscript_node.prescript = node
+        multiscript_node.prescripts = node
         output = render_output(multiscript_node)
         assert_that(output, is_(u'{_{}^{}}'))
+    
+    def test_mnone(self):
+        node = MNone()
+        output = render_output(node)
+        assert_that(output, is_(u''))
     
     def test_mtext(self):
         node = MText()
