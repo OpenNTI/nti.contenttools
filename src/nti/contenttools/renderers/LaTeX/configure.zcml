@@ -187,4 +187,8 @@
 			 for="nti.contenttools.types.interfaces.IMOver"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".math.MMultiscriptsRenderer"
+			 for="nti.contenttools.types.interfaces.IMMultiscripts"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
