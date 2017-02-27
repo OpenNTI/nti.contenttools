@@ -27,6 +27,7 @@ from nti.contenttools.types.interfaces import IOpenstaxNote
 from nti.contenttools.types.interfaces import IOpenstaxNoteBody
 from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 
+
 def render_note(context, node):
     base = render_children_output(node)
     if base:
@@ -34,6 +35,36 @@ def render_note(context, node):
         context.write(base)
         context.write(u'')
     return node
+
+
+def render_note_interactive(context, node):
+    new_image_path = node.complete_image_path if node.complete_image_path else u'images/%s' % (
+        node.image_path)
+
+    if isinstance(node.caption, unicode) or isinstance(node.caption, str):
+        caption = node.caption
+    else:
+        caption = render_output(node.caption).strip()
+
+    if isinstance(node.notes, unicode) or isinstance(node.notes, str):
+        notes = node.notes
+    else:
+        notes = render_output(node.notes).strip()
+
+    context.write(u'\n\\begin{nticard}{')
+    context.write(node.link)
+    context.write(u'}\n\\label{')
+    context.write(node.label)
+    context.write(u'}\n\\caption{')
+    context.write(caption)
+    context.write(u'}\n\\includegraphics{')
+    context.write(new_image_path)
+    context.write(u'}\n')
+    context.write(notes)
+    context.write(u'\n\\end{nticard}\n')
+
+    return node
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -52,4 +83,8 @@ class RendererMixin(object):
 @component.adapter(INote)
 class NoteRenderer(RendererMixin):
     func = staticmethod(render_note)
-    
+
+
+@component.adapter(INoteInteractive)
+class NoteInteractiveRenderer(RendererMixin):
+    func = staticmethod(render_note_interactive)

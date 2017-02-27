@@ -213,4 +213,8 @@
 			 for="nti.contenttools.types.interfaces.INote"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".note.NoteInteractiveRenderer"
+			 for="nti.contenttools.types.interfaces.INoteInteractive"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
