@@ -207,4 +207,10 @@
 			 for="nti.contenttools.types.interfaces.IMMenclose"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	
+	<!-- Note -->
+	<adapter factory=".note.NoteRenderer"
+			 for="nti.contenttools.types.interfaces.INote"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
