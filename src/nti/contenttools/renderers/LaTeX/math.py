@@ -33,6 +33,7 @@ from nti.contenttools.types.interfaces import IMsqrt
 from nti.contenttools.types.interfaces import IMText
 from nti.contenttools.types.interfaces import IMTable
 from nti.contenttools.types.interfaces import IMUnder
+from nti.contenttools.types.interfaces import IMMenclose
 from nti.contenttools.types.interfaces import IMFenced
 from nti.contenttools.types.interfaces import IMathRun
 from nti.contenttools.types.interfaces import IMSubSup
@@ -383,6 +384,118 @@ def render_mtext(context, node):
         context.write(base)
         context.write(u'}')
     return node
+
+def render_menclose(context,node):
+    """
+    render <menclose> element
+    """
+    notation = list(node.notation.split)
+    for item in notation:
+        if item == u'updiagonalstrike':
+            #TODO : need to use package : cancel, uncomment if we are able to use cancel
+            m_updiagonalstrike(context, node) 
+        elif item == u'downdiagonalstrike':
+            #TODO : need to use package : cancel, uncomment if we are able to use cancel
+            m_downdiagonalstrike(context, node)
+        elif item == 'radical':
+            m_radical(context, node)
+        elif item == 'left':
+            m_left(context, node)
+        elif item == 'right':
+            m_right(context, node)
+        elif item == 'top':
+            m_top(context, node)
+        elif item == 'bottom':
+            m_bottom(context, node)
+        elif item == 'verticalstrike':
+            #TODO : need to use package : cancel, uncomment if we are able to use cancel
+            pass
+        elif item == 'horizontalstrike':
+            #TODO : need to use package : cancel, uncomment if we are able to use cancel
+            m_horizontalstrike(context, node)
+            pass
+        elif item == 'madruwb':
+            #TODO : create a method to handle this notation
+            pass
+        elif item == 'updiagonalarrow':
+            #TODO : create a method to handle this notation
+            pass
+        elif item == 'phasorangle':
+            #TODO : create a method to handle this notation
+            pass
+        elif item == 'actuarial':
+            #TODO : create a method to handle this notation
+            pass
+        elif item == 'box':
+            m_box(context, node)
+        elif item == 'roundedbox':
+            #TODO : create a method to handle this notation
+            pass
+        elif item == 'circle':
+            #TODO : create a method to handle this notation
+            pass
+        elif item == 'longdiv':
+            m_longdiv(context, node)
+    return node
+
+def m_radical(context, node):
+    context.write(u'\\sqrt{')
+    render_children(context, node)
+    context.write(u'}')
+    return node
+
+def m_updiagonalstrike(context, node):
+    context.write(u'\\cancel{')
+    render_children(context, node)
+    context.write(u'}')
+    return node
+
+def m_downdiagonalstrike(context, node):
+    context.write(u'\\bcancel{')
+    render_children(context, node)
+    context.write(u'}')
+    return node
+
+def m_horizontalstrike(context, node):
+    context.write(u'\\hcancel{')
+    render_children(context, node)
+    context.write(u'}')
+    return node
+
+def m_top(context, node):
+    context.write(u'\\overline{')
+    render_children(context, node)
+    context.write(u'}')
+    return node
+
+def m_bottom(context, node):
+    context.write(u'\\underline{')
+    render_children(context, node)
+    context.write(u'}')
+    return node
+
+def m_box(context, node):
+    context.write(u'\\boxed{')
+    render_children(context, node)
+    context.write(u'}')
+    return node
+
+def m_longdiv(context, node):
+    #TODO : the render result will look odd, find a better command
+    context.write(u'\\overline{')
+    render_children(context, node)
+    context.write(u'}')
+    return node
+
+def m_left(context, node):
+    context.write(u'\\Big|')
+    render_children(context, node)
+    return node
+
+def m_right(context, node):
+    render_children(context, node)
+    context.write(u'\\Big|')
+    return node
        
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -491,3 +604,7 @@ class MNoneRenderer(RendererMixin):
 @component.adapter(IMText)
 class MTextRenderer(RendererMixin):
     func = staticmethod(render_mtext)
+
+@component.adapter(IMMenclose)
+class MencloseRenderer(RendererMixin):
+    func = staticmethod(render_menclose)
