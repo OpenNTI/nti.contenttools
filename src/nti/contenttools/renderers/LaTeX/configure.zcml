@@ -191,4 +191,8 @@
 			 for="nti.contenttools.types.interfaces.IMMultiscripts"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".math.MprescriptsRenderer"
+			 for="nti.contenttools.types.interfaces.IMMprescripts"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>

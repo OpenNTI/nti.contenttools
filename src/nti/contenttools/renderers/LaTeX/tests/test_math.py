@@ -31,6 +31,7 @@ from nti.contenttools.types.math import MSubSup
 from nti.contenttools.types.math import MUnderover
 from nti.contenttools.types.math import MOver
 from nti.contenttools.types.math import MMultiscripts
+from nti.contenttools.types.math import MMprescripts
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -416,5 +417,22 @@ class TestMath(ContentToolsTestCase):
         node.add(child_1)
         output = render_output(node)
         assert_that(output, is_(u'\\overset{\\sqrt[]{}}{}'))
+        
+    def test_mprescripts(self):
+        node = MMprescripts()
+        node_sup = MSup()
+        sup_child_1 = MathRun()
+        sup_child_2 = MathRun()
+        node_sup.add(sup_child_1)
+        node_sup.add(sup_child_2)
+        node_sub = MSub()
+        sub_child_1 = MathRun()
+        sub_child_2 = MathRun()
+        node_sup.add(sub_child_1)
+        node_sup.add(sub_child_2)
+        node.sub = node_sub
+        node.sup = node_sup
+        output = render_output(node)
+        assert_that(output, is_(u'{_{}^{}}'))
     
         
