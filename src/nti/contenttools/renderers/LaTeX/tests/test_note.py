@@ -15,6 +15,8 @@ does_not = is_not
 from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.note import Note
+from nti.contenttools.types.note import NoteInteractive
+
 from nti.contenttools.types.lists import UnorderedList
 
 from nti.contenttools.tests import ContentToolsTestCase
@@ -31,3 +33,8 @@ class TestNote(ContentToolsTestCase):
         node.add(child)
         output = render_output(node)
         assert_that(output, is_(u'\\footnote{\\begin{itemize}\n\n\\end{itemize}\n'))
+    
+    def test_note_interactive(self):
+        node = NoteInteractive()
+        output = render_output(node)
+        assert_that(output, is_(u'\n\\begin{nticard}{}\n\\label{}\n\\caption{}\n\\includegraphics{images/}\n\n\\end{nticard}\n'))
