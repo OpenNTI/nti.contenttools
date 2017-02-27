@@ -30,6 +30,7 @@ from nti.contenttools.types.math import MathRun
 from nti.contenttools.types.math import MSubSup
 from nti.contenttools.types.math import MUnderover
 from nti.contenttools.types.math import MOver
+from nti.contenttools.types.math import MMultiscripts
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -415,3 +416,5 @@ class TestMath(ContentToolsTestCase):
         node.add(child_1)
         output = render_output(node)
         assert_that(output, is_(u'\\overset{\\sqrt[]{}}{}'))
+    
+        

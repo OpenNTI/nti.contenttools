@@ -19,7 +19,7 @@ from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
-from nti.contenttools.types.interfaces import IMtr, IMOver
+from nti.contenttools.types.interfaces import IMtr
 from nti.contenttools.types.interfaces import IMtd
 from nti.contenttools.types.interfaces import IMath
 from nti.contenttools.types.interfaces import IMRow
@@ -34,6 +34,9 @@ from nti.contenttools.types.interfaces import IMFenced
 from nti.contenttools.types.interfaces import IMathRun
 from nti.contenttools.types.interfaces import IMSubSup
 from nti.contenttools.types.interfaces import IMUnderover
+from nti.contenttools.types.interfaces import IMOver 
+from nti.contenttools.types.interfaces import IMMultiscripts
+from nti.contenttools.types.interfaces import IMMprescripts
 
 """
 rendering MathML element
@@ -336,6 +339,29 @@ def render_mover(context, node):
         context.write(u'}')
     return node
 
+def render_mmultiscript(context, node):
+    """
+    render <mmultiscript> element
+    """
+    if node.prescripts and node.base:
+        render_node(context, node.prescripts)
+        render_node(context, node.base)
+    else:
+        logger.warn(u'<mmultiscript> prescripts or base is None')
+    return node
+
+def render_mprescripts(context, node):
+    if node.sub and node.sup:
+        context.write(u'{_{')
+        render_node(context, node.sub)
+        context.write(u'}^{')
+        render_node(context, node.sup)
+        context.write(u'}}')
+    else:
+        logger.warn('prescripts sub or sup is None')
+    return node
+        
+
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -427,3 +453,11 @@ class MUnderoverRenderer(RendererMixin):
 @component.adapter(IMOver)
 class MOverRenderer(RendererMixin):
     func = staticmethod(render_mover)
+
+@component.adapter(IMMultiscripts)
+class MMultiscriptsRenderer(RendererMixin):
+    func = staticmethod(render_mmultiscript)
+
+@component.adapter(IMMprescripts)
+class MprescriptsRenderer(RendererMixin):
+    func = staticmethod(render_mprescripts)

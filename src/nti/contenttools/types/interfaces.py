@@ -686,22 +686,18 @@ class IMMenclose(IDocumentStructureNode):
 
 class IMMprescripts(IDocumentStructureNode):
 
-    sub = Object(IMSub, title="subscript",
+    sub = Object(IDocumentStructureNode, title="subscript",
                  required=False)
 
-    sup = Object(IMSup, title="superscript",
+    sup = Object(IDocumentStructureNode, title="superscript",
                  required=False)
 
 
 class IMMultiscripts(IDocumentStructureNode):
-    """
-    TODO: double check base and prescripts type
-    """
-
     base = Object(IDocumentStructureNode, title="base",
                   required=False)
 
-    prescripts = Object(IMMprescripts, title="prescript",
+    prescripts = Object(IDocumentStructureNode, title="prescript",
                         required=False)
 
 
