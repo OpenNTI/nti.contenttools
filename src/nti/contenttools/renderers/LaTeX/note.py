@@ -65,6 +65,33 @@ def render_note_interactive(context, node):
 
     return node
 
+def render_openstax_note(context, node):
+    if isinstance(node.title, unicode) or isinstance(node.title, str) or not node.label:
+        title = node.title
+    else:
+        title = render_output(node.title).rstrip()
+    
+    if isinstance(node.label, unicode) or isinstance(node.label, str) or not node.label:
+        label = node.label
+    else:
+        label = render_output(node.label).rstrip()
+    
+    context.write(u'\n\\begin{sidebar}{')
+    context.write(title)
+    context.write(u'}\n')
+    if label:
+        context.write(u'\\label{')
+        context.write(label)
+        context.write(u'}')
+    render_node(context, node.body)
+    context.write(u'\n\\end{sidebar}\n')
+    return node
+
+def render_openstax_example_note(context, node):
+    return render_openstax_note(context, node)
+    
+def render_openstax_note_body(context, node):
+    return render_children(context, node)
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -88,3 +115,15 @@ class NoteRenderer(RendererMixin):
 @component.adapter(INoteInteractive)
 class NoteInteractiveRenderer(RendererMixin):
     func = staticmethod(render_note_interactive)
+    
+@component.adapter(IOpenstaxNote)
+class OpenstaxNoteRenderer(RendererMixin):
+    func = staticmethod(render_openstax_note)
+    
+@component.adapter(IOpenstaxExampleNote)
+class OpenstaxExampleNoteRenderer(RendererMixin):
+    func = staticmethod(render_openstax_example_note)
+
+@component.adapter(IOpenstaxNoteBody)
+class OpenstaxNoteBodyRenderer(RendererMixin):
+    func = staticmethod(render_openstax_note_body)
