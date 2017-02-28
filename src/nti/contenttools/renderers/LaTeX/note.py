@@ -62,7 +62,6 @@ def render_note_interactive(context, node):
     context.write(u'}\n')
     context.write(notes)
     context.write(u'\n\\end{nticard}\n')
-
     return node
 
 def render_openstax_note(context, node):
