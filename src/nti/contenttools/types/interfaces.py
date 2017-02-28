@@ -1639,16 +1639,19 @@ class IFootnoteText(IDocumentStructureNode):
     Node for footnote text.
     """
 
-    text = Object(IDocumentStructureNode, title="Title",
-                  required=False)
+    text = Variant((Object(IDocumentStructureNode,
+                            title="Text"),
+                     ValidTextLine(title="Text")),
+                    required=False)
 
     label = Variant((Object(IDocumentStructureNode,
                             title="Label"),
                      ValidTextLine(title="Label")),
                     required=False)
 
-    num = ValidTextLine(title="Num",
-                        required=False)
+    num = Variant((ValidTextLine(), Int()),
+                  title="Num",
+                  required=False)
 
 
 class IFootnoteMark(IDocumentStructureNode):
@@ -1656,11 +1659,14 @@ class IFootnoteMark(IDocumentStructureNode):
     Node for footnote text.
     """
 
-    text = Object(IDocumentStructureNode, title="Title",
-                  required=False)
+    text = Variant((Object(IDocumentStructureNode,
+                            title="Text"),
+                     ValidTextLine(title="Text")),
+                    required=False)
 
-    num = ValidTextLine(title="Num",
-                        required=False)
+    num = Variant((ValidTextLine(), Int()),
+                  title="Num",
+                  required=False)
 
 
 class IFootnote(IDocumentStructureNode):

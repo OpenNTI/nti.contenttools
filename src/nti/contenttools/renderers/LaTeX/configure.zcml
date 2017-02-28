@@ -229,4 +229,18 @@
 			 for="nti.contenttools.types.interfaces.IOpenstaxExampleNote"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	
+	<!-- Footnote -->
+	<adapter factory=".footnote.FootnoteRenderer"
+			 for="nti.contenttools.types.interfaces.IFootnote"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".footnote.FootnoteTextRenderer"
+			 for="nti.contenttools.types.interfaces.IFootnoteText"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".footnote.FootnoteMarkRenderer"
+			 for="nti.contenttools.types.interfaces.IFootnoteMark"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
