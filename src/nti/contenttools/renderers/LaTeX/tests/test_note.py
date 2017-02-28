@@ -26,52 +26,58 @@ from nti.contenttools.types.lists import UnorderedList
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestNote(ContentToolsTestCase):
+
     def test_note(self):
         node = Note()
         output = render_output(node)
         assert_that(output, is_(u''))
-    
+
     def test_footnote(self):
         node = Note()
         child = UnorderedList()
         node.add(child)
         output = render_output(node)
         assert_that(output, is_(u'\\footnote{\\begin{itemize}\n\n\\end{itemize}\n'))
-    
+
     def test_note_interactive(self):
         node = NoteInteractive()
         output = render_output(node)
-        assert_that(output, is_(u'\n\\begin{nticard}{}\n\\label{}\n\\caption{}\n\\includegraphics{images/}\n\n\\end{nticard}\n'))
-    
+        assert_that(
+            output,
+            is_(u'\n\\begin{nticard}{}\n\\label{}\n\\caption{}\n\\includegraphics{images/}\n\n\\end{nticard}\n'))
+
     def test_openstax_note(self):
         node = OpenstaxNote()
         node.body = OpenstaxNoteBody()
         output = render_output(node)
         assert_that(output, is_(u'\n\\begin{sidebar}{}\n\n\\end{sidebar}\n'))
-    
+
     def test_openstax_note_with_title(self):
         node = OpenstaxNote()
         node.body = OpenstaxNoteBody()
         node.title = "Title"
-        node.label= Run()
+        node.label = Run()
         output = render_output(node)
         assert_that(output, is_(u'\n\\begin{sidebar}{Title}\n\n\\end{sidebar}\n'))
-    
+
     def test_openstax_note_with_label_and_title(self):
         node = OpenstaxNote()
         node.body = OpenstaxNoteBody()
         node.title = "Title"
-        node.label= "Label001"
+        node.label = "Label001"
         output = render_output(node)
-        assert_that(output, is_(u'\n\\begin{sidebar}{Title}\n\\label{Label001}\n\\end{sidebar}\n'))
-    
+        assert_that(
+            output,
+            is_(u'\n\\begin{sidebar}{Title}\n\\label{Label001}\n\\end{sidebar}\n'))
+
     def test_openstax_example_note(self):
         node = OpenstaxExampleNote()
         node.body = OpenstaxNoteBody()
         output = render_output(node)
         assert_that(output, is_(u'\n\\begin{sidebar}{}\n\n\\end{sidebar}\n'))
-    
+
     def test_openstax_note_body(self):
         node = OpenstaxNoteBody()
         child_1 = Run()
@@ -82,4 +88,3 @@ class TestNote(ContentToolsTestCase):
         node.add(child_3)
         output = render_output(node)
         assert_that(output, is_(u''))
-    
