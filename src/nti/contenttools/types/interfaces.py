@@ -1508,7 +1508,7 @@ class IOpenstaxNote(IDocumentStructureNode):
                      ValidTextLine(title="Label")),
                     required=False)
 
-    body = Object(IOpenstaxNoteBody,
+    body = Object(IDocumentStructureNode,
                   title="Openstax Note Body",
                   required=False)
 

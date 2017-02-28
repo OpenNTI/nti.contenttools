@@ -217,4 +217,16 @@
 			 for="nti.contenttools.types.interfaces.INoteInteractive"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".note.OpenstaxNoteRenderer"
+			 for="nti.contenttools.types.interfaces.IOpenstaxNote"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".note.OpenstaxNoteBodyRenderer"
+			 for="nti.contenttools.types.interfaces.IOpenstaxNoteBody"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+	<adapter factory=".note.OpenstaxExampleNoteRenderer"
+			 for="nti.contenttools.types.interfaces.IOpenstaxExampleNote"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 </configure>
