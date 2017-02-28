@@ -1673,8 +1673,10 @@ class IFootnote(IDocumentStructureNode):
     """
     Node for footnote
     """
-    text = Object(IRunNode, title="Title",
-                  required=False)
+    text = Variant((Object(IDocumentStructureNode,
+                            title="Text"),
+                     ValidTextLine(title="Text")),
+                    required=False)
 
     label = Variant((Object(IDocumentStructureNode,
                             title="Label"),

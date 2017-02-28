@@ -46,7 +46,7 @@ class TestFootnote(ContentToolsTestCase):
     def test_footnote_mark_without_num(self):
         node = FootnoteMark()
         output = render_output(node)
-        assert_that(output, is_(u''))
+        assert_that(output, is_(u'\\footnotemark'))
     
     def test_footnote_mark(self):
         node = FootnoteMark()
