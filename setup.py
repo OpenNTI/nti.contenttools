@@ -54,6 +54,7 @@ setup(
         'lxml',
         'Pillow',
         'simplejson',
+        'six',
         'zope.component',
         'zope.exceptions',
         'zope.interface',

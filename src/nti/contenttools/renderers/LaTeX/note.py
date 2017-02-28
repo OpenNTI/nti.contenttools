@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: note.py 107525 2017-02-27 09:43:34Z egawati.panjei $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
+
+import six
 
 from zope import component
 from zope import interface
@@ -21,7 +23,6 @@ from nti.contenttools.renderers.interfaces import IRenderer
 
 from nti.contenttools.types.interfaces import INote
 from nti.contenttools.types.interfaces import INoteInteractive
-from nti.contenttools.types.interfaces import INoteInteractiveImage
 
 from nti.contenttools.types.interfaces import IOpenstaxNote
 from nti.contenttools.types.interfaces import IOpenstaxNoteBody
@@ -38,10 +39,11 @@ def render_note(context, node):
 
 
 def render_note_interactive(context, node):
-    new_image_path = node.complete_image_path if node.complete_image_path else u'images/%s' % (
-        node.image_path)
+    new_image_path = node.complete_image_path
+    if not new_image_path:
+        new_image_path = u'images/%s' % (node.image_path)
 
-    if isinstance(node.caption, unicode) or isinstance(node.caption, str):
+    if isinstance(node.caption, six.string_types):
         caption = node.caption
     else:
         caption = render_output(node.caption).strip()
@@ -66,12 +68,12 @@ def render_note_interactive(context, node):
 
 
 def render_openstax_note(context, node):
-    if isinstance(node.title, unicode) or isinstance(node.title, str) or not node.label:
+    if isinstance(node.title, six.string_types) or not node.label:
         title = node.title
     else:
         title = render_output(node.title).rstrip()
 
-    if isinstance(node.label, unicode) or isinstance(node.label, str) or not node.label:
+    if isinstance(node.label, six.string_types) or not node.label:
         label = node.label
     else:
         label = render_output(node.label).rstrip()
