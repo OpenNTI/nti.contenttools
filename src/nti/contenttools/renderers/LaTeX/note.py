@@ -70,7 +70,7 @@ def render_note_interactive(context, node):
 def render_openstax_note(context, node):
     context.write(u'\n\\begin{sidebar}{')
     if node.title:
-        if isinstance(node.title, six.string_types) or not node.label:
+        if isinstance(node.title, six.string_types):
             title = node.title
         else:
             title = render_output(node.title).rstrip()
