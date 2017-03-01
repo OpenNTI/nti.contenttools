@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import six
+
 from zope import component
 from zope import interface
 
@@ -21,6 +23,7 @@ from nti.contenttools.types.interfaces import IFootnote
 from nti.contenttools.types.interfaces import IFootnoteText
 from nti.contenttools.types.interfaces import IFootnoteMark
 
+
 def render_footnote(context, node):
     base = render_children_output(node)
     if base:
@@ -28,6 +31,7 @@ def render_footnote(context, node):
         context.write(base)
         context.write(u'')
     return node
+
 
 def render_footnote_mark(context, node):
     if node.num:
@@ -37,21 +41,23 @@ def render_footnote_mark(context, node):
     else:
         context.write(u'\\footnotemark')
     return node
-        
+
+
 def render_footnote_text(context, node):
     context.write(u'\\footnotetext')
-    if node.num :
+    if node.num:
         context.write(u'[')
         context.write(node.num)
         context.write(u']')
     context.write(u'{')
     if node.text:
-        if isinstance(node.text, unicode) or isinstance(node.text, str):
+        if isinstance(node.text, six.string_types):
             context.write(node.text)
         else:
             render_node(context, node.text)
     context.write(u'}')
     return node
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -71,9 +77,11 @@ class RendererMixin(object):
 class FootnoteRenderer(RendererMixin):
     func = staticmethod(render_footnote)
 
+
 @component.adapter(IFootnoteMark)
 class FootnoteMarkRenderer(RendererMixin):
     func = staticmethod(render_footnote_mark)
+
 
 @component.adapter(IFootnoteText)
 class FootnoteTextRenderer(RendererMixin):
