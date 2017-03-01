@@ -13,6 +13,8 @@ from zope.location.interfaces import IContained
 
 from dolmen.builtins.interfaces import IIterable
 
+from nti.contentfragments.interfaces import IPlainTextContentFragment
+
 from nti.schema.field import Int
 from nti.schema.field import Bool
 from nti.schema.field import Dict
@@ -47,10 +49,8 @@ class INode(_INode, IIterable):
         """
 
 
-class ITextNode(INode):
-
-    def __str__():
-        pass
+class ITextNode(INode, IPlainTextContentFragment):
+    pass
 
 
 class IDocumentStructureNode(INode):
