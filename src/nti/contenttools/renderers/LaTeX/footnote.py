@@ -45,10 +45,11 @@ def render_footnote_text(context, node):
         context.write(node.num)
         context.write(u']')
     context.write(u'{')
-    if isinstance(node.text, unicode) or isinstance(node.text, str):
-        context.write(node.text)
-    else:
-        render_node(context, node.text)
+    if node.text:
+        if isinstance(node.text, unicode) or isinstance(node.text, str):
+            context.write(node.text)
+        else:
+            render_node(context, node.text)
     context.write(u'}')
     return node
 
