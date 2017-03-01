@@ -54,6 +54,9 @@ class TextNode(PlainTextContentFragment, NodeMixin):
         # Note: __new__ does all the actual work, because these are immutable
         # as strings
         super(TextNode, self).__init__(self, to_latex(text, type_text))
+    
+    def render(self):
+        return unicode(self)
 
     def add(self, child):
         pass

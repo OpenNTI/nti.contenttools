@@ -158,46 +158,9 @@ from nti.contenttools.types.note import OpenstaxNote
 from nti.contenttools.types.note import OpenstaxNoteBody
 from nti.contenttools.types.note import OpenstaxExampleNote
 
-
-def _to_latex(text, type_text):
-    # replace special unicode in TextNode with latex tag when text is
-    # a part of equation (math element)
-    # we use unicode_to_latex._replace_unicode_with_latex_tag(text) to
-    # avoid going through large extended escape_list
-    # otherwise the text replacement will take place when calling in
-    # nti.contentfragments.latex.PlainTextToLatexFragmentConverter
-    # and try to keep escape list for
-    # nti.contentfragments.latex.PlainTextToLatexFragmentConverter small
-    new_text = text
-    if type_text == 'omath':
-        string_list = list(text)
-        if len(string_list) > 1:
-            new_text = unicode_to_latex._replace_multi_char(new_text)
-        else:
-            new_text = unicode_to_latex._replace_unicode_with_latex_tag(
-                new_text)
-        return new_text
-    else:
-        return PlainTextToLatexFragmentConverter(new_text)
-
 from nti.contenttools.types.node import _Node
 
-
-class TextNode(_Node, PlainTextContentFragment):
-
-    __slots__ = PlainTextContentFragment.__slots__ + ('children', '__parent__')
-
-    def __new__(cls, text='', type_text=None):
-        return super(TextNode, cls).__new__(cls, _to_latex(text, type_text))
-
-    def __init__(self, text='', type_text=None):
-        # Note: __new__ does all the actual work, because these are immutable
-        # as strings
-        super(TextNode, self).__init__(self, _to_latex(text, type_text))
-
-    def render(self):
-        return unicode(self)
-
+from nti.contenttools.types.text import TextNode
 
 class Newline(DocumentStructureNode):
     pass
