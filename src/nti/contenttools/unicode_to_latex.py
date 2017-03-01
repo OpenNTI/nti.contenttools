@@ -75,7 +75,7 @@ unicode_to_latex =  {
     u"\u00B2": "{^2}",
     u"\u00B3": "{^3}",
     u"\u00B4": "\\textasciiacute ",
-    u"\u00B5": "\\mathrm{\\mu}",
+    u"\u00B5": "\\mu ",
     u"\u00B6": "\\textparagraph ",
     u"\u00B7": "\\cdot ",
     u"\u00B8": "\\c{}",
