@@ -34,7 +34,7 @@ def render_note(context, node):
     if base:
         context.write(u'\\footnote{')
         context.write(base)
-        context.write(u'')
+        context.write(u'}')
     return node
 
 
