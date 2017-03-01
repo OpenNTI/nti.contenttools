@@ -13,6 +13,7 @@ from zope import component
 from zope import interface
 
 from nti.contenttools.renderers.LaTeX.base import render_node
+from nti.contenttools.renderers.LaTeX.base import render_command
 from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_children_output
@@ -439,53 +440,29 @@ def render_menclose(context,node):
     return node
 
 def m_radical(context, node):
-    context.write(u'\\sqrt{')
-    render_children(context, node)
-    context.write(u'}')
-    return node
+    return render_command(context, u'sqrt', node)
 
 def m_updiagonalstrike(context, node):
-    context.write(u'\\cancel{')
-    render_children(context, node)
-    context.write(u'}')
-    return node
+    return render_command(context, u'cancel', node)
 
 def m_downdiagonalstrike(context, node):
-    context.write(u'\\bcancel{')
-    render_children(context, node)
-    context.write(u'}')
-    return node
+    return render_command(context, u'bcancel', node)
 
 def m_horizontalstrike(context, node):
-    context.write(u'\\hcancel{')
-    render_children(context, node)
-    context.write(u'}')
-    return node
+    return render_command(context, u'hcancel', node)
 
 def m_top(context, node):
-    context.write(u'\\overline{')
-    render_children(context, node)
-    context.write(u'}')
-    return node
+    return render_command(context, u'overline', node)
 
 def m_bottom(context, node):
-    context.write(u'\\underline{')
-    render_children(context, node)
-    context.write(u'}')
-    return node
+    return render_command(context, u'underline', node)
 
 def m_box(context, node):
-    context.write(u'\\boxed{')
-    render_children(context, node)
-    context.write(u'}')
-    return node
+    return render_command(context, u'boxed', node)
 
 def m_longdiv(context, node):
     #TODO : the render result will look odd, find a better command
-    context.write(u'\\overline{')
-    render_children(context, node)
-    context.write(u'}')
-    return node
+    return render_command(context, u'overline', node)
 
 def m_left(context, node):
     context.write(u'\\Big|')
