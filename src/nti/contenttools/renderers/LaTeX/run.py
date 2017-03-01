@@ -63,7 +63,8 @@ def render_run_node(context, node):
               'subscript': _subscript,
               'superscript': _superscript}
 
-    IGNORED_STYLE = [u'apple-converted-space', u'HTMLDefinition', u'cnxn-target']
+    IGNORED_STYLE = [
+        u'apple-converted-space', u'HTMLDefinition', u'cnxn-target']
 
     if node.styles:
         base = render_children_output(node)

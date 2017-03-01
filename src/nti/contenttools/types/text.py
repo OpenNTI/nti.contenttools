@@ -44,7 +44,7 @@ def to_latex(text, type_text):
 
 @interface.implementer(ITextNode)
 class TextNode(PlainTextContentFragment, NodeMixin):
-    
+
     __slots__ = PlainTextContentFragment.__slots__ + ('children', '__parent__')
 
     def __new__(cls, text='', type_text=None):
@@ -54,7 +54,7 @@ class TextNode(PlainTextContentFragment, NodeMixin):
         # Note: __new__ does all the actual work, because these are immutable
         # as strings
         super(TextNode, self).__init__(self, to_latex(text, type_text))
-    
+
     def render(self):
         return unicode(self)
 
