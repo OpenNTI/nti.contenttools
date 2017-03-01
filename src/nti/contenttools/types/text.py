@@ -32,7 +32,7 @@ def to_latex(text, type_text):
     # nti.contentfragments.latex.PlainTextToLatexFragmentConverter
     # and try to keep escape list for
     # nti.contentfragments.latex.PlainTextToLatexFragmentConverter small
-    if type_text == 'omath':
+    if type_text in ['omath', 'math']:
         if text and len(text) > 1:
             text = replace_multi_char(text)
         elif text:
