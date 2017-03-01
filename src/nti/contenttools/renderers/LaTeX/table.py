@@ -63,6 +63,7 @@ def get_string_col(number_of_col, border):
     return u''.join(cols)
 
 
+# TODO: Ega refactor this better
 def process_table_html(context, node, string_col):
     body = render_children_output(node)
 
