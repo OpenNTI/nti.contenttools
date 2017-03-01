@@ -28,5 +28,6 @@ class TestTextNode(ContentToolsTestCase):
     def test_text_node_special_char(self):
         node = TextNode(u'hello from plain µ δ Τ')
         output = render_output(node)
+        #TODO : check why δ Τ are rendered as \u03b4 \u03a4
         assert_that(output, is_(u'hello from plain $\mu$ \u03b4 \u03a4'))
         
