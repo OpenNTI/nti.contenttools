@@ -44,6 +44,8 @@ def to_latex(text, type_text):
 
 @interface.implementer(ITextNode)
 class TextNode(PlainTextContentFragment, NodeMixin):
+    
+    __slots__ = PlainTextContentFragment.__slots__ + ('children', '__parent__')
 
     def __new__(cls, text='', type_text=None):
         return super(TextNode, cls).__new__(cls, to_latex(text, type_text))
