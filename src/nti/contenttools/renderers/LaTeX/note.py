@@ -48,7 +48,7 @@ def render_note_interactive(context, node):
     else:
         caption = render_output(node.caption).strip()
 
-    if isinstance(node.notes, unicode) or isinstance(node.notes, str):
+    if isinstance(node.notes, six.string_types):
         notes = node.notes
     else:
         notes = render_output(node.notes).strip()
