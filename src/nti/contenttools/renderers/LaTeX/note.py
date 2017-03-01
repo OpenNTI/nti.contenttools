@@ -68,23 +68,25 @@ def render_note_interactive(context, node):
 
 
 def render_openstax_note(context, node):
-    if isinstance(node.title, six.string_types) or not node.label:
-        title = node.title
-    else:
-        title = render_output(node.title).rstrip()
-
-    if isinstance(node.label, six.string_types) or not node.label:
-        label = node.label
-    else:
-        label = render_output(node.label).rstrip()
-
     context.write(u'\n\\begin{sidebar}{')
-    context.write(title)
+    if node.title:
+        if isinstance(node.title, six.string_types) or not node.label:
+            title = node.title
+        else:
+            title = render_output(node.title).rstrip()
+        context.write(title)
     context.write(u'}\n')
-    if label:
-        context.write(u'\\label{')
-        context.write(label)
-        context.write(u'}')
+
+    if node.label:
+        if isinstance(node.label, six.string_types):
+            label = node.label
+        else:
+            label = render_output(node.label).rstrip()
+        
+        if label:
+            context.write(u'\\label{')
+            context.write(label)
+            context.write(u'}\n')
     render_node(context, node.body)
     context.write(u'\n\\end{sidebar}\n')
     return node

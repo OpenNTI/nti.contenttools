@@ -69,7 +69,7 @@ class TestNote(ContentToolsTestCase):
         node.label = "Label001"
         output = render_output(node)
         assert_that(output,
-                    is_(u'\n\\begin{sidebar}{Title}\n\\label{Label001}\n\\end{sidebar}\n'))
+                    is_(u'\n\\begin{sidebar}{Title}\n\\label{Label001}\n\n\\end{sidebar}\n'))
 
     def test_openstax_example_note(self):
         node = OpenstaxExampleNote()
