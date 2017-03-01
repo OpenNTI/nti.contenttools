@@ -243,4 +243,10 @@
 			 for="nti.contenttools.types.interfaces.IFootnoteMark"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	
+	<!-- Text -->
+	<adapter factory=".text.TextNodeRenderer"
+		 for="nti.contenttools.types.interfaces.ITextNode"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>
