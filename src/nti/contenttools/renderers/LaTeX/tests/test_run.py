@@ -36,3 +36,39 @@ class TestRunNode(ContentToolsTestCase):
         node.styles = ['italic']
         output = render_output(node)
         assert_that(output, is_(u'\\textit{}'))
+    
+    def test_run_strike(self):
+        node = Run()
+        node.styles = ['strike']
+        output = render_output(node)
+        assert_that(output, is_(u'\\strikeout{}'))
+    
+    def test_run_sub(self):
+        node = Run()
+        node.styles = ['sub']
+        output = render_output(node)
+        assert_that(output, is_(u'\\textsubscript{}'))
+    
+    def test_run_underline(self):
+        node = Run()
+        node.styles = ['underline']
+        output = render_output(node)
+        assert_that(output, is_(u'\\uline{}'))
+    
+    def test_run_superscript(self):
+        node = Run()
+        node.styles = ['superscript']
+        output = render_output(node)
+        assert_that(output, is_(u'\\textsuperscript{}'))
+    
+    def test_run_bold_underline(self):
+        node = Run()
+        node.styles = ['bold', 'underline']
+        output = render_output(node)
+        assert_that(output, is_(u'\\uline{\\textbf{}}'))
+    
+    def test_run_bold_underline_italic(self):
+        node = Run()
+        node.styles = ['bold', 'underline', 'italic']
+        output = render_output(node)
+        assert_that(output, is_(u'\\textit{\\uline{\\textbf{}}}'))
