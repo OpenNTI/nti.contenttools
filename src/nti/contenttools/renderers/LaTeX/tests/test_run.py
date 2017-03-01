@@ -15,6 +15,7 @@ does_not = is_not
 from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.run import Run
+from nti.contenttools.types.text import TextNode
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -25,6 +26,13 @@ class TestRunNode(ContentToolsTestCase):
         node = Run()
         output = render_output(node)
         assert_that(output, is_(u''))
+    
+    def test_run_with_text_node(self):
+        node = Run()
+        child = TextNode('This is Sparta')
+        node.add(child)
+        output = render_output(node)
+        assert_that(output, is_(u'This is Sparta'))
 
     def test_run_bold(self):
         node = Run()
