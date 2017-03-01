@@ -22,9 +22,8 @@ class FrozenDict(dict):
     def __setitem__(self, key, value):
         raise NotImplementedError('Invalid operation')
 
+
 _unicode_to_latex = None
-
-
 def unicode_to_latex():
     global _unicode_to_latex
     if _unicode_to_latex is None:
