@@ -17,6 +17,7 @@ from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.schema.fieldproperty import createFieldProperties
 
+
 @interface.implementer(IRunNode)
 class Run(DocumentStructureNode):
     createFieldProperties(IRunNode)

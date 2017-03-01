@@ -47,6 +47,12 @@ class INode(_INode, IIterable):
         """
 
 
+class ITextNode(INode):
+
+    def __str__():
+        pass
+
+
 class IDocumentStructureNode(INode):
 
     styles = IndexedIterable(ValidTextLine(title='the style'),
@@ -682,7 +688,7 @@ class IMMenclose(IDocumentStructureNode):
 
     notation = Variant((ListOrTuple(title="Notation"),
                         ValidTextLine(title="Notation")),
-                        required=False)
+                       required=False)
 
 
 class IMMprescripts(IDocumentStructureNode):
@@ -707,10 +713,12 @@ class IMText(IDocumentStructureNode):
     Node for handling text in MathML element
     """
 
+
 class IMNone(IDocumentStructureNode):
     """
     Node for handling <none/> element
     """
+
 
 class IOMath(IDocumentStructureNode):
     """
@@ -1640,9 +1648,9 @@ class IFootnoteText(IDocumentStructureNode):
     """
 
     text = Variant((Object(IDocumentStructureNode,
-                            title="Text"),
-                     ValidTextLine(title="Text")),
-                    required=False)
+                           title="Text"),
+                    ValidTextLine(title="Text")),
+                   required=False)
 
     label = Variant((Object(IDocumentStructureNode,
                             title="Label"),
@@ -1660,9 +1668,9 @@ class IFootnoteMark(IDocumentStructureNode):
     """
 
     text = Variant((Object(IDocumentStructureNode,
-                            title="Text"),
-                     ValidTextLine(title="Text")),
-                    required=False)
+                           title="Text"),
+                    ValidTextLine(title="Text")),
+                   required=False)
 
     num = Variant((ValidTextLine(), Int()),
                   title="Num",
@@ -1674,9 +1682,9 @@ class IFootnote(IDocumentStructureNode):
     Node for footnote
     """
     text = Variant((Object(IDocumentStructureNode,
-                            title="Text"),
-                     ValidTextLine(title="Text")),
-                    required=False)
+                           title="Text"),
+                    ValidTextLine(title="Text")),
+                   required=False)
 
     label = Variant((Object(IDocumentStructureNode,
                             title="Label"),
