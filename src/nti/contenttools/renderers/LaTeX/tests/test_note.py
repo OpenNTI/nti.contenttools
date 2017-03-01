@@ -39,8 +39,7 @@ class TestNote(ContentToolsTestCase):
         child = UnorderedList()
         node.add(child)
         output = render_output(node)
-        assert_that(output,
-                    is_(u'\\footnote{\\begin{itemize}\n\n\\end{itemize}\n'))
+        assert_that(output, is_(u'\\footnote{\\begin{itemize}\n\n\\end{itemize}\n}'))
 
     def test_note_interactive(self):
         node = NoteInteractive()
