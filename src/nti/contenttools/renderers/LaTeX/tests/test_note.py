@@ -15,6 +15,7 @@ does_not = is_not
 from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.note import Note
+from nti.contenttools.types.note import Sidebar
 from nti.contenttools.types.note import NoteInteractive
 from nti.contenttools.types.note import OpenstaxNote
 from nti.contenttools.types.note import OpenstaxNoteBody
@@ -87,3 +88,15 @@ class TestNote(ContentToolsTestCase):
         node.add(child_3)
         output = render_output(node)
         assert_that(output, is_(u''))
+        
+    def test_simple_sidebar(self):
+        node = Sidebar()
+        output = render_output(node)
+        assert_that(output, is_(u'\n\\begin{sidebar}{}\n\n\\end{sidebar}\n'))
+    
+    def test_sidebar(self):
+        node = Sidebar()
+        node.title = u'this is title'
+        node.label = u's_label'
+        output = render_output(node)
+        assert_that(output, is_(u'\n\\begin{sidebar}{this is title}\n\\label{s_label}\n\\end{sidebar}\n'))
