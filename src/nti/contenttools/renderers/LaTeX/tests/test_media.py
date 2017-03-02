@@ -17,6 +17,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.types.media import Image
 from nti.contenttools.types.media import Figure
 from nti.contenttools.types.media import DocxImage
+from nti.contenttools.types.media import EquationImage
 
 from nti.contenttools.types.run import Run
 from nti.contenttools.types.text import TextNode
@@ -150,3 +151,17 @@ class TestMedia(ContentToolsTestCase):
         assert_that(
             output,
             is_('\\ntiincludeannotationgraphics[width=500px,height=450px]{images/foo.png}'))
+    
+    def test_equation_image_centered(self):
+        main_node = EquationImage()
+        node = Image()
+        node.equation_image = True
+        node.width = 30
+        node.height = 40
+        node.predefined_image_path = True
+        node.path = u'images/foo.png'
+        main_node.image = node
+        output = render_output(main_node)
+        assert_that(
+            output,
+            is_(u'\n\\begin{center}\n\\includegraphics[width=30px,height=40px]{images/foo.png} \\hspace{20 mm} \n\\end{center}\n'))

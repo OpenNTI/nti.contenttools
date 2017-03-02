@@ -161,7 +161,7 @@ def render_equation_image(context, node):
     context.write(u'\n\\begin{center}\n')
     
     if node.image:
-        render_node(node.image)
+        render_node(context, node.image)
     elif node.text:
         text = get_variant_field_string_value(node.tex)
         context.write(text)
@@ -219,4 +219,4 @@ class DocxImageRenderer(RendererMixin):
 
 @component.adapter(IEquationImage)
 class EquationImageRenderer(RendererMixin):
-    func = staticmethod(render_docx_image)
+    func = staticmethod(render_equation_image)
