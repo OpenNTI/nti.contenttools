@@ -5,13 +5,14 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from StdSuites.AppleScript_Suite import string
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
 import re
+
 from six import string_types
+
 from nti.contenttools.renderers.LaTeX.base import render_output
 
 FORBIDDEN_CHARACTERS = r'[<>:"/\\\|\?\*\s\-,\t\'\!]'
@@ -43,6 +44,7 @@ def search_node(provided, root):
             found = search_node(provided, node)
     return found
 
+
 def get_variant_field_string_value(field):
     """
     return string of a node field which type is Variant : String or Node
@@ -52,4 +54,3 @@ def get_variant_field_string_value(field):
     else:
         str_field = render_output(field)
     return str_field
-    

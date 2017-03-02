@@ -30,7 +30,8 @@ class TestMedia(ContentToolsTestCase):
     def test_empty_image(self):
         node = Image()
         output = render_output(node)
-        assert_that(output, is_(u'\\includegraphics[width=0px,height=0px]{images/}'))
+        assert_that(
+            output, is_(u'\\includegraphics[width=0px,height=0px]{images/}'))
 
     def test_annotation_image(self):
         node = Image()
@@ -140,7 +141,7 @@ class TestMedia(ContentToolsTestCase):
         assert_that(
             output,
             is_(u'\\begin{figure}\n\\begin{center}\n\\textbf{fig title}\\\\\n\\ntiincludeannotationgraphics[width=70px,height=90px]{images/foo.png}\\caption{fig caption}\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
-    
+
     def test_docx_image(self):
         node = DocxImage()
         node.width = 500
@@ -151,7 +152,7 @@ class TestMedia(ContentToolsTestCase):
         assert_that(
             output,
             is_('\\ntiincludeannotationgraphics[width=500px,height=450px]{images/foo.png}'))
-    
+
     def test_equation_image_centered(self):
         main_node = EquationImage()
         node = Image()

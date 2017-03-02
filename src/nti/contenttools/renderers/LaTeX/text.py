@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: text.py 107708 2017-03-01 08:30:02Z egawati.panjei $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -16,6 +16,7 @@ from nti.contenttools.renderers.interfaces import IRenderer
 
 from nti.contenttools.types.interfaces import ITextNode
 
+
 @component.adapter(ITextNode)
 @interface.implementer(IRenderer)
 class TextNodeRenderer(object):
@@ -29,5 +30,5 @@ class TextNodeRenderer(object):
         node = self.node if node is None else node
         context.write(node)
         return node
-        
+
     __call__ = render

@@ -381,7 +381,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child_3)
         output = render_output(node)
         assert_that(output, is_(u'\\overset{}{\\underset{}{}}'))
-        
+
     def test_mover(self):
         node = MOver()
         child_1 = MathRun()
@@ -390,7 +390,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         output = render_output(node)
         assert_that(output, is_(u'\\overset{}{}'))
-        
+
     def test_mover_with_other_element_1(self):
         node = MOver()
         child_1 = MathRun()
@@ -420,7 +420,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child_1)
         output = render_output(node)
         assert_that(output, is_(u'\\overset{\\sqrt[]{}}{}'))
-        
+
     def test_mprescripts(self):
         node = MMprescripts()
         node_sup = MSup()
@@ -437,7 +437,7 @@ class TestMath(ContentToolsTestCase):
         node.sup = node_sup
         output = render_output(node)
         assert_that(output, is_(u'{_{}^{}}'))
-    
+
     def test_mmultiscript(self):
         node = MMprescripts()
         node_sup = MSup()
@@ -457,7 +457,7 @@ class TestMath(ContentToolsTestCase):
         multiscript_node.prescripts = node
         output = render_output(multiscript_node)
         assert_that(output, is_(u'{_{}^{}}'))
-    
+
     def test_mmultiscript_with_mnone(self):
         node = MMprescripts()
         node_sup = MSup()
@@ -477,71 +477,71 @@ class TestMath(ContentToolsTestCase):
         multiscript_node.prescripts = node
         output = render_output(multiscript_node)
         assert_that(output, is_(u'{_{}^{}}'))
-    
+
     def test_mnone(self):
         node = MNone()
         output = render_output(node)
         assert_that(output, is_(u''))
-    
+
     def test_mtext(self):
         node = MText()
         output = render_output(node)
         assert_that(output, is_(u''))
-    
+
     def test_menclose_updiagonalstrike(self):
         node = MMenclose()
         node.notation = u'updiagonalstrike'
         output = render_output(node)
         assert_that(output, is_(u'\\cancel{}'))
-    
+
     def test_menclose_downdiagonalstrike(self):
         node = MMenclose()
         node.notation = u'downdiagonalstrike'
         output = render_output(node)
         assert_that(output, is_(u'\\bcancel{}'))
-    
+
     def test_menclose_radical(self):
         node = MMenclose()
         node.notation = u'radical'
         output = render_output(node)
         assert_that(output, is_(u'\\sqrt{}'))
-    
+
     def test_menclose_left(self):
         node = MMenclose()
         node.notation = u'left'
         output = render_output(node)
         assert_that(output, is_(u'\\Big|'))
-    
+
     def test_menclose_right(self):
         node = MMenclose()
         node.notation = u'right'
         output = render_output(node)
         assert_that(output, is_(u'\\Big|'))
-    
+
     def test_menclose_top(self):
         node = MMenclose()
         node.notation = u'top'
         output = render_output(node)
         assert_that(output, is_(u'\\overline{}'))
-    
+
     def test_menclose_bottom(self):
         node = MMenclose()
         node.notation = u'bottom'
         output = render_output(node)
         assert_that(output, is_(u'\\underline{}'))
-    
+
     def test_menclose_horizontalstrike(self):
         node = MMenclose()
         node.notation = u'horizontalstrike'
         output = render_output(node)
         assert_that(output, is_(u'\\hcancel{}'))
-    
+
     def test_menclose_box(self):
         node = MMenclose()
         node.notation = u'box'
         output = render_output(node)
         assert_that(output, is_(u'\\boxed{}'))
-    
+
     def test_menclose_longdiv(self):
         node = MMenclose()
         node.notation = u'longdiv'
