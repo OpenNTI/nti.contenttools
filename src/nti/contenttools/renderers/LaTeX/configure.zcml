@@ -259,4 +259,9 @@
 		 for="nti.contenttools.types.interfaces.IFigure"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+	<adapter factory=".media.DocxImageRenderer"
+		 for="nti.contenttools.types.interfaces.IDocxImage"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+		 
 </configure>

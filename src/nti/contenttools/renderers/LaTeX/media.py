@@ -13,8 +13,6 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
-from six import string_types
-
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 
 from nti.contenttools.renderers.interfaces import IRenderer
@@ -114,7 +112,8 @@ def check_image_in_sidebar(self):
     return False
 
 
-def render_docx_image(context, node, command):
+def render_docx_image(context, node):
+    command = u'ntiincludeannotationgraphics'
     params, command = set_image_params_and_command(node,command)
     context.write(u'\\')
     context.write(command)
@@ -187,4 +186,19 @@ class FigureRenderer(object):
     def render(self, context, node=None, *args, **kwargs):
         node = self.node if node is None else node
         return render_figure(context, node)
+    __call__ = render
+
+@component.adapter(IDocxImage)
+@interface.implementer(IRenderer)
+class DocxImageRenderer(object):
+
+    __slots__ = ('node',)
+
+    def __init__(self, node):
+        self.node = node
+
+    def render(self, context, node=None, *args, **kwargs):
+        node = self.node if node is None else node
+        return render_docx_image(context, node)
+    
     __call__ = render
