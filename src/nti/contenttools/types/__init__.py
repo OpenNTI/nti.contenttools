@@ -162,6 +162,8 @@ from nti.contenttools.types.node import _Node
 
 from nti.contenttools.types.text import TextNode
 
+from nti.contenttools.types.note import Sidebar
+
 class Newline(DocumentStructureNode):
     pass
 
@@ -183,16 +185,6 @@ class Label(DocumentStructureNode):
     def __init__(self, name=''):
         super(Label, self).__init__()
         self.name = name
-
-
-class Sidebar(DocumentStructureNode):
-
-    def __init__(self, title=''):
-        super(Sidebar, self).__init__()
-        self.title = None
-        self.label = None
-        self.type = None
-
 
 class BlockQuote(DocumentStructureNode):
 
