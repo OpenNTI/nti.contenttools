@@ -16,6 +16,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.media import Image
 from nti.contenttools.types.media import Figure
+from nti.contenttools.types.media import DocxImage
 
 from nti.contenttools.types.run import Run
 from nti.contenttools.types.text import TextNode
@@ -138,3 +139,14 @@ class TestMedia(ContentToolsTestCase):
         assert_that(
             output,
             is_(u'\\begin{figure}\n\\begin{center}\n\\textbf{fig title}\\\\\n\\ntiincludeannotationgraphics[width=70px,height=90px]{images/foo.png}\\caption{fig caption}\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
+    
+    def test_docx_image(self):
+        node = DocxImage()
+        node.width = 500
+        node.height = 450
+        node.predefined_image_path = True
+        node.path = u'images/foo.png'
+        output = render_output(node)
+        assert_that(
+            output,
+            is_('\\ntiincludeannotationgraphics[width=500px,height=450px]{images/foo.png}'))
