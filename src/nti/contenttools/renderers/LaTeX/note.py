@@ -44,6 +44,7 @@ def render_sidebar(context, node):
     
     title  = get_variant_field_string_value(node.title) if node.title else u''
     
+    label = u''
     if node.label:
         label = get_variant_field_string_value(node.label)
         if label: label = u'\\label{%s}' %(label)
