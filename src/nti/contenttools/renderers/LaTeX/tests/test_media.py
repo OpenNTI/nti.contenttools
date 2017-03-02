@@ -70,5 +70,5 @@ class TestMedia(ContentToolsTestCase):
     def test_figure(self):
         figure = Figure()
         output = render_output(figure)
-        assert_that(output, is_(u'\\includegraphics[width=0px,height=0px]{images/}'))
+        assert_that(output, is_(u'\\begin{figure}\n\\begin{center}\n\n\\end{center}\n\\end{figure}\n'))
         
