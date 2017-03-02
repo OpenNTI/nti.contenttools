@@ -19,6 +19,8 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
+from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
+
 from nti.contenttools.renderers.interfaces import IRenderer
 
 from nti.contenttools.types.interfaces import INote
@@ -43,15 +45,8 @@ def render_note_interactive(context, node):
     if not new_image_path:
         new_image_path = u'images/%s' % (node.image_path)
 
-    if isinstance(node.caption, six.string_types):
-        caption = node.caption
-    else:
-        caption = render_output(node.caption).strip()
-
-    if isinstance(node.notes, six.string_types):
-        notes = node.notes
-    else:
-        notes = render_output(node.notes).strip()
+    caption = get_variant_field_string_value(node.caption)
+    notes = get_variant_field_string_value(node.notes)
 
     context.write(u'\n\\begin{nticard}{')
     context.write(node.link)
@@ -70,19 +65,12 @@ def render_note_interactive(context, node):
 def render_openstax_note(context, node):
     context.write(u'\n\\begin{sidebar}{')
     if node.title:
-        if isinstance(node.title, six.string_types):
-            title = node.title
-        else:
-            title = render_output(node.title).rstrip()
+        title = get_variant_field_string_value(node.title).rstrip()
         context.write(title)
     context.write(u'}\n')
 
     if node.label:
-        if isinstance(node.label, six.string_types):
-            label = node.label
-        else:
-            label = render_output(node.label).rstrip()
-        
+        label = get_variant_field_string_value(node.label).rstrip()
         if label:
             context.write(u'\\label{')
             context.write(label)
