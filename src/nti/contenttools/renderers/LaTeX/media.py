@@ -156,3 +156,35 @@ def render_figure(context, node):
         context.write(label)
         context.write(u'}')
     context.write(u'\n\\end{center}\n\\end{figure}\n')
+    return node
+
+@component.adapter(IImage)
+@interface.implementer(IRenderer)
+class ImageRenderer(object):
+
+    __slots__ = ('node',)
+
+    def __init__(self, node):
+        self.node = node
+
+    def render(self, context, node=None, *args, **kwargs):
+        node = self.node if node is None else node
+        if node.annotation:
+            return render_image_annotation(context, node)
+        else:
+            return render_image_noannotation(context, node)
+    __call__ = render
+
+@component.adapter(IFigure)
+@interface.implementer(IRenderer)
+class FigureRenderer(object):
+
+    __slots__ = ('node',)
+
+    def __init__(self, node):
+        self.node = node
+
+    def render(self, context, node=None, *args, **kwargs):
+        node = self.node if node is None else node
+        return render_figure(context, node)
+    __call__ = render
