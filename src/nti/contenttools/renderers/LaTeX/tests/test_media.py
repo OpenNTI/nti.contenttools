@@ -102,4 +102,18 @@ class TestMedia(ContentToolsTestCase):
         figure.add(img)
         output = render_output(figure)
         assert_that(output, is_(u'\\begin{figure}\n\\begin{center}\n\\ntiincludeannotationgraphics[width=500px,height=450px]{images/foo.png}\n\\end{center}\n\\end{figure}\n'))
+    
+    def test_figure(self):
+        figure = Figure()
+        figure.title= u'fig title'
+        figure.caption = u'fig caption'
+        figure.label = u'fig_label'
+        img = Image()
+        img.width = 70
+        img.height = 90
+        img.predefined_image_path = True
+        img.path = u'images/foo.png'
+        figure.add(img)
+        output = render_output(figure)
+        assert_that(output, is_(u'\\begin{figure}\n\\begin{center}\n\\textbf{fig title}\\\\\n\\ntiincludeannotationgraphics[width=70px,height=90px]{images/foo.png}\\caption{fig caption}\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
         
