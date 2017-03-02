@@ -58,21 +58,20 @@ class TestUtils(ContentToolsTestCase):
         root.add(section_2)
         result = search_node(IItem, root)
         assert_that(result, is_(False))
-    
+
     def test_get_variant_field_string_value(self):
         node = Figure()
-        
+
         node.caption = u'This is a figure caption'
-        caption  = get_variant_field_string_value(node.caption)
+        caption = get_variant_field_string_value(node.caption)
         assert_that(caption, is_(u'This is a figure caption'))
-        
+
         node.title = TextNode(u'This is a figure title')
         title = get_variant_field_string_value(node.title)
         assert_that(title, is_(u'This is a figure title'))
-        
+
         node.label = Run()
         child = TextNode(u'This is a figure label')
         node.label.add(child)
-        label = get_variant_field_string_value(node.label) 
+        label = get_variant_field_string_value(node.label)
         assert_that(label, is_(u'This is a figure label'))
-        

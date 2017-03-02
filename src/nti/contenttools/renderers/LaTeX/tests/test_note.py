@@ -41,7 +41,8 @@ class TestNote(ContentToolsTestCase):
         child = UnorderedList()
         node.add(child)
         output = render_output(node)
-        assert_that(output, is_(u'\\footnote{\\begin{itemize}\n\n\\end{itemize}\n}'))
+        assert_that(output, 
+                    is_(u'\\footnote{\\begin{itemize}\n\n\\end{itemize}\n}'))
 
     def test_note_interactive(self):
         node = NoteInteractive()
@@ -89,19 +90,20 @@ class TestNote(ContentToolsTestCase):
         node.add(child_3)
         output = render_output(node)
         assert_that(output, is_(u''))
-        
+
     def test_simple_sidebar(self):
         node = Sidebar()
         output = render_output(node)
         assert_that(output, is_(u'\n\\begin{sidebar}{}\n\n\\end{sidebar}\n'))
-    
+
     def test_sidebar(self):
         node = Sidebar()
         node.title = u'this is title'
         node.label = u's_label'
         output = render_output(node)
-        assert_that(output, is_(u'\n\\begin{sidebar}{this is title}\n\\label{s_label}\n\\end{sidebar}\n'))
-    
+        assert_that(output, 
+                    is_(u'\n\\begin{sidebar}{this is title}\n\\label{s_label}\n\\end{sidebar}\n'))
+
     def test_sidebar_term(self):
         node = Sidebar()
         node.type = u'sidebar_term'
@@ -112,4 +114,5 @@ class TestNote(ContentToolsTestCase):
         node.add(child_2)
         node.add(child_3)
         output = render_output(node)
-        assert_that(output, is_(u'\n\\begin{sidebar}{term}\n\\label{sidebar_term:term}term - definition\n\\end{sidebar}\n'))
+        assert_that(output, 
+                    is_(u'\n\\begin{sidebar}{term}\n\\label{sidebar_term:term}term - definition\n\\end{sidebar}\n'))
