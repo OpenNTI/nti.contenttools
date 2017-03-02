@@ -237,13 +237,15 @@ class ILabel(IDocumentStructureNode):
 
 class ISidebar(IDocumentStructureNode):
 
-    title = ValidTextLine(title="Sidebar Title",
-                          required=False)
+    title = Variant((Object(IDocumentStructureNode),
+                             ValidTextLine()),
+                    title="Title",
+                    required=False)
 
-    label = label = Variant((Object(IDocumentStructureNode,
-                                    title="Label"),
-                             ValidTextLine(title="Label")),
-                            required=False)
+    label = Variant((Object(IDocumentStructureNode),
+                             ValidTextLine()),
+                    title="Label",
+                    required=False)
 
     type = ValidTextLine(title="Sidebar Type",
                          required=False)

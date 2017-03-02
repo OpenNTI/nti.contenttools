@@ -9,8 +9,6 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-import six
-
 from zope import component
 from zope import interface
 
@@ -29,6 +27,47 @@ from nti.contenttools.types.interfaces import IOpenstaxNote
 from nti.contenttools.types.interfaces import IOpenstaxNoteBody
 from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 
+from nti.contenttools.types.interfaces import ISidebar
+
+def render_sidebar(context, node):
+    base = render_children_output(node)
+    
+    # this is useful for glossary term (for example glossary term in IFSTA epub)
+    if node.type == u"sidebar_term":
+        str_pos = base.find('-')
+        if str_pos > -1:
+            term = base[0:str_pos].strip()
+            if node.title is None:
+                node.title = term
+            if node.label is None:
+                node.label = u'sidebar_term:%s' % term.replace(u" ", u"_")
+    
+    title  = get_variant_field_string_value(node.title) if node.title else u''
+    
+    if node.label:
+        label = get_variant_field_string_value(node.label)
+        if label: label = u'\\label{%s}' %(label)
+        
+    context.write(u'\n\\begin{sidebar}')
+    
+    found_math_env = False
+    if any(chars in title for chars in [u'\\(', u'\\[']):
+        logger.warn(
+            "Math element found in sidebar's title. It may cause TROUBLE with nti_render, therefore no title for this sidebar. Use textbf to write title in sidebar body")
+        found_math_env = True
+        context.write(u'{}\n')
+    else:
+        context.write(u'{') 
+        context.write(title) 
+        context.write(u'}\n') 
+    context.write(label)
+    if found_math_env:
+        context.write(u'\\textbf{')
+        context.write(title)
+        context.write(u'}\n')
+    context.write(base)
+    context.write(u'\n\\end{sidebar}\n')
+    return node
 
 def render_note(context, node):
     base = render_children_output(node)
@@ -100,6 +139,10 @@ class RendererMixin(object):
         return self.func(context, node)
     __call__ = render
 
+
+@component.adapter(ISidebar)
+class SidebarRenderer(RendererMixin):
+    func = staticmethod(render_sidebar)
 
 @component.adapter(INote)
 class NoteRenderer(RendererMixin):

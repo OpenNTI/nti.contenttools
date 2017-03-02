@@ -19,10 +19,15 @@ from nti.contenttools.types.interfaces import IOpenstaxNote
 from nti.contenttools.types.interfaces import IOpenstaxNoteBody
 from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 
+from nti.contenttools.types.interfaces import ISidebar
+
 from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.schema.fieldproperty import createFieldProperties
 
+@interface.implementer(ISidebar)
+class Sidebar(DocumentStructureNode):
+    createFieldProperties(ISidebar)
 
 @interface.implementer(INote)
 class Note(DocumentStructureNode):
