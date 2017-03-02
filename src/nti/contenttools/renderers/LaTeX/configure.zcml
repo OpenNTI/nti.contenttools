@@ -263,5 +263,9 @@
 		 for="nti.contenttools.types.interfaces.IDocxImage"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+	<adapter factory=".media.EquationImageRenderer"
+		 for="nti.contenttools.types.interfaces.IEquationImage"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 		 
 </configure>
