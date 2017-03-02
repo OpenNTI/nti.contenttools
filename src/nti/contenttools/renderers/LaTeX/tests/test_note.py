@@ -22,6 +22,7 @@ from nti.contenttools.types.note import OpenstaxNoteBody
 from nti.contenttools.types.note import OpenstaxExampleNote
 
 from nti.contenttools.types.run import Run
+from nti.contenttools.types.text import TextNode
 
 from nti.contenttools.types.lists import UnorderedList
 
@@ -100,3 +101,15 @@ class TestNote(ContentToolsTestCase):
         node.label = u's_label'
         output = render_output(node)
         assert_that(output, is_(u'\n\\begin{sidebar}{this is title}\n\\label{s_label}\n\\end{sidebar}\n'))
+    
+    def test_sidebar_term(self):
+        node = Sidebar()
+        node.type = u'sidebar_term'
+        child_1 = TextNode(u'term')
+        child_2 = TextNode(u' - ')
+        child_3 = TextNode(u'definition')
+        node.add(child_1)
+        node.add(child_2)
+        node.add(child_3)
+        output = render_output(node)
+        assert_that(output, is_(u'\n\\begin{sidebar}{term}\n\\label{sidebar_term:term}term - definition\n\\end{sidebar}\n'))
