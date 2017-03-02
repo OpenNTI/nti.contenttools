@@ -229,6 +229,10 @@
 			 for="nti.contenttools.types.interfaces.IOpenstaxExampleNote"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".note.SidebarRenderer"
+			 for="nti.contenttools.types.interfaces.ISidebar"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 	
 	<!-- Footnote -->
 	<adapter factory=".footnote.FootnoteRenderer"
