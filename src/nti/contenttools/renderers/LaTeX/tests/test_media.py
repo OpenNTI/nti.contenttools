@@ -66,3 +66,9 @@ class TestMedia(ContentToolsTestCase):
         node.path = u'images/foo.png'
         output = render_output(node)
         assert_that(output, is_(u'\\includegraphics[width=30px,height=40px]{images/foo.png}'))
+    
+    def test_figure(self):
+        figure = Figure()
+        output = render_output(figure)
+        assert_that(output, is_(u'\\includegraphics[width=0px,height=0px]{images/}'))
+        
