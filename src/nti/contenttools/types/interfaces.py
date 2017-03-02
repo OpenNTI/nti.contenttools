@@ -261,9 +261,10 @@ class IImage(IDocumentStructureNode):
                          required=True,
                          default=u'')
 
-    caption = ValidTextLine(title="Image Caption",
-                            required=True,
-                            default=u'')
+    caption = Variant((Object(IDocumentStructureNode),
+                       ValidTextLine()), title="Image Caption",
+                      required=True,
+                      default=u'')
 
     width = Int(title="Image Width",
                 required=True,
@@ -281,7 +282,7 @@ class IImage(IDocumentStructureNode):
 
     predefined_image_path = Bool(title="Predifined Image Path",
                                  required=False)
-    
+
     annotation = Bool(title="Image Annotation",
                       required=True,
                       default=True)
@@ -1175,20 +1176,25 @@ class IFigure(IDocumentStructureNode):
                      ValidTextLine(title="Label")),
                     required=False)
 
-    caption = ValidTextLine(title="Caption",
-                            required=False)
+    caption = Variant((Object(IDocumentStructureNode),
+                       ValidTextLine()), title="Figure Caption",
+                      required=False)
 
     image_id = ValidTextLine(title="Image id",
                              required=False)
 
-    image_alt = ValidTextLine(title="Image alt",
-                              required=False)
+    image_alt = Variant((Object(IDocumentStructureNode),
+                         ValidTextLine()), title="Image Alt",
+                        required=True,
+                        default=u'')
 
     data_type = ValidTextLine(title="Data type",
                               required=False)
 
-    title = ValidTextLine(title="Title",
-                          required=False)
+    title = Variant((Object(IDocumentStructureNode),
+                     ValidTextLine()), title="Figure Title",
+                    required=True,
+                    default=u'')
 
     def set_caption(caption):
         """
