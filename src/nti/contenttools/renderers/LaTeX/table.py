@@ -23,26 +23,23 @@ from nti.contenttools.types.interfaces import ITHead
 from nti.contenttools.types.interfaces import ITFoot
 from nti.contenttools.types.interfaces import ITable
 
-from nti.contenttools.types.table import TBody
-from nti.contenttools.types.table import THead
-
 
 def set_number_of_table_col(node):
-    header_index = find_table_child(THead, node)
+    header_index = find_table_child(ITHead, node)
     if header_index is not None:
         ncol = node.children[header_index].number_of_col
         node.set_number_of_col_header(ncol)
 
-    body_index = find_table_child(TBody, node)
+    body_index = find_table_child(ITBody, node)
     if body_index is not None:
         ncol = node.children[body_index].number_of_col
         node.set_number_of_col_body(ncol)
 
 
-def find_table_child(type_, me):
+def find_table_child(IType, me):
     list_ = me.children
     for index, child in enumerate(list_):
-        if isinstance(child, type_):
+        if IType.providedBy(child):
             return index
     return None
 
