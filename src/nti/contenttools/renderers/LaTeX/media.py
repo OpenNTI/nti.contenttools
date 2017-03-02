@@ -148,7 +148,7 @@ def render_figure(context, node):
         context.write(title)
     render_children(context, node)
     if caption:
-        context.write(u'\n\\caption{')
+        context.write(u'\\caption{')
         context.write(caption)
         context.write(u'}\n')
     if label:
