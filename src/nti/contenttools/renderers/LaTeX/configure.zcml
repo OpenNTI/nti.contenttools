@@ -249,4 +249,15 @@
 		 for="nti.contenttools.types.interfaces.ITextNode"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+		
+	<!-- Media -->
+	<adapter factory=".media.ImageRenderer"
+		 for="nti.contenttools.types.interfaces.IImage"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+		
+	<adapter factory=".media.FigureRenderer"
+		 for="nti.contenttools.types.interfaces.IFigure"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>
