@@ -1547,9 +1547,10 @@ class IEquationImage(IDocumentStructureNode):
                      ValidTextLine(title="Label")),
                     required=False)
 
-    text = Object(IDocumentStructureNode,
-                  title="Text",
-                  required=False)
+    text = Variant((Object(IDocumentStructureNode),
+                     ValidTextLine()),
+                   title="Label",
+                   required=False)
 
     image = Object(IDocumentStructureNode,
                    title="Image",

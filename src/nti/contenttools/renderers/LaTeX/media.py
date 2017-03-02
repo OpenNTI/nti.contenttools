@@ -157,6 +157,27 @@ def render_figure(context, node):
     context.write(u'\n\\end{center}\n\\end{figure}\n')
     return node
 
+def render_equation_image(context, node):
+    context.write(u'\n\\begin{center}\n')
+    
+    if node.image:
+        render_node(node.image)
+    elif node.text:
+        text = get_variant_field_string_value(node.tex)
+        context.write(text)
+    
+    context.write(u' \\hspace{20 mm} ')
+    
+    if node.label:
+        label = get_variant_field_string_value(node.label)
+        if u'\\label{' not in label:
+            label = u'\\label{%}' %(label)
+        context.write(label)
+    
+    context.write(u'\n\\end{center}\n')
+    return node
+        
+
 @component.adapter(IImage)
 @interface.implementer(IRenderer)
 class ImageRenderer(object):
@@ -174,31 +195,28 @@ class ImageRenderer(object):
             return render_image_noannotation(context, node)
     __call__ = render
 
-@component.adapter(IFigure)
 @interface.implementer(IRenderer)
-class FigureRenderer(object):
+class RendererMixin(object):
 
-    __slots__ = ('node',)
+    func = None
 
     def __init__(self, node):
         self.node = node
 
-    def render(self, context, node=None, *args, **kwargs):
+    def render(self, context, node=None):
         node = self.node if node is None else node
-        return render_figure(context, node)
+        return self.func(context, node)
     __call__ = render
+
+
+@component.adapter(IFigure)
+class FigureRenderer(RendererMixin):
+    func = staticmethod(render_figure)
 
 @component.adapter(IDocxImage)
-@interface.implementer(IRenderer)
-class DocxImageRenderer(object):
+class DocxImageRenderer(RendererMixin):
+    func = staticmethod(render_docx_image)
 
-    __slots__ = ('node',)
-
-    def __init__(self, node):
-        self.node = node
-
-    def render(self, context, node=None, *args, **kwargs):
-        node = self.node if node is None else node
-        return render_docx_image(context, node)
-    
-    __call__ = render
+@component.adapter(IEquationImage)
+class EquationImageRenderer(RendererMixin):
+    func = staticmethod(render_docx_image)
