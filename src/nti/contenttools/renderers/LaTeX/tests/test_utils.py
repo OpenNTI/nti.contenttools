@@ -12,8 +12,8 @@ from hamcrest import is_not
 from hamcrest import assert_that
 does_not = is_not
 
-from nti.contenttools.renderers.LaTeX.utils import search_node,\
-    get_variant_field_string_value
+from nti.contenttools.renderers.LaTeX.utils import search_node
+from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 
 from nti.contenttools.types.document import Document
 
