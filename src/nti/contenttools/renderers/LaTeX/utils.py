@@ -45,7 +45,7 @@ def search_node(provided, root):
 
 def get_variant_field_string_value(field):
     """
-    return string a node field which type is Variant : String or Node
+    return string of a node field which type is Variant : String or Node
     """
     if isinstance(field, string_types):
         str_field = field

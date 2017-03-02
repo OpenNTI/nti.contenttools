@@ -254,8 +254,7 @@
 	<adapter factory=".media.ImageRenderer"
 		 for="nti.contenttools.types.interfaces.IImage"
 		 provides="..interfaces.IRenderer"
-		 name="LaTeX" />
-		
+		 name="LaTeX" />	
 	<adapter factory=".media.FigureRenderer"
 		 for="nti.contenttools.types.interfaces.IFigure"
 		 provides="..interfaces.IRenderer"
