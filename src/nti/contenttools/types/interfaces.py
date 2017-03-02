@@ -281,6 +281,10 @@ class IImage(IDocumentStructureNode):
 
     predefined_image_path = Bool(title="Predifined Image Path",
                                  required=False)
+    
+    annotation = Bool(title="Image Annotation",
+                      required=True,
+                      default=True)
 
 
 class IDocxImage(IImage):
