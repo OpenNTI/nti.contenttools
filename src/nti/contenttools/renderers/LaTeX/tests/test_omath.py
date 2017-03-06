@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from docutils.nodes import superscript
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -23,6 +24,11 @@ from nti.contenttools.types.omath import OMathNumerator
 from nti.contenttools.types.omath import OMathBase
 from nti.contenttools.types.omath import OMathDegree
 from nti.contenttools.types.omath import OMathRadical
+from nti.contenttools.types.omath import OMathSub
+from nti.contenttools.types.omath import OMathSup
+from nti.contenttools.types.omath import OMathSubSup
+from nti.contenttools.types.omath import OMathSubscript
+from nti.contenttools.types.omath import OMathSuperscript
 
 from nti.contenttools.types.text import TextNode
 
@@ -320,4 +326,201 @@ class OMathTest(ContentToolsTestCase):
         omath.add(omath_para)
         output = render_output(omath)
         assert_that(output, is_(u'$$\\sqrt[b]{A}$$'))
+    
+    def test_omath_sub(self):
+        node = OMathSub()
+        text = TextNode(u'1', type_text='omath')
+        node.add(text)
+        output = render_output(node)
+        assert_that(output, is_(u'1'))
+    
+    def test_omath_sup(self):
+        node = OMathSup()
+        text = TextNode(u'2', type_text='omath')
+        node.add(text)
+        output = render_output(node)
+        assert_that(output, is_(u'2'))
+    
+    def test_omath_superscript(self):
+        base = OMathBase()
+        base_child = TextNode(u'y', type_text='omath')
+        base.add(base_child)
+        
+        sup = OMathSup()
+        sup_child = TextNode(u'2', type_text='omath')
+        sup.add(sup_child)
+        
+        superscript = OMathSuperscript()
+        superscript.add(base)
+        superscript.add(sup)
+        
+        output = render_output(superscript)
+        assert_that(output, is_(u'{y}^{2}'))
+    
+    def test_omath_subscript(self):
+        base = OMathBase()
+        base_child = TextNode(u'x', type_text='omath')
+        base.add(base_child)
+        
+        sub = OMathSub()
+        sub_child = TextNode(u'2', type_text='omath')
+        sub.add(sub_child)
+        
+        subscript = OMathSubscript()
+        subscript.add(base)
+        subscript.add(sub)
+        
+        output = render_output(subscript)
+        assert_that(output, is_(u'{x}_{2}'))
+    
+    def test_omath_subsup(self):
+        base = OMathBase()
+        base_child = TextNode(u'x', type_text='omath')
+        base.add(base_child)
+        
+        sup = OMathSup()
+        sup_child = TextNode(u'2', type_text='omath')
+        sup.add(sup_child)
+        
+        sub = OMathSub()
+        sub_child = TextNode(u'1', type_text='omath')
+        sub.add(sub_child)
+        
+        subsup = OMathSubSup()
+        subsup.add(base)
+        subsup.add(sub)
+        subsup.add(sup)
+        
+        output = render_output(subsup)
+        assert_that(output, is_(u'{x}_{1}^{2}'))
+        
+    def test_omath_superscript_under_omath(self):
+        omath = OMath()
+        
+        base = OMathBase()
+        base_child = TextNode(u'y', type_text='omath')
+        base.add(base_child)
+        
+        sup = OMathSup()
+        sup_child = TextNode(u'2', type_text='omath')
+        sup.add(sup_child)
+        
+        superscript = OMathSuperscript()
+        superscript.add(base)
+        superscript.add(sup)
+        
+        omath.add(superscript)
+        output = render_output(omath)
+        assert_that(output, is_(u'${y}^{2}$'))
+        
+    def test_omath_subscript_under_omath(self):
+        omath = OMath()
+        
+        base = OMathBase()
+        base_child = TextNode(u'x', type_text='omath')
+        base.add(base_child)
+        
+        sub = OMathSub()
+        sub_child = TextNode(u'2', type_text='omath')
+        sub.add(sub_child)
+        
+        subscript = OMathSubscript()
+        subscript.add(base)
+        subscript.add(sub)
+        
+        omath.add(subscript)
+        output = render_output(omath)
+        assert_that(output, is_(u'${x}_{2}$'))
+        
+    def test_omath_subsup_under_omath(self):
+        omath = OMath()
+        
+        base = OMathBase()
+        base_child = TextNode(u'x', type_text='omath')
+        base.add(base_child)
+        
+        sup = OMathSup()
+        sup_child = TextNode(u'2', type_text='omath')
+        sup.add(sup_child)
+        
+        sub = OMathSub()
+        sub_child = TextNode(u'1', type_text='omath')
+        sub.add(sub_child)
+        
+        subsup = OMathSubSup()
+        subsup.add(base)
+        subsup.add(sub)
+        subsup.add(sup)
+        
+        omath.add(subsup)
+        output = render_output(omath)
+        assert_that(output, is_(u'${x}_{1}^{2}$'))
+        
+    def test_omath_superscript_under_omath_para(self):
+        omath = OMath()
+        omath_para = OMathPara()
+        
+        base = OMathBase()
+        base_child = TextNode(u'y', type_text='omath')
+        base.add(base_child)
+        
+        sup = OMathSup()
+        sup_child = TextNode(u'2', type_text='omath')
+        sup.add(sup_child)
+        
+        superscript = OMathSuperscript()
+        superscript.add(base)
+        superscript.add(sup)
+        
+        omath_para.add(superscript)
+        omath.add(omath_para)
+        output = render_output(omath)
+        assert_that(output, is_(u'$${y}^{2}$$'))
+    
+    def test_omath_subscript_under_omath_para(self):
+        omath = OMath()
+        omath_para = OMathPara()
+        
+        base = OMathBase()
+        base_child = TextNode(u'x', type_text='omath')
+        base.add(base_child)
+        
+        sub = OMathSub()
+        sub_child = TextNode(u'2', type_text='omath')
+        sub.add(sub_child)
+        
+        subscript = OMathSubscript()
+        subscript.add(base)
+        subscript.add(sub)
+        
+        omath_para.add(subscript)
+        omath.add(omath_para)
+        output = render_output(omath)
+        assert_that(output, is_(u'$${x}_{2}$$'))
+    
+    def test_omath_subsup_under_omath_para(self):
+        omath = OMath()
+        omath_para = OMathPara()
+        
+        base = OMathBase()
+        base_child = TextNode(u'x', type_text='omath')
+        base.add(base_child)
+        
+        sup = OMathSup()
+        sup_child = TextNode(u'2', type_text='omath')
+        sup.add(sup_child)
+        
+        sub = OMathSub()
+        sub_child = TextNode(u'1', type_text='omath')
+        sub.add(sub_child)
+        
+        subsup = OMathSubSup()
+        subsup.add(base)
+        subsup.add(sub)
+        subsup.add(sup)
+        
+        omath_para.add(subsup)
+        omath.add(omath_para)
+        output = render_output(omath)
+        assert_that(output, is_(u'$${x}_{1}^{2}$$'))
         
