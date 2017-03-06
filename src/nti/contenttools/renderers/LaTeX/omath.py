@@ -13,10 +13,7 @@ from zope import component
 from zope import interface
 
 from nti.contenttools.renderers.LaTeX.base import render_node
-from nti.contenttools.renderers.LaTeX.base import render_command
-from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
-from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 from nti.contenttools.types.omath import IOMath
 from nti.contenttools.types.omath import IOMathRun
@@ -27,6 +24,11 @@ from nti.contenttools.types.omath import IOMathNumerator
 from nti.contenttools.types.omath import IOMathRadical
 from nti.contenttools.types.omath import IOMathBase
 from nti.contenttools.types.omath import IOMathDegree
+from nti.contenttools.types.omath import IOMathSubscript
+from nti.contenttools.types.omath import IOMathSuperscript
+from nti.contenttools.types.omath import IOMathSub
+from nti.contenttools.types.omath import IOMathSup
+from nti.contenttools.types.omath import IOMathSubSup
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
@@ -125,15 +127,77 @@ def render_omath_radical(context, node):
         
 def render_omath_base(context, node):
     """
-    to render <m:e>
+    render <m:e>
     """
     return render_children(context, node)
 
+
 def render_omath_degree(context, node):
     """
-    to render <m:deg>
+    render <m:deg>
     """
     return render_children(context, node)
+
+
+def render_omath_superscript(context, node):
+    """
+    render <m:sSup>
+    """
+    if len(node.children) == 2:
+        context.write(u'{')
+        render_node(context, node.children[0])
+        context.write(u'}^{')
+        render_node(context, node.children[1])
+        context.write(u'}')
+    else:
+        logger.warn("<m:sSup> is not 2")
+    return node
+
+
+def render_omath_sup(context, node):
+    """
+    render <m:sup>
+    """
+    return render_children(context, node)
+
+
+def render_omath_subscript(context, node):
+    """
+    render <m:sSub>
+    """
+    if len(node.children) == 2:
+        context.write(u'{')
+        render_node(context, node.children[0])
+        context.write(u'}_{')
+        render_node(context, node.children[1])
+        context.write(u'}')
+    else:
+        logger.warn("<m:sSub> is not 2")
+    return node
+
+
+def render_omath_sub(context, node):
+    """
+    render <m:sub>
+    """
+    return render_children(context, node)
+
+
+def render_omath_subsup(context, node):
+    """
+    render <m:sSubSup>
+    """
+    if len(node.children) == 3:
+        context.write(u'{')
+        render_node(context, node.children[0])
+        context.write(u'}_{')
+        render_node(context, node.children[1])
+        context.write(u'}^{')
+        render_node(context, node.children[2])
+        context.write(u'}')
+    else:
+        logger.warn("<m:sSub> is not 3")
+    return node
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -184,3 +248,23 @@ class OMathBaseRenderer(RendererMixin):
 @component.adapter(IOMathDegree)
 class OMathDegreeRenderer(RendererMixin):
     func = staticmethod(render_omath_degree)
+
+@component.adapter(IOMathSubscript)
+class OMathSubscriptRenderer(RendererMixin):
+    func = staticmethod(render_omath_subscript)
+
+@component.adapter(IOMathSuperscript)
+class OMathSuperscriptRenderer(RendererMixin):
+    func = staticmethod(render_omath_superscript)
+
+@component.adapter(IOMathSub)
+class OMathSubRenderer(RendererMixin):
+    func = staticmethod(render_omath_sub)
+
+@component.adapter(IOMathSup)
+class OMathSupRenderer(RendererMixin):
+    func = staticmethod(render_omath_sup)
+
+@component.adapter(IOMathSubSup)
+class OMathSubSupRenderer(RendererMixin):
+    func = staticmethod(render_omath_subsup)
