@@ -285,5 +285,16 @@
 		 for="nti.contenttools.types.interfaces.IOMathRun"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
-		 	 
+	<adapter factory=".omath.OMathFracRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathFrac"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathDenominatorRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathDenominator"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />	
+	<adapter factory=".omath.OMathNumeratorRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathNumerator"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" /> 	 
 </configure>
