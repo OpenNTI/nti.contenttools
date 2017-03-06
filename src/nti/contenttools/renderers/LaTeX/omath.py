@@ -83,6 +83,7 @@ def render_omath_fraction(context, node):
         render_node(context, node.children[0])
         context.write(u' \\choose ')
         render_node(context, node.children[1])
+        context.write(u'}')
     else:
         context.write(u'\\frac{')
         render_node(context, node.children[0])
