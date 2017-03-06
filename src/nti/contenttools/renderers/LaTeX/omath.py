@@ -24,6 +24,9 @@ from nti.contenttools.types.omath import IOMathPara
 from nti.contenttools.types.omath import IOMathFrac
 from nti.contenttools.types.omath import IOMathDenominator
 from nti.contenttools.types.omath import IOMathNumerator
+from nti.contenttools.types.omath import IOMathRadical
+from nti.contenttools.types.omath import IOMathBase
+from nti.contenttools.types.omath import IOMathDegree
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
@@ -104,6 +107,34 @@ def render_omath_denominator(context, node):
     """
     return render_children(context, node)
 
+def render_omath_radical(context, node):
+    """
+    render <m:rad> element
+    """
+    if len(node.children) == 1:
+        context.write(u'\\sqrt{')
+        render_node(context, node.children[0])
+        context.write(u'}')
+    elif len(node.children) == 2:
+        context.write(u'\\sqrt[')
+        render_node(context, node.children[0])
+        context.write(u']{')
+        render_node(context, node.children[1])
+        context.write(u'}')
+    return node
+        
+def render_omath_base(context, node):
+    """
+    to render <m:e>
+    """
+    return render_children(context, node)
+
+def render_omath_degree(context, node):
+    """
+    to render <m:deg>
+    """
+    return render_children(context, node)
+
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -141,3 +172,15 @@ class OMathDenominatorRenderer(RendererMixin):
 @component.adapter(IOMathNumerator)
 class OMathNumeratorRenderer(RendererMixin):
     func = staticmethod(render_omath_numerator)
+    
+@component.adapter(IOMathRadical)
+class OMathRadicalRenderer(RendererMixin):
+    func = staticmethod(render_omath_radical)
+
+@component.adapter(IOMathBase)
+class OMathBaseRenderer(RendererMixin):
+    func = staticmethod(render_omath_base)
+
+@component.adapter(IOMathDegree)
+class OMathDegreeRenderer(RendererMixin):
+    func = staticmethod(render_omath_degree)
