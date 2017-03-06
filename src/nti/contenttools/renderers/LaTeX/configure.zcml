@@ -308,5 +308,21 @@
 	<adapter factory=".omath.OMathDegreeRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathDegree"
 		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathSuperscriptRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathSuperscript"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathSubscriptRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathSubscript"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathSubRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathSub"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathSubSupRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathSubSup"
+		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />	 
 </configure>
