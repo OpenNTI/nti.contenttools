@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -17,18 +16,18 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.omath import OMath
 from nti.contenttools.types.omath import OMathRun
-from nti.contenttools.types.omath import OMathPara
-from nti.contenttools.types.omath import OMathFrac
-from nti.contenttools.types.omath import OMathDenominator
-from nti.contenttools.types.omath import OMathNumerator
-from nti.contenttools.types.omath import OMathBase
-from nti.contenttools.types.omath import OMathDegree
-from nti.contenttools.types.omath import OMathRadical
 from nti.contenttools.types.omath import OMathSub
 from nti.contenttools.types.omath import OMathSup
+from nti.contenttools.types.omath import OMathBase
+from nti.contenttools.types.omath import OMathFrac
+from nti.contenttools.types.omath import OMathPara
 from nti.contenttools.types.omath import OMathSubSup
+from nti.contenttools.types.omath import OMathDegree
+from nti.contenttools.types.omath import OMathRadical
+from nti.contenttools.types.omath import OMathNumerator
 from nti.contenttools.types.omath import OMathSubscript
 from nti.contenttools.types.omath import OMathSuperscript
+from nti.contenttools.types.omath import OMathDenominator
 
 from nti.contenttools.types.text import TextNode
 
