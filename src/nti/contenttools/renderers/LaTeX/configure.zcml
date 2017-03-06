@@ -296,5 +296,17 @@
 	<adapter factory=".omath.OMathNumeratorRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathNumerator"
 		 provides="..interfaces.IRenderer"
-		 name="LaTeX" /> 	 
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathRadicalRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathRadical"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" /
+	<adapter factory=".omath.OMathBaseRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathBase"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathDegreeRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathDegree"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />	 
 </configure>
