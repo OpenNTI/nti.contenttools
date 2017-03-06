@@ -300,7 +300,7 @@
 	<adapter factory=".omath.OMathRadicalRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathRadical"
 		 provides="..interfaces.IRenderer"
-		 name="LaTeX" /
+		 name="LaTeX" />
 	<adapter factory=".omath.OMathBaseRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathBase"
 		 provides="..interfaces.IRenderer"
