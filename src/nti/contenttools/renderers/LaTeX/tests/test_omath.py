@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from nti.contenttools.docx.omath import OMathNumerator
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -101,7 +100,7 @@ class OMathTest(ContentToolsTestCase):
         assert_that(output, is_(u'4'))
     
     def test_omath_fraction(self):
-        numerator = OMathDenominator()
+        numerator = OMathNumerator()
         num_child = TextNode(u'3', type_text='omath')
         numerator.add(num_child)
         
@@ -117,7 +116,7 @@ class OMathTest(ContentToolsTestCase):
         assert_that(output, is_(u'\\frac{3}{4}'))
     
     def test_omath_fraction_lin(self):
-        numerator = OMathDenominator()
+        numerator = OMathNumerator()
         num_child = TextNode(u'3', type_text='omath')
         numerator.add(num_child)
         
@@ -134,7 +133,7 @@ class OMathTest(ContentToolsTestCase):
         assert_that(output, is_(u'{3}/{4}'))
     
     def test_omath_fraction_skw(self):
-        numerator = OMathDenominator()
+        numerator = OMathNumerator()
         num_child = TextNode(u'3', type_text='omath')
         numerator.add(num_child)
         
@@ -151,7 +150,7 @@ class OMathTest(ContentToolsTestCase):
         assert_that(output, is_(u'{^{3}}/_{4}'))
         
     def test_omath_fraction_no_bar(self):
-        numerator = OMathDenominator()
+        numerator = OMathNumerator()
         num_child = TextNode(u'3', type_text='omath')
         numerator.add(num_child)
         
