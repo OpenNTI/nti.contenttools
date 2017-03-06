@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: omath.py 107717 2017-03-01 10:26:58Z egawati.panjei $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -15,42 +15,31 @@ from zope import interface
 from nti.contenttools.renderers.LaTeX.base import render_node
 from nti.contenttools.renderers.LaTeX.base import render_children
 
+from nti.contenttools.renderers.interfaces import IRenderer
+
 from nti.contenttools.types.omath import IOMath
 from nti.contenttools.types.omath import IOMathRun
-from nti.contenttools.types.omath import IOMathPara
-from nti.contenttools.types.omath import IOMathFrac
-from nti.contenttools.types.omath import IOMathDenominator
-from nti.contenttools.types.omath import IOMathNumerator
-from nti.contenttools.types.omath import IOMathRadical
-from nti.contenttools.types.omath import IOMathBase
-from nti.contenttools.types.omath import IOMathDegree
-from nti.contenttools.types.omath import IOMathSubscript
-from nti.contenttools.types.omath import IOMathSuperscript
 from nti.contenttools.types.omath import IOMathSub
 from nti.contenttools.types.omath import IOMathSup
+from nti.contenttools.types.omath import IOMathBase
+from nti.contenttools.types.omath import IOMathFrac
+from nti.contenttools.types.omath import IOMathPara
+from nti.contenttools.types.omath import IOMathDegree
 from nti.contenttools.types.omath import IOMathSubSup
-
-from nti.contenttools.renderers.interfaces import IRenderer
+from nti.contenttools.types.omath import IOMathRadical
+from nti.contenttools.types.omath import IOMathNumerator
+from nti.contenttools.types.omath import IOMathSubscript
+from nti.contenttools.types.omath import IOMathSuperscript
+from nti.contenttools.types.omath import IOMathDenominator
 
 
 def render_omath(context, node):
     """
     render <m:OMath> element
     """
-    global begMatrixBorder
-    global endMatrixBorder
-    begMatrixBorder = None
-    endMatrixBorder = None
-
-    global begEqArrBorder
-    global endEqArrBorder
-    begEqArrBorder = None
-    endEqArrBorder = None
-
     context.write(u'$')
     render_children(context, node)
     context.write(u'$')
-
     return node
 
 
