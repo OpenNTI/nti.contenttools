@@ -32,11 +32,12 @@ from nti.contenttools.types.omath import IOMathSubSup
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
+
 def render_omath(context, node):
     """
     render <m:OMath> element
     """
-    global begMatrixBorder 
+    global begMatrixBorder
     global endMatrixBorder
     begMatrixBorder = None
     endMatrixBorder = None
@@ -45,12 +46,13 @@ def render_omath(context, node):
     global endEqArrBorder
     begEqArrBorder = None
     endEqArrBorder = None
-    
+
     context.write(u'$')
     render_children(context, node)
     context.write(u'$')
-    
+
     return node
+
 
 def render_omath_para(context, node):
     """
@@ -61,11 +63,13 @@ def render_omath_para(context, node):
     context.write(u'$')
     return node
 
+
 def render_omath_run(context, node):
     """
     to render <m:r> element
     """
     return render_children(context, node)
+
 
 def render_omath_fraction(context, node):
     """
@@ -97,17 +101,20 @@ def render_omath_fraction(context, node):
         context.write(u'}')
     return node
 
+
 def render_omath_numerator(context, node):
     """
     render <m:num>
     """
     return render_children(context, node)
 
+
 def render_omath_denominator(context, node):
     """
     render <m:den>
     """
     return render_children(context, node)
+
 
 def render_omath_radical(context, node):
     """
@@ -124,7 +131,8 @@ def render_omath_radical(context, node):
         render_node(context, node.children[1])
         context.write(u'}')
     return node
-        
+
+
 def render_omath_base(context, node):
     """
     render <m:e>
@@ -199,6 +207,7 @@ def render_omath_subsup(context, node):
         logger.warn("<m:sSub> is not 3")
     return node
 
+
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -216,54 +225,67 @@ class RendererMixin(object):
 @component.adapter(IOMath)
 class OMathRenderer(RendererMixin):
     func = staticmethod(render_omath)
-    
+
+
 @component.adapter(IOMathPara)
 class OMathParaRenderer(RendererMixin):
     func = staticmethod(render_omath_para)
+
 
 @component.adapter(IOMathRun)
 class OMathRunRenderer(RendererMixin):
     func = staticmethod(render_omath_run)
 
+
 @component.adapter(IOMathFrac)
 class OMathFracRenderer(RendererMixin):
     func = staticmethod(render_omath_fraction)
+
 
 @component.adapter(IOMathDenominator)
 class OMathDenominatorRenderer(RendererMixin):
     func = staticmethod(render_omath_denominator)
 
+
 @component.adapter(IOMathNumerator)
 class OMathNumeratorRenderer(RendererMixin):
     func = staticmethod(render_omath_numerator)
-    
+
+
 @component.adapter(IOMathRadical)
 class OMathRadicalRenderer(RendererMixin):
     func = staticmethod(render_omath_radical)
+
 
 @component.adapter(IOMathBase)
 class OMathBaseRenderer(RendererMixin):
     func = staticmethod(render_omath_base)
 
+
 @component.adapter(IOMathDegree)
 class OMathDegreeRenderer(RendererMixin):
     func = staticmethod(render_omath_degree)
+
 
 @component.adapter(IOMathSubscript)
 class OMathSubscriptRenderer(RendererMixin):
     func = staticmethod(render_omath_subscript)
 
+
 @component.adapter(IOMathSuperscript)
 class OMathSuperscriptRenderer(RendererMixin):
     func = staticmethod(render_omath_superscript)
+
 
 @component.adapter(IOMathSub)
 class OMathSubRenderer(RendererMixin):
     func = staticmethod(render_omath_sub)
 
+
 @component.adapter(IOMathSup)
 class OMathSupRenderer(RendererMixin):
     func = staticmethod(render_omath_sup)
+
 
 @component.adapter(IOMathSubSup)
 class OMathSubSupRenderer(RendererMixin):
