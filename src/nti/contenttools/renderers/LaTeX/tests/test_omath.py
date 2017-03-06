@@ -165,5 +165,45 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(frac)
         assert_that(output, is_(u'{3 \\choose 4}'))
+    
+    def test_omath_fraction_under_omath(self):
+        omath = OMath()
+        
+        numerator = OMathNumerator()
+        num_child = TextNode(u'3', type_text='omath')
+        numerator.add(num_child)
+        
+        denominator = OMathDenominator()
+        den_child = TextNode(u'4', type_text='omath')
+        denominator.add(den_child)
+        
+        frac = OMathFrac()
+        frac.add(numerator)
+        frac.add(denominator)
+        
+        omath.add(frac)
+        output = render_output(omath)
+        assert_that(output, is_(u'$\\frac{3}{4}$'))
+    
+    def test_omath_fraction_under_omath_para(self):
+        omath = OMath()
+        omath_para = OMathPara()
+        
+        numerator = OMathNumerator()
+        num_child = TextNode(u'3', type_text='omath')
+        numerator.add(num_child)
+        
+        denominator = OMathDenominator()
+        den_child = TextNode(u'4', type_text='omath')
+        denominator.add(den_child)
+        
+        frac = OMathFrac()
+        frac.add(numerator)
+        frac.add(denominator)
+        
+        omath_para.add(frac)
+        omath.add(omath_para)
+        output = render_output(omath)
+        assert_that(output, is_(u'$$\\frac{3}{4}$$'))
         
         
