@@ -272,4 +272,18 @@
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
 		 
+	<!-- OMath -->
+	<adapter factory=".omath.OMathRenderer"
+		 for="nti.contenttools.types.interfaces.IOMath"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathParaRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathPara"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathRunRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathRun"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+		 	 
 </configure>
