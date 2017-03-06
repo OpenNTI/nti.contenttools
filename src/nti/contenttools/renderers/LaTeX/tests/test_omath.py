@@ -215,5 +215,109 @@ class OMathTest(ContentToolsTestCase):
         node.add(text)
         output = render_output(node)
         assert_that(output, is_(u'A'))
+    
+    def test_omath_degree(self):
+        node = OMathDegree()
+        text = TextNode(u'b', type_text='omath')
+        node.add(text)
+        output = render_output(node)
+        assert_that(output, is_(u'b'))
+    
+    def test_omath_radical_one_child(self):
+        base = OMathBase()
+        base_child = TextNode(u'A', type_text='omath')
+        base.add(base_child)
         
+        rad = OMathRadical()
+        rad.add(base)
+        
+        output = render_output(rad)
+        assert_that(output, is_(u'\\sqrt{A}'))
+        
+        
+    def test_omath_radical_two_child(self):
+        base = OMathBase()
+        base_child = TextNode(u'A', type_text='omath')
+        base.add(base_child)
+        
+        deg = OMathDegree()
+        deg_child = TextNode(u'b', type_text='omath')
+        deg.add(deg_child)
+        
+        rad = OMathRadical()
+        rad.add(deg)
+        rad.add(base)
+        
+        output = render_output(rad)
+        assert_that(output, is_(u'\\sqrt[b]{A}'))
+    
+    def test_omath_radical_one_child_under_omath(self):
+        omath = OMath()
+        
+        base = OMathBase()
+        base_child = TextNode(u'A', type_text='omath')
+        base.add(base_child)
+        
+        rad = OMathRadical()
+        rad.add(base)
+        
+        omath.add(rad)
+        output = render_output(omath)
+        assert_that(output, is_(u'$\\sqrt{A}$'))
+    
+    def test_omath_radical_two_child_under_omath(self):
+        omath = OMath()
+        
+        base = OMathBase()
+        base_child = TextNode(u'A', type_text='omath')
+        base.add(base_child)
+        
+        deg = OMathDegree()
+        deg_child = TextNode(u'b', type_text='omath')
+        deg.add(deg_child)
+        
+        rad = OMathRadical()
+        rad.add(deg)
+        rad.add(base)
+        
+        omath.add(rad)
+        output = render_output(omath)
+        assert_that(output, is_(u'$\\sqrt[b]{A}$'))
+    
+    def test_omath_radical_one_child_under_omath_para(self):
+        omath = OMath()
+        omath_para = OMathPara()
+        
+        base = OMathBase()
+        base_child = TextNode(u'A', type_text='omath')
+        base.add(base_child)
+        
+        rad = OMathRadical()
+        rad.add(base)
+        
+        omath_para.add(rad)
+        omath.add(omath_para)
+        output = render_output(omath)
+        assert_that(output, is_(u'$$\\sqrt{A}$$'))
+        
+    def test_omath_radical_two_child_under_omath_para(self):
+        omath = OMath()
+        omath_para = OMathPara()
+        
+        base = OMathBase()
+        base_child = TextNode(u'A', type_text='omath')
+        base.add(base_child)
+        
+        deg = OMathDegree()
+        deg_child = TextNode(u'b', type_text='omath')
+        deg.add(deg_child)
+        
+        rad = OMathRadical()
+        rad.add(deg)
+        rad.add(base)
+        
+        omath_para.add(rad)
+        omath.add(omath_para)
+        output = render_output(omath)
+        assert_that(output, is_(u'$$\\sqrt[b]{A}$$'))
         
