@@ -20,6 +20,9 @@ from nti.contenttools.types.omath import OMathPara
 from nti.contenttools.types.omath import OMathFrac
 from nti.contenttools.types.omath import OMathDenominator
 from nti.contenttools.types.omath import OMathNumerator
+from nti.contenttools.types.omath import OMathBase
+from nti.contenttools.types.omath import OMathDegree
+from nti.contenttools.types.omath import OMathRadical
 
 from nti.contenttools.types.text import TextNode
 
@@ -205,5 +208,12 @@ class OMathTest(ContentToolsTestCase):
         omath.add(omath_para)
         output = render_output(omath)
         assert_that(output, is_(u'$$\\frac{3}{4}$$'))
+    
+    def test_omath_base(self):
+        node = OMathBase()
+        text = TextNode(u'A', type_text='omath')
+        node.add(text)
+        output = render_output(node)
+        assert_that(output, is_(u'A'))
         
         
