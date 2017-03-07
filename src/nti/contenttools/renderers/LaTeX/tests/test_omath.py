@@ -533,7 +533,7 @@ class OMathTest(ContentToolsTestCase):
         output = render_output(nary_pr)
         assert_that(output, is_(u'\\sum '))
     
-    def test_omath_nary_four_children(self):
+    def test_omath_nary_four_children_sum(self):
         nary = OMathNary()
         
         nary_pr = OMathNaryPr()
@@ -559,3 +559,57 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(nary)
         assert_that(output, is_(u'\\sum_{1}^{20} x'))
+    
+    def test_omath_nary_four_children_int(self):
+        nary = OMathNary()
+        
+        nary_pr = OMathNaryPr()
+        text = TextNode(u'\8747', type_text='omath')
+        nary_pr.limLocVal = u'\8747'
+        nary_pr.add(text)
+        nary.add(nary_pr)
+        
+        sub = OMathSub()
+        sub_text = TextNode(u'1', type_text='omath')
+        sub.add(sub_text)
+        nary.add(sub)
+        
+        sup = OMathSup()
+        sup_text = TextNode(u'20', type_text='omath')
+        sup.add(sup_text)
+        nary.add(sup)
+        
+        base = OMathBase()
+        base_text = TextNode(u'x', type_text='omath')
+        base.add(base_text)
+        nary.add(base)
+        
+        output = render_output(nary)
+        assert_that(output, is_(u'\\int_{1}^{20} x'))
+    
+    def test_omath_nary_four_children_token_int(self):
+        nary = OMathNary()
+        
+        nary_pr = OMathNaryPr()
+        text = TextNode(u'\8747', type_text='omath')
+        nary_pr.chrVal = u'\8747'
+        nary_pr.add(text)
+        nary.add(nary_pr)
+        
+        sub = OMathSub()
+        sub_text = TextNode(u'1', type_text='omath')
+        sub.add(sub_text)
+        nary.add(sub)
+        
+        sup = OMathSup()
+        sup_text = TextNode(u'20', type_text='omath')
+        sup.add(sup_text)
+        nary.add(sup)
+        
+        base = OMathBase()
+        base_text = TextNode(u'x', type_text='omath')
+        base.add(base_text)
+        nary.add(base)
+        
+        output = render_output(nary)
+        assert_that(output, is_(u'\\int_{1}^{20} x'))

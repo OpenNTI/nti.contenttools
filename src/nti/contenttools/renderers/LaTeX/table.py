@@ -4,6 +4,7 @@
 .. $Id$
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
+from StdSuites.AppleScript_Suite import string
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -15,6 +16,8 @@ from nti.contenttools.renderers.interfaces import IRenderer
 
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_children_output
+
+from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 
 from nti.contenttools.types.interfaces import IRow
 from nti.contenttools.types.interfaces import ICell
@@ -60,35 +63,34 @@ def get_string_col(number_of_col, border):
     return u''.join(cols)
 
 
-# TODO: Ega refactor this better
 def process_table_html(context, node, string_col):
-    body = render_children_output(node)
-
-    if node.label is not None and node.caption is not None:
-        label = node.label
-        caption = node.caption.render().rstrip()
-        result = u'\n\\begin{table}\n\\caption {%s}\n\\label{%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\\newline\n'
-        return result % (caption, label, string_col, body)
-    elif node.label is not None and node.caption is None:
-        label = node.label
-        result = u'\n\\begin{table}\n\\label{%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\\newline\n'
-        return result % (label, string_col, body,)
-    elif node.label is None and node.caption is not None:
-        caption = node.caption.render()
-        # TODO: the text_label only works for openstax epub, we need to modify the
-        # following line
-        text_label = node.caption.children[
-            0].render() + node.caption.children[1].children[0].render()
-        caption = caption.replace(text_label, u'')
-        result = u'\n\\begin{table}\n\\caption {%s}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
-        return result % (caption, string_col, body)
-    elif node.label is None and node.caption is None and node.type_ is None:
-        result = u'\n\\begin{table}\n\\begin{tabular}{%s}\n%s\\end{tabular}\n\\end{table}\n'
-        return result % (string_col, body)
-    elif node.type_ == u'simplelist':
-        result = u'\n%s\n\\newline '
-    return result % (body)
-
+    if node.type_== u'simplelist':
+        context.write(u'\n')
+        render_children(context, node)
+        context.write(u'\n')
+    else:
+        context.write(u'\n\\begin{table}\n')
+        if node.caption:
+            caption = get_variant_field_string_value(node.caption).rstrip()
+            context.write(u'\\caption{')
+            context.write(caption)
+            context.write(u'}\n')
+        if node.label:
+            label = get_variant_field_string_value(node.caption).rstrip()
+            if u'\\label{' in label:
+                context.write(label)
+            else:
+                context.write(u'\\label{')
+                context.write(label)
+                context.write(u'}')
+            context.write(u'\n')
+        context.write(u'\\begin{tabular}{')
+        context.write(string_col)
+        context.write(u'}\n')
+        render_children(context, node)
+        context.write(u'\n')
+        context.write(u'\\end{tabular}\n\\end{table}\n')
+    return node
 
 def render_html_table(context, node):
     set_number_of_table_col(node)
@@ -102,10 +104,8 @@ def render_html_table(context, node):
         string_col = get_string_col(number_of_col_header, border)
     else:
         string_col = get_string_col(number_of_col_body, border)
-    result = process_table_html(context, node, string_col)
-    context.write(result)
-
-
+    return process_table_html(context, node, string_col)
+    
 def render_html_table_row(context, node):
     result = []
     for child in node.children:
