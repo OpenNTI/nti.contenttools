@@ -28,6 +28,8 @@ from nti.contenttools.types.omath import OMathNumerator
 from nti.contenttools.types.omath import OMathSubscript
 from nti.contenttools.types.omath import OMathSuperscript
 from nti.contenttools.types.omath import OMathDenominator
+from nti.contenttools.types.omath import OMathNary
+from nti.contenttools.types.omath import OMathNaryPr
 
 from nti.contenttools.types.text import TextNode
 
@@ -523,3 +525,37 @@ class OMathTest(ContentToolsTestCase):
         omath.add(omath_para)
         output = render_output(omath)
         assert_that(output, is_(u'$${x}_{1}^{2}$$'))
+    
+    def test_omath_nary_pr(self):
+        nary_pr = OMathNaryPr()
+        text = TextNode(u'∑', type_text='omath')
+        nary_pr.add(text)
+        output = render_output(nary_pr)
+        assert_that(output, is_(u'\\sum '))
+    
+    def test_omath_nary_four_children(self):
+        nary = OMathNary()
+        
+        nary_pr = OMathNaryPr()
+        text = TextNode(u'∑', type_text='omath')
+        nary_pr.chrVal = u'∑'
+        nary_pr.add(text)
+        nary.add(nary_pr)
+        
+        sub = OMathSub()
+        sub_text = TextNode(u'1', type_text='omath')
+        sub.add(sub_text)
+        nary.add(sub)
+        
+        sup = OMathSup()
+        sup_text = TextNode(u'20', type_text='omath')
+        sup.add(sup_text)
+        nary.add(sup)
+        
+        base = OMathBase()
+        base_text = TextNode(u'x', type_text='omath')
+        base.add(base_text)
+        nary.add(base)
+        
+        output = render_output(nary)
+        assert_that(output, is_(u'\\sum_{1}^{20} x'))
