@@ -201,7 +201,6 @@ def render_omath_subsup(context, node):
 def render_omath_nary(context, node):
     """
     render <m:nary>
-    #example : equation_sample-6.docx, equation_sample-7.docx, 
     """
     if node.children:
         token = render_output(node.children[0])
@@ -245,7 +244,8 @@ def render_omath_nary_three_children(context, node, nary_type):
 
 def render_omath_nary_four_children(context, node, has_chrVal=False):
     if has_chrVal:
-        render_node(context, node.children[0])
+        token = render_output(node.children[0]).rstrip()
+        context.write(token)
     else:
         context.write(u'\\int')
     context.write(u'_{')
