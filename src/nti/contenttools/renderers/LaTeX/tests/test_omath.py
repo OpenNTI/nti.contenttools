@@ -684,6 +684,31 @@ class OMathTest(ContentToolsTestCase):
         matrix = OMathMatrix()
         output = render_output(matrix)
         assert_that(output, is_(u'\\begin{matrix}\n\\end{matrix}\n'))
+        
+    def test_omath_basic_matrix_with_row_cell(self):
+        matrix = OMathMatrix()
+        
+        mr_1 = OMathMr()
+        base_1_1 = OMathBase()
+        base_1_1.add(TextNode(u'A'))
+        base_1_2 = OMathBase()
+        base_1_2.add(TextNode(u'B'))
+        mr_1.add(base_1_1)
+        mr_1.add(base_1_2)
+        
+        mr_2 = OMathMr()
+        base_2_1 = OMathBase()
+        base_2_1.add(TextNode(u'C'))
+        base_2_2 = OMathBase()
+        base_2_2.add(TextNode(u'D'))
+        mr_2.add(base_2_1)
+        mr_2.add(base_2_2)
+        
+        matrix.add(mr_1)
+        matrix.add(mr_2)
+        
+        output = render_output(matrix)
+        assert_that(output, is_('\\begin{matrix}\nA & B \\\\\nC & D \\\\\n\\end{matrix}\n'))
     
     def test_omath_pmatrix(self):
         matrix = OMathMatrix()
@@ -691,9 +716,60 @@ class OMathTest(ContentToolsTestCase):
         output = render_output(matrix)
         assert_that(output, is_(u'\\begin{pmatrix}\n\\end{pmatrix}\n'))
     
+    def test_omath_pmatrix_with_row_cell(self):
+        matrix = OMathMatrix()
+        matrix.begChr = u'('
+        
+        mr_1 = OMathMr()
+        base_1_1 = OMathBase()
+        base_1_1.add(TextNode(u'A'))
+        base_1_2 = OMathBase()
+        base_1_2.add(TextNode(u'B'))
+        mr_1.add(base_1_1)
+        mr_1.add(base_1_2)
+        
+        mr_2 = OMathMr()
+        base_2_1 = OMathBase()
+        base_2_1.add(TextNode(u'C'))
+        base_2_2 = OMathBase()
+        base_2_2.add(TextNode(u'D'))
+        mr_2.add(base_2_1)
+        mr_2.add(base_2_2)
+        
+        matrix.add(mr_1)
+        matrix.add(mr_2)
+        
+        output = render_output(matrix)
+        assert_that(output, is_('\\begin{pmatrix}\nA & B \\\\\nC & D \\\\\n\\end{pmatrix}\n'))    
+    
     def test_omath_bmatrix(self):
         matrix = OMathMatrix()
         matrix.begChr = u'['
         output = render_output(matrix)
         assert_that(output, is_(u'\\begin{bmatrix}\n\\end{bmatrix}\n'))
         
+    def test_omath_bmatrix_with_row_cell(self):
+        matrix = OMathMatrix()
+        matrix.begChr = u'['
+        
+        mr_1 = OMathMr()
+        base_1_1 = OMathBase()
+        base_1_1.add(TextNode(u'A'))
+        base_1_2 = OMathBase()
+        base_1_2.add(TextNode(u'B'))
+        mr_1.add(base_1_1)
+        mr_1.add(base_1_2)
+        
+        mr_2 = OMathMr()
+        base_2_1 = OMathBase()
+        base_2_1.add(TextNode(u'C'))
+        base_2_2 = OMathBase()
+        base_2_2.add(TextNode(u'D'))
+        mr_2.add(base_2_1)
+        mr_2.add(base_2_2)
+        
+        matrix.add(mr_1)
+        matrix.add(mr_2)
+        
+        output = render_output(matrix)
+        assert_that(output, is_('\\begin{bmatrix}\nA & B \\\\\nC & D \\\\\n\\end{bmatrix}\n'))
