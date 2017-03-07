@@ -336,9 +336,9 @@ def render_omath_matrix(context, node):
     """
     render <m:m>
     """
-    if begMatrixBorder == '(':
+    if node.begChr == '(':
         return render_matrix(context, node, u'pmatrix')
-    elif begMatrixBorder == '[':
+    elif node.begChr == '[':
         return render_matrix(context, node, u'bmatrix')
     else:
         return render_matrix(context, node, u'matrix')
