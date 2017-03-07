@@ -12,7 +12,10 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
-from nti.contenttools.renderers.LaTeX.base import render_node, render_output
+from nti.contenttools._compat import unicode_
+
+from nti.contenttools.renderers.LaTeX.base import render_node
+from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
 
 from nti.contenttools.renderers.interfaces import IRenderer
@@ -23,16 +26,16 @@ from nti.contenttools.types.omath import IOMathSub
 from nti.contenttools.types.omath import IOMathSup
 from nti.contenttools.types.omath import IOMathBase
 from nti.contenttools.types.omath import IOMathFrac
+from nti.contenttools.types.omath import IOMathNary
 from nti.contenttools.types.omath import IOMathPara
 from nti.contenttools.types.omath import IOMathDegree
+from nti.contenttools.types.omath import IOMathNaryPr
 from nti.contenttools.types.omath import IOMathSubSup
 from nti.contenttools.types.omath import IOMathRadical
 from nti.contenttools.types.omath import IOMathNumerator
 from nti.contenttools.types.omath import IOMathSubscript
 from nti.contenttools.types.omath import IOMathSuperscript
 from nti.contenttools.types.omath import IOMathDenominator
-from nti.contenttools.types.omath import IOMathNary
-from nti.contenttools.types.omath import IOMathNaryPr
 
 
 def render_omath(context, node):
@@ -198,6 +201,7 @@ def render_omath_subsup(context, node):
         logger.warn("<m:sSub> is not 3")
     return node
 
+
 def render_omath_nary(context, node):
     """
     render <m:nary>
@@ -205,28 +209,32 @@ def render_omath_nary(context, node):
     if node.children:
         token = render_output(node.children[0])
         if len(node.children) == 3:
-            if u'\\sum' in token or u'\u2211' in unicode(token):
+            if u'\\sum' in token or u'\u2211' in unicode_(token):
                 node = render_omath_nary_three_children(context, node, u'sum')
-            elif u'\\prod' in token or u'\u220F' in unicode(token):
+            elif u'\\prod' in token or u'\u220F' in unicode_(token):
                 node = render_omath_nary_three_children(context, node, u'prod')
-            elif u'\\int' in token or u'\u222B' in unicode(token):
+            elif u'\\int' in token or u'\u222B' in unicode_(token):
                 node = render_omath_nary_three_children(context, node, u'int')
             else:
                 logger.warn('Unhandled <m:nary> node with 3 children')
         elif len(node.children) == 4:
             if IOMathNaryPr.providedBy(node.children[0]):
                 if node.children[0].chrVal:
-                    node = render_omath_nary_four_children(context, node, has_chrVal=True)
+                    node = render_omath_nary_four_children(
+                        context, node, has_chrVal=True)
                 else:
                     node = render_omath_nary_four_children(context, node)
             else:
-                logger.warn('<m:nary> node has 4 children yet the first child does not provide IOMathNaryPr')
+                logger.warn('<m:nary> node has 4 children yet the first '
+                            'child does not provide IOMathNaryPr')
         else:
-            logger.warn(u'The total number of <m:nary> node children is not 3 nor 4')
+            logger.warn('The total number of <m:nary> node children '
+                        'is not 3 nor 4')
     else:
         logger.warn(u'<m:nary> node does not have children')
-    
+
     return node
+
 
 def render_omath_nary_three_children(context, node, nary_type):
     if nary_type == u'sum':
@@ -242,6 +250,7 @@ def render_omath_nary_three_children(context, node, nary_type):
     context.write(u'}')
     return node
 
+
 def render_omath_nary_four_children(context, node, has_chrVal=False):
     if has_chrVal:
         token = render_output(node.children[0]).rstrip()
@@ -256,11 +265,13 @@ def render_omath_nary_four_children(context, node, has_chrVal=False):
     render_node(context, node.children[3])
     return node
 
+
 def render_omath_nary_pr(context, node):
     """
     render <m:naryPr>
     """
     return render_children(context, node)
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -344,10 +355,12 @@ class OMathSupRenderer(RendererMixin):
 @component.adapter(IOMathSubSup)
 class OMathSubSupRenderer(RendererMixin):
     func = staticmethod(render_omath_subsup)
-    
+
+
 @component.adapter(IOMathNary)
 class OMathNaryRenderer(RendererMixin):
     func = staticmethod(render_omath_nary)
+
 
 @component.adapter(IOMathNaryPr)
 class OMathNaryPrRenderer(RendererMixin):
