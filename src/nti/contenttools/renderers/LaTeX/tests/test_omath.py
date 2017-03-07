@@ -773,3 +773,8 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(matrix)
         assert_that(output, is_('\\begin{bmatrix}\nA & B \\\\\nC & D \\\\\n\\end{bmatrix}\n'))
+        
+    def test_omath_basic_eq_array(self):
+        matrix = OMathEqArr()
+        output = render_output(matrix)
+        assert_that(output, is_(u'\\begin{array}{lr}\n \\\\\n\n\\end{array}'))

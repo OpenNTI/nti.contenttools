@@ -1010,6 +1010,10 @@ class IOMathEqArr(IDocumentStructureNode):
     rowSpace = Int(title="Row Space",
                    required=True,
                    default=1)
+    begBorder = ValidTextLine(title="Beginning Char",
+                           required=False)
+    endBorder = ValidTextLine(title="End Char",
+                           required=False)
 
     def set_row_space(rowSpace):
         """

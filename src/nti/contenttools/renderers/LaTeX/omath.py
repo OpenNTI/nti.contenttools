@@ -371,15 +371,15 @@ def render_omath_eqarr(context, node):
     render <m:eqArr>
     """
     if node.rowSpace == 1:
-        if begEqArrBorder == u'{' and endEqArrBorder == u'':
+        if node.begBorder == u'{' and node.endBorder == u'':
             context.write(u'\\left \\{ ')
             render_array(context, node, u'lr')
             context.write(u' \\right.')
-        elif begEqArrBorder == u'' and endEqArrBorder == u'}':
+        elif node.begBorder == u'' and node.endBorder == u'}':
             context.write(u'\\left. ')
             render_array(context, node, u'lr')
             context.write(u' \\right \\}')
-        elif not begEqArrBorder and not endEqArrBorder:
+        elif not node.begBorder and not node.endBorder:
             render_array(context, node, u'lr')
         else:
             logger.warn('Unhandled equation array element render')
@@ -392,7 +392,7 @@ def render_omath_eqarr(context, node):
     return node
         
 def render_array(context, node, string_col):
-    context.write(u'\\begin{array}{')
+    context.write(u'\\begin{array}')
     context.write(u'{')
     context.write(string_col)
     context.write(u'}\n')
