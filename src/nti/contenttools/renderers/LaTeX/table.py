@@ -67,7 +67,7 @@ def get_string_col(number_of_col, border):
 
 def process_table_html(context, node, string_col):
     caption = u''
-    if node.type_== u'simplelist':
+    if node.type_ == u'simplelist':
         context.write(u'\n')
         render_children(context, node)
         context.write(u'\n')
@@ -78,7 +78,7 @@ def process_table_html(context, node, string_col):
             context.write(u'\\caption{')
             context.write(caption)
             context.write(u'}\n')
-        
+
         if node.label:
             label = get_variant_field_string_value(node.label).rstrip()
             if u'\\label{' in label:
@@ -93,7 +93,7 @@ def process_table_html(context, node, string_col):
                 label = create_label('table', caption)
                 context.write(label)
                 context.write(u'\n')
-            
+
         context.write(u'\\begin{tabular}{')
         context.write(string_col)
         context.write(u'}\n')
@@ -101,6 +101,7 @@ def process_table_html(context, node, string_col):
         context.write(u'\n')
         context.write(u'\\end{tabular}\n\\end{table}\n')
     return node
+
 
 def render_html_table(context, node):
     set_number_of_table_col(node)
@@ -115,7 +116,8 @@ def render_html_table(context, node):
     else:
         string_col = get_string_col(number_of_col_body, border)
     return process_table_html(context, node, string_col)
-    
+
+
 def render_html_table_row(context, node):
     result = []
     for child in node.children:
