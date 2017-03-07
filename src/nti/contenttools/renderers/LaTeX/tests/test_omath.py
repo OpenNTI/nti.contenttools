@@ -702,8 +702,8 @@ class OMathTest(ContentToolsTestCase):
         matrix.add(mr_2)
 
         output = render_output(matrix)
-        assert_that(
-            output, is_('\\begin{matrix}\nA \\\\\nC \\\\\n\\end{matrix}\n'))
+        assert_that(output, 
+                    is_('\\begin{matrix}\nA \\\\\nC \\\\\n\\end{matrix}\n'))
 
     def test_omath_basic_matrix_with_row_cell(self):
         matrix = OMathMatrix()
@@ -728,8 +728,8 @@ class OMathTest(ContentToolsTestCase):
         matrix.add(mr_2)
 
         output = render_output(matrix)
-        assert_that(
-            output, is_('\\begin{matrix}\nA & B \\\\\nC & D \\\\\n\\end{matrix}\n'))
+        assert_that(output,
+                    is_('\\begin{matrix}\nA & B \\\\\nC & D \\\\\n\\end{matrix}\n'))
 
     def test_omath_pmatrix(self):
         matrix = OMathMatrix()
