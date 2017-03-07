@@ -20,7 +20,7 @@ from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
-from nti.contenttools.types.interfaces import IMtr 
+from nti.contenttools.types.interfaces import IMtr
 from nti.contenttools.types.interfaces import IMtd
 from nti.contenttools.types.interfaces import IMath
 from nti.contenttools.types.interfaces import IMRow
@@ -34,11 +34,11 @@ from nti.contenttools.types.interfaces import IMsqrt
 from nti.contenttools.types.interfaces import IMText
 from nti.contenttools.types.interfaces import IMTable
 from nti.contenttools.types.interfaces import IMUnder
-from nti.contenttools.types.interfaces import IMMenclose
 from nti.contenttools.types.interfaces import IMFenced
 from nti.contenttools.types.interfaces import IMathRun
 from nti.contenttools.types.interfaces import IMSubSup
-from nti.contenttools.types.interfaces import IMUnderover 
+from nti.contenttools.types.interfaces import IMMenclose
+from nti.contenttools.types.interfaces import IMUnderover
 from nti.contenttools.types.interfaces import IMMultiscripts
 from nti.contenttools.types.interfaces import IMMprescripts
 
@@ -129,21 +129,23 @@ def render_mtable(context, node):
     for unused in range(number_of_col):
         string_col = string_col + u' l '
 
+    result = None
     if node.__parent__:
         if IMFenced.providedBy(node.__parent__):
-            return render_children(context, node)
+            result = render_children(context, node)
         elif IMRow.providedBy(node.__parent__):
             if node.__parent__.__parent__:
                 if IMFenced.providedBy(node.__parent__.__parent__):
-                    return render_children(context, node)
+                    result = render_children(context, node)
                 else:
-                    return set_array_environment(context, node, string_col)
+                    result = set_array_environment(context, node, string_col)
             else:
-                return set_array_environment(context, node, string_col)
+                result = set_array_environment(context, node, string_col)
         else:
-            return set_array_environment(context, node, string_col)
+            result = set_array_environment(context, node, string_col)
     else:
-        return set_array_environment(context, node, string_col)
+        result = set_array_environment(context, node, string_col)
+    return result
 
 
 def set_array_environment(context, node, string_col):
@@ -326,6 +328,7 @@ def render_munderover(context, node):
         logger.warn(u'The number <munderover> element child is not 3')
     return node
 
+
 def render_mover(context, node):
     """
     render <mover> element
@@ -339,9 +342,10 @@ def render_mover(context, node):
         context.write(u'\\overset{')
         context.write(base)
         context.write(u'}{')
-        render_node(context,node.children[0])
+        render_node(context, node.children[0])
         context.write(u'}')
     return node
+
 
 def render_mmultiscript(context, node):
     """
@@ -353,6 +357,7 @@ def render_mmultiscript(context, node):
     else:
         logger.warn(u'<mmultiscript> prescripts or base is None')
     return node
+
 
 def render_mprescripts(context, node):
     """
@@ -368,12 +373,14 @@ def render_mprescripts(context, node):
         logger.warn('prescripts sub or sup is None')
     return node
 
+
 def render_mnone(context, node):
     """
     render <none/> element
     """
     context.write(u'')
     return node
+
 
 def render_mtext(context, node):
     """
@@ -386,17 +393,20 @@ def render_mtext(context, node):
         context.write(u'}')
     return node
 
-def render_menclose(context,node):
+
+def render_menclose(context, node):
     """
     render <menclose> element
     """
     notation = list(node.notation.split())
     for item in notation:
         if item == u'updiagonalstrike':
-            #TODO : need to use package : cancel, uncomment if we are able to use cancel
-            m_updiagonalstrike(context, node) 
+            # TODO : need to use package : cancel, uncomment if we are able to
+            # use cancel
+            m_updiagonalstrike(context, node)
         elif item == u'downdiagonalstrike':
-            #TODO : need to use package : cancel, uncomment if we are able to use cancel
+            # TODO : need to use package : cancel, uncomment if we are able to
+            # use cancel
             m_downdiagonalstrike(context, node)
         elif item == 'radical':
             m_radical(context, node)
@@ -409,71 +419,84 @@ def render_menclose(context,node):
         elif item == 'bottom':
             m_bottom(context, node)
         elif item == 'verticalstrike':
-            #TODO : need to use package : cancel, uncomment if we are able to use cancel
+            # TODO : need to use package : cancel, uncomment if we are able to
+            # use cancel
             pass
         elif item == 'horizontalstrike':
-            #TODO : need to use package : cancel, uncomment if we are able to use cancel
+            # TODO : need to use package : cancel, uncomment if we are able to
+            # use cancel
             m_horizontalstrike(context, node)
             pass
         elif item == 'madruwb':
-            #TODO : create a method to handle this notation
+            # TODO : create a method to handle this notation
             pass
         elif item == 'updiagonalarrow':
-            #TODO : create a method to handle this notation
+            # TODO : create a method to handle this notation
             pass
         elif item == 'phasorangle':
-            #TODO : create a method to handle this notation
+            # TODO : create a method to handle this notation
             pass
         elif item == 'actuarial':
-            #TODO : create a method to handle this notation
+            # TODO : create a method to handle this notation
             pass
         elif item == 'box':
             m_box(context, node)
         elif item == 'roundedbox':
-            #TODO : create a method to handle this notation
+            # TODO : create a method to handle this notation
             pass
         elif item == 'circle':
-            #TODO : create a method to handle this notation
+            # TODO : create a method to handle this notation
             pass
         elif item == 'longdiv':
             m_longdiv(context, node)
     return node
 
+
 def m_radical(context, node):
     return render_command(context, u'sqrt', node)
+
 
 def m_updiagonalstrike(context, node):
     return render_command(context, u'cancel', node)
 
+
 def m_downdiagonalstrike(context, node):
     return render_command(context, u'bcancel', node)
+
 
 def m_horizontalstrike(context, node):
     return render_command(context, u'hcancel', node)
 
+
 def m_top(context, node):
     return render_command(context, u'overline', node)
+
 
 def m_bottom(context, node):
     return render_command(context, u'underline', node)
 
+
 def m_box(context, node):
     return render_command(context, u'boxed', node)
 
+
 def m_longdiv(context, node):
-    #TODO : the render result will look odd, find a better command
+    # TODO : the render result will look odd, find a better command
     return render_command(context, u'overline', node)
+
 
 def m_left(context, node):
     context.write(u'\\Big|')
     render_children(context, node)
     return node
 
+
 def m_right(context, node):
     render_children(context, node)
     context.write(u'\\Big|')
     return node
-       
+
+
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -562,25 +585,31 @@ class MUnderRenderer(RendererMixin):
 class MUnderoverRenderer(RendererMixin):
     func = staticmethod(render_munderover)
 
+
 @component.adapter(IMOver)
 class MOverRenderer(RendererMixin):
     func = staticmethod(render_mover)
+
 
 @component.adapter(IMMultiscripts)
 class MMultiscriptsRenderer(RendererMixin):
     func = staticmethod(render_mmultiscript)
 
+
 @component.adapter(IMMprescripts)
 class MprescriptsRenderer(RendererMixin):
     func = staticmethod(render_mprescripts)
 
+
 @component.adapter(IMNone)
 class MNoneRenderer(RendererMixin):
     func = staticmethod(render_mnone)
-    
+
+
 @component.adapter(IMText)
 class MTextRenderer(RendererMixin):
     func = staticmethod(render_mtext)
+
 
 @component.adapter(IMMenclose)
 class MencloseRenderer(RendererMixin):

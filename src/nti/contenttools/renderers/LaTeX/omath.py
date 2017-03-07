@@ -12,6 +12,8 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
+from nti.contenttools._compat import unicode_
+
 from nti.contenttools.renderers.LaTeX.base import render_node
 from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
@@ -24,26 +26,27 @@ from nti.contenttools.unicode_to_latex import replace_unicode_with_latex_tag
 from nti.contenttools.renderers.interfaces import IRenderer
 
 from nti.contenttools.types.omath import IOMath
+from nti.contenttools.types.omath import IOMathMr
+from nti.contenttools.types.omath import IOMathDPr
 from nti.contenttools.types.omath import IOMathRun
 from nti.contenttools.types.omath import IOMathSub
 from nti.contenttools.types.omath import IOMathSup
 from nti.contenttools.types.omath import IOMathBase
 from nti.contenttools.types.omath import IOMathFrac
+from nti.contenttools.types.omath import IOMathNary
 from nti.contenttools.types.omath import IOMathPara
+from nti.contenttools.types.omath import IOMathEqArr
 from nti.contenttools.types.omath import IOMathDegree
+from nti.contenttools.types.omath import IOMathNaryPr
+from nti.contenttools.types.omath import IOMathMatrix
 from nti.contenttools.types.omath import IOMathSubSup
 from nti.contenttools.types.omath import IOMathRadical
+from nti.contenttools.types.omath import IOMathDelimiter
 from nti.contenttools.types.omath import IOMathNumerator
 from nti.contenttools.types.omath import IOMathSubscript
 from nti.contenttools.types.omath import IOMathSuperscript
 from nti.contenttools.types.omath import IOMathDenominator
-from nti.contenttools.types.omath import IOMathNary
-from nti.contenttools.types.omath import IOMathNaryPr
-from nti.contenttools.types.omath import IOMathDelimiter
-from nti.contenttools.types.omath import IOMathDPr
-from nti.contenttools.types.omath import IOMathMatrix
-from nti.contenttools.types.omath import IOMathMr
-from nti.contenttools.types.omath import IOMathEqArr
+
 
 def render_omath(context, node):
     """
@@ -208,6 +211,7 @@ def render_omath_subsup(context, node):
         logger.warn("<m:sSub> is not 3")
     return node
 
+
 def render_omath_nary(context, node):
     """
     render <m:nary>
@@ -215,28 +219,32 @@ def render_omath_nary(context, node):
     if node.children:
         token = render_output(node.children[0])
         if len(node.children) == 3:
-            if u'\\sum' in token or u'\u2211' in unicode(token):
+            if u'\\sum' in token or u'\u2211' in unicode_(token):
                 node = render_omath_nary_three_children(context, node, u'sum')
-            elif u'\\prod' in token or u'\u220F' in unicode(token):
+            elif u'\\prod' in token or u'\u220F' in unicode_(token):
                 node = render_omath_nary_three_children(context, node, u'prod')
-            elif u'\\int' in token or u'\u222B' in unicode(token):
+            elif u'\\int' in token or u'\u222B' in unicode_(token):
                 node = render_omath_nary_three_children(context, node, u'int')
             else:
                 logger.warn('Unhandled <m:nary> node with 3 children')
         elif len(node.children) == 4:
             if IOMathNaryPr.providedBy(node.children[0]):
                 if node.children[0].chrVal:
-                    node = render_omath_nary_four_children(context, node, has_chrVal=True)
+                    node = render_omath_nary_four_children(
+                        context, node, has_chrVal=True)
                 else:
                     node = render_omath_nary_four_children(context, node)
             else:
-                logger.warn('<m:nary> node has 4 children yet the first child does not provide IOMathNaryPr')
+                logger.warn(
+                    '<m:nary> node has 4 children yet the first child does not provide IOMathNaryPr')
         else:
-            logger.warn(u'The total number of <m:nary> node children is not 3 nor 4')
+            logger.warn(
+                u'The total number of <m:nary> node children is not 3 nor 4')
     else:
         logger.warn(u'<m:nary> node does not have children')
-    
+
     return node
+
 
 def render_omath_nary_three_children(context, node, nary_type):
     if nary_type == u'sum':
@@ -252,6 +260,7 @@ def render_omath_nary_three_children(context, node, nary_type):
     context.write(u'}')
     return node
 
+
 def render_omath_nary_four_children(context, node, has_chrVal=False):
     if has_chrVal:
         token = render_output(node.children[0]).rstrip()
@@ -265,6 +274,7 @@ def render_omath_nary_four_children(context, node, has_chrVal=False):
     context.write(u'} ')
     render_node(context, node.children[3])
     return node
+
 
 def render_omath_nary_pr(context, node):
     """
@@ -281,7 +291,8 @@ def render_omath_delimiter(context, node):
         num_of_children = len(node.children)
         if IOMathDPr.providedBy(node.children[0]):
             if not node.children[0].begChr:
-                base = render_iterable(context, node.children[1:num_of_children])
+                base = render_iterable(
+                    context, node.children[1:num_of_children])
                 if u'choose' in base:
                     context.write(base)
                 else:
@@ -291,16 +302,20 @@ def render_omath_delimiter(context, node):
             elif node.children[0].begChr:
                 found_matrix = search_node(IOMathMatrix, node)
                 if found_matrix:
-                    check_matrix_border(node.children[0].begChr, node.children[0].endChr)
+                    check_matrix_border(
+                        node.children[0].begChr, node.children[0].endChr)
                     render_iterable(context, node[1:num_of_children])
                 else:
                     found_eq_arr = search_node(IOMathEqArr, node)
                     if found_eq_arr:
-                        check_equation_arr_border(node.children[0].begChr, node.children[0].endChr)
+                        check_equation_arr_border(
+                            node.children[0].begChr, node.children[0].endChr)
                         render_iterable(context, node[1:num_of_children])
                     else:
-                        begChr = replace_unicode_with_latex_tag(node.children[0].begChr)
-                        endChr = replace_unicode_with_latex_tag(node.children[0].endChr)
+                        begChr = replace_unicode_with_latex_tag(
+                            node.children[0].begChr)
+                        endChr = replace_unicode_with_latex_tag(
+                            node.children[0].endChr)
                         context.write(begChr)
                         render_iterable(context, node[1:num_of_children])
                         context.write(endChr)
@@ -311,6 +326,7 @@ def render_omath_delimiter(context, node):
 begMatrixBorder = None
 endMatrixBorder = None
 
+
 def check_matrix_border(begChr, endChr):
     global begMatrixBorder
     global endMatrixBorder
@@ -320,17 +336,21 @@ def check_matrix_border(begChr, endChr):
 
 begEqArrBorder = None
 endEqArrBorder = None
+
+
 def check_equation_arr_border(begChr, endChr):
     global begEqArrBorder
     global endEqArrBorder
     begEqArrBorder = begChr
     endEqArrBorder = endChr
 
+
 def render_omath_dpr(context, node):
     """
     render <m:dPr>
     """
     return render_children(context, node)
+
 
 def render_omath_matrix(context, node):
     """
@@ -343,6 +363,7 @@ def render_omath_matrix(context, node):
     else:
         return render_matrix(context, node, u'matrix')
 
+
 def render_matrix(context, node, matrix_type):
     context.write(u'\\begin{')
     context.write(matrix_type)
@@ -353,6 +374,7 @@ def render_matrix(context, node, matrix_type):
     context.write(u'}\n')
     return node
 
+
 def render_omath_mr(context, node):
     """
     render <m:mr>
@@ -360,11 +382,13 @@ def render_omath_mr(context, node):
     context.write(render_node_with_newline(node))
     return node
 
+
 def render_node_with_newline(node):
     result = []
     for child in node.children:
         result.append(render_output(child))
     return u' & '.join(result) + u' \\\\\n'
+
 
 def render_omath_eqarr(context, node):
     """
@@ -390,7 +414,8 @@ def render_omath_eqarr(context, node):
             string_col = string_col + u' l '
         render_array(context, node, string_col)
     return node
-        
+
+
 def render_array(context, node, string_col):
     context.write(u'\\begin{array}')
     context.write(u'{')
@@ -399,6 +424,7 @@ def render_array(context, node, string_col):
     render_children(context, node)
     context.write(u'\n\\end{array}')
     return node
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -482,30 +508,37 @@ class OMathSupRenderer(RendererMixin):
 @component.adapter(IOMathSubSup)
 class OMathSubSupRenderer(RendererMixin):
     func = staticmethod(render_omath_subsup)
-    
+
+
 @component.adapter(IOMathNary)
 class OMathNaryRenderer(RendererMixin):
     func = staticmethod(render_omath_nary)
+
 
 @component.adapter(IOMathNaryPr)
 class OMathNaryPrRenderer(RendererMixin):
     func = staticmethod(render_omath_nary_pr)
 
+
 @component.adapter(IOMathDelimiter)
 class OMathDelimiterRenderer(RendererMixin):
     func = staticmethod(render_omath_delimiter)
+
 
 @component.adapter(IOMathDPr)
 class OMathDPrRenderer(RendererMixin):
     func = staticmethod(render_omath_dpr)
 
+
 @component.adapter(IOMathMatrix)
 class OMathMatrixRenderer(RendererMixin):
     func = staticmethod(render_omath_matrix)
 
+
 @component.adapter(IOMathMr)
 class OMathMrRenderer(RendererMixin):
     func = staticmethod(render_omath_mr)
+
 
 @component.adapter(IOMathEqArr)
 class OMathEqArrRenderer(RendererMixin):
