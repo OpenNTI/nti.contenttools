@@ -22,6 +22,8 @@ from nti.contenttools.types.table import THead
 from nti.contenttools.types.table import TFoot
 from nti.contenttools.types.table import Table
 
+from nti.contenttools.types.text import TextNode
+
 from nti.contenttools.tests import ContentToolsTestCase
 
 
@@ -52,11 +54,36 @@ class TestHTMLTable(ContentToolsTestCase):
         node = Row()
         output = render_output(node)
         assert_that(output, is_(u'\\\\\n'))
+    
+    def test_html_table_row_with_one_cell(self):
+        node = Row()
+        cell = Cell()
+        cell.add(TextNode(u'cell'))
+        node.add(cell)
+        output = render_output(node)
+        assert_that(output, is_(u'cell\\\\\n'))
 
-    def test_html_table_cell(self):
+    def test_html_table_row_with_two_cell(self):
+        node = Row()
+        cell_1 = Cell()
+        cell_2 = Cell()
+        cell_1.add(TextNode(u'cell 1'))
+        cell_2.add(TextNode(u'cell 2'))
+        node.add(cell_1)
+        node.add(cell_2)
+        output = render_output(node)
+        assert_that(output, is_(u'cell 1 & cell 2\\\\\n'))
+
+    def test_html_table_empty_cell(self):
         node = Cell()
         output = render_output(node)
         assert_that(output, is_(u' ~ '))
+    
+    def test_html_table_cell(self):
+        node = Cell()
+        node.add(TextNode(u'cell'))
+        output = render_output(node)
+        assert_that(output, is_(u'cell'))
 
     def test_html_tbody(self):
         node = TBody()
@@ -72,3 +99,29 @@ class TestHTMLTable(ContentToolsTestCase):
         node = THead()
         output = render_output(node)
         assert_that(output, is_(u''))
+        
+    def test_table_with_row_cell(self):
+        table = Table()
+        
+        row_1 = Row()
+        cell_1_1 = Cell()
+        cell_1_1.add(TextNode(u'A'))
+        cell_1_2 = Cell()
+        cell_1_2.add(TextNode(u'B'))
+        row_1.add(cell_1_1)
+        row_1.add(cell_1_2)
+        
+        row_2 = Row()
+        cell_2_1 = Cell()
+        cell_2_1.add(TextNode(u'C'))
+        cell_2_2 = Cell()
+        cell_2_2.add(TextNode(u'D'))
+        row_2.add(cell_2_1)
+        row_2.add(cell_2_2)
+        
+        table.add(row_1)
+        table.add(row_2)
+        
+        output = render_output(table)
+        assert_that(output,
+                    is_(u'\n\\begin{table}\n\\begin{tabular}{}\nA & B\\\\\nC & D\\\\\n\n\\end{tabular}\n\\end{table}\n'))
