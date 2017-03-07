@@ -15,12 +15,17 @@ does_not = is_not
 from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.omath import OMath
+from nti.contenttools.types.omath import OMathMr
 from nti.contenttools.types.omath import OMathRun
 from nti.contenttools.types.omath import OMathSub
 from nti.contenttools.types.omath import OMathSup
+from nti.contenttools.types.omath import OMathNary
 from nti.contenttools.types.omath import OMathBase
 from nti.contenttools.types.omath import OMathFrac
 from nti.contenttools.types.omath import OMathPara
+from nti.contenttools.types.omath import OMathEqArr
+from nti.contenttools.types.omath import OMathNaryPr
+from nti.contenttools.types.omath import OMathMatrix
 from nti.contenttools.types.omath import OMathSubSup
 from nti.contenttools.types.omath import OMathDegree
 from nti.contenttools.types.omath import OMathRadical
@@ -28,11 +33,6 @@ from nti.contenttools.types.omath import OMathNumerator
 from nti.contenttools.types.omath import OMathSubscript
 from nti.contenttools.types.omath import OMathSuperscript
 from nti.contenttools.types.omath import OMathDenominator
-from nti.contenttools.types.omath import OMathNary
-from nti.contenttools.types.omath import OMathNaryPr
-from nti.contenttools.types.omath import OMathMatrix
-from nti.contenttools.types.omath import OMathMr
-from nti.contenttools.types.omath import OMathEqArr
 
 from nti.contenttools.types.text import TextNode
 
@@ -528,185 +528,186 @@ class OMathTest(ContentToolsTestCase):
         omath.add(omath_para)
         output = render_output(omath)
         assert_that(output, is_(u'$${x}_{1}^{2}$$'))
-    
+
     def test_omath_nary_pr(self):
         nary_pr = OMathNaryPr()
         text = TextNode(u'∑', type_text='omath')
         nary_pr.add(text)
         output = render_output(nary_pr)
         assert_that(output, is_(u'\\sum '))
-    
+
     def test_omath_nary_three_children_sum(self):
         nary = OMathNary()
-        
+
         nary_pr = OMathNaryPr()
         text = TextNode(u'∑', type_text='omath')
         nary_pr.add(text)
         nary.add(nary_pr)
-        
+
         sub = OMathSub()
         sub_text = TextNode(u'i=1', type_text='omath')
         sub.add(sub_text)
         nary.add(sub)
-        
+
         sup = OMathSup()
         sup_text = TextNode(u'20', type_text='omath')
         sup.add(sup_text)
         nary.add(sup)
-        
+
         output = render_output(nary)
         assert_that(output, is_(u'\\sum_{i=1}^{20}'))
-    
+
     def test_omath_nary_three_children_prod(self):
         nary = OMathNary()
-        
+
         nary_pr = OMathNaryPr()
         text = TextNode(u'∏', type_text='omath')
         nary_pr.add(text)
         nary.add(nary_pr)
-        
+
         sub = OMathSub()
         sub_text = TextNode(u'i=1', type_text='omath')
         sub.add(sub_text)
         nary.add(sub)
-        
+
         sup = OMathSup()
         sup_text = TextNode(u'20', type_text='omath')
         sup.add(sup_text)
         nary.add(sup)
-        
+
         output = render_output(nary)
         assert_that(output, is_(u'\\prod_{i=1}^{20}'))
-    
+
     def test_omath_nary_three_children_int(self):
         nary = OMathNary()
-        
+
         nary_pr = OMathNaryPr()
         text = TextNode(u'∫', type_text='omath')
         nary_pr.add(text)
         nary.add(nary_pr)
-        
+
         sub = OMathSub()
         sub_text = TextNode(u'i=1', type_text='omath')
         sub.add(sub_text)
         nary.add(sub)
-        
+
         sup = OMathSup()
         sup_text = TextNode(u'20', type_text='omath')
         sup.add(sup_text)
         nary.add(sup)
-        
+
         output = render_output(nary)
         assert_that(output, is_(u'\\int_{i=1}^{20}'))
-    
+
     def test_omath_nary_four_children_sum(self):
         nary = OMathNary()
-        
+
         nary_pr = OMathNaryPr()
         text = TextNode(u'∑', type_text='omath')
         nary_pr.chrVal = u'∑'
         nary_pr.add(text)
         nary.add(nary_pr)
-        
+
         sub = OMathSub()
         sub_text = TextNode(u'1', type_text='omath')
         sub.add(sub_text)
         nary.add(sub)
-        
+
         sup = OMathSup()
         sup_text = TextNode(u'20', type_text='omath')
         sup.add(sup_text)
         nary.add(sup)
-        
+
         base = OMathBase()
         base_text = TextNode(u'x', type_text='omath')
         base.add(base_text)
         nary.add(base)
-        
+
         output = render_output(nary)
         assert_that(output, is_(u'\\sum_{1}^{20} x'))
-    
+
     def test_omath_nary_four_children_int(self):
         nary = OMathNary()
-        
+
         nary_pr = OMathNaryPr()
         text = TextNode(u'\8747', type_text='omath')
         nary_pr.limLocVal = u'\8747'
         nary_pr.add(text)
         nary.add(nary_pr)
-        
+
         sub = OMathSub()
         sub_text = TextNode(u'1', type_text='omath')
         sub.add(sub_text)
         nary.add(sub)
-        
+
         sup = OMathSup()
         sup_text = TextNode(u'20', type_text='omath')
         sup.add(sup_text)
         nary.add(sup)
-        
+
         base = OMathBase()
         base_text = TextNode(u'x', type_text='omath')
         base.add(base_text)
         nary.add(base)
-        
+
         output = render_output(nary)
         assert_that(output, is_(u'\\int_{1}^{20} x'))
-    
+
     def test_omath_nary_four_children_token_int(self):
         nary = OMathNary()
-        
+
         nary_pr = OMathNaryPr()
         text = TextNode(u'∫', type_text='omath')
         nary_pr.chrVal = u'∫'
         nary_pr.add(text)
         nary.add(nary_pr)
-        
+
         sub = OMathSub()
         sub_text = TextNode(u'1', type_text='omath')
         sub.add(sub_text)
         nary.add(sub)
-        
+
         sup = OMathSup()
         sup_text = TextNode(u'n', type_text='omath')
         sup.add(sup_text)
         nary.add(sup)
-        
+
         base = OMathBase()
         base_text = TextNode(u'y', type_text='omath')
         base.add(base_text)
         nary.add(base)
-        
+
         output = render_output(nary)
         assert_that(output, is_(u'\\int_{1}^{n} y'))
-    
+
     def test_omath_basic_matrix(self):
         matrix = OMathMatrix()
         output = render_output(matrix)
         assert_that(output, is_(u'\\begin{matrix}\n\\end{matrix}\n'))
-        
+
     def test_omath_basic_matrix_with_row_one_cell(self):
         matrix = OMathMatrix()
-        
+
         mr_1 = OMathMr()
         base_1_1 = OMathBase()
         base_1_1.add(TextNode(u'A'))
         mr_1.add(base_1_1)
-        
+
         mr_2 = OMathMr()
         base_2_1 = OMathBase()
         base_2_1.add(TextNode(u'C'))
         mr_2.add(base_2_1)
-        
+
         matrix.add(mr_1)
         matrix.add(mr_2)
-        
+
         output = render_output(matrix)
-        assert_that(output, is_('\\begin{matrix}\nA \\\\\nC \\\\\n\\end{matrix}\n'))
-        
+        assert_that(
+            output, is_('\\begin{matrix}\nA \\\\\nC \\\\\n\\end{matrix}\n'))
+
     def test_omath_basic_matrix_with_row_cell(self):
         matrix = OMathMatrix()
-        
+
         mr_1 = OMathMr()
         base_1_1 = OMathBase()
         base_1_1.add(TextNode(u'A'))
@@ -714,7 +715,7 @@ class OMathTest(ContentToolsTestCase):
         base_1_2.add(TextNode(u'B'))
         mr_1.add(base_1_1)
         mr_1.add(base_1_2)
-        
+
         mr_2 = OMathMr()
         base_2_1 = OMathBase()
         base_2_1.add(TextNode(u'C'))
@@ -722,23 +723,24 @@ class OMathTest(ContentToolsTestCase):
         base_2_2.add(TextNode(u'D'))
         mr_2.add(base_2_1)
         mr_2.add(base_2_2)
-        
+
         matrix.add(mr_1)
         matrix.add(mr_2)
-        
+
         output = render_output(matrix)
-        assert_that(output, is_('\\begin{matrix}\nA & B \\\\\nC & D \\\\\n\\end{matrix}\n'))
-    
+        assert_that(
+            output, is_('\\begin{matrix}\nA & B \\\\\nC & D \\\\\n\\end{matrix}\n'))
+
     def test_omath_pmatrix(self):
         matrix = OMathMatrix()
         matrix.begChr = u'('
         output = render_output(matrix)
         assert_that(output, is_(u'\\begin{pmatrix}\n\\end{pmatrix}\n'))
-    
+
     def test_omath_pmatrix_with_row_cell(self):
         matrix = OMathMatrix()
         matrix.begChr = u'('
-        
+
         mr_1 = OMathMr()
         base_1_1 = OMathBase()
         base_1_1.add(TextNode(u'A'))
@@ -746,7 +748,7 @@ class OMathTest(ContentToolsTestCase):
         base_1_2.add(TextNode(u'B'))
         mr_1.add(base_1_1)
         mr_1.add(base_1_2)
-        
+
         mr_2 = OMathMr()
         base_2_1 = OMathBase()
         base_2_1.add(TextNode(u'C'))
@@ -754,23 +756,24 @@ class OMathTest(ContentToolsTestCase):
         base_2_2.add(TextNode(u'D'))
         mr_2.add(base_2_1)
         mr_2.add(base_2_2)
-        
+
         matrix.add(mr_1)
         matrix.add(mr_2)
-        
+
         output = render_output(matrix)
-        assert_that(output, is_('\\begin{pmatrix}\nA & B \\\\\nC & D \\\\\n\\end{pmatrix}\n'))    
-    
+        assert_that(output,
+                    is_('\\begin{pmatrix}\nA & B \\\\\nC & D \\\\\n\\end{pmatrix}\n'))
+
     def test_omath_bmatrix(self):
         matrix = OMathMatrix()
         matrix.begChr = u'['
         output = render_output(matrix)
         assert_that(output, is_(u'\\begin{bmatrix}\n\\end{bmatrix}\n'))
-        
+
     def test_omath_bmatrix_with_row_cell(self):
         matrix = OMathMatrix()
         matrix.begChr = u'['
-        
+
         mr_1 = OMathMr()
         base_1_1 = OMathBase()
         base_1_1.add(TextNode(u'A'))
@@ -778,7 +781,7 @@ class OMathTest(ContentToolsTestCase):
         base_1_2.add(TextNode(u'B'))
         mr_1.add(base_1_1)
         mr_1.add(base_1_2)
-        
+
         mr_2 = OMathMr()
         base_2_1 = OMathBase()
         base_2_1.add(TextNode(u'C'))
@@ -786,34 +789,36 @@ class OMathTest(ContentToolsTestCase):
         base_2_2.add(TextNode(u'D'))
         mr_2.add(base_2_1)
         mr_2.add(base_2_2)
-        
+
         matrix.add(mr_1)
         matrix.add(mr_2)
-        
+
         output = render_output(matrix)
-        assert_that(output, is_('\\begin{bmatrix}\nA & B \\\\\nC & D \\\\\n\\end{bmatrix}\n'))
-        
+        assert_that(output, 
+                    is_('\\begin{bmatrix}\nA & B \\\\\nC & D \\\\\n\\end{bmatrix}\n'))
+
     def test_omath_basic_eq_array(self):
         eq_arr = OMathEqArr()
         output = render_output(eq_arr)
         assert_that(output, is_(u'\\begin{array}{lr}\n\n\\end{array}'))
-    
+
     def test_omath_eq_array(self):
         eq_arr = OMathEqArr()
         eq_arr.rowSpace = 1
-        
+
         base_1 = OMathBase()
         row_1 = OMathMr()
         row_1.add(TextNode(u'x_{1} + x_{2} = 4'))
         base_1.add(row_1)
-        
+
         base_2 = OMathBase()
         row_2 = OMathMr()
         row_2.add(TextNode(u'x_{3} + x_{4} = 10'))
         base_2.add(row_2)
-        
+
         eq_arr.add(base_1)
         eq_arr.add(base_2)
         output = render_output(eq_arr)
 
-        assert_that(output, is_(u'\\begin{array}{lr}\nx_{1} + x_{2} = 4 \\\\\nx_{3} + x_{4} = 10 \\\\\n\n\\end{array}'))
+        assert_that(output, 
+                    is_(u'\\begin{array}{lr}\nx_{1} + x_{2} = 4 \\\\\nx_{3} + x_{4} = 10 \\\\\n\n\\end{array}'))
