@@ -591,8 +591,8 @@ class OMathTest(ContentToolsTestCase):
         nary = OMathNary()
         
         nary_pr = OMathNaryPr()
-        text = TextNode(u'\8747', type_text='omath')
-        nary_pr.chrVal = u'\8747'
+        text = TextNode(u'∫', type_text='omath')
+        nary_pr.chrVal = u'∫'
         nary_pr.add(text)
         nary.add(nary_pr)
         
