@@ -328,5 +328,13 @@
 	<adapter factory=".omath.OMathSubSupRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathSubSup"
 		 provides="..interfaces.IRenderer"
-		 name="LaTeX" />	 
+		 name="LaTeX" />	
+	<adapter factory=".omath.OMathNaryRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathNary"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" /> 
+	<adapter factory=".omath.OMathNaryPrRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathNaryPr"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>
