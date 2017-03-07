@@ -32,6 +32,21 @@ class TestHTMLTable(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\n\\begin{table}\n\\begin{tabular}{}\n\n\\end{tabular}\n\\end{table}\n'))
+    
+    def test_html_table_with_caption(self):
+        node = Table()
+        node.caption = "Caption for table"
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\n\\begin{table}\n\\caption{Caption for table}\n\\label{table:Caption_for_table}\n\\begin{tabular}{}\n\n\\end{tabular}\n\\end{table}\n'))
+    
+    def test_html_table_with_caption_and_label(self):
+        node = Table()
+        node.caption = "Caption for table"
+        node.label = "label_table"
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\n\\begin{table}\n\\caption{Caption for table}\n\\label{table:label_table}\n\\begin{tabular}{}\n\n\\end{tabular}\n\\end{table}\n'))
 
     def test_html_table_row(self):
         node = Row()
