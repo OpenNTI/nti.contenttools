@@ -30,6 +30,9 @@ from nti.contenttools.types.omath import OMathSuperscript
 from nti.contenttools.types.omath import OMathDenominator
 from nti.contenttools.types.omath import OMathNary
 from nti.contenttools.types.omath import OMathNaryPr
+from nti.contenttools.types.omath import OMathMatrix
+from nti.contenttools.types.omath import OMathMr
+from nti.contenttools.types.omath import OMathEqArr
 
 from nti.contenttools.types.text import TextNode
 
@@ -676,3 +679,21 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(nary)
         assert_that(output, is_(u'\\int_{1}^{n} y'))
+    
+    def test_omath_basic_matrix(self):
+        matrix = OMathMatrix()
+        output = render_output(matrix)
+        assert_that(output, is_(u'\\begin{matrix}\n\\end{matrix}\n'))
+    
+    def test_omath_pmatrix(self):
+        matrix = OMathMatrix()
+        matrix.begChr = u'('
+        output = render_output(matrix)
+        assert_that(output, is_(u'\\begin{pmatrix}\n\\end{pmatrix}\n'))
+    
+    def test_omath_bmatrix(self):
+        matrix = OMathMatrix()
+        matrix.begChr = u'['
+        output = render_output(matrix)
+        assert_that(output, is_(u'\\begin{bmatrix}\n\\end{bmatrix}\n'))
+        

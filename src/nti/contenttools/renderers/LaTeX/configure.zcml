@@ -345,4 +345,16 @@
 		 for="nti.contenttools.types.interfaces.IOMathDPr"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+	<adapter factory=".omath.OMathMatrixRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathMatrix"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathMrRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathMr"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathEqArrRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathEqArr"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>
