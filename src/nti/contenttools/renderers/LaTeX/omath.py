@@ -396,7 +396,7 @@ def render_array(context, node, string_col):
     context.write(u'{')
     context.write(string_col)
     context.write(u'}\n')
-    context.write(render_node_with_newline(node))
+    render_children(context, node)
     context.write(u'\n\\end{array}')
     return node
 
