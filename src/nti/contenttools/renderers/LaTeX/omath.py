@@ -42,6 +42,7 @@ from nti.contenttools.types.omath import IOMathNaryPr
 from nti.contenttools.types.omath import IOMathDelimiter
 from nti.contenttools.types.omath import IOMathDPr
 from nti.contenttools.types.omath import IOMathMatrix
+from nti.contenttools.types.omath import IOMathMr
 from nti.contenttools.types.omath import IOMathEqArr
 
 def render_omath(context, node):
@@ -327,9 +328,77 @@ def check_equation_arr_border(begChr, endChr):
 
 def render_omath_dpr(context, node):
     """
-    to render <m:dPr>
+    render <m:dPr>
     """
     return render_children(context, node)
+
+def render_omath_matrix(context, node):
+    """
+    render <m:m>
+    """
+    if begMatrixBorder == '(':
+        return render_matrix(context, node, u'pmatrix')
+    elif begMatrixBorder == '[':
+        return render_matrix(context, node, u'bmatrix')
+    else:
+        return render_matrix(context, node, u'matrix')
+
+def render_matrix(context, node, matrix_type):
+    context.write(u'\\begin{')
+    context.write(matrix_type)
+    context.write(u'}\n')
+    render_children(context, node)
+    context.write(u'\\end{')
+    context.write(matrix_type)
+    context.write(u'}\n')
+    return node
+
+def render_omath_mr(context, node):
+    """
+    render <m:mr>
+    """
+    context.write(render_node_with_newline(node))
+    return node
+
+def render_node_with_newline(node):
+    result = []
+    for child in node.children:
+        result.append(render_output(child))
+    return u' & '.join(result) + u' \\\\\n'
+
+def render_omath_eqarr(context, node):
+    """
+    render <m:eqArr>
+    """
+    if node.rowSpace == 1:
+        if begEqArrBorder == u'{' and endEqArrBorder == u'':
+            context.write(u'\\left \\{ ')
+            render_array(context, node, u'lr')
+            context.write(u' \\right.')
+        elif begEqArrBorder == u'' and endEqArrBorder == u'}':
+            context.write(u'\\left. ')
+            render_array(context, node, u'lr')
+            context.write(u' \\right \\}')
+        elif not begEqArrBorder and not endEqArrBorder:
+            render_array(context, node, u'lr')
+        else:
+            logger.warn('Unhandled equation array element render')
+    else:
+        number_of_space = int(node.rowSpace)
+        string_col = u''
+        for unused in range(number_of_space):
+            string_col = string_col + u' l '
+        render_array(context, node, string_col)
+    return node
+        
+def render_array(context, node, string_col):
+    context.write(u'\\begin{array}{')
+    context.write(u'{')
+    context.write(string_col)
+    context.write(u'}\n')
+    context.write(render_node_with_newline(node))
+    context.write(u'\n\\end{array}')
+    return node
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -429,3 +498,15 @@ class OMathDelimiterRenderer(RendererMixin):
 @component.adapter(IOMathDPr)
 class OMathDPrRenderer(RendererMixin):
     func = staticmethod(render_omath_dpr)
+
+@component.adapter(IOMathMatrix)
+class OMathMatrixRenderer(RendererMixin):
+    func = staticmethod(render_omath_matrix)
+
+@component.adapter(IOMathMr)
+class OMathMrRenderer(RendererMixin):
+    func = staticmethod(render_omath_mr)
+
+@component.adapter(IOMathEqArr)
+class OMathEqArrRenderer(RendererMixin):
+    func = staticmethod(render_omath_eqarr)
