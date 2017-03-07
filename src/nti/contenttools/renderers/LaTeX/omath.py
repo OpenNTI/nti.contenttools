@@ -12,7 +12,7 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
-from nti.contenttools.renderers.LaTeX.base import render_node
+from nti.contenttools.renderers.LaTeX.base import render_node, render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
 
 from nti.contenttools.renderers.interfaces import IRenderer
@@ -31,6 +31,8 @@ from nti.contenttools.types.omath import IOMathNumerator
 from nti.contenttools.types.omath import IOMathSubscript
 from nti.contenttools.types.omath import IOMathSuperscript
 from nti.contenttools.types.omath import IOMathDenominator
+from nti.contenttools.types.omath import IOMathNary
+from nti.contenttools.types.omath import IOMathNaryPr
 
 
 def render_omath(context, node):
@@ -196,6 +198,69 @@ def render_omath_subsup(context, node):
         logger.warn("<m:sSub> is not 3")
     return node
 
+def render_omath_nary(context, node):
+    """
+    render <m:nary>
+    #example : equation_sample-6.docx, equation_sample-7.docx, 
+    """
+    if node.children:
+        token = render_output(node.children[0])
+        if len(node.children) == 3:
+            if u'\\sum' in token or u'\u2211' in unicode(token):
+                node = render_omath_nary_three_children(context, node, u'sum')
+            elif u'\\prod' in token or u'\u220F' in unicode(token):
+                node = render_omath_nary_three_children(context, node, u'prod')
+            elif u'\\int' in token or u'\u222B' in unicode(token):
+                node = render_omath_nary_three_children(context, node, u'int')
+            else:
+                logger.warn('Unhandled <m:nary> node with 3 children')
+        elif len(node.children) == 4:
+            if IOMathNaryPr.providedBy(node.children[0]):
+                if node.children[0].chrVal:
+                    node = render_omath_nary_four_children(context, node, has_chrVal=True)
+                else:
+                    node = render_omath_nary_four_children(context, node)
+            else:
+                logger.warn('<m:nary> node has 4 children yet the first child does not provide IOMathNaryPr')
+        else:
+            logger.warn(u'The total number of <m:nary> node children is not 3 nor 4')
+    else:
+        logger.warn(u'<m:nary> node does not have children')
+    
+    return node
+
+def render_omath_nary_three_children(context, node, nary_type):
+    if nary_type == u'sum':
+        context.write(u'\\sum')
+    elif nary_type == u'prod':
+        context.write(u'\\prod')
+    elif nary_type == u'int':
+        context.write(u'\\int')
+    context.write(u'_{')
+    render_node(context, node.children[1])
+    context.write(u'}^{')
+    render_node(context, node.children[2])
+    context.write(u'}')
+    return node
+
+def render_omath_nary_four_children(context, node, has_chrVal=False):
+    if has_chrVal:
+        render_node(context, node.children[0])
+    else:
+        context.write(u'\\int')
+    context.write(u'_{')
+    render_node(context, node.children[1])
+    context.write(u'}^{')
+    render_node(context, node.children[2])
+    context.write(u'} ')
+    render_node(context, node.children[3])
+    return node
+
+def render_omath_nary_pr(context, node):
+    """
+    render <m:naryPr>
+    """
+    return render_children(context, node)
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
