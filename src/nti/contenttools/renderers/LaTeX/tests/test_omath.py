@@ -533,6 +533,69 @@ class OMathTest(ContentToolsTestCase):
         output = render_output(nary_pr)
         assert_that(output, is_(u'\\sum '))
     
+    def test_omath_nary_three_children_sum(self):
+        nary = OMathNary()
+        
+        nary_pr = OMathNaryPr()
+        text = TextNode(u'∑', type_text='omath')
+        nary_pr.add(text)
+        nary.add(nary_pr)
+        
+        sub = OMathSub()
+        sub_text = TextNode(u'i=1', type_text='omath')
+        sub.add(sub_text)
+        nary.add(sub)
+        
+        sup = OMathSup()
+        sup_text = TextNode(u'20', type_text='omath')
+        sup.add(sup_text)
+        nary.add(sup)
+        
+        output = render_output(nary)
+        assert_that(output, is_(u'\\sum_{i=1}^{20}'))
+    
+    def test_omath_nary_three_children_prod(self):
+        nary = OMathNary()
+        
+        nary_pr = OMathNaryPr()
+        text = TextNode(u'∏', type_text='omath')
+        nary_pr.add(text)
+        nary.add(nary_pr)
+        
+        sub = OMathSub()
+        sub_text = TextNode(u'i=1', type_text='omath')
+        sub.add(sub_text)
+        nary.add(sub)
+        
+        sup = OMathSup()
+        sup_text = TextNode(u'20', type_text='omath')
+        sup.add(sup_text)
+        nary.add(sup)
+        
+        output = render_output(nary)
+        assert_that(output, is_(u'\\prod_{i=1}^{20}'))
+    
+    def test_omath_nary_three_children_int(self):
+        nary = OMathNary()
+        
+        nary_pr = OMathNaryPr()
+        text = TextNode(u'∫', type_text='omath')
+        nary_pr.add(text)
+        nary.add(nary_pr)
+        
+        sub = OMathSub()
+        sub_text = TextNode(u'i=1', type_text='omath')
+        sub.add(sub_text)
+        nary.add(sub)
+        
+        sup = OMathSup()
+        sup_text = TextNode(u'20', type_text='omath')
+        sup.add(sup_text)
+        nary.add(sup)
+        
+        output = render_output(nary)
+        assert_that(output, is_(u'\\int_{i=1}^{20}'))
+    
     def test_omath_nary_four_children_sum(self):
         nary = OMathNary()
         
