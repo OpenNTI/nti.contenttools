@@ -337,4 +337,12 @@
 		 for="nti.contenttools.types.interfaces.IOMathNaryPr"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+	<adapter factory=".omath.OMathDelimiterRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathDelimiter"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathDPrRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathDPr"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>
