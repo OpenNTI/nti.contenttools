@@ -239,12 +239,12 @@ class ILabel(IDocumentStructureNode):
 class ISidebar(IDocumentStructureNode):
 
     title = Variant((Object(IDocumentStructureNode),
-                             ValidTextLine()),
+                     ValidTextLine()),
                     title="Title",
                     required=False)
 
     label = Variant((Object(IDocumentStructureNode),
-                             ValidTextLine()),
+                     ValidTextLine()),
                     title="Label",
                     required=False)
 
@@ -1552,7 +1552,7 @@ class IEquationImage(IDocumentStructureNode):
                     required=False)
 
     text = Variant((Object(IDocumentStructureNode),
-                     ValidTextLine()),
+                    ValidTextLine()),
                    title="Label",
                    required=False)
 
