@@ -286,6 +286,7 @@ def render_omath_nary_pr(context, node):
 def render_omath_delimiter(context, node):
     """
     render <m:d>
+    TODO ega:modify check_matrix_border and check_equation_arr_border functions
     """
     if node.children:
         num_of_children = len(node.children)
