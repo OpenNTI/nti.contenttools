@@ -29,10 +29,12 @@ from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 
 from nti.contenttools.types.interfaces import ISidebar
 
+
 def render_sidebar(context, node):
     base = render_children_output(node)
-    
-    # this is useful for glossary term (for example glossary term in IFSTA epub)
+
+    # this is useful for glossary term 
+    # (for example glossary term in IFSTA epub)
     if node.type == u"sidebar_term":
         str_pos = base.find('-')
         if str_pos > -1:
@@ -41,26 +43,27 @@ def render_sidebar(context, node):
                 node.title = term
             if node.label is None:
                 node.label = u'sidebar_term:%s' % term.replace(u" ", u"_")
-    
-    title  = get_variant_field_string_value(node.title) if node.title else u''
-    
+
     label = u''
+    title = get_variant_field_string_value(node.title) if node.title else u''
     if node.label:
         label = get_variant_field_string_value(node.label)
-        if label: label = u'\\label{%s}' %(label)
-        
+        if label:
+            label = u'\\label{%s}' % (label)
+
     context.write(u'\n\\begin{sidebar}')
-    
+
     found_math_env = False
     if any(chars in title for chars in [u'\\(', u'\\[']):
-        logger.warn(
-            "Math element found in sidebar's title. It may cause TROUBLE with nti_render, therefore no title for this sidebar. Use textbf to write title in sidebar body")
+        logger.warn("Math element found in sidebar's title. "
+                    "It may cause issues while rendering, therefore no "
+                    "title for this sidebar. Use textbf to write title in sidebar body")
         found_math_env = True
         context.write(u'{}\n')
     else:
-        context.write(u'{') 
-        context.write(title) 
-        context.write(u'}\n') 
+        context.write(u'{')
+        context.write(title)
+        context.write(u'}\n')
     context.write(label)
     if found_math_env:
         context.write(u'\\textbf{')
@@ -69,6 +72,7 @@ def render_sidebar(context, node):
     context.write(base)
     context.write(u'\n\\end{sidebar}\n')
     return node
+
 
 def render_note(context, node):
     base = render_children_output(node)
@@ -144,6 +148,7 @@ class RendererMixin(object):
 @component.adapter(ISidebar)
 class SidebarRenderer(RendererMixin):
     func = staticmethod(render_sidebar)
+
 
 @component.adapter(INote)
 class NoteRenderer(RendererMixin):
