@@ -79,7 +79,7 @@ def process_table_html(context, node, string_col):
             context.write(u'}\n')
         
         if node.label:
-            label = get_variant_field_string_value(node.caption).rstrip()
+            label = get_variant_field_string_value(node.label).rstrip()
             if u'\\label{' in label:
                 context.write(label)
             else:
