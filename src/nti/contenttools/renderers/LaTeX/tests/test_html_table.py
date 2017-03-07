@@ -31,7 +31,7 @@ class TestHTMLTable(ContentToolsTestCase):
         node = Table()
         output = render_output(node)
         assert_that(output,
-                    is_(u'\n\\begin{table}\n\\begin{tabular}{}\n\\end{tabular}\n\\end{table}\n'))
+                    is_(u'\n\\begin{table}\n\\begin{tabular}{}\n\n\\end{tabular}\n\\end{table}\n'))
 
     def test_html_table_row(self):
         node = Row()
