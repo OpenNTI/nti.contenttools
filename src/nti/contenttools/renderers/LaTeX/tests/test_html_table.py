@@ -125,3 +125,60 @@ class TestHTMLTable(ContentToolsTestCase):
         output = render_output(table)
         assert_that(output,
                     is_(u'\n\\begin{table}\n\\begin{tabular}{}\nA & B\\\\\nC & D\\\\\n\n\\end{tabular}\n\\end{table}\n'))
+    
+    def test_table_with_caption_row_cell(self):
+        table = Table()
+        table.caption = "Title"
+        table.number_of_col_body = 2
+        
+        row_1 = Row()
+        cell_1_1 = Cell()
+        cell_1_1.add(TextNode(u'A'))
+        cell_1_2 = Cell()
+        cell_1_2.add(TextNode(u'B'))
+        row_1.add(cell_1_1)
+        row_1.add(cell_1_2)
+        
+        row_2 = Row()
+        cell_2_1 = Cell()
+        cell_2_1.add(TextNode(u'C'))
+        cell_2_2 = Cell()
+        cell_2_2.add(TextNode(u'D'))
+        row_2.add(cell_2_1)
+        row_2.add(cell_2_2)
+        
+        table.add(row_1)
+        table.add(row_2)
+        
+        output = render_output(table)
+        assert_that(output,
+                    is_(u'\n\\begin{table}\n\\caption{Title}\n\\label{table:Title}\n\\begin{tabular}{ l  l }\nA & B\\\\\nC & D\\\\\n\n\\end{tabular}\n\\end{table}\n'))
+    
+    def test_table_with_caption_row_cell_border(self):
+        table = Table()
+        table.caption = "Title"
+        table.number_of_col_body = 2
+        table.border = True
+        
+        row_1 = Row()
+        cell_1_1 = Cell()
+        cell_1_1.add(TextNode(u'A'))
+        cell_1_2 = Cell()
+        cell_1_2.add(TextNode(u'B'))
+        row_1.add(cell_1_1)
+        row_1.add(cell_1_2)
+        
+        row_2 = Row()
+        cell_2_1 = Cell()
+        cell_2_1.add(TextNode(u'C'))
+        cell_2_2 = Cell()
+        cell_2_2.add(TextNode(u'D'))
+        row_2.add(cell_2_1)
+        row_2.add(cell_2_2)
+        
+        table.add(row_1)
+        table.add(row_2)
+        
+        output = render_output(table)
+        assert_that(output,
+                    is_(u'\n\\begin{table}\n\\caption{Title}\n\\label{table:Title}\n\\begin{tabular}{|l|l|}\nA & B\\\\\nC & D\\\\\n\n\\end{tabular}\n\\end{table}\n'))

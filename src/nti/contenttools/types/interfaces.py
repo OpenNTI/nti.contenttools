@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from persistent.mapping import default
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -411,8 +412,9 @@ class ITable(IDocumentStructureNode):
                      ValidTextLine(title="Label")),
                     required=False)
 
-    border = ListOrTuple(title="TableBorder",
-                         required=False)
+    border = Bool(title="TableBorder",
+                  default=False,
+                  required=True)
 
     type = ValidTextLine(title="Table Type",
                          required=False)
