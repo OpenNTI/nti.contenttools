@@ -702,7 +702,7 @@ class OMathTest(ContentToolsTestCase):
         matrix.add(mr_2)
 
         output = render_output(matrix)
-        assert_that(output, 
+        assert_that(output,
                     is_('\\begin{matrix}\nA \\\\\nC \\\\\n\\end{matrix}\n'))
 
     def test_omath_basic_matrix_with_row_cell(self):
@@ -794,7 +794,7 @@ class OMathTest(ContentToolsTestCase):
         matrix.add(mr_2)
 
         output = render_output(matrix)
-        assert_that(output, 
+        assert_that(output,
                     is_('\\begin{bmatrix}\nA & B \\\\\nC & D \\\\\n\\end{bmatrix}\n'))
 
     def test_omath_basic_eq_array(self):
@@ -813,17 +813,18 @@ class OMathTest(ContentToolsTestCase):
         row_2 = OMathMr()
         row_2.add(TextNode(u'x_{3} + x_{4} = 10'))
         base_2.add(row_2)
-        
+
         eq_arr.add(base_1)
         eq_arr.add(base_2)
         output = render_output(eq_arr)
 
-        assert_that(output, is_(u'\\begin{array}{lr}\nx_{1} + x_{2} = 4 \\\\\nx_{3} + x_{4} = 10 \\\\\n\n\\end{array}'))
-    
+        assert_that(output, 
+                    is_(u'\\begin{array}{lr}\nx_{1} + x_{2} = 4 \\\\\nx_{3} + x_{4} = 10 \\\\\n\n\\end{array}'))
+
     def test_omath_eq_array2(self):
         eq_arr = OMathEqArr()
         eq_arr.rowSpace = 2
-        
+
         base_1 = OMathBase()
         row_1 = OMathMr()
         row_1.add(TextNode(u'x_{1} + x_{2} = 4'))
@@ -840,5 +841,5 @@ class OMathTest(ContentToolsTestCase):
         eq_arr.add(base_2)
         output = render_output(eq_arr)
 
-        assert_that(output, is_(u'\\begin{array}{ l  l }\nx_{1} + x_{2} = 4 & Y \\\\\nx_{3} + x_{4} = 10 & Z \\\\\n\n\\end{array}'))
-    
+        assert_that(output, 
+                    is_(u'\\begin{array}{ l  l }\nx_{1} + x_{2} = 4 & Y \\\\\nx_{3} + x_{4} = 10 & Z \\\\\n\n\\end{array}'))
