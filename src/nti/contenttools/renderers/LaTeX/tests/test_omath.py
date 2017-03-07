@@ -775,6 +775,24 @@ class OMathTest(ContentToolsTestCase):
         assert_that(output, is_('\\begin{bmatrix}\nA & B \\\\\nC & D \\\\\n\\end{bmatrix}\n'))
         
     def test_omath_basic_eq_array(self):
-        matrix = OMathEqArr()
-        output = render_output(matrix)
+        eq_arr = OMathEqArr()
+        output = render_output(eq_arr)
         assert_that(output, is_(u'\\begin{array}{lr}\n \\\\\n\n\\end{array}'))
+    
+    def test_omath_eq_array(self):
+        eq_arr = OMathEqArr()
+        
+        base_1 = OMathBase()
+        row_1 = OMathMr()
+        row_1.add(TextNode(u'x_{1} + x_{2} = 4'))
+        base_1.add(row_1)
+        
+        base_2 = OMathBase()
+        row_2 = OMathMr()
+        row_2.add(TextNode(u'x_{3} + x_{4} = 10'))
+        base_2.add(row_2)
+        
+        eq_arr.add(base_1)
+        eq_arr.add(base_2)
+        output = render_output(eq_arr)
+        assert_that(output, is_(u'\\begin{array}{lr}\nx_{1} + x_{2} = 4 \\\\\n & x_{3} + x_{4} = 10 \\\\\n \\\\\n\n\\end{array}'))
