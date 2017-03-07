@@ -344,3 +344,11 @@ class OMathSupRenderer(RendererMixin):
 @component.adapter(IOMathSubSup)
 class OMathSubSupRenderer(RendererMixin):
     func = staticmethod(render_omath_subsup)
+    
+@component.adapter(IOMathNary)
+class OMathNaryRenderer(RendererMixin):
+    func = staticmethod(render_omath_nary)
+
+@component.adapter(IOMathNaryPr)
+class OMathNaryPrRenderer(RendererMixin):
+    func = staticmethod(render_omath_nary_pr)
