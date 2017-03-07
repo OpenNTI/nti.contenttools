@@ -17,6 +17,7 @@ from nti.contenttools.renderers.interfaces import IRenderer
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
+from nti.contenttools.renderers.LaTeX.utils import create_label
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 
 from nti.contenttools.types.interfaces import IRow
@@ -64,6 +65,7 @@ def get_string_col(number_of_col, border):
 
 
 def process_table_html(context, node, string_col):
+    caption = u''
     if node.type_== u'simplelist':
         context.write(u'\n')
         render_children(context, node)
@@ -75,6 +77,7 @@ def process_table_html(context, node, string_col):
             context.write(u'\\caption{')
             context.write(caption)
             context.write(u'}\n')
+        
         if node.label:
             label = get_variant_field_string_value(node.caption).rstrip()
             if u'\\label{' in label:
@@ -84,6 +87,12 @@ def process_table_html(context, node, string_col):
                 context.write(label)
                 context.write(u'}')
             context.write(u'\n')
+        else:
+            if caption:
+                label = create_label('table', caption)
+                context.write(label)
+                context.write(u'\n')
+            
         context.write(u'\\begin{tabular}{')
         context.write(string_col)
         context.write(u'}\n')
