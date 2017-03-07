@@ -602,14 +602,14 @@ class OMathTest(ContentToolsTestCase):
         nary.add(sub)
         
         sup = OMathSup()
-        sup_text = TextNode(u'20', type_text='omath')
+        sup_text = TextNode(u'n', type_text='omath')
         sup.add(sup_text)
         nary.add(sup)
         
         base = OMathBase()
-        base_text = TextNode(u'x', type_text='omath')
+        base_text = TextNode(u'y', type_text='omath')
         base.add(base_text)
         nary.add(base)
         
         output = render_output(nary)
-        assert_that(output, is_(u'\\int_{1}^{20} x'))
+        assert_that(output, is_(u'\\int_{1}^{n} y'))
