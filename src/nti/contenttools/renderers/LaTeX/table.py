@@ -4,7 +4,7 @@
 .. $Id$
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
-from StdSuites.AppleScript_Suite import string
+
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -14,6 +14,7 @@ from zope import interface
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
+from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
@@ -118,7 +119,7 @@ def render_html_table(context, node):
 def render_html_table_row(context, node):
     result = []
     for child in node.children:
-        result.append(child.render())
+        result.append(render_output(child))
     if node.border:
         output = u' & '.join(result) + u'\\\\ \hline\n'
     elif node.type_ == u'simplelist':
@@ -126,6 +127,7 @@ def render_html_table_row(context, node):
     else:
         output = u' & '.join(result) + u'\\\\\n'
     context.write(output)
+    return node
 
 
 def render_html_table_cell(context, node):
@@ -141,6 +143,7 @@ def render_html_table_cell(context, node):
             node.is_first_cell_in_the_row,
             result)
     context.write(result)
+    return node
 
 
 def get_multicolumn(col_span, border, first_cell, cell_string):
