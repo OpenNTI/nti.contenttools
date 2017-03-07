@@ -685,6 +685,25 @@ class OMathTest(ContentToolsTestCase):
         output = render_output(matrix)
         assert_that(output, is_(u'\\begin{matrix}\n\\end{matrix}\n'))
         
+    def test_omath_basic_matrix_with_row_one_cell(self):
+        matrix = OMathMatrix()
+        
+        mr_1 = OMathMr()
+        base_1_1 = OMathBase()
+        base_1_1.add(TextNode(u'A'))
+        mr_1.add(base_1_1)
+        
+        mr_2 = OMathMr()
+        base_2_1 = OMathBase()
+        base_2_1.add(TextNode(u'C'))
+        mr_2.add(base_2_1)
+        
+        matrix.add(mr_1)
+        matrix.add(mr_2)
+        
+        output = render_output(matrix)
+        assert_that(output, is_('\\begin{matrix}\nA \\\\\nC \\\\\n\\end{matrix}\n'))
+        
     def test_omath_basic_matrix_with_row_cell(self):
         matrix = OMathMatrix()
         
@@ -777,10 +796,11 @@ class OMathTest(ContentToolsTestCase):
     def test_omath_basic_eq_array(self):
         eq_arr = OMathEqArr()
         output = render_output(eq_arr)
-        assert_that(output, is_(u'\\begin{array}{lr}\n \\\\\n\n\\end{array}'))
+        assert_that(output, is_(u'\\begin{array}{lr}\n\n\\end{array}'))
     
     def test_omath_eq_array(self):
         eq_arr = OMathEqArr()
+        eq_arr.rowSpace = 1
         
         base_1 = OMathBase()
         row_1 = OMathMr()
@@ -795,5 +815,5 @@ class OMathTest(ContentToolsTestCase):
         eq_arr.add(base_1)
         eq_arr.add(base_2)
         output = render_output(eq_arr)
-        #TODO ega:figure it out why this fail
-        assert_that(output, is_(u'\\begin{array}{lr}\nx_{1} + x_{2} = 4 \\\\\nx_{3} + x_{4} = 10 \\\\\n \\\\\n\n\\end{array}'))
+
+        assert_that(output, is_(u'\\begin{array}{lr}\nx_{1} + x_{2} = 4 \\\\\nx_{3} + x_{4} = 10 \\\\\n\n\\end{array}'))
