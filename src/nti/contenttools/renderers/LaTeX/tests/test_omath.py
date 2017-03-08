@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from docutils.nodes import superscript
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -33,6 +34,7 @@ from nti.contenttools.types.omath import OMathNumerator
 from nti.contenttools.types.omath import OMathSubscript
 from nti.contenttools.types.omath import OMathSuperscript
 from nti.contenttools.types.omath import OMathDenominator
+from nti.contenttools.types.omath import OMathDelimiter
 
 from nti.contenttools.types.text import TextNode
 
@@ -818,10 +820,9 @@ class OMathTest(ContentToolsTestCase):
         eq_arr.add(base_2)
         output = render_output(eq_arr)
 
-        assert_that(output, 
+        assert_that(output,
                     is_(u'\\begin{array}{lr}\nx_{1} + x_{2} = 4 \\\\\nx_{3} + x_{4} = 10 \\\\\n\n\\end{array}'))
 
-    
     def test_omath_eq_array2(self):
         eq_arr = OMathEqArr()
         eq_arr.rowSpace = 2
@@ -842,14 +843,14 @@ class OMathTest(ContentToolsTestCase):
         eq_arr.add(base_2)
         output = render_output(eq_arr)
 
-        assert_that(output, 
+        assert_that(output,
                     is_(u'\\begin{array}{ l  l }\nx_{1} + x_{2} = 4 & Y \\\\\nx_{3} + x_{4} = 10 & Z \\\\\n\n\\end{array}'))
-    
+
     def test_omath_eq_array_with_begBorder(self):
         eq_arr = OMathEqArr()
         eq_arr.begBorder = u'{'
         eq_arr.endBorder = u''
-        
+
         base_1 = OMathBase()
         row_1 = OMathMr()
         row_1.add(TextNode(u'x_{1} + x_{2} = 4'))
@@ -864,14 +865,14 @@ class OMathTest(ContentToolsTestCase):
         eq_arr.add(base_2)
         output = render_output(eq_arr)
 
-        assert_that(output, 
+        assert_that(output,
                     is_(u'\\left \\{ \\begin{array}{lr}\nx_{1} + x_{2} = 4 \\\\\nx_{3} + x_{4} = 10 \\\\\n\n\\end{array} \\right.'))
-    
+
     def test_omath_eq_array_with_endBorder(self):
         eq_arr = OMathEqArr()
         eq_arr.begBorder = u''
         eq_arr.endBorder = u'}'
-        
+
         base_1 = OMathBase()
         row_1 = OMathMr()
         row_1.add(TextNode(u'x_{1} + x_{2} = 4'))
@@ -886,5 +887,96 @@ class OMathTest(ContentToolsTestCase):
         eq_arr.add(base_2)
         output = render_output(eq_arr)
 
-        assert_that(output, 
+        assert_that(output,
                     is_(u'\\left. \\begin{array}{lr}\nx_{1} + x_{2} = 4 \\\\\nx_{3} + x_{4} = 10 \\\\\n\n\\end{array} \\right \\}'))
+
+    def test_omath_delimiter(self):
+        """
+#===============================================================================
+# <m:d>
+#   <m:e>
+#     <m:sSup>
+#       <m:e>
+#         <m:r>
+#           <m:t>x</m:t>
+#         </m:r>
+#       </m:e>
+#       <m:sup>
+#         <m:r>
+#           <m:rPr>
+#             <m:scr  m:val="roman"/>
+#             <m:sty  m:val="p"/>
+#           </m:rPr>
+#           <m:t>2</m:t>
+#         </m:r>
+#       </m:sup>
+#     </m:sSup>
+#   </m:e>
+#   <m:e>
+#     <m:sSup>
+#       <m:e>
+#         <m:r>
+#           <m:t>y</m:t>
+#         </m:r>
+#       </m:e>
+#       <m:sup>
+#         <m:r>
+#           <m:rPr>
+#             <m:scr m:val="roman"/>
+#             <m:sty  m:val="p"/>
+#           </m:rPr>
+#           <m:t>2</m:t>
+#         </m:r>
+#       </m:sup>
+#     </m:sSup>
+#   </m:e>
+# </m:d>
+#===============================================================================
+        """
+        delimiter = OMathDelimiter()
+
+        e_1 = OMathBase()
+        sSup_1 = OMathSuperscript()
+
+        e_sSup_1 = OMathBase()
+        r_e_sSup_1 = OMathRun()
+        r_e_sSup_1.add(TextNode(u'x'))
+        e_sSup_1.add(r_e_sSup_1)
+        sSup_1.add(e_sSup_1)
+
+        sup_sSup_1 = OMathSup()
+        r_sup_sSup_1 = OMathRun()
+        r_sup_sSup_1.add(TextNode(u'2'))
+        sup_sSup_1.add(r_sup_sSup_1)
+        sSup_1.add(sup_sSup_1)
+        sSup_1.add(sup_sSup_1)
+        
+        e_1.add(sSup_1)
+
+        e_2 = OMathBase()
+        sSup_2 = OMathSuperscript()
+
+        e_sSup_2 = OMathBase()
+        r_e_sSup_2 = OMathRun()
+        r_e_sSup_2.add(TextNode(u'y'))
+        e_sSup_2.add(r_e_sSup_2)
+        sSup_2.add(e_sSup_2)
+
+        sup_sSup_2 = OMathSup()
+        r_sup_sSup_2 = OMathRun()
+        r_sup_sSup_2.add(TextNode(u'2'))
+        sup_sSup_2.add(r_sup_sSup_2)
+        sSup_2.add(sup_sSup_2)
+        sSup_2.add(sup_sSup_2)
+        
+        e_2.add(sSup_2)
+        
+        delimiter.add(e_1)
+        delimiter.add(e_2)
+        
+        output = render_output(delimiter)
+        
+        #TODO : the output should not be empty
+        assert_that(output,
+                    is_(u''))
+        

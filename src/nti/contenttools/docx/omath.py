@@ -42,7 +42,7 @@ class OMathRun(types.OMathRun):
                 if element.text:
                     me.add_child(types.TextNode(element.text, type_text='omath'))
             elif element.tag == rpr_el:
-                pass
+                pass 
             elif element.tag == rpr_el_m:
                 pass
             elif element.tag in IGNORED_TAGS:
@@ -50,7 +50,6 @@ class OMathRun(types.OMathRun):
             else:
                 logger.warn('Unhandled <m:r> element %s', element.tag)
         return me
-
 
 class OMathFrac(types.OMathFrac):
 
