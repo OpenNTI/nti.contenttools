@@ -36,13 +36,14 @@ def search_node(provided, root):
     return true if there is node providing the given interface 'provided' 
     otherwise return false
     """
-    found = False
-    for node in root:
-        if provided.providedBy(node):
-            return True
-        else:
+    if provided.providedBy(root):
+        return True
+    else:
+        for node in root:
             found = search_node(provided, node)
-    return found
+            if found:
+                return found
+    return False
 
 
 def get_variant_field_string_value(field):

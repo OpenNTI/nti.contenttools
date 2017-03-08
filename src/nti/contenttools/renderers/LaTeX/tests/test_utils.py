@@ -18,6 +18,7 @@ from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_valu
 from nti.contenttools.types.document import Document
 
 from nti.contenttools.types.interfaces import IItem
+from nti.contenttools.types.interfaces import ISection
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IOrderedList
 from nti.contenttools.types.interfaces import IOMathMatrix
@@ -73,18 +74,28 @@ class TestUtils(ContentToolsTestCase):
         
     def test_search_node_2(self):
         root = Document()
+        
         section_1 = Section()
         omath_matrix = OMathMatrix()
+        run = OMathRun()
         section_1.add(omath_matrix)
+        section_1.add(run)
+        
         section_2 = Section()
         list_1 = OrderedList()
         section_2.add(list_1)
+        
         root.add(section_1)
         root.add(section_2)
+        
+        result_section = search_node(ISection, root)
+        assert_that(result_section, is_(True))
         result_list = search_node(IOrderedList, root)
         assert_that(result_list, is_(True))
         result_matrix = search_node(IOMathMatrix, root)
-        #assert_that(result_matrix, is_(True))
+        assert_that(result_matrix, is_(True))
+        result_run = search_node(IOMathRun, root)
+        assert_that(result_run, is_(True))
         
     def test_search_node_3(self):
         delimiter = OMathDelimiter()
