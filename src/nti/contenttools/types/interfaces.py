@@ -737,9 +737,8 @@ class IOMath(IDocumentStructureNode):
 
 class IOMathRun(IDocumentStructureNode):
     """
-    Run type node for ooxml element
+    Node for ooxml element <m:r>
     """
-
 
 class IOMathFrac(IDocumentStructureNode):
 
