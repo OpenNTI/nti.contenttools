@@ -18,8 +18,12 @@ from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_valu
 from nti.contenttools.types.document import Document
 
 from nti.contenttools.types.interfaces import IItem
+from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IOrderedList
 from nti.contenttools.types.interfaces import IOMathMatrix
+from nti.contenttools.types.interfaces import IOMathDPr
+from nti.contenttools.types.interfaces import IOMathBase
+from nti.contenttools.types.interfaces import IOMathRun
 
 from nti.contenttools.types.lists import Item
 from nti.contenttools.types.lists import OrderedList
@@ -31,6 +35,10 @@ from nti.contenttools.types.text import TextNode
 from nti.contenttools.types.sectioning import Section
 
 from nti.contenttools.types.omath import OMathMatrix
+from nti.contenttools.types.omath import OMathDelimiter
+from nti.contenttools.types.omath import OMathDPr
+from nti.contenttools.types.omath import OMathBase
+from nti.contenttools.types.omath import OMathRun
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -63,7 +71,7 @@ class TestUtils(ContentToolsTestCase):
         result = search_node(IItem, root)
         assert_that(result, is_(False))
         
-    def test_search_node_omatrix(self):
+    def test_search_node_2(self):
         root = Document()
         section_1 = Section()
         omath_matrix = OMathMatrix()
@@ -75,8 +83,35 @@ class TestUtils(ContentToolsTestCase):
         root.add(section_2)
         result_list = search_node(IOrderedList, root)
         assert_that(result_list, is_(True))
-        result = search_node(IOMathMatrix, root)
-        #assert_that(result, is_(True))
+        result_matrix = search_node(IOMathMatrix, root)
+        #assert_that(result_matrix, is_(True))
+        
+    def test_search_node_3(self):
+        delimiter = OMathDelimiter()
+        
+        dPr = OMathDPr()
+        dPr.begChr = u'['
+        dPr.endChr = u']'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'a+b'))
+        e.add(run)
+        
+        delimiter.add(dPr)
+        delimiter.add(e)
+        
+        result_dPr = search_node(IOMathDPr, delimiter)
+        assert_that(result_dPr, is_(True))
+        
+        result_base = search_node(IOMathBase, delimiter)
+        assert_that(result_base, is_(True))
+        
+        result_run = search_node(IOMathRun, delimiter)
+        assert_that(result_run, is_(True))
+        
+        result_text = search_node(ITextNode, delimiter)
+        assert_that(result_text, is_(True))
 
     def test_get_variant_field_string_value(self):
         node = Figure()
