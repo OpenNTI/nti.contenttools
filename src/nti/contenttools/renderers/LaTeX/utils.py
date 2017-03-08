@@ -32,7 +32,7 @@ def create_label(name, value):
 
 def search_node(provided, root):
     """
-    traverse nodes under the root
+    traverse nodes to look for a particular interface (provided)
     return true if there is node providing the given interface 'provided' 
     otherwise return false
     """

@@ -19,6 +19,7 @@ from nti.contenttools.types.document import Document
 
 from nti.contenttools.types.interfaces import IItem
 from nti.contenttools.types.interfaces import ISection
+from nti.contenttools.types.interfaces import IDocument
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IOrderedList
 from nti.contenttools.types.interfaces import IOMathMatrix
@@ -88,6 +89,8 @@ class TestUtils(ContentToolsTestCase):
         root.add(section_1)
         root.add(section_2)
         
+        result_doc = search_node(IDocument, root)
+        assert_that(result_doc, is_(True))
         result_section = search_node(ISection, root)
         assert_that(result_section, is_(True))
         result_list = search_node(IOrderedList, root)
