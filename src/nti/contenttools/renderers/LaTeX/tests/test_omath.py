@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from docutils.nodes import superscript
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -17,6 +16,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.omath import OMath
 from nti.contenttools.types.omath import OMathMr
+from nti.contenttools.types.omath import OMathDPr
 from nti.contenttools.types.omath import OMathRun
 from nti.contenttools.types.omath import OMathSub
 from nti.contenttools.types.omath import OMathSup
@@ -30,12 +30,11 @@ from nti.contenttools.types.omath import OMathMatrix
 from nti.contenttools.types.omath import OMathSubSup
 from nti.contenttools.types.omath import OMathDegree
 from nti.contenttools.types.omath import OMathRadical
+from nti.contenttools.types.omath import OMathDelimiter
 from nti.contenttools.types.omath import OMathNumerator
 from nti.contenttools.types.omath import OMathSubscript
 from nti.contenttools.types.omath import OMathSuperscript
 from nti.contenttools.types.omath import OMathDenominator
-from nti.contenttools.types.omath import OMathDelimiter
-from nti.contenttools.types.omath import OMathDPr
 
 from nti.contenttools.types.text import TextNode
 
@@ -967,16 +966,15 @@ class OMathTest(ContentToolsTestCase):
         sup_sSup_2.add(r_sup_sSup_2)
         sSup_2.add(sup_sSup_2)
         e_2.add(sSup_2)
-        
+
         delimiter.add(e_1)
         delimiter.add(e_2)
-        
+
         output = render_output(delimiter)
-        
+
         assert_that(output,
                     is_(u'{x}^{2}{y}^{2}'))
-    
-    
+
     def test_omath_delimiter_with_dPr(self):
         """
 #===============================================================================
@@ -994,21 +992,21 @@ class OMathTest(ContentToolsTestCase):
 #===============================================================================
         """
         delimiter = OMathDelimiter()
-        
+
         dPr = OMathDPr()
         dPr.begChr = u'['
         dPr.endChr = u']'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'a+b'))
         e.add(run)
-        
+
         delimiter.add(dPr)
         delimiter.add(e)
-        
-        #TODO ega: troubleshoot why line 1011 causes error
+
+        # TODO ega: troubleshoot why line 1011 causes error
         #output = render_output(delimiter)
-        
-        #assert_that(output,
+
+        # assert_that(output,
         #            is_(u'a+b'))
