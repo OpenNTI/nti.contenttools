@@ -35,6 +35,7 @@ from nti.contenttools.types.omath import OMathSubscript
 from nti.contenttools.types.omath import OMathSuperscript
 from nti.contenttools.types.omath import OMathDenominator
 from nti.contenttools.types.omath import OMathDelimiter
+from nti.contenttools.types.omath import OMathDPr
 
 from nti.contenttools.types.text import TextNode
 
@@ -974,4 +975,39 @@ class OMathTest(ContentToolsTestCase):
         
         assert_that(output,
                     is_(u'{x}^{2}{y}^{2}'))
+    
+    
+    def test_omath_delimiter_with_dPr(self):
+        """
+#===============================================================================
+# <m:d>
+#   <m:dPr>
+#     <m:begChr m:val="["/>
+#     <m:endChr m:val="]"/>
+#   </m:dPr>
+#   <m:e>
+#     <m:r>
+#       <m:t>a+b</m:t>
+#     </m:r>
+#   </m:e>
+# </m:d>
+#===============================================================================
+        """
+        delimiter = OMathDelimiter()
         
+        dPr = OMathDPr()
+        dPr.begChr = u'['
+        dPr.endChr = u']'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'a+b'))
+        e.add(run)
+        
+        delimiter.add(dPr)
+        delimiter.add(e)
+        
+        output = render_output(delimiter)
+        
+        assert_that(output,
+                    is_(u'a+b'))
