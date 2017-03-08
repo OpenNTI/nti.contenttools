@@ -949,8 +949,6 @@ class OMathTest(ContentToolsTestCase):
         r_sup_sSup_1.add(TextNode(u'2'))
         sup_sSup_1.add(r_sup_sSup_1)
         sSup_1.add(sup_sSup_1)
-        sSup_1.add(sup_sSup_1)
-        
         e_1.add(sSup_1)
 
         e_2 = OMathBase()
@@ -967,8 +965,6 @@ class OMathTest(ContentToolsTestCase):
         r_sup_sSup_2.add(TextNode(u'2'))
         sup_sSup_2.add(r_sup_sSup_2)
         sSup_2.add(sup_sSup_2)
-        sSup_2.add(sup_sSup_2)
-        
         e_2.add(sSup_2)
         
         delimiter.add(e_1)
@@ -976,7 +972,6 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(delimiter)
         
-        #TODO : the output should not be empty
         assert_that(output,
-                    is_(u''))
+                    is_(u'{x}^{2}{y}^{2}'))
         
