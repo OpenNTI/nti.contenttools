@@ -1009,3 +1009,85 @@ class OMathTest(ContentToolsTestCase):
         
         assert_that(output,
                     is_(u'[a+b]'))
+    
+        
+    def test_omath_delimiter_with_bmatrix(self):
+        delimiter = OMathDelimiter()
+
+        dPr = OMathDPr()
+        dPr.begChr = u'['
+        dPr.endChr = u']'
+        
+        e = OMathBase()
+        run = OMathRun()
+        matrix = OMathMatrix()
+
+        mr_1 = OMathMr()
+        base_1_1 = OMathBase()
+        base_1_1.add(TextNode(u'A'))
+        base_1_2 = OMathBase()
+        base_1_2.add(TextNode(u'B'))
+        mr_1.add(base_1_1)
+        mr_1.add(base_1_2)
+
+        mr_2 = OMathMr()
+        base_2_1 = OMathBase()
+        base_2_1.add(TextNode(u'C'))
+        base_2_2 = OMathBase()
+        base_2_2.add(TextNode(u'D'))
+        mr_2.add(base_2_1)
+        mr_2.add(base_2_2)
+
+        matrix.add(mr_1)
+        matrix.add(mr_2)
+        
+        run.add(matrix)
+        e.add(run)
+        
+        delimiter.add(dPr)
+        delimiter.add(e)
+
+        output = render_output(delimiter)
+        assert_that(output,
+                    is_('\\begin{bmatrix}\nA & B \\\\\nC & D \\\\\n\\end{bmatrix}\n'))
+    
+    
+    def test_omath_delimiter_with_pmatrix(self):
+        delimiter = OMathDelimiter()
+
+        dPr = OMathDPr()
+        dPr.begChr = u'('
+        dPr.endChr = u')'
+        
+        e = OMathBase()
+        run = OMathRun()
+        matrix = OMathMatrix()
+
+        mr_1 = OMathMr()
+        base_1_1 = OMathBase()
+        base_1_1.add(TextNode(u'A'))
+        base_1_2 = OMathBase()
+        base_1_2.add(TextNode(u'B'))
+        mr_1.add(base_1_1)
+        mr_1.add(base_1_2)
+
+        mr_2 = OMathMr()
+        base_2_1 = OMathBase()
+        base_2_1.add(TextNode(u'C'))
+        base_2_2 = OMathBase()
+        base_2_2.add(TextNode(u'D'))
+        mr_2.add(base_2_1)
+        mr_2.add(base_2_2)
+
+        matrix.add(mr_1)
+        matrix.add(mr_2)
+        
+        run.add(matrix)
+        e.add(run)
+        
+        delimiter.add(dPr)
+        delimiter.add(e)
+
+        output = render_output(delimiter)
+        assert_that(output,
+                    is_('\\begin{pmatrix}\nA & B \\\\\nC & D \\\\\n\\end{pmatrix}\n'))
