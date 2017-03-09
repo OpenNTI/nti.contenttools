@@ -41,6 +41,7 @@ from nti.contenttools.types.omath import OMathNumerator
 from nti.contenttools.types.omath import OMathSubscript
 from nti.contenttools.types.omath import OMathSuperscript
 from nti.contenttools.types.omath import OMathDenominator
+from nti.contenttools.types.omath import OMathGroupChr
 
 from nti.contenttools.types.text import TextNode
 
