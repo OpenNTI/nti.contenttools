@@ -424,7 +424,7 @@ class OMathAcc(types.OMathAcc):
                     if el.tag == chr_el:
                         me.set_acc_chr(el.attrib[att_val])
             else:
-                logger.warn('Unhandled <m:bar> element %s', element.tag)
+                logger.warn('Unhandled <m:acc> element %s', element.tag)
         return me
 
 

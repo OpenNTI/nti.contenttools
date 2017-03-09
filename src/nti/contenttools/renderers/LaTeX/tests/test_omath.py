@@ -40,6 +40,7 @@ from nti.contenttools.types.omath import OMathFName
 from nti.contenttools.types.omath import OMathLimLow
 from nti.contenttools.types.omath import OMathLim
 from nti.contenttools.types.omath import OMathBar
+from nti.contenttools.types.omath import OMathAcc
 
 from nti.contenttools.types.text import TextNode
 
@@ -1248,6 +1249,47 @@ class OMathTest(ContentToolsTestCase):
         """
         bar = OMathBar()
         bar.pos = u'top'
+    
+    def test_omath_acc_grave(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u0300'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\grave{x}'))
+        
+    def test_omath_acc_acute(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u0301'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\acute{x}'))
+    
+    def test_omath_acc_hat(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u0302'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\hat{x}'))
+        
+        
         
         
         
