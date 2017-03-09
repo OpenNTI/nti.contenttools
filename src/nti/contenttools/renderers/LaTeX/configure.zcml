@@ -385,4 +385,12 @@
 		 for="nti.contenttools.types.interfaces.IOMathAcc"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+	<adapter factory=".omath.OMathSPreRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathSPre"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathBoxRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathBox"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>

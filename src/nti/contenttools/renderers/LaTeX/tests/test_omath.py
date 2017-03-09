@@ -42,6 +42,8 @@ from nti.contenttools.types.omath import OMathLimUpp
 from nti.contenttools.types.omath import OMathLim
 from nti.contenttools.types.omath import OMathBar
 from nti.contenttools.types.omath import OMathAcc
+from nti.contenttools.types.omath import OMathSPre
+from nti.contenttools.types.omath import OMathBox
 
 from nti.contenttools.types.text import TextNode
 
@@ -1621,3 +1623,82 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(limupp)
         assert_that(output, is_(u'\\overset{n\\rightarrow \\infty }{\\hat{x}}'))
+    
+    def test_omath_spre(self):
+        """
+#===============================================================================
+# <m:sPre>
+#    <m:sPrePr>
+#       <m:ctrlPr>
+#          <w:rPr>...
+#          </w:rPr>
+#       </m:ctrlPr>
+#    </m:sPrePr>
+#    <m:sub>
+#       <m:argPr>
+#          <m:argSz m:val="1"/>
+#       </m:argPr>
+#       <m:acc>
+#          <m:accPr>...
+#          </m:accPr>
+#          <m:e>...
+#          </m:e>
+#       </m:acc>
+#       <m:ctrlPr>
+#          <w:rPr>...
+#          </w:rPr>
+#       </m:ctrlPr>
+#    </m:sub>
+#    <m:sup>
+#       <m:argPr>
+#          <m:argSz m:val="1"/>
+#       </m:argPr>
+#       <m:acc>
+#          <m:accPr>...
+#          </m:accPr>
+#          <m:e>...
+#          </m:e>
+#       </m:acc>
+#       <m:ctrlPr>
+#          <w:rPr>...
+#          </w:rPr>
+#       </m:ctrlPr>
+#    </m:sup>
+#    <m:e>
+#        ...
+#    </m:e>
+# </m:sPre>
+#===============================================================================
+        """
+        spre = OMathSPre()
+        
+        sub = OMathSub()
+        acc_sub = OMathAcc()
+        e_sub = OMathBase()
+        run_sub = OMathRun()
+        run_sub.add(TextNode(u'x', type_text='omath'))
+        e_sub.add(run_sub)
+        acc_sub.add(e_sub)
+        sub.add(acc_sub)
+        spre.add(sub)
+        
+        sup = OMathSup()
+        acc_sup = OMathAcc()
+        e_sup = OMathBase()
+        run_sup = OMathRun()
+        run_sup.add(TextNode(u'y', type_text='omath'))
+        e_sup.add(run_sup)
+        acc_sup.add(e_sup)
+        sup.add(acc_sup)
+        spre.add(sup)
+        
+        e = OMathBase()
+        run_e = OMathRun()
+        run_e.add(TextNode(u'A', type_text='omath'))
+        e.add(run_e)
+        spre.add(e)
+        
+        output = render_output(spre)
+        assert_that(output, is_(u'{^\\hat{x}_\\hat{y}}A'))
+        
+        

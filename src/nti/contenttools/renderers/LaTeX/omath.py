@@ -55,7 +55,8 @@ from nti.contenttools.types.omath import IOMathBar
 from nti.contenttools.types.omath import IOMathLimLow
 from nti.contenttools.types.omath import IOMathLimUpp
 from nti.contenttools.types.omath import IOMathAcc
-
+from nti.contenttools.types.omath import IOMathSPre
+from nti.contenttools.types.omath import IOMathBox
 
 def render_omath(context, node):
     """
@@ -531,6 +532,27 @@ def render_omath_acc(context, node):
         render_command(context, u'hat', node)
     return node
 
+def render_omath_spre(context, node):
+    """
+    render <m:sPre>
+    """
+    if node.children:
+        if len(node.children) == 3:
+            context.write(u'{^')
+            render_node(context, node.children[0])
+            context.write(u'_')
+            render_node(context, node.children[1])
+            context.write(u'}')
+            render_node(context, node.children[2])
+        else:
+            logger.warn('Unhandled <m:sPre> render, number of children = %s', node.children)
+    return node
+
+def render_omath_box(context, node):
+    """
+    render <m:box>
+    """
+    return render_children(context, node)
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -683,3 +705,11 @@ class OMathAccRenderer(RendererMixin):
 @component.adapter(IOMathLimUpp)
 class OMathLimUppRenderer(RendererMixin):
     func = staticmethod(render_omath_lim_upp)
+    
+@component.adapter(IOMathSPre)
+class OMathSPreRenderer(RendererMixin):
+    func = staticmethod(render_omath_spre)
+
+@component.adapter(IOMathBox)
+class OMathBoxRenderer(RendererMixin):
+    func = staticmethod(render_omath_box)
