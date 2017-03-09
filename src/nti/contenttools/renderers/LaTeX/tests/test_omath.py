@@ -1288,7 +1288,84 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(acc)
         assert_that(output, is_(u'\\hat{x}'))
+    
+    def test_omath_acc_tilde(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u0303'
         
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\tilde{x}'))
+    
+    def test_omath_acc_bar(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u0304'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\bar{x}'))
+    
+    def test_omath_acc_breve(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u0306'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\breve{x}'))
+    
+    def test_omath_acc_dot(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u0307'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\dot{x}'))
+    
+    def test_omath_acc_ddot(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u0308'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\ddot{x}'))
+        
+    def test_omath_acc_check(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u030C'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\check{x}'))
         
         
         
