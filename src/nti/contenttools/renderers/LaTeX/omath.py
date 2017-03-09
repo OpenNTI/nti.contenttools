@@ -462,6 +462,53 @@ def render_omath_bar(context, node):
         return render_command(context, u'overline', node)
     else:
         return render_command(context, u'underline', node)
+
+def render_omath_acc_rendered(context, node):
+    """
+    render <m:acc>
+    """
+    if node.accChr:
+        accChr = node.accChr
+        if accChr == u'\u0300': 
+            render_command(context, u'grave', node)
+        elif accChr == u'\u0301': 
+            render_command(context, u'acute', node)
+        elif accChr == u'\u0302': 
+            render_command(context, u'hat', node)
+        elif accChr == u'\u0303': 
+            render_command(context, u'tilde', node)
+        elif accChr == u'\u0304':
+            render_command(context, u'bar', node)
+        elif accChr == u'\u0306':
+            render_command(context, u'breve', node)
+        elif accChr == u'\u0307':
+            render_command(context, u'dot', node)
+        elif accChr == u'\u0308':
+            render_command(context, u'ddot', node)
+        elif accChr == u'\u030C':
+            render_command(context, u'check', node)
+        elif accChr == u'\u2190' or accChr == u'\u20d6':
+            render_command(context, u'overleftarrow', node)
+        elif accChr == u'\u2192' or accChr == u'\u20d7':
+            render_command(context, u'overrightarrow', node)
+        elif accChr == u'\u20e1':
+            render_command(context, u'overleftrightarrow', node)
+        elif accChr == u'\u20d0':
+            context.write(u'\\overset{\\leftharpoonup}{')
+            render_children(context, node)
+            context.write(u'}')
+        elif accChr == u'\u20d1':
+            context.write(u'\\overset{\\rightharpoonup}{')
+            render_children(context, node)
+            context.write(u'}')
+        elif accChr == u'\u0305':
+            render_command(context, u'overline', node)
+        else:
+            logger.warn('Unhandled accent unicode render')
+            
+    else:
+        render_command(context, u'hat', node)
+    return node
         
 
 @interface.implementer(IRenderer)

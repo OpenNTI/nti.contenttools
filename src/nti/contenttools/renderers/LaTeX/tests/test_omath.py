@@ -39,6 +39,7 @@ from nti.contenttools.types.omath import OMathFunc
 from nti.contenttools.types.omath import OMathFName
 from nti.contenttools.types.omath import OMathLimLow
 from nti.contenttools.types.omath import OMathLim
+from nti.contenttools.types.omath import OMathBar
 
 from nti.contenttools.types.text import TextNode
 
@@ -1215,4 +1216,38 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(limlow)
         assert_that(output, is_(u'\\underset{n\\rightarrow \\infty }{lim}'))
+        
+    def test_omath_bar(self):
+        """
+#===============================================================================
+# <m:bar>
+#    <m:barPr>
+#       <m:pos m:val="top"/>
+#       <m:ctrlPr>
+#          <w:rPr>...
+#          </w:rPr>
+#       </m:ctrlPr>
+#    </m:barPr>
+#    <m:e>
+#       <m:argPr>
+#          <m:argSz m:val="1"/>
+#       </m:argPr>
+#       <m:acc>
+#          <m:accPr>...
+#          </m:accPr>
+#          <m:e>...
+#          </m:e>
+#       </m:acc>
+#       <m:ctrlPr>
+#          <w:rPr>...
+#          </w:rPr>
+#       </m:ctrlPr>
+#    </m:e>
+# </m:bar>
+#===============================================================================
+        """
+        bar = OMathBar()
+        bar.pos = u'top'
+        
+        
         
