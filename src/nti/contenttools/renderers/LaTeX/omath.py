@@ -55,6 +55,7 @@ from nti.contenttools.types.omath import IOMathBar
 from nti.contenttools.types.omath import IOMathLimLow
 from nti.contenttools.types.omath import IOMathAcc
 
+
 def render_omath(context, node):
     """
     render <m:OMath> element
@@ -306,15 +307,18 @@ def render_omath_delimiter(context, node):
                     render_iterable(context, node.children[1:num_of_children])
                     context.write(u')')
             elif node.children[0].begChr:
-                field = {'begChr' : node.children[0].begChr,
-                         'endChr' : node.children[0].endChr}
+                field = {'begChr': node.children[0].begChr,
+                         'endChr': node.children[0].endChr}
                 found_matrix = search_and_update_node_property(IOMathMatrix, node, field)
                 if found_matrix:
                     render_iterable(context, node.children[1:num_of_children])
                 else:
-                    field = {'begBorder' : node.children[0].begChr,
-                             'endBorder' : node.children[0].endChr}
-                    found_eq_arr = search_and_update_node_property(IOMathEqArr, node, field)
+                    field = {'begBorder': node.children[0].begChr,
+                             'endBorder': node.children[0].endChr}
+                    found_eq_arr = search_and_update_node_property(
+                        IOMathEqArr,
+                        node,
+                        field)
                     if found_eq_arr:
                         render_iterable(context, node.children[1:num_of_children])
                     else:
@@ -328,6 +332,7 @@ def render_omath_delimiter(context, node):
         else:
             render_children(context, node)
     return node
+
 
 def render_omath_dpr(context, node):
     """
@@ -409,11 +414,13 @@ def render_array(context, node, string_col):
     context.write(u'\n\\end{array}')
     return node
 
+
 def render_omath_func(context, node):
     """
     render <m:func>
     """
     return render_children(context, node)
+
 
 def render_omath_fname(context, node):
     """
@@ -421,11 +428,13 @@ def render_omath_fname(context, node):
     """
     return render_children(context, node)
 
+
 def render_omath_lim(context, node):
     """
     render <m:lim>
     """
     return render_children(context, node)
+
 
 def render_omath_lim_low(context, node):
     """
@@ -445,6 +454,7 @@ def render_omath_lim_low(context, node):
         render_underset(context, node)
     return node
 
+
 def render_underset(context, node):
     children_num = len(node.children)
     context.write(u'\\underset{')
@@ -453,6 +463,7 @@ def render_underset(context, node):
     render_node(context, node.children[0])
     context.write(u'}')
     return node
+
 
 def render_omath_bar(context, node):
     """
@@ -463,19 +474,20 @@ def render_omath_bar(context, node):
     else:
         return render_command(context, u'underline', node)
 
+
 def render_omath_acc(context, node):
     """
     render <m:acc>
     """
     if node.accChr:
         accChr = node.accChr
-        if accChr == u'\u0300': 
+        if accChr == u'\u0300':
             render_command(context, u'grave', node)
-        elif accChr == u'\u0301': 
+        elif accChr == u'\u0301':
             render_command(context, u'acute', node)
-        elif accChr == u'\u0302': 
+        elif accChr == u'\u0302':
             render_command(context, u'hat', node)
-        elif accChr == u'\u0303': 
+        elif accChr == u'\u0303':
             render_command(context, u'tilde', node)
         elif accChr == u'\u0304':
             render_command(context, u'bar', node)
@@ -505,11 +517,11 @@ def render_omath_acc(context, node):
             render_command(context, u'overline', node)
         else:
             logger.warn('Unhandled accent unicode render')
-            
+
     else:
         render_command(context, u'hat', node)
     return node
-        
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -628,26 +640,32 @@ class OMathMrRenderer(RendererMixin):
 @component.adapter(IOMathEqArr)
 class OMathEqArrRenderer(RendererMixin):
     func = staticmethod(render_omath_eqarr)
-    
+
+
 @component.adapter(IOMathFunc)
 class OMathFuncRenderer(RendererMixin):
     func = staticmethod(render_omath_func)
+
 
 @component.adapter(IOMathFName)
 class OMathFNameRenderer(RendererMixin):
     func = staticmethod(render_omath_fname)
 
+
 @component.adapter(IOMathLimLow)
 class OMathLimLowRenderer(RendererMixin):
     func = staticmethod(render_omath_lim_low)
-    
+
+
 @component.adapter(IOMathLim)
 class OMathLimRenderer(RendererMixin):
     func = staticmethod(render_omath_lim)
 
+
 @component.adapter(IOMathBar)
 class OMathBarRenderer(RendererMixin):
     func = staticmethod(render_omath_bar)
+
 
 @component.adapter(IOMathAcc)
 class OMathAccRenderer(RendererMixin):

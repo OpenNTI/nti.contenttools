@@ -1012,18 +1012,17 @@ class OMathTest(ContentToolsTestCase):
         delimiter.add(e)
 
         output = render_output(delimiter)
-        
+
         assert_that(output,
                     is_(u'[a+b]'))
-    
-        
+
     def test_omath_delimiter_with_bmatrix(self):
         delimiter = OMathDelimiter()
 
         dPr = OMathDPr()
         dPr.begChr = u'['
         dPr.endChr = u']'
-        
+
         e = OMathBase()
         run = OMathRun()
         matrix = OMathMatrix()
@@ -1046,25 +1045,24 @@ class OMathTest(ContentToolsTestCase):
 
         matrix.add(mr_1)
         matrix.add(mr_2)
-        
+
         run.add(matrix)
         e.add(run)
-        
+
         delimiter.add(dPr)
         delimiter.add(e)
 
         output = render_output(delimiter)
         assert_that(output,
                     is_('\\begin{bmatrix}\nA & B \\\\\nC & D \\\\\n\\end{bmatrix}\n'))
-    
-    
+
     def test_omath_delimiter_with_pmatrix(self):
         delimiter = OMathDelimiter()
 
         dPr = OMathDPr()
         dPr.begChr = u'('
         dPr.endChr = u')'
-        
+
         e = OMathBase()
         run = OMathRun()
         matrix = OMathMatrix()
@@ -1087,24 +1085,24 @@ class OMathTest(ContentToolsTestCase):
 
         matrix.add(mr_1)
         matrix.add(mr_2)
-        
+
         run.add(matrix)
         e.add(run)
-        
+
         delimiter.add(dPr)
         delimiter.add(e)
 
         output = render_output(delimiter)
         assert_that(output,
                     is_('\\begin{pmatrix}\nA & B \\\\\nC & D \\\\\n\\end{pmatrix}\n'))
-    
+
     def test_omath_delimiter_with_matrix(self):
         delimiter = OMathDelimiter()
 
         dPr = OMathDPr()
         dPr.begChr = u'{'
         dPr.endChr = u'}'
-        
+
         e = OMathBase()
         run = OMathRun()
         matrix = OMathMatrix()
@@ -1127,22 +1125,22 @@ class OMathTest(ContentToolsTestCase):
 
         matrix.add(mr_1)
         matrix.add(mr_2)
-        
+
         run.add(matrix)
         e.add(run)
-        
+
         delimiter.add(dPr)
         delimiter.add(e)
 
         output = render_output(delimiter)
         assert_that(output,
                     is_('\\begin{matrix}\nA & B \\\\\nC & D \\\\\n\\end{matrix}\n'))
-    
+
     def test_omath_delimiter_with_fraction_no_bar(self):
         delimiter = OMathDelimiter()
         dPr = OMathDPr()
         delimiter.add(dPr)
-        
+
         e = OMathBase()
         run = OMathRun()
         numerator = OMathNumerator()
@@ -1157,28 +1155,28 @@ class OMathTest(ContentToolsTestCase):
         frac.frac_type = u'noBar'
         frac.add(numerator)
         frac.add(denominator)
-        
+
         run.add(frac)
         e.add(run)
         delimiter.add(e)
-        
+
         output = render_output(delimiter)
         assert_that(output, is_(u'{3 \\choose 4}'))
-        
+
     def test_omath_delimiter_with_no_begChr(self):
         delimiter = OMathDelimiter()
         dPr = OMathDPr()
         delimiter.add(dPr)
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x+y'))
         e.add(run)
         delimiter.add(e)
-        
+
         output = render_output(delimiter)
         assert_that(output, is_(u'(x+y)'))
-    
+
     def test_omath_lim_low(self):
         """
 #===============================================================================
@@ -1192,7 +1190,7 @@ class OMathTest(ContentToolsTestCase):
 #       <m:t>lim</m:t>
 #     </m:r>
 #   </m:e>
-# 
+#
 #   <m:lim>
 #     <m:r>
 #       <m:t>n&#8594;&#8734;</m:t>
@@ -1202,22 +1200,22 @@ class OMathTest(ContentToolsTestCase):
 #===============================================================================
         """
         limlow = OMathLimLow()
-        
+
         e = OMathBase()
         run_e = OMathRun()
-        run_e.add(TextNode(u'lim',type_text='omath'))
+        run_e.add(TextNode(u'lim', type_text='omath'))
         e.add(run_e)
         limlow.add(e)
-        
+
         lim = OMathLim()
         run_lim = OMathRun()
         run_lim.add(TextNode(u'n\u2192\u221E', type_text='omath'))
         lim.add(run_lim)
         limlow.add(lim)
-        
+
         output = render_output(limlow)
         assert_that(output, is_(u'\\underset{n\\rightarrow \\infty }{lim}'))
-        
+
     def test_omath_bar(self):
         """
 #===============================================================================
@@ -1249,269 +1247,269 @@ class OMathTest(ContentToolsTestCase):
         """
         bar = OMathBar()
         bar.pos = u'top'
-    
+
     def test_omath_acc_grave(self):
         acc = OMathAcc()
         acc.accChr = u'\u0300'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\grave{x}'))
-        
+
     def test_omath_acc_acute(self):
         acc = OMathAcc()
         acc.accChr = u'\u0301'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\acute{x}'))
-    
+
     def test_omath_acc_hat(self):
         acc = OMathAcc()
         acc.accChr = u'\u0302'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\hat{x}'))
-    
+
     def test_omath_acc_tilde(self):
         acc = OMathAcc()
         acc.accChr = u'\u0303'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\tilde{x}'))
-    
+
     def test_omath_acc_bar(self):
         acc = OMathAcc()
         acc.accChr = u'\u0304'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\bar{x}'))
-    
+
     def test_omath_acc_breve(self):
         acc = OMathAcc()
         acc.accChr = u'\u0306'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\breve{x}'))
-    
+
     def test_omath_acc_dot(self):
         acc = OMathAcc()
         acc.accChr = u'\u0307'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\dot{x}'))
-    
+
     def test_omath_acc_ddot(self):
         acc = OMathAcc()
         acc.accChr = u'\u0308'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\ddot{x}'))
-        
+
     def test_omath_acc_check(self):
         acc = OMathAcc()
         acc.accChr = u'\u030C'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\check{x}'))
-    
+
     def test_omath_acc_over_left_arrow_1(self):
         acc = OMathAcc()
         acc.accChr = u'\u2190'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\overleftarrow{x}'))
-    
+
     def test_omath_acc_over_left_arrow_2(self):
         acc = OMathAcc()
         acc.accChr = u'\u20d6'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\overleftarrow{x}'))
-        
+
     def test_omath_acc_over_right_arrow_1(self):
         acc = OMathAcc()
         acc.accChr = u'\u2192'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\overrightarrow{x}'))
-        
+
     def test_omath_acc_over_right_arrow_2(self):
         acc = OMathAcc()
         acc.accChr = u'\u20d7'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\overrightarrow{x}'))
-    
+
     def test_omath_acc_over_lef_right_arrow(self):
         acc = OMathAcc()
         acc.accChr = u'\u20e1'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\overleftrightarrow{x}'))
-        
+
     def test_omath_acc_over_set_right(self):
         acc = OMathAcc()
         acc.accChr = u'\u20d1'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\overset{\\rightharpoonup}{x}'))
-    
+
     def test_omath_acc_over_set_left(self):
         acc = OMathAcc()
         acc.accChr = u'\u20d0'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\overset{\\leftharpoonup}{x}'))
-    
+
     def test_omath_acc_overline(self):
         acc = OMathAcc()
         acc.accChr = u'\u0305'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\overline{x}'))
-    
+
     def test_omath_acc_hat_default(self):
         acc = OMathAcc()
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         output = render_output(acc)
         assert_that(output, is_(u'\\hat{x}'))
-    
+
     def test_omath_acc_overline_under_omath(self):
         omath = OMath()
-        
+
         acc = OMathAcc()
         acc.accChr = u'\u0305'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         omath.add(acc)
         output = render_output(omath)
         assert_that(output, is_(u'$\\overline{x}$'))
-    
+
     def test_omath_acc_overline_under_omath_para(self):
         omath = OMath()
         omath_para = OMathPara()
-        
+
         acc = OMathAcc()
         acc.accChr = u'\u0305'
-        
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
         acc.add(e)
-        
+
         omath_para.add(acc)
         omath.add(omath_para)
         output = render_output(omath)
