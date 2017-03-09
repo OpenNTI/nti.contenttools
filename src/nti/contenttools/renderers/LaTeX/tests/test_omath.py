@@ -38,6 +38,7 @@ from nti.contenttools.types.omath import OMathDenominator
 from nti.contenttools.types.omath import OMathFunc
 from nti.contenttools.types.omath import OMathFName
 from nti.contenttools.types.omath import OMathLimLow
+from nti.contenttools.types.omath import OMathLim
 
 from nti.contenttools.types.text import TextNode
 
@@ -1199,3 +1200,19 @@ class OMathTest(ContentToolsTestCase):
 #===============================================================================
         """
         limlow = OMathLimLow()
+        
+        e = OMathBase()
+        run_e = OMathRun()
+        run_e.add(TextNode(u'lim',type_text='omath'))
+        e.add(run_e)
+        limlow.add(e)
+        
+        lim = OMathLim()
+        run_lim = OMathRun()
+        run_lim.add(TextNode(u'n\u2192\u221E', type_text='omath'))
+        lim.add(run_lim)
+        limlow.add(lim)
+        
+        output = render_output(limlow)
+        assert_that(output, is_(u'\\underset{n\\rightarrow \\infty }{lim}'))
+        
