@@ -47,6 +47,9 @@ from nti.contenttools.types.omath import IOMathNumerator
 from nti.contenttools.types.omath import IOMathSubscript
 from nti.contenttools.types.omath import IOMathSuperscript
 from nti.contenttools.types.omath import IOMathDenominator
+from nti.contenttools.types.omath import IOMathFunc
+from nti.contenttools.types.omath import IOMathFName
+from nti.contenttools.types.omath import IOMathLimLow
 
 
 def render_omath(context, node):
@@ -403,6 +406,44 @@ def render_array(context, node, string_col):
     context.write(u'\n\\end{array}')
     return node
 
+def render_omath_func(context, node):
+    """
+    render <m:func>
+    """
+    return render_children(context, node)
+
+def render_omath_fname(context, node):
+    """
+    render <m:fName>
+    """
+    return render_children(context, node)
+
+def render_omath_lim_low(context, node):
+    """
+    render <m:limlow>
+    """
+    if node.__parent__:
+        if IOMathFName.providedBy(node.__parent__):
+            context.write(u'\\')
+            render_node(context, node.children[0])
+            context.write(u'_{')
+            children_num = len(node.children)
+            render_iterable(context, node.children[1:children_num])
+            context.write(u'}')
+        else:
+            render_underset(context, node)
+    else:
+        render_underset(context, node)
+    return node
+
+def render_underset(context, node):
+    children_num = len(node.children)
+    context.write(u'\\underset{')
+    render_iterable(context, node.children[1:children_num])
+    context.write(u'}{')
+    render_node(context, node.children[0])
+    context.write(u'}')
+    return node
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
