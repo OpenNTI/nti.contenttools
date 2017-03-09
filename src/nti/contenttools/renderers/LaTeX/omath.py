@@ -18,6 +18,7 @@ from nti.contenttools.renderers.LaTeX.base import render_node
 from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_iterable
+from nti.contenttools.renderers.LaTeX.base import render_command
 
 from nti.contenttools.renderers.LaTeX.utils import search_and_update_node_property
 from nti.contenttools.renderers.LaTeX.utils import search_node
@@ -50,6 +51,7 @@ from nti.contenttools.types.omath import IOMathDenominator
 from nti.contenttools.types.omath import IOMathFunc
 from nti.contenttools.types.omath import IOMathFName
 from nti.contenttools.types.omath import IOMathLim
+from nti.contenttools.types.omath import IOMathBar
 from nti.contenttools.types.omath import IOMathLimLow
 
 
@@ -452,6 +454,16 @@ def render_underset(context, node):
     context.write(u'}')
     return node
 
+def render_omath_bar(context, node):
+    """
+    render <m:bar>
+    """
+    if node.pos == u'top':
+        return render_command(context, u'overline', node)
+    else:
+        return render_command(context, u'underline', node)
+        
+
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -585,3 +597,7 @@ class OMathLimLowRenderer(RendererMixin):
 @component.adapter(IOMathLim)
 class OMathLimRenderer(RendererMixin):
     func = staticmethod(render_omath_lim)
+
+@component.adapter(IOMathBar)
+class OMathBarRenderer(RendererMixin):
+    func = staticmethod(render_omath_bar)
