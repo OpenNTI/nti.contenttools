@@ -1772,4 +1772,27 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(group_chr)
         assert_that(output, is_(u'\\overbrace{\\hat{x} - y + z}'))
+    
+    def test_omath_groupChr_pos_bottom(self):
+        group_chr = OMathGroupChr()
+        group_chr.pos = u'bot'
+        group_chr.groupChr = u'\u23df'
+        
+        e = OMathBase()
+        acc = OMathAcc()
+        e_acc = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e_acc.add(run)
+        acc.add(e_acc)
+        e.add(acc)
+        
+        run_e = OMathBase()
+        run_e.add(TextNode(u' - y + z', type_text='omath'))
+        e.add(run_e)
+        
+        group_chr.add(e)
+        
+        output = render_output(group_chr)
+        assert_that(output, is_(u'\\underbrace{\\hat{x} - y + z}'))
         
