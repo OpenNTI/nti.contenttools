@@ -35,6 +35,9 @@ from nti.contenttools.types.omath import OMathNumerator
 from nti.contenttools.types.omath import OMathSubscript
 from nti.contenttools.types.omath import OMathSuperscript
 from nti.contenttools.types.omath import OMathDenominator
+from nti.contenttools.types.omath import OMathFunc
+from nti.contenttools.types.omath import OMathFName
+from nti.contenttools.types.omath import OMathLimLow
 
 from nti.contenttools.types.text import TextNode
 
@@ -1172,3 +1175,27 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(delimiter)
         assert_that(output, is_(u'(x+y)'))
+    
+    def test_omath_lim_low(self):
+        """
+#===============================================================================
+# <m:limLow>
+#   <m:e>
+#     <m:r>
+#       <m:rPr>
+#         <m:scr m:val="roman"/>
+#         <m:sty  m:val="p"/>
+#       </m:rPr>
+#       <m:t>lim</m:t>
+#     </m:r>
+#   </m:e>
+# 
+#   <m:lim>
+#     <m:r>
+#       <m:t>n&#8594;&#8734;</m:t>
+#     </m:r>
+#   </m:lim>
+# </m:limLow>
+#===============================================================================
+        """
+        limlow = OMathLimLow()

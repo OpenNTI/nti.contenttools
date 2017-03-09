@@ -365,6 +365,10 @@
 		 for="nti.contenttools.types.interfaces.IOMathFName"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+	<adapter factory=".omath.OMathLimRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathLim"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 	<adapter factory=".omath.OMathLimLowRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathLimLow"
 		 provides="..interfaces.IRenderer"

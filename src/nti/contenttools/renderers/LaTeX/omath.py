@@ -49,6 +49,7 @@ from nti.contenttools.types.omath import IOMathSuperscript
 from nti.contenttools.types.omath import IOMathDenominator
 from nti.contenttools.types.omath import IOMathFunc
 from nti.contenttools.types.omath import IOMathFName
+from nti.contenttools.types.omath import IOMathLim
 from nti.contenttools.types.omath import IOMathLimLow
 
 
@@ -418,6 +419,12 @@ def render_omath_fname(context, node):
     """
     return render_children(context, node)
 
+def render_omath_lim(context, node):
+    """
+    render <m:lim>
+    """
+    return render_children(context, node)
+
 def render_omath_lim_low(context, node):
     """
     render <m:limlow>
@@ -574,3 +581,7 @@ class OMathFNameRenderer(RendererMixin):
 @component.adapter(IOMathLimLow)
 class OMathLimLowRenderer(RendererMixin):
     func = staticmethod(render_omath_lim_low)
+    
+@component.adapter(IOMathLim)
+class OMathLimRenderer(RendererMixin):
+    func = staticmethod(render_omath_lim)
