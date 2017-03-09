@@ -1005,7 +1005,6 @@ class OMathTest(ContentToolsTestCase):
         delimiter.add(dPr)
         delimiter.add(e)
 
-        # TODO ega: troubleshoot why line 1011 causes error
         output = render_output(delimiter)
         
         assert_that(output,
