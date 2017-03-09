@@ -1482,3 +1482,37 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(acc)
         assert_that(output, is_(u'\\hat{x}'))
+    
+    def test_omath_acc_overline_under_omath(self):
+        omath = OMath()
+        
+        acc = OMathAcc()
+        acc.accChr = u'\u0305'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        omath.add(acc)
+        output = render_output(omath)
+        assert_that(output, is_(u'$\\overline{x}$'))
+    
+    def test_omath_acc_overline_under_omath_para(self):
+        omath = OMath()
+        omath_para = OMathPara()
+        
+        acc = OMathAcc()
+        acc.accChr = u'\u0305'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        omath_para.add(acc)
+        omath.add(omath_para)
+        output = render_output(omath)
+        assert_that(output, is_(u'$$\\overline{x}$$'))
