@@ -1366,7 +1366,119 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(acc)
         assert_that(output, is_(u'\\check{x}'))
+    
+    def test_omath_acc_over_left_arrow_1(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u2190'
         
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
         
+        output = render_output(acc)
+        assert_that(output, is_(u'\\overleftarrow{x}'))
+    
+    def test_omath_acc_over_left_arrow_2(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u20d6'
         
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
         
+        output = render_output(acc)
+        assert_that(output, is_(u'\\overleftarrow{x}'))
+        
+    def test_omath_acc_over_right_arrow_1(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u2192'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\overrightarrow{x}'))
+        
+    def test_omath_acc_over_right_arrow_2(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u20d7'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\overrightarrow{x}'))
+    
+    def test_omath_acc_over_lef_right_arrow(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u20e1'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\overleftrightarrow{x}'))
+        
+    def test_omath_acc_over_set_right(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u20d1'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\overset{\\rightharpoonup}{x}'))
+    
+    def test_omath_acc_over_set_left(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u20d0'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\overset{\\leftharpoonup}{x}'))
+    
+    def test_omath_acc_overline(self):
+        acc = OMathAcc()
+        acc.accChr = u'\u0305'
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\overline{x}'))
+    
+    def test_omath_acc_hat_default(self):
+        acc = OMathAcc()
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e)
+        
+        output = render_output(acc)
+        assert_that(output, is_(u'\\hat{x}'))
