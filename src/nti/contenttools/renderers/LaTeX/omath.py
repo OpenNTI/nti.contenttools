@@ -19,7 +19,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_iterable
 
-from nti.contenttools.renderers.LaTeX.utils import search_node
+from nti.contenttools.renderers.LaTeX.utils import search_and_update_node_property
 
 from nti.contenttools.unicode_to_latex import replace_unicode_with_latex_tag
 
@@ -286,7 +286,6 @@ def render_omath_nary_pr(context, node):
 def render_omath_delimiter(context, node):
     """
     render <m:d>
-    TODO ega:modify check_matrix_border and check_equation_arr_border functions
     """
     if node.children:
         num_of_children = len(node.children)
@@ -301,16 +300,16 @@ def render_omath_delimiter(context, node):
                     context.write(base)
                     context.write(u')')
             elif node.children[0].begChr:
-                found_matrix = search_node(IOMathMatrix, node)
+                field = {'begChr' : node.children[0].begChr,
+                         'endChr' : node.children[0].endChr}
+                found_matrix = search_and_update_node_property(IOMathMatrix, node, field)
                 if found_matrix:
-                    check_matrix_border(
-                        node.children[0].begChr, node.children[0].endChr)
                     render_iterable(context, node.children[1:num_of_children])
                 else:
-                    found_eq_arr = search_node(IOMathEqArr, node)
+                    field = {'begBorder' : node.children[0].begChr,
+                             'endBorder' : node.children[0].endChr}
+                    found_eq_arr = search_and_update_node_property(IOMathEqArr, node, field)
                     if found_eq_arr:
-                        check_equation_arr_border(
-                            node.children[0].begChr, node.children[0].endChr)
                         render_iterable(context, node.children[1:num_of_children])
                     else:
                         begChr = replace_unicode_with_latex_tag(
@@ -323,28 +322,6 @@ def render_omath_delimiter(context, node):
         else:
             render_children(context, node)
     return node
-
-begMatrixBorder = None
-endMatrixBorder = None
-
-
-def check_matrix_border(begChr, endChr):
-    global begMatrixBorder
-    global endMatrixBorder
-    begMatrixBorder = begChr
-    endMatrixBorder = endChr
-
-
-begEqArrBorder = None
-endEqArrBorder = None
-
-
-def check_equation_arr_border(begChr, endChr):
-    global begEqArrBorder
-    global endEqArrBorder
-    begEqArrBorder = begChr
-    endEqArrBorder = endChr
-
 
 def render_omath_dpr(context, node):
     """
