@@ -357,4 +357,16 @@
 		 for="nti.contenttools.types.interfaces.IOMathEqArr"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+	<adapter factory=".omath.OMathFuncRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathFunc"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathFNameRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathFName"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".omath.OMathLimLowRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathLimLow"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>

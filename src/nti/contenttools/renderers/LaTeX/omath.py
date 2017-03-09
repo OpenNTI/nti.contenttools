@@ -562,3 +562,15 @@ class OMathMrRenderer(RendererMixin):
 @component.adapter(IOMathEqArr)
 class OMathEqArrRenderer(RendererMixin):
     func = staticmethod(render_omath_eqarr)
+    
+@component.adapter(IOMathFunc)
+class OMathFuncRenderer(RendererMixin):
+    func = staticmethod(render_omath_func)
+
+@component.adapter(IOMathFName)
+class OMathFNameRenderer(RendererMixin):
+    func = staticmethod(render_omath_fname)
+
+@component.adapter(IOMathLimLow)
+class OMathLimLowRenderer(RendererMixin):
+    func = staticmethod(render_omath_lim_low)
