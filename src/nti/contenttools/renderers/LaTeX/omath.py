@@ -29,16 +29,25 @@ from nti.contenttools.renderers.interfaces import IRenderer
 
 from nti.contenttools.types.omath import IOMath
 from nti.contenttools.types.omath import IOMathMr
+from nti.contenttools.types.omath import IOMathAcc
+from nti.contenttools.types.omath import IOMathBar
+from nti.contenttools.types.omath import IOMathBox
 from nti.contenttools.types.omath import IOMathDPr
+from nti.contenttools.types.omath import IOMathLim
 from nti.contenttools.types.omath import IOMathRun
 from nti.contenttools.types.omath import IOMathSub
 from nti.contenttools.types.omath import IOMathSup
 from nti.contenttools.types.omath import IOMathBase
 from nti.contenttools.types.omath import IOMathFrac
+from nti.contenttools.types.omath import IOMathFunc
 from nti.contenttools.types.omath import IOMathNary
 from nti.contenttools.types.omath import IOMathPara
+from nti.contenttools.types.omath import IOMathSPre
 from nti.contenttools.types.omath import IOMathEqArr
+from nti.contenttools.types.omath import IOMathFName
 from nti.contenttools.types.omath import IOMathDegree
+from nti.contenttools.types.omath import IOMathLimLow
+from nti.contenttools.types.omath import IOMathLimUpp
 from nti.contenttools.types.omath import IOMathNaryPr
 from nti.contenttools.types.omath import IOMathMatrix
 from nti.contenttools.types.omath import IOMathSubSup
@@ -48,15 +57,7 @@ from nti.contenttools.types.omath import IOMathNumerator
 from nti.contenttools.types.omath import IOMathSubscript
 from nti.contenttools.types.omath import IOMathSuperscript
 from nti.contenttools.types.omath import IOMathDenominator
-from nti.contenttools.types.omath import IOMathFunc
-from nti.contenttools.types.omath import IOMathFName
-from nti.contenttools.types.omath import IOMathLim
-from nti.contenttools.types.omath import IOMathBar
-from nti.contenttools.types.omath import IOMathLimLow
-from nti.contenttools.types.omath import IOMathLimUpp
-from nti.contenttools.types.omath import IOMathAcc
-from nti.contenttools.types.omath import IOMathSPre
-from nti.contenttools.types.omath import IOMathBox
+
 
 def render_omath(context, node):
     """
@@ -311,7 +312,8 @@ def render_omath_delimiter(context, node):
             elif node.children[0].begChr:
                 field = {'begChr': node.children[0].begChr,
                          'endChr': node.children[0].endChr}
-                found_matrix = search_and_update_node_property(IOMathMatrix, node, field)
+                found_matrix = search_and_update_node_property(
+                    IOMathMatrix, node, field)
                 if found_matrix:
                     render_iterable(context, node.children[1:num_of_children])
                 else:
@@ -322,14 +324,16 @@ def render_omath_delimiter(context, node):
                         node,
                         field)
                     if found_eq_arr:
-                        render_iterable(context, node.children[1:num_of_children])
+                        render_iterable(context, 
+                                        node.children[1:num_of_children])
                     else:
                         begChr = replace_unicode_with_latex_tag(
                             node.children[0].begChr)
                         endChr = replace_unicode_with_latex_tag(
                             node.children[0].endChr)
                         context.write(begChr)
-                        render_iterable(context, node.children[1:num_of_children])
+                        render_iterable(context, 
+                                        node.children[1:num_of_children])
                         context.write(endChr)
         else:
             render_children(context, node)
@@ -456,12 +460,14 @@ def render_omath_lim_low(context, node):
         render_underoverset(context, node, u'underset')
     return node
 
+
 def render_omath_lim_upp(context, node):
     """
     render <m:limUpp>
     """
     render_underoverset(context, node, u'overset')
     return node
+
 
 def render_underoverset(context, node, command):
     children_num = len(node.children)
@@ -532,6 +538,7 @@ def render_omath_acc(context, node):
         render_command(context, u'hat', node)
     return node
 
+
 def render_omath_spre(context, node):
     """
     render <m:sPre>
@@ -545,14 +552,17 @@ def render_omath_spre(context, node):
             context.write(u'}')
             render_node(context, node.children[2])
         else:
-            logger.warn('Unhandled <m:sPre> render, number of children = %s', node.children)
+            logger.warn('Unhandled <m:sPre> render, number of children = %s',
+                        node.children)
     return node
+
 
 def render_omath_box(context, node):
     """
     render <m:box>
     """
     return render_children(context, node)
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -702,13 +712,16 @@ class OMathBarRenderer(RendererMixin):
 class OMathAccRenderer(RendererMixin):
     func = staticmethod(render_omath_acc)
 
+
 @component.adapter(IOMathLimUpp)
 class OMathLimUppRenderer(RendererMixin):
     func = staticmethod(render_omath_lim_upp)
-    
+
+
 @component.adapter(IOMathSPre)
 class OMathSPreRenderer(RendererMixin):
     func = staticmethod(render_omath_spre)
+
 
 @component.adapter(IOMathBox)
 class OMathBoxRenderer(RendererMixin):
