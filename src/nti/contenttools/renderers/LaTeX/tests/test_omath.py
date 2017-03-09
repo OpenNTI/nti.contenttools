@@ -38,6 +38,7 @@ from nti.contenttools.types.omath import OMathDenominator
 from nti.contenttools.types.omath import OMathFunc
 from nti.contenttools.types.omath import OMathFName
 from nti.contenttools.types.omath import OMathLimLow
+from nti.contenttools.types.omath import OMathLimUpp
 from nti.contenttools.types.omath import OMathLim
 from nti.contenttools.types.omath import OMathBar
 from nti.contenttools.types.omath import OMathAcc
@@ -1557,3 +1558,66 @@ class OMathTest(ContentToolsTestCase):
         omath.add(omath_para)
         output = render_output(omath)
         assert_that(output, is_(u'$$\\overline{x}$$'))
+    
+    def test_omath_lim_upp(self):
+        """
+#===============================================================================
+# <m:limUpp>
+#    <m:limUppPr>
+#       <m:ctrlPr>
+#          <w:rPr>...
+#          </w:rPr>
+#       </m:ctrlPr>
+#    </m:limUppPr>
+#    <m:e>
+#       <m:argPr>
+#          <m:argSz m:val="1"/>
+#       </m:argPr>
+#       <m:acc>
+#          <m:accPr>...
+#          </m:accPr>
+#          <m:e>...
+#          </m:e>
+#       </m:acc>
+#       <m:ctrlPr>
+#          <w:rPr>...
+#          </w:rPr>
+#       </m:ctrlPr>
+#    </m:e>
+#    <m:lim>
+#       <m:argPr>
+#          <m:argSz m:val="1"/>
+#       </m:argPr>
+#       <m:e>
+#           ...
+#       </m:e>
+#       <m:ctrlPr>
+#          <w:rPr>...
+#          </w:rPr>
+#       </m:ctrlPr>
+#    </m:lim>
+# </m:limUpp>
+#===============================================================================
+        """
+        limupp = OMathLimUpp()
+
+        e = OMathBase()
+        acc = OMathAcc()
+        e_acc = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e_acc.add(run)
+        acc.add(e_acc)
+        e.add(acc)
+        limupp.add(e)
+        
+        lim = OMathLim()
+        e_lim = OMathBase()
+        run_lim = OMathRun()
+        run_lim.add(TextNode(u'n\u2192\u221E', type_text='omath'))
+        e_lim.add(run_lim)
+        lim.add(e_lim)
+        limupp.add(lim)
+        
+        output = render_output(limupp)
+        assert_that(output, is_(u'\\overset{n\\rightarrow \\infty }{\\hat{x}}'))
