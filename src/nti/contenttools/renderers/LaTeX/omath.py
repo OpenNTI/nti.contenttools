@@ -57,6 +57,7 @@ from nti.contenttools.types.omath import IOMathNumerator
 from nti.contenttools.types.omath import IOMathSubscript
 from nti.contenttools.types.omath import IOMathSuperscript
 from nti.contenttools.types.omath import IOMathDenominator
+from nti.contenttools.types.omath import IOMathGroupChr
 
 
 def render_omath(context, node):
@@ -564,6 +565,54 @@ def render_omath_box(context, node):
     return render_children(context, node)
 
 
+def render_omath_groupchr(context, node):
+    """
+    render <m:groupChr>
+    """
+    if node.pos:
+        pos = node.pos
+        if pos =='top':
+            if node.groupChr == u'\u23de':
+                render_command(context, u'overbrace', node)
+            else:
+                render_underset_groupChr(context, node)
+        elif pos =='bot':
+            if node.groupChr == u'\u23df':
+                render_command(context, u'underbrace', node)
+            else:
+                render_groupChr_underset(context, node)
+        else:
+            logger.warn('Unhandled <m:groupChr> element, groupChrPr position = %s', node.pos)
+    elif node.vertJc:
+        if node.vertJc == u'top':
+            render_underset_groupChr(context, node)
+        elif node.vertJc == u'bot':
+            render_groupChr_underset(context, node)
+        else:
+            logger.warn('Unhandled <m:groupChr> element, groupChrPr vertJc %s', node.vertJc)
+    else:
+        render_command(context, 'underbrace', node)        
+    return node
+
+def render_underset_groupChr(context, node):
+    groupChr = replace_unicode_with_latex_tag(node.groupChr)
+    context.write(u'{')
+    render_command(context, u'underset', node)
+    context.write(u'}{')
+    context.write(groupChr)
+    context.write(u'}')
+    return node
+
+def render_groupChr_underset(context, node):
+    groupChr = replace_unicode_with_latex_tag(node.groupChr)
+    context.write(u'\\underset{')
+    context.write(groupChr)
+    context.write(u'}{')
+    render_children(context, node)
+    context.write(u'}')
+    return node
+    
+
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -726,3 +775,7 @@ class OMathSPreRenderer(RendererMixin):
 @component.adapter(IOMathBox)
 class OMathBoxRenderer(RendererMixin):
     func = staticmethod(render_omath_box)
+
+@component.adapter(IOMathGroupChr)
+class OMathGroupChrRenderer(RendererMixin):
+    func = staticmethod(render_omath_groupchr)
