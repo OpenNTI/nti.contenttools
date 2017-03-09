@@ -53,7 +53,7 @@ from nti.contenttools.types.omath import IOMathFName
 from nti.contenttools.types.omath import IOMathLim
 from nti.contenttools.types.omath import IOMathBar
 from nti.contenttools.types.omath import IOMathLimLow
-
+from nti.contenttools.types.omath import IOMathAcc
 
 def render_omath(context, node):
     """
@@ -463,7 +463,7 @@ def render_omath_bar(context, node):
     else:
         return render_command(context, u'underline', node)
 
-def render_omath_acc_rendered(context, node):
+def render_omath_acc(context, node):
     """
     render <m:acc>
     """
@@ -648,3 +648,7 @@ class OMathLimRenderer(RendererMixin):
 @component.adapter(IOMathBar)
 class OMathBarRenderer(RendererMixin):
     func = staticmethod(render_omath_bar)
+
+@component.adapter(IOMathAcc)
+class OMathAccRenderer(RendererMixin):
+    func = staticmethod(render_omath_acc)
