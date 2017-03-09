@@ -172,12 +172,12 @@ class TestUtils(ContentToolsTestCase):
         
         assert_that(frac.frac_type, is_(None))
         
-        _ = search_and_update_node_property(IOMathFrac, omath, 'frac_type', 'lin')
+        _ = search_and_update_node_property(IOMathFrac, omath, {'frac_type':'lin'})
         assert_that(frac.frac_type, is_(u'lin'))
         
-        _ = search_and_update_node_property(IOMathFrac, omath, 'frac_type', 'skw')
+        _ = search_and_update_node_property(IOMathFrac, omath, {'frac_type':'skw'})
         assert_that(frac.frac_type, is_(u'skw'))
         
-        _ = search_and_update_node_property(IOMathFrac, omath, 'frac_type', 'noBar')
+        _ = search_and_update_node_property(IOMathFrac, omath, {'frac_type':'noBar'})
         assert_that(frac.frac_type, is_(u'noBar'))
 

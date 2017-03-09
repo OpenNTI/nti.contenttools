@@ -46,18 +46,19 @@ def search_node(provided, root):
                     return found
     return False
 
-def search_and_update_node_property(provided, root, property_name, property_value):
+def search_and_update_node_property(provided, root, field):
     """
     traverse tree of nodes to look for a particular node given the interface (provided)
-    if the node is found, update the value of the node's attribute based on the given property name
+    if the node is found, update the value of the node's attribute 
     """
     if provided.providedBy(root):
-        setattr(root, property_name, property_value)
+        for name, value in field.items():
+            setattr(root, name, value)
         return True
     else:
         if hasattr(root, u'children'):
             for node in root:
-                found = search_and_update_node_property(provided, node, property_name, property_value)
+                found = search_and_update_node_property(provided, node, field)
                 if found:
                     return found
     return False
