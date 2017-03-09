@@ -373,4 +373,8 @@
 		 for="nti.contenttools.types.interfaces.IOMathLimLow"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+	<adapter factory=".omath.OMathBarRenderer"
+		 for="nti.contenttools.types.interfaces.IOMathBar"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>
