@@ -1091,3 +1091,70 @@ class OMathTest(ContentToolsTestCase):
         output = render_output(delimiter)
         assert_that(output,
                     is_('\\begin{pmatrix}\nA & B \\\\\nC & D \\\\\n\\end{pmatrix}\n'))
+    
+    def test_omath_delimiter_with_matrix(self):
+        delimiter = OMathDelimiter()
+
+        dPr = OMathDPr()
+        dPr.begChr = u'{'
+        dPr.endChr = u'}'
+        
+        e = OMathBase()
+        run = OMathRun()
+        matrix = OMathMatrix()
+
+        mr_1 = OMathMr()
+        base_1_1 = OMathBase()
+        base_1_1.add(TextNode(u'A'))
+        base_1_2 = OMathBase()
+        base_1_2.add(TextNode(u'B'))
+        mr_1.add(base_1_1)
+        mr_1.add(base_1_2)
+
+        mr_2 = OMathMr()
+        base_2_1 = OMathBase()
+        base_2_1.add(TextNode(u'C'))
+        base_2_2 = OMathBase()
+        base_2_2.add(TextNode(u'D'))
+        mr_2.add(base_2_1)
+        mr_2.add(base_2_2)
+
+        matrix.add(mr_1)
+        matrix.add(mr_2)
+        
+        run.add(matrix)
+        e.add(run)
+        
+        delimiter.add(dPr)
+        delimiter.add(e)
+
+        output = render_output(delimiter)
+        assert_that(output,
+                    is_('\\begin{matrix}\nA & B \\\\\nC & D \\\\\n\\end{matrix}\n'))
+    
+    def test_omath_delimiter_with_fraction_no_bar(self):
+        delimiter = OMathDelimiter()
+        dPr = OMathDPr()
+        delimiter.add(dPr)
+        
+        e = OMathBase()
+        run = OMathRun()
+        numerator = OMathNumerator()
+        num_child = TextNode(u'3', type_text='omath')
+        numerator.add(num_child)
+
+        denominator = OMathDenominator()
+        den_child = TextNode(u'4', type_text='omath')
+        denominator.add(den_child)
+
+        frac = OMathFrac()
+        frac.frac_type = u'noBar'
+        frac.add(numerator)
+        frac.add(denominator)
+        
+        run.add(frac)
+        e.add(run)
+        delimiter.add(e)
+        
+        output = render_output(delimiter)
+        assert_that(output, is_(u'{3 \\choose 4}'))
