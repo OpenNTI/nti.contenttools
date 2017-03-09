@@ -1263,6 +1263,33 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(bar)
         assert_that(output, is_(u'\\overline{\\hat{x}}'))
+    
+    def test_omath_bar_overline(self):
+        bar = OMathBar()
+        bar.pos = u'top'
+       
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'A+B', type_text='omath'))
+        e.add(run)
+        
+        bar.add(e)
+        
+        output = render_output(bar)
+        assert_that(output, is_(u'\\overline{A+B}'))
+    
+    def test_omath_bar_underline(self):
+        bar = OMathBar()
+       
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'A+B', type_text='omath'))
+        e.add(run)
+        
+        bar.add(e)
+        
+        output = render_output(bar)
+        assert_that(output, is_(u'\\underline{A+B}'))
 
     def test_omath_acc_grave(self):
         acc = OMathAcc()
