@@ -1158,3 +1158,17 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(delimiter)
         assert_that(output, is_(u'{3 \\choose 4}'))
+        
+    def test_omath_delimiter_with_no_begChr(self):
+        delimiter = OMathDelimiter()
+        dPr = OMathDPr()
+        delimiter.add(dPr)
+        
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x+y'))
+        e.add(run)
+        delimiter.add(e)
+        
+        output = render_output(delimiter)
+        assert_that(output, is_(u'(x+y)'))
