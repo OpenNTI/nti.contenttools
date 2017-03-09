@@ -16,7 +16,10 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.omath import OMath
 from nti.contenttools.types.omath import OMathMr
+from nti.contenttools.types.omath import OMathAcc
+from nti.contenttools.types.omath import OMathBar
 from nti.contenttools.types.omath import OMathDPr
+from nti.contenttools.types.omath import OMathLim
 from nti.contenttools.types.omath import OMathRun
 from nti.contenttools.types.omath import OMathSub
 from nti.contenttools.types.omath import OMathSup
@@ -24,7 +27,10 @@ from nti.contenttools.types.omath import OMathNary
 from nti.contenttools.types.omath import OMathBase
 from nti.contenttools.types.omath import OMathFrac
 from nti.contenttools.types.omath import OMathPara
+from nti.contenttools.types.omath import OMathSPre
 from nti.contenttools.types.omath import OMathEqArr
+from nti.contenttools.types.omath import OMathLimLow
+from nti.contenttools.types.omath import OMathLimUpp
 from nti.contenttools.types.omath import OMathNaryPr
 from nti.contenttools.types.omath import OMathMatrix
 from nti.contenttools.types.omath import OMathSubSup
@@ -35,15 +41,6 @@ from nti.contenttools.types.omath import OMathNumerator
 from nti.contenttools.types.omath import OMathSubscript
 from nti.contenttools.types.omath import OMathSuperscript
 from nti.contenttools.types.omath import OMathDenominator
-from nti.contenttools.types.omath import OMathFunc
-from nti.contenttools.types.omath import OMathFName
-from nti.contenttools.types.omath import OMathLimLow
-from nti.contenttools.types.omath import OMathLimUpp
-from nti.contenttools.types.omath import OMathLim
-from nti.contenttools.types.omath import OMathBar
-from nti.contenttools.types.omath import OMathAcc
-from nti.contenttools.types.omath import OMathSPre
-from nti.contenttools.types.omath import OMathBox
 
 from nti.contenttools.types.text import TextNode
 
@@ -1250,47 +1247,47 @@ class OMathTest(ContentToolsTestCase):
         """
         bar = OMathBar()
         bar.pos = u'top'
-       
+
         e_bar = OMathBase()
-        
+
         acc = OMathAcc()
         acc.accChr = u'\u0302'
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
-        acc.add(e) 
-        
+        acc.add(e)
+
         e_bar.add(acc)
         bar.add(e_bar)
-        
+
         output = render_output(bar)
         assert_that(output, is_(u'\\overline{\\hat{x}}'))
-    
+
     def test_omath_bar_overline(self):
         bar = OMathBar()
         bar.pos = u'top'
-       
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'A+B', type_text='omath'))
         e.add(run)
-        
+
         bar.add(e)
-        
+
         output = render_output(bar)
         assert_that(output, is_(u'\\overline{A+B}'))
-    
+
     def test_omath_bar_underline(self):
         bar = OMathBar()
-       
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'A+B', type_text='omath'))
         e.add(run)
-        
+
         bar.add(e)
-        
+
         output = render_output(bar)
         assert_that(output, is_(u'\\underline{A+B}'))
 
@@ -1560,7 +1557,7 @@ class OMathTest(ContentToolsTestCase):
         omath.add(omath_para)
         output = render_output(omath)
         assert_that(output, is_(u'$$\\overline{x}$$'))
-    
+
     def test_omath_lim_upp(self):
         """
 #===============================================================================
@@ -1612,7 +1609,7 @@ class OMathTest(ContentToolsTestCase):
         acc.add(e_acc)
         e.add(acc)
         limupp.add(e)
-        
+
         lim = OMathLim()
         e_lim = OMathBase()
         run_lim = OMathRun()
@@ -1620,10 +1617,11 @@ class OMathTest(ContentToolsTestCase):
         e_lim.add(run_lim)
         lim.add(e_lim)
         limupp.add(lim)
-        
+
         output = render_output(limupp)
-        assert_that(output, is_(u'\\overset{n\\rightarrow \\infty }{\\hat{x}}'))
-    
+        assert_that(
+            output, is_(u'\\overset{n\\rightarrow \\infty }{\\hat{x}}'))
+
     def test_omath_spre(self):
         """
 #===============================================================================
@@ -1671,7 +1669,7 @@ class OMathTest(ContentToolsTestCase):
 #===============================================================================
         """
         spre = OMathSPre()
-        
+
         sub = OMathSub()
         acc_sub = OMathAcc()
         e_sub = OMathBase()
@@ -1681,7 +1679,7 @@ class OMathTest(ContentToolsTestCase):
         acc_sub.add(e_sub)
         sub.add(acc_sub)
         spre.add(sub)
-        
+
         sup = OMathSup()
         acc_sup = OMathAcc()
         e_sup = OMathBase()
@@ -1691,14 +1689,12 @@ class OMathTest(ContentToolsTestCase):
         acc_sup.add(e_sup)
         sup.add(acc_sup)
         spre.add(sup)
-        
+
         e = OMathBase()
         run_e = OMathRun()
         run_e.add(TextNode(u'A', type_text='omath'))
         e.add(run_e)
         spre.add(e)
-        
+
         output = render_output(spre)
         assert_that(output, is_(u'{^\\hat{x}_\\hat{y}}A'))
-        
-        
