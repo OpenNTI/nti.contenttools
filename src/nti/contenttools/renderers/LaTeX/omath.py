@@ -20,6 +20,7 @@ from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_iterable
 
 from nti.contenttools.renderers.LaTeX.utils import search_and_update_node_property
+from nti.contenttools.renderers.LaTeX.utils import search_node
 
 from nti.contenttools.unicode_to_latex import replace_unicode_with_latex_tag
 
@@ -291,13 +292,12 @@ def render_omath_delimiter(context, node):
         num_of_children = len(node.children)
         if IOMathDPr.providedBy(node.children[0]):
             if not node.children[0].begChr:
-                base = render_iterable(
-                    context, node.children[1:num_of_children])
-                if u'choose' in base:
-                    context.write(base)
+                found_frac_no_bar = search_node(IOMathFrac, node)
+                if found_frac_no_bar:
+                    render_iterable(context, node.children[1:num_of_children])
                 else:
                     context.write(u'(')
-                    context.write(base)
+                    render_iterable(context, node.children[1:num_of_children])
                     context.write(u')')
             elif node.children[0].begChr:
                 field = {'begChr' : node.children[0].begChr,
