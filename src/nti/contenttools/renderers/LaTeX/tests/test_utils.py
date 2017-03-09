@@ -13,6 +13,7 @@ from hamcrest import assert_that
 does_not = is_not
 
 from nti.contenttools.renderers.LaTeX.utils import search_node
+from nti.contenttools.renderers.LaTeX.utils import search_and_update_node_property
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 
 from nti.contenttools.types.document import Document
@@ -24,6 +25,7 @@ from nti.contenttools.types.interfaces import IOMathRun
 from nti.contenttools.types.interfaces import IOMathDPr
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IOMathBase
+from nti.contenttools.types.interfaces import IOMathFrac
 from nti.contenttools.types.interfaces import IOMathMatrix
 from nti.contenttools.types.interfaces import IOrderedList
 
@@ -41,6 +43,11 @@ from nti.contenttools.types.omath import OMathDelimiter
 from nti.contenttools.types.omath import OMathDPr
 from nti.contenttools.types.omath import OMathBase
 from nti.contenttools.types.omath import OMathRun
+from nti.contenttools.types.omath import OMath
+from nti.contenttools.types.omath import OMathPara
+from nti.contenttools.types.omath import OMathFrac
+from nti.contenttools.types.omath import OMathNumerator
+from nti.contenttools.types.omath import OMathDenominator
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -143,3 +150,34 @@ class TestUtils(ContentToolsTestCase):
         node.label.add(child)
         label = get_variant_field_string_value(node.label)
         assert_that(label, is_(u'This is a figure label'))
+    
+    def test_search_and_update_node_property(self):
+        omath = OMath()
+        omath_para = OMathPara()
+
+        numerator = OMathNumerator()
+        num_child = TextNode(u'3', type_text='omath')
+        numerator.add(num_child)
+
+        denominator = OMathDenominator()
+        den_child = TextNode(u'4', type_text='omath')
+        denominator.add(den_child)
+
+        frac = OMathFrac()
+        frac.add(numerator)
+        frac.add(denominator)
+
+        omath_para.add(frac)
+        omath.add(omath_para)
+        
+        assert_that(frac.frac_type, is_(None))
+        
+        _ = search_and_update_node_property(IOMathFrac, omath, 'frac_type', 'lin')
+        assert_that(frac.frac_type, is_(u'lin'))
+        
+        _ = search_and_update_node_property(IOMathFrac, omath, 'frac_type', 'skw')
+        assert_that(frac.frac_type, is_(u'skw'))
+        
+        _ = search_and_update_node_property(IOMathFrac, omath, 'frac_type', 'noBar')
+        assert_that(frac.frac_type, is_(u'noBar'))
+

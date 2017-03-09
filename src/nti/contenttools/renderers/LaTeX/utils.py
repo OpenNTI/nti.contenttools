@@ -32,7 +32,7 @@ def create_label(name, value):
 
 def search_node(provided, root):
     """
-    traverse nodes to look for a particular interface (provided)
+    traverse tree of nodes to look for a particular interface (provided)
     return true if there is node providing the given interface 'provided' 
     otherwise return false
     """
@@ -46,6 +46,21 @@ def search_node(provided, root):
                     return found
     return False
 
+def search_and_update_node_property(provided, root, property_name, property_value):
+    """
+    traverse tree of nodes to look for a particular node given the interface (provided)
+    if the node is found, update the value of the node's attribute based on the given property name
+    """
+    if provided.providedBy(root):
+        setattr(root, property_name, property_value)
+        return True
+    else:
+        if hasattr(root, u'children'):
+            for node in root:
+                found = search_and_update_node_property(provided, node, property_name, property_value)
+                if found:
+                    return found
+    return False
 
 def get_variant_field_string_value(field):
     """
