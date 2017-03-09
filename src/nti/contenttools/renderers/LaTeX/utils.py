@@ -53,7 +53,8 @@ def search_and_update_node_property(provided, root, field):
     """
     if provided.providedBy(root):
         for name, value in field.items():
-            setattr(root, name, value)
+            if hasattr(root, name):
+                setattr(root, name, value)
         return True
     else:
         if hasattr(root, u'children'):
