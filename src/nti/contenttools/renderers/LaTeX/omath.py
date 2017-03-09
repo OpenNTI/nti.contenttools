@@ -53,6 +53,7 @@ from nti.contenttools.types.omath import IOMathFName
 from nti.contenttools.types.omath import IOMathLim
 from nti.contenttools.types.omath import IOMathBar
 from nti.contenttools.types.omath import IOMathLimLow
+from nti.contenttools.types.omath import IOMathLimUpp
 from nti.contenttools.types.omath import IOMathAcc
 
 
@@ -449,15 +450,23 @@ def render_omath_lim_low(context, node):
             render_iterable(context, node.children[1:children_num])
             context.write(u'}')
         else:
-            render_underset(context, node)
+            render_underoverset(context, node, u'underset')
     else:
-        render_underset(context, node)
+        render_underoverset(context, node, u'underset')
     return node
 
+def render_omath_lim_upp(context, node):
+    """
+    render <m:limUpp>
+    """
+    render_underoverset(context, node, u'overset')
+    return node
 
-def render_underset(context, node):
+def render_underoverset(context, node, command):
     children_num = len(node.children)
-    context.write(u'\\underset{')
+    context.write(u'\\')
+    context.write(command)
+    context.write(u'{')
     render_iterable(context, node.children[1:children_num])
     context.write(u'}{')
     render_node(context, node.children[0])
@@ -670,3 +679,7 @@ class OMathBarRenderer(RendererMixin):
 @component.adapter(IOMathAcc)
 class OMathAccRenderer(RendererMixin):
     func = staticmethod(render_omath_acc)
+
+@component.adapter(IOMathLimUpp)
+class OMathLimUppRenderer(RendererMixin):
+    func = staticmethod(render_omath_lim_upp)
