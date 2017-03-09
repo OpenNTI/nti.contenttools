@@ -1247,6 +1247,22 @@ class OMathTest(ContentToolsTestCase):
         """
         bar = OMathBar()
         bar.pos = u'top'
+       
+        e_bar = OMathBase()
+        
+        acc = OMathAcc()
+        acc.accChr = u'\u0302'
+        e = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'x', type_text='omath'))
+        e.add(run)
+        acc.add(e) 
+        
+        e_bar.add(acc)
+        bar.add(e_bar)
+        
+        output = render_output(bar)
+        assert_that(output, is_(u'\\overline{\\hat{x}}'))
 
     def test_omath_acc_grave(self):
         acc = OMathAcc()
