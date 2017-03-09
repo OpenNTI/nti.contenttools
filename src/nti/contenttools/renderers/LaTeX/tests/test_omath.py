@@ -1006,7 +1006,7 @@ class OMathTest(ContentToolsTestCase):
         delimiter.add(e)
 
         # TODO ega: troubleshoot why line 1011 causes error
-        #output = render_output(delimiter)
-
-        # assert_that(output,
-        #            is_(u'a+b'))
+        output = render_output(delimiter)
+        
+        assert_that(output,
+                    is_(u'[a+b]'))

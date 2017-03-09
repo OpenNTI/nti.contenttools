@@ -39,10 +39,11 @@ def search_node(provided, root):
     if provided.providedBy(root):
         return True
     else:
-        for node in root:
-            found = search_node(provided, node)
-            if found:
-                return found
+        if hasattr(root, u'children'):
+            for node in root:
+                found = search_node(provided, node)
+                if found:
+                    return found
     return False
 
 

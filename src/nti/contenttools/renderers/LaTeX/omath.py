@@ -305,20 +305,20 @@ def render_omath_delimiter(context, node):
                 if found_matrix:
                     check_matrix_border(
                         node.children[0].begChr, node.children[0].endChr)
-                    render_iterable(context, node[1:num_of_children])
+                    render_iterable(context, node.children[1:num_of_children])
                 else:
                     found_eq_arr = search_node(IOMathEqArr, node)
                     if found_eq_arr:
                         check_equation_arr_border(
                             node.children[0].begChr, node.children[0].endChr)
-                        render_iterable(context, node[1:num_of_children])
+                        render_iterable(context, node.children[1:num_of_children])
                     else:
                         begChr = replace_unicode_with_latex_tag(
                             node.children[0].begChr)
                         endChr = replace_unicode_with_latex_tag(
                             node.children[0].endChr)
                         context.write(begChr)
-                        render_iterable(context, node[1:num_of_children])
+                        render_iterable(context, node.children[1:num_of_children])
                         context.write(endChr)
         else:
             render_children(context, node)
