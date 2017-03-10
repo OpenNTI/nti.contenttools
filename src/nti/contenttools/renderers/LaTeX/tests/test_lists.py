@@ -154,3 +154,22 @@ class TestLists(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\begin{itemize}\n\\item bullet 1 \n\\item bullet 2 \n\n\end{itemize}\n'))
+    
+    def test_ordered_list_with_text(self):
+        node = OrderedList()
+        
+        child_1 = Item()
+        run_child_1 = Run()
+        run_child_1.add(TextNode(u'number 1'))
+        child_1.add(run_child_1)
+        node.add(child_1)
+        
+        child_2 = Item()
+        run_child_2 = Run()
+        run_child_2.add(TextNode(u'number 2'))
+        child_2.add(run_child_2)
+        node.add(child_2)
+        
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\begin{itemize}\n\\item number 1 \n\\item number 2 \n\n\end{itemize}\n'))
