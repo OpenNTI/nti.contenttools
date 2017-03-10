@@ -174,6 +174,26 @@ class TestLists(ContentToolsTestCase):
         assert_that(output,
                     is_(u'\\begin{enumerate}\n\\item number 1 \n\\item number 2 \n\n\end{enumerate}\n'))
     
+    def test_ordered_list_with_start_number(self):
+        node = OrderedList()
+        node.start = 3
+        
+        child_1 = Item()
+        run_child_1 = Run()
+        run_child_1.add(TextNode(u'number 1'))
+        child_1.add(run_child_1)
+        node.add(child_1)
+        
+        child_2 = Item()
+        run_child_2 = Run()
+        run_child_2.add(TextNode(u'number 2'))
+        child_2.add(run_child_2)
+        node.add(child_2)
+        
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\begin{enumerate}[start=3]\n\\item number 1 \n\\item number 2 \n\n\end{enumerate}\n'))
+    
     def test_nested_ordered_list(self):
         node = OrderedList()
         
