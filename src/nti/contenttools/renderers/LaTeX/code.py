@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: lists.py 107252 2017-02-23 04:34:29Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -27,11 +27,12 @@ def render_code_line(context, node):
 
 
 def render_verbatim(context, node):
-    return render_environment(context, u'verbatim', node)    
+    return render_environment(context, u'verbatim', node)
 
 
 def render_code_listings(context, node):
-    return render_environment(context, u'lstlisting', node)  
+    return render_environment(context, u'lstlisting', node)
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -51,11 +52,12 @@ class RendererMixin(object):
 class CodeRenderer(RendererMixin):
     func = staticmethod(render_code_listings)
 
+
 @component.adapter(ICodeLine)
 class CodeLineRenderer(RendererMixin):
     func = staticmethod(render_code_line)
-    
+
+
 @component.adapter(IVerbatim)
 class VerbatimRenderer(RendererMixin):
     func = staticmethod(render_verbatim)
-

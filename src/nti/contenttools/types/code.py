@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: code.py 107698 2017-03-01 04:03:56Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -19,13 +19,15 @@ from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.schema.fieldproperty import createFieldProperties
 
+
 @interface.implementer(ICode)
 class Code(DocumentStructureNode):
     createFieldProperties(ICode)
 
     def __init__(self, *args, **kwargs):
         super(Code, self).__init__(*args, **kwargs)
-        
+
+
 @interface.implementer(ICodeLine)
 class CodeLine(DocumentStructureNode):
     createFieldProperties(ICodeLine)
@@ -33,9 +35,10 @@ class CodeLine(DocumentStructureNode):
     def __init__(self, *args, **kwargs):
         super(CodeLine, self).__init__(*args, **kwargs)
 
+
 @interface.implementer(IVerbatim)
 class Verbatim(DocumentStructureNode):
-    createFieldProperties(ICode)
+    createFieldProperties(IVerbatim)
 
     def __init__(self, *args, **kwargs):
         super(Verbatim, self).__init__(*args, **kwargs)

@@ -168,6 +168,7 @@ from nti.contenttools.types.code import Code
 from nti.contenttools.types.code import CodeLine
 from nti.contenttools.types.code import Verbatim
 
+
 class Newline(DocumentStructureNode):
     pass
 
