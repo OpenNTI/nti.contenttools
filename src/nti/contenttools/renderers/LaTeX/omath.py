@@ -596,9 +596,8 @@ def render_omath_groupchr(context, node):
 
 def render_underset_groupChr(context, node):
     groupChr = replace_unicode_with_latex_tag(node.groupChr)
-    context.write(u'{')
     render_command(context, u'underset', node)
-    context.write(u'}{')
+    context.write(u'{')
     context.write(groupChr)
     context.write(u'}')
     return node
