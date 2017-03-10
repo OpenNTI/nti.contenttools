@@ -44,6 +44,7 @@ from nti.contenttools.types.omath import OMathBar
 from nti.contenttools.types.omath import OMathAcc
 from nti.contenttools.types.omath import OMathSPre
 from nti.contenttools.types.omath import OMathBox
+from nti.contenttools.types.omath import OMathBorderBox
 from nti.contenttools.types.omath import OMathGroupChr
 
 from nti.contenttools.types.text import TextNode
@@ -1887,4 +1888,53 @@ class OMathTest(ContentToolsTestCase):
         
         output = render_output(group_chr)
         assert_that(output, is_(u'\\underset{\\Uparrow }{\\hat{x} - y}'))
+    
+    def test_omath_border_box(self):
+        """
+<m:borderBox>
+   <m:borderBoxPr>
+      <m:hideTop/>
+      <m:hideBot/>
+      <m:hideLeft/>
+      <m:hideRight/>
+      <m:strikeH/>
+      <m:strikeV/>
+      <m:strikeBLTR/>
+      <m:strikeTLBR/>
+      <m:ctrlPr>
+         <w:rPr>...
+         </w:rPr>
+      </m:ctrlPr>
+   </m:borderBoxPr>
+   <m:e>
+      <m:argPr>
+         <m:argSz m:val="1"/>
+      </m:argPr>
+      <m:acc>
+         <m:accPr>...
+         </m:accPr>
+         <m:e>...
+         </m:e>
+      </m:acc>
+      <m:ctrlPr>
+         <w:rPr>...
+         </w:rPr>
+      </m:ctrlPr>
+   </m:e>
+</m:borderBox>
+        """
+        border_box = OMathBorderBox()
+        
+        e = OMathBase()
+        acc = OMathAcc()
+        e_acc = OMathBase()
+        run = OMathRun()
+        run.add(TextNode(u'A', type_text='omath'))
+        e_acc.add(run)
+        acc.add(e_acc)
+        e.add(acc)
+        
+        border_box.add(e)
+        output = render_output(border_box)
+        assert_that(output, is_(u'\boxed{\hat{A}}'))
         
