@@ -58,6 +58,7 @@ from nti.contenttools.types.omath import IOMathSubscript
 from nti.contenttools.types.omath import IOMathSuperscript
 from nti.contenttools.types.omath import IOMathDenominator
 from nti.contenttools.types.omath import IOMathGroupChr
+from nti.contenttools.types.omath import IOMathBorderBox
 
 
 def render_omath(context, node):
@@ -610,6 +611,12 @@ def render_groupChr_underset(context, node):
     render_children(context, node)
     context.write(u'}')
     return node
+
+def render_omath_border_box(context, node):
+    """
+    render <m:borderBox>
+    """
+    return render_command(context, u'boxed', node)
     
 
 @interface.implementer(IRenderer)
@@ -778,3 +785,7 @@ class OMathBoxRenderer(RendererMixin):
 @component.adapter(IOMathGroupChr)
 class OMathGroupChrRenderer(RendererMixin):
     func = staticmethod(render_omath_groupchr)
+    
+@component.adapter(IOMathBorderBox)
+class OMathBorderBoxRenderer(RendererMixin):
+    func = staticmethod(render_omath_border_box)
