@@ -18,8 +18,8 @@ from nti.contenttools.types.lists import DD
 from nti.contenttools.types.lists import DT
 from nti.contenttools.types.lists import Item
 from nti.contenttools.types.lists import List
-from nti.contenttools.types.lists import ItemWithDesc
 from nti.contenttools.types.lists import OrderedList
+from nti.contenttools.types.lists import ItemWithDesc
 from nti.contenttools.types.lists import UnorderedList
 from nti.contenttools.types.lists import DescriptionList
 
@@ -135,138 +135,138 @@ class TestLists(ContentToolsTestCase):
         node.desc.add(TextNode(u'description'))
         output = render_output(node)
         assert_that(output, is_(u'\\item [term] description \n'))
-    
+
     def test_unordered_list_with_text(self):
         node = UnorderedList()
-        
+
         child_1 = Item()
         run_child_1 = Run()
         run_child_1.add(TextNode(u'bullet 1'))
         child_1.add(run_child_1)
         node.add(child_1)
-        
+
         child_2 = Item()
         run_child_2 = Run()
         run_child_2.add(TextNode(u'bullet 2'))
         child_2.add(run_child_2)
         node.add(child_2)
-        
+
         output = render_output(node)
         assert_that(output,
                     is_(u'\\begin{itemize}\n\\item bullet 1 \n\\item bullet 2 \n\n\end{itemize}\n'))
-    
+
     def test_ordered_list_with_text(self):
         node = OrderedList()
-        
+
         child_1 = Item()
         run_child_1 = Run()
         run_child_1.add(TextNode(u'number 1'))
         child_1.add(run_child_1)
         node.add(child_1)
-        
+
         child_2 = Item()
         run_child_2 = Run()
         run_child_2.add(TextNode(u'number 2'))
         child_2.add(run_child_2)
         node.add(child_2)
-        
+
         output = render_output(node)
         assert_that(output,
                     is_(u'\\begin{enumerate}\n\\item number 1 \n\\item number 2 \n\n\end{enumerate}\n'))
-    
+
     def test_ordered_list_with_start_number(self):
         node = OrderedList()
         node.start = 3
-        
+
         child_1 = Item()
         run_child_1 = Run()
         run_child_1.add(TextNode(u'number 1'))
         child_1.add(run_child_1)
         node.add(child_1)
-        
+
         child_2 = Item()
         run_child_2 = Run()
         run_child_2.add(TextNode(u'number 2'))
         child_2.add(run_child_2)
         node.add(child_2)
-        
+
         output = render_output(node)
         assert_that(output,
                     is_(u'\\begin{enumerate}[start=3]\n\\item number 1 \n\\item number 2 \n\n\end{enumerate}\n'))
-    
+
     def test_nested_ordered_list(self):
         node = OrderedList()
-        
+
         child_1 = Item()
         run_child_1 = Run()
         run_child_1.add(TextNode(u'number 1'))
         child_1.add(run_child_1)
         node.add(child_1)
-        
+
         child_2 = Item()
         run_child_2 = Run()
         run_child_2.add(TextNode(u'number 2'))
-        
+
         list_2 = OrderedList()
-        
+
         sub_child_1 = Item()
         sub_run_child_1 = Run()
         sub_run_child_1.add(TextNode(u'sub number 1'))
         sub_child_1.add(sub_run_child_1)
         list_2.add(sub_child_1)
-        
+
         sub_child_2 = Item()
         sub_run_child_2 = Run()
         sub_run_child_2.add(TextNode(u'sub number 2'))
         sub_child_2.add(sub_run_child_2)
         list_2.add(sub_child_2)
-        
+
         run_child_2.add(list_2)
         child_2.add(run_child_2)
         node.add(child_2)
-        
+
         output = render_output(node)
         assert_that(output,
                     is_(u'\\begin{enumerate}\n\\item number 1 \n\\item number 2\\begin{enumerate}\n\\item sub number 1 \n\\item sub number 2 \n\n\\end{enumerate}\n \n\n\\end{enumerate}\n'))
-    
+
     def test_nested_unordered_list(self):
         node = UnorderedList()
-        
+
         child_1 = Item()
         run_child_1 = Run()
         run_child_1.add(TextNode(u'bullet 1'))
         child_1.add(run_child_1)
         node.add(child_1)
-        
+
         child_2 = Item()
         run_child_2 = Run()
         run_child_2.add(TextNode(u'bullet 2'))
-        
+
         list_2 = UnorderedList()
-        
+
         sub_child_1 = Item()
         sub_run_child_1 = Run()
         sub_run_child_1.add(TextNode(u'sub bullet 1'))
         sub_child_1.add(sub_run_child_1)
         list_2.add(sub_child_1)
-        
+
         sub_child_2 = Item()
         sub_run_child_2 = Run()
         sub_run_child_2.add(TextNode(u'sub bullet 2'))
         sub_child_2.add(sub_run_child_2)
         list_2.add(sub_child_2)
-        
+
         run_child_2.add(list_2)
         child_2.add(run_child_2)
         node.add(child_2)
-        
+
         output = render_output(node)
         assert_that(output,
                     is_(u'\\begin{itemize}\n\\item bullet 1 \n\\item bullet 2\\begin{itemize}\n\\item sub bullet 1 \n\\item sub bullet 2 \n\n\\end{itemize}\n \n\n\\end{itemize}\n'))
-        
+
     def test_description_list_with_text(self):
         node = DescriptionList()
-        
+
         dt_1 = DT()
         run_1 = Run()
         run_1.add(TextNode(u'term 1'))
@@ -277,7 +277,7 @@ class TestLists(ContentToolsTestCase):
         run_dd_1.add(TextNode(u'description 1'))
         dt_1.desc.add(run_dd_1)
         node.add(dt_1)
-        
+
         dt_2 = DT()
         run_2 = Run()
         run_2.add(TextNode(u'term 2'))
@@ -288,7 +288,7 @@ class TestLists(ContentToolsTestCase):
         run_dd_2.add(TextNode(u'description 2'))
         dt_2.desc.add(run_dd_2)
         node.add(dt_2)
-        
+
         output = render_output(node)
         assert_that(output,
                     is_(u'\\begin{description}\n\\item [term 1] description 1 \n\\item [term 2] description 2 \n\n\\end{description}\n'))
