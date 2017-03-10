@@ -1936,5 +1936,5 @@ class OMathTest(ContentToolsTestCase):
         
         border_box.add(e)
         output = render_output(border_box)
-        assert_that(output, is_(u'\boxed{\hat{A}}'))
+        assert_that(output, is_(u'\\boxed{\\hat{A}}'))
         
