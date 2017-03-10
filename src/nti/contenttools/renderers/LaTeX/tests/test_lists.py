@@ -173,3 +173,38 @@ class TestLists(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\begin{enumerate}[start=0]\n\\item number 1 \n\\item number 2 \n\n\end{enumerate}\n'))
+    
+    def test_nested_unordered_list(self):
+        node = UnorderedList()
+        
+        child_1 = Item()
+        run_child_1 = Run()
+        run_child_1.add(TextNode(u'bullet 1'))
+        child_1.add(run_child_1)
+        node.add(child_1)
+        
+        child_2 = Item()
+        run_child_2 = Run()
+        run_child_2.add(TextNode(u'bullet 2'))
+        
+        list_2 = UnorderedList()
+        
+        sub_child_1 = Item()
+        sub_run_child_1 = Run()
+        sub_run_child_1.add(TextNode(u'sub bullet 1'))
+        sub_child_1.add(sub_run_child_1)
+        list_2.add(sub_child_1)
+        
+        sub_child_2 = Item()
+        sub_run_child_2 = Run()
+        sub_run_child_2.add(TextNode(u'sub bullet 2'))
+        sub_child_2.add(sub_run_child_2)
+        list_2.add(sub_child_2)
+        
+        run_child_2.add(list_2)
+        child_2.add(run_child_2)
+        node.add(child_2)
+        
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\begin{itemize}\n\\item bullet 1 \n\\item bullet 2\\begin{itemize}\n\\item sub bullet 1 \n\\item sub bullet 2 \n\n\\end{itemize}\n \n\n\\end{itemize}\n'))
