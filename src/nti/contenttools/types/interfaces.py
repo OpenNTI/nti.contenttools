@@ -5,7 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from persistent.mapping import default
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -332,7 +331,7 @@ class IList(IDocumentStructureNode):
 
     start = Int(title="List Start Number",
                 required=True,
-                default=0)
+                default=1)
 
     format = ValidTextLine(title="Format",
                            required=True,
