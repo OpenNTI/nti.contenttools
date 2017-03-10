@@ -25,6 +25,8 @@ from nti.contenttools.types.lists import DescriptionList
 
 from nti.contenttools.types.run import Run
 
+from nti.contenttools.types.text import TextNode
+
 from nti.contenttools.tests import ContentToolsTestCase
 
 
@@ -115,3 +117,21 @@ class TestLists(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\begin{description}\n\item []  \n\n\\end{description}\n'))
+
+    def test_dd_with_text(self):
+        node = DD()
+        run = Run()
+        run.add(TextNode(u'dd'))
+        node.add(run)
+        output = render_output(node)
+        assert_that(output, is_(u'dd'))
+
+    def test_dt_with_desc_with_text(self):
+        node = DT()
+        run = Run()
+        run.add(TextNode(u'term'))
+        node.add(run)
+        node.desc = Run()
+        node.desc.add(TextNode(u'description'))
+        output = render_output(node)
+        assert_that(output, is_(u'\\item [term] description\n'))
