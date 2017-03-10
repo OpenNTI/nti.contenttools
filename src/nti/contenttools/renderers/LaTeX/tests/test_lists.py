@@ -172,4 +172,4 @@ class TestLists(ContentToolsTestCase):
         
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{itemize}\n\\item number 1 \n\\item number 2 \n\n\end{itemize}\n'))
+                    is_(u'\\begin{enumerate}[start=0]\n\\item number 1 \n\\item number 2 \n\n\end{enumerate}\n'))
