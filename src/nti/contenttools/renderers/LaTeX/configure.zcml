@@ -401,4 +401,18 @@
 		 for="nti.contenttools.types.interfaces.IOMathBorderBox"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+		 
+	<!-- Code -->
+	<adapter factory=".code.CodeRenderer"
+		 for="nti.contenttools.types.interfaces.ICode"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".code.CodeLineRenderer"
+		 for="nti.contenttools.types.interfaces.ICodeLine"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".code.VerbatimRenderer"
+		 for="nti.contenttools.types.interfaces.IVerbatim"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>

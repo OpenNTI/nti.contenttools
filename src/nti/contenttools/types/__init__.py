@@ -164,6 +164,10 @@ from nti.contenttools.types.text import TextNode
 
 from nti.contenttools.types.note import Sidebar
 
+from nti.contenttools.types.code import Code
+from nti.contenttools.types.code import CodeLine
+from nti.contenttools.types.code import Verbatim
+
 class Newline(DocumentStructureNode):
     pass
 
@@ -191,18 +195,6 @@ class BlockQuote(DocumentStructureNode):
     def __init__(self, source=''):
         super(BlockQuote, self).__init__()
         self.source = source
-
-class CodeLine(DocumentStructureNode):
-    pass
-
-
-class Code(DocumentStructureNode):
-    pass
-
-
-class Verbatim(DocumentStructureNode):
-    pass
-
 
 class AlternateContent(DocumentStructureNode):
     pass
