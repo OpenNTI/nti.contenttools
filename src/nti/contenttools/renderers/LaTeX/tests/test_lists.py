@@ -134,4 +134,23 @@ class TestLists(ContentToolsTestCase):
         node.desc = Run()
         node.desc.add(TextNode(u'description'))
         output = render_output(node)
-        assert_that(output, is_(u'\\item [term] description\n'))
+        assert_that(output, is_(u'\\item [term] description \n'))
+    
+    def test_unordered_list_with_text(self):
+        node = UnorderedList()
+        
+        child_1 = Item()
+        run_child_1 = Run()
+        run_child_1.add(TextNode(u'bullet 1'))
+        child_1.add(run_child_1)
+        node.add(child_1)
+        
+        child_2 = Item()
+        run_child_2 = Run()
+        run_child_2.add(TextNode(u'bullet 2'))
+        child_2.add(run_child_2)
+        node.add(child_2)
+        
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\begin{itemize}\n\\item bullet 1 \n\\item bullet 2 \n\n\end{itemize}\n'))
