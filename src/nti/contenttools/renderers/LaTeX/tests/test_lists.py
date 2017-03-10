@@ -263,3 +263,32 @@ class TestLists(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\begin{itemize}\n\\item bullet 1 \n\\item bullet 2\\begin{itemize}\n\\item sub bullet 1 \n\\item sub bullet 2 \n\n\\end{itemize}\n \n\n\\end{itemize}\n'))
+        
+    def test_description_list_with_text(self):
+        node = DescriptionList()
+        
+        dt_1 = DT()
+        run_1 = Run()
+        run_1.add(TextNode(u'term 1'))
+        dt_1.add(run_1)
+        dd_1 = DD()
+        dt_1.desc = dd_1
+        run_dd_1 = Run()
+        run_dd_1.add(TextNode(u'description 1'))
+        dt_1.desc.add(run_dd_1)
+        node.add(dt_1)
+        
+        dt_2 = DT()
+        run_2 = Run()
+        run_2.add(TextNode(u'term 2'))
+        dt_2.add(run_2)
+        dd_2 = DD()
+        dt_2.desc = dd_2
+        run_dd_2 = Run()
+        run_dd_2.add(TextNode(u'description 2'))
+        dt_2.desc.add(run_dd_2)
+        node.add(dt_2)
+        
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\begin{description}\n\\item [term 1] description 1 \n\\item [term 2] description 2 \n\n\\end{description}\n'))
