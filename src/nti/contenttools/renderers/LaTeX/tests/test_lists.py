@@ -83,7 +83,7 @@ class TestLists(ContentToolsTestCase):
         node.add(child)
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{enumerate}[start=0]\n\item  \n\n\\end{enumerate}\n'))
+                    is_(u'\\begin{enumerate}\n\item  \n\n\\end{enumerate}\n'))
 
     def test_item_with_description(self):
         node = ItemWithDesc()
@@ -172,7 +172,7 @@ class TestLists(ContentToolsTestCase):
         
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{enumerate}[start=0]\n\\item number 1 \n\\item number 2 \n\n\end{enumerate}\n'))
+                    is_(u'\\begin{enumerate}\n\\item number 1 \n\\item number 2 \n\n\end{enumerate}\n'))
     
     def test_nested_unordered_list(self):
         node = UnorderedList()

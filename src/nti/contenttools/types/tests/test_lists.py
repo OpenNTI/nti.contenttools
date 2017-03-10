@@ -46,7 +46,7 @@ class TestLists(ContentToolsTestCase):
         assert_that(node, has_property('group', is_(u'')))
         assert_that(node, has_property('format', is_(u'')))
         assert_that(node, has_property('level', is_(u'')))
-        assert_that(node, has_property('start', is_(0)))
+        assert_that(node, has_property('start', is_(1)))
 
     def test_unordered_list(self):
         node = UnorderedList()
@@ -55,7 +55,7 @@ class TestLists(ContentToolsTestCase):
         assert_that(node, has_property('group', is_(u'')))
         assert_that(node, has_property('format', is_(u'')))
         assert_that(node, has_property('level', is_(u'')))
-        assert_that(node, has_property('start', is_(0)))
+        assert_that(node, has_property('start', is_(1)))
 
     def test_ordered_list(self):
         node = OrderedList()
@@ -64,7 +64,7 @@ class TestLists(ContentToolsTestCase):
         assert_that(node, has_property('group', is_(u'')))
         assert_that(node, has_property('format', is_(u'')))
         assert_that(node, has_property('level', is_(u'')))
-        assert_that(node, has_property('start', is_(0)))
+        assert_that(node, has_property('start', is_(1)))
 
     def test_item(self):
         node = Item()
