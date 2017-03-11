@@ -307,7 +307,7 @@ def render_munderover(context, node):
             render_node(context, node.children[2])
             context.write(u'}')
         elif u'\u222b' in unicode(token.split()) or u'\\int' in token:
-            context.write(u'int_{')
+            context.write(u'\\int_{')
             render_node(context, node.children[1])
             context.write(u'}^{')
             render_node(context, node.children[2])
