@@ -41,8 +41,10 @@ def render_image_noannotation(context, node):
 
 def render_image(context, node, command):
     params, command = set_image_params_and_command(node, command)
-    new_path = node.path if node.predefined_image_path else 'images/%s' % (
-        node.path)
+    if node.predefined_image_path:
+        new_path = node.path
+    else:
+        new_path = 'images/%s' % (node.path)
     context.write(u'\\')
     context.write(command)
     context.write(u'[')
