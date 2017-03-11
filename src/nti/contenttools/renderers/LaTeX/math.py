@@ -227,6 +227,10 @@ def render_msubsup(context, node):
         logger.warn("<msubsup> should only have 3 children")
     elif u'int' in check:
         context.write(u'\\int_{')
+    elif u'sum' in check:
+        context.write(u'\\sum_{')
+    elif u'prod' in check:
+        context.write(u'\\prod_{')
     else:
         context.write(u'{')
         render_node(context, node.children[0])
@@ -271,7 +275,7 @@ def render_munder(context, node):
         base_1 = render_output(node.children[0])
         base_2 = render_output(node.children[1])
         if u'23df' in base_2.lower() or u'\u23df' in unicode(base_2).split():
-            context.write(u'\\underbracket{')
+            context.write(u'\\underbrace{')
             context.write(base_1)
             context.write(u'}')
         elif u'\u220f' in unicode(base_1).split() or u'\\prod' in base_1:

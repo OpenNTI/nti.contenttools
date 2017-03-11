@@ -877,7 +877,64 @@ class TestMath(ContentToolsTestCase):
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(output_inline, is_(u'\\(\\int_{0}^{1}\\)'))
+        assert_that(output_inline, is_(u'\\(\\int_{0}^{1}\\)'))     
+    
+    def test_math_munder(self):
+        """
+        example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/munder
+<math>
+
+<munder accentunder="true">
+  <mrow>
+    <mi> x </mi>
+    <mo> + </mo>
+    <mi> y </mi>
+    <mo> + </mo>
+    <mi> z </mi>
+  </mrow>
+  <mo> &#x23DF; <!--BOTTOM CURLY BRACKET--> </mo>
+</munder> 
+
+</math>
+        """
+        math = Math()
+        munder = MUnder()
         
+        mrow = MRow()
         
+        mi_1 = MathRun()
+        mi_1.add(TextNode(u'x', type_text=u'math'))
+        mrow.add(mi_1)
+        
+        mo_1 = MathRun()
+        mo_1.add(TextNode(u'+', type_text=u'math'))
+        mrow.add(mo_1)
+        
+        mi_2 = MathRun()
+        mi_2.add(TextNode(u'y', type_text=u'math'))
+        mrow.add(mi_2)
+        
+        mo_2 = MathRun()
+        mo_2.add(TextNode(u'+', type_text=u'math'))
+        mrow.add(mo_2)
+        
+        mi_3 = MathRun()
+        mi_3.add(TextNode(u'z', type_text=u'math'))
+        mrow.add(mi_3)
+        
+        munder.add(mrow)
+        
+        mo_4 = MathRun()
+        mo_4.add(TextNode(u'⏟', type_text=u'math'))
+        munder.add(mo_4)
+        
+        math.add(munder)
+        
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\underbrace{x+y+z}\\]'))
+        
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\underbrace{x+y+z}\\)'))
         
