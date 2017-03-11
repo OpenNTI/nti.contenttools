@@ -710,4 +710,33 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\({X}_{1}\\)'))
+    
+    def test_complete_math_msqrt(self):
+        """
+        example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/msqrt
+#===============================================================================
+# <math>
+# 
+#  <msqrt>
+#     <mi>x</mi>
+#   </msqrt> 
+# 
+# </math>
+#===============================================================================
+        """
+        math = Math()
+        
+        msqrt = Msqrt()
+        mi = MathRun()
+        mi.add(TextNode(u'X', type_text=u'math'))
+        msqrt.add(mi)
+
+        math.add(msqrt)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\sqrt{X}\\]'))
+        
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\sqrt{X}\\)'))
         
