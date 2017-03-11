@@ -622,6 +622,11 @@ class TestMath(ContentToolsTestCase):
         output = render_output(math)
         assert_that(output, is_(u'\\[{a}^{2}+{b}^{2}={c}^{2}\\]'))
         
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\({a}^{2}+{b}^{2}={c}^{2}\\)'))
+        
         
         
         
