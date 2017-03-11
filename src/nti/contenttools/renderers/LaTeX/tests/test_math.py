@@ -552,6 +552,7 @@ class TestMath(ContentToolsTestCase):
     
     def test_complete_math_msup(self):
         """
+        example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/math
 #===============================================================================
 #  <math>
 #     <mrow>
@@ -629,6 +630,7 @@ class TestMath(ContentToolsTestCase):
     
     def test_complete_math_mfrac(self):
         """
+        example from  : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mfrac
 #===============================================================================
 # <math>  
 #   <mfrac bevelled="true">
@@ -674,8 +676,38 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\frac{\\frac{a}{b}}{\\frac{c}{d}}\\)'))
+    
+    
+    def test_complete_math_msub(self):
+        """
+        example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/msub
+#===============================================================================
+# <math>
+# 
+#   <msub>
+#     <mi>X</mi>
+#     <mn>1</mn>
+#   </msub> 
+# 
+# </math>
+#===============================================================================
+        """
+        math = Math()
         
+        msub = MSub()
+        mi = MathRun()
+        mi.add(TextNode(u'X', type_text=u'math'))
+        msub.add(mi)
+        mn = MathRun()
+        mn.add(TextNode(u'1', type_text=u'math'))
+        msub.add(mn)
         
+        math.add(msub)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[{X}_{1}\\]'))
         
-        
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\({X}_{1}\\)'))
         
