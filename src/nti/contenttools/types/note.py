@@ -25,9 +25,11 @@ from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.schema.fieldproperty import createFieldProperties
 
+
 @interface.implementer(ISidebar)
 class Sidebar(DocumentStructureNode):
     createFieldProperties(ISidebar)
+
 
 @interface.implementer(INote)
 class Note(DocumentStructureNode):
