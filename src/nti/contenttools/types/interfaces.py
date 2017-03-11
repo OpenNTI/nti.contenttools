@@ -631,6 +631,13 @@ class IMTable(IDocumentStructureNode):
     number_of_col = Int(title="Number of column",
                         required=True,
                         default=0)
+    frame = ValidTextLine(title="Frame",
+                          required=False)
+    rowlines = ValidTextLine(title="Rowlines",
+                             required=False)
+    align = ValidTextLine(title="Align",
+                          required=True,
+                          default=u'')
 
     def set_number_of_col(number_of_col):
         """
@@ -643,6 +650,10 @@ class IMtr(IDocumentStructureNode):
     number_of_col = Int(title="Number of column",
                         required=True,
                         default=0)
+    column_align = ValidTextLine(title="Column Align",
+                                 required=False)
+    row_align = ValidTextLine(title="Row Align",
+                              required=False)
 
     def set_number_of_col(number_of_col):
         """
@@ -738,6 +749,7 @@ class IOMathRun(IDocumentStructureNode):
     """
     Node for ooxml element <m:r>
     """
+
 
 class IOMathFrac(IDocumentStructureNode):
 
@@ -1009,9 +1021,9 @@ class IOMathEqArr(IDocumentStructureNode):
                    required=True,
                    default=1)
     begBorder = ValidTextLine(title="Beginning Char",
-                           required=False)
+                              required=False)
     endBorder = ValidTextLine(title="End Char",
-                           required=False)
+                              required=False)
 
     def set_row_space(rowSpace):
         """
