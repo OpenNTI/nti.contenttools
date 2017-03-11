@@ -103,7 +103,7 @@ class TestMath(ContentToolsTestCase):
     def test_mtr(self):
         node = Mtr()
         output = render_output(node)
-        assert_that(output, is_('\\\\\n'))
+        assert_that(output, is_(' \\\\\n'))
 
     def test_mtd(self):
         node = Mtd()
@@ -118,7 +118,7 @@ class TestMath(ContentToolsTestCase):
         child.add(grandchild)
         node.add(child)
         output = render_output(node)
-        assert_that(output, is_(u'\\begin{array}{ l }\n\\\\\n\\end{array}'))
+        assert_that(output, is_(u'\\begin{array}{ l }\n \\\\\n\\end{array}'))
 
     def test_mfrac(self):
         node = MFrac()
@@ -739,4 +739,101 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\sqrt{X}\\)'))
+    
+    
+    def test_complete_math_mtable(self):
+        """
+        example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mtable
+#===============================================================================
+# <math>
+#     
+#     <mi>X</mi>
+#     <mo>=</mo>
+#     <mtable frame="solid" rowlines="solid" align="axis 3">
+#         <mtr>
+#              <mtd><mi>A</mi></mtd>
+#              <mtd><mi>B</mi></mtd>
+#         </mtr>
+#         <mtr>
+#              <mtd><mi>C</mi></mtd>
+#              <mtd><mi>D</mi></mtd>
+#         </mtr>
+#         <mtr>
+#              <mtd><mi>E</mi></mtd>
+#              <mtd><mi>F</mi></mtd>
+#         </mtr>
+#     </mtable>
+# 
+# </math>
+#===============================================================================
+        """
+        math = Math()
+        
+        mi = MathRun()
+        mi.add(TextNode(u'X', type_text=u'math'))
+        math.add(mi)
+        
+        mo = MathRun()
+        mo.add(TextNode(u'=', type_text=u'math'))
+        math.add(mo)
+        
+        mtable = Mtable()
+        mtable.number_of_col = 2
+        
+        mtr_1 = Mtr()
+        
+        mtd_1 = Mtd()
+        mi_1 = MathRun()
+        mi_1.add(TextNode(u'A', type_text=u'math'))
+        mtd_1.add(mi_1)
+        mtr_1.add(mtd_1)
+
+        mtd_2 = Mtd()
+        mi_2 = MathRun()
+        mi_2.add(TextNode(u'B', type_text=u'math'))
+        mtd_2.add(mi_2)
+        mtr_1.add(mtd_2)
+        
+        mtable.add(mtr_1)
+        
+        mtr_2 = Mtr()
+        
+        mtd_3 = Mtd()
+        mi_3 = MathRun()
+        mi_3.add(TextNode(u'C', type_text=u'math'))
+        mtd_3.add(mi_3)
+        mtr_2.add(mtd_3)
+
+        mtd_4 = Mtd()
+        mi_4 = MathRun()
+        mi_4.add(TextNode(u'D', type_text=u'math'))
+        mtd_4.add(mi_4)
+        mtr_2.add(mtd_4)
+        
+        mtable.add(mtr_2)
+        
+        mtr_3 = Mtr()
+        
+        mtd_5 = Mtd()
+        mi_5 = MathRun()
+        mi_5.add(TextNode(u'E', type_text=u'math'))
+        mtd_5.add(mi_5)
+        mtr_3.add(mtd_5)
+
+        mtd_6 = Mtd()
+        mi_6 = MathRun()
+        mi_6.add(TextNode(u'F', type_text=u'math'))
+        mtd_6.add(mi_6)
+        mtr_3.add(mtd_6)
+        
+        mtable.add(mtr_3)
+        
+        math.add(mtable)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[X=\\begin{array}{ l  l }\nA & B \\\\\nC & D \\\\\nE & F \\\\\n\\end{array}\\]'))
+        
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(X=\\begin{array}{ l  l }\nA & B \\\\\nC & D \\\\\nE & F \\\\\n\\end{array}\\)'))
         
