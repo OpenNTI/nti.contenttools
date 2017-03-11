@@ -36,6 +36,8 @@ from nti.contenttools.types.math import MUnderover
 from nti.contenttools.types.math import MMultiscripts
 from nti.contenttools.types.math import MMprescripts
 
+from nti.contenttools.types.text import TextNode
+
 from nti.contenttools.tests import ContentToolsTestCase
 
 
@@ -547,3 +549,79 @@ class TestMath(ContentToolsTestCase):
         node.notation = u'longdiv'
         output = render_output(node)
         assert_that(output, is_(u'\\overline{}'))
+    
+    def test_complete_math_1(self):
+        """
+#===============================================================================
+#  <math>
+#     <mrow>
+#       <mrow>
+#         <msup>
+#           <mi>a</mi>
+#           <mn>2</mn>
+#         </msup>
+#         <mo>+</mo>
+#         <msup>
+#           <mi>b</mi>
+#           <mn>2</mn>
+#         </msup>
+#       </mrow>
+#       <mo>=</mo>
+#       <msup>
+#         <mi>c</mi>
+#         <mn>2</mn>
+#       </msup>
+#     </mrow>
+#   </math>
+#===============================================================================
+        """
+        math = Math()
+        mrow_main = MRow()
+        
+        mrow = MRow()
+        
+        msup_1 = MSup()
+        mi_1 = MathRun()
+        mi_1.add(TextNode(u'a', type_text=u'math'))
+        mn_1 = MathRun()
+        mn_1.add(TextNode(u'2', type_text=u'math'))
+        msup_1.add(mi_1)
+        msup_1.add(mn_1)
+        mrow.add(msup_1)
+        
+        mo_1 = MathRun()
+        mo_1.add(TextNode(u'+', type_text=u'math'))
+        mrow.add(mo_1)
+        
+        msup_2 = MSup()
+        mi_2 = MathRun()
+        mi_2.add(TextNode(u'b', type_text=u'math'))
+        mn_2 = MathRun()
+        mn_2.add(TextNode(u'2', type_text=u'math'))
+        msup_2.add(mi_2)
+        msup_2.add(mn_2)
+        mrow.add(msup_2)
+        
+        mrow_main.add(mrow)
+        
+        mo_2 = MathRun()
+        mo_2.add(TextNode(u'=', type_text=u'math'))
+        mrow_main.add(mo_2)
+        
+        msup_3 = MSup()
+        mi_3 = MathRun()
+        mi_3.add(TextNode(u'c', type_text=u'math'))
+        mn_3 = MathRun()
+        mn_3.add(TextNode(u'2', type_text=u'math'))
+        msup_3.add(mi_3)
+        msup_3.add(mn_3)
+        mrow_main.add(msup_3)
+        
+        math.add(mrow_main)
+        
+        output = render_output(math)
+        assert_that(output, is_(u'\\[{a}^{2}+{b}^{2}={c}^{2}\\]'))
+        
+        
+        
+        
