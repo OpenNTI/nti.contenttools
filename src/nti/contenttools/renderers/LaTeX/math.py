@@ -337,9 +337,9 @@ def render_mover(context, node):
     """
     base = render_output(node.children[1])
     if u'23de' in base.lower() or u'\u23de' in unicode(base).split():
-        context.write(u'\\overbracket{')
+        context.write(u'\\overbrace{')
         render_node(context, node.children[0])
-        context.write(u'')
+        context.write(u'}')
     else:
         context.write(u'\\overset{')
         context.write(base)
