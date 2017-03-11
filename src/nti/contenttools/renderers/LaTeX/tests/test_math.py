@@ -550,7 +550,7 @@ class TestMath(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output, is_(u'\\overline{}'))
     
-    def test_complete_math_1(self):
+    def test_complete_math_msup(self):
         """
 #===============================================================================
 #  <math>
@@ -626,6 +626,55 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\({a}^{2}+{b}^{2}={c}^{2}\\)'))
+    
+    def test_complete_math_mfrac(self):
+        """
+#===============================================================================
+# <math>  
+#   <mfrac bevelled="true">
+#      <mfrac>
+#         <mi> a </mi>
+#         <mi> b </mi>
+#      </mfrac>
+#      <mfrac>
+#         <mi> c </mi>
+#         <mi> d </mi>
+#      </mfrac>
+#   </mfrac>
+# </math>
+#===============================================================================
+        """
+        math = Math()
+        mfrac = MFrac()
+        
+        mfrac_1 = MFrac()
+        mi_1 = MathRun()
+        mi_1.add(TextNode(u'a', type_text=u'math'))
+        mi_2 = MathRun()
+        mi_2.add(TextNode(u'b', type_text=u'math'))
+        mfrac_1.add(mi_1)
+        mfrac_1.add(mi_2)
+        mfrac.add(mfrac_1)
+        
+        mfrac_2 = MFrac()
+        mi_3 = MathRun()
+        mi_3.add(TextNode(u'c', type_text=u'math'))
+        mi_4 = MathRun()
+        mi_4.add(TextNode(u'd', type_text=u'math'))
+        mfrac_2.add(mi_3)
+        mfrac_2.add(mi_4)
+        mfrac.add(mfrac_2)
+        
+        math.add(mfrac)
+        
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\frac{\\frac{a}{b}}{\\frac{c}{d}}\\]'))
+        
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\frac{\\frac{a}{b}}{\\frac{c}{d}}\\)'))
+        
         
         
         
