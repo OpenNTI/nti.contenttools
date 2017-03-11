@@ -882,20 +882,22 @@ class TestMath(ContentToolsTestCase):
     def test_math_munder(self):
         """
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/munder
-<math>
-
-<munder accentunder="true">
-  <mrow>
-    <mi> x </mi>
-    <mo> + </mo>
-    <mi> y </mi>
-    <mo> + </mo>
-    <mi> z </mi>
-  </mrow>
-  <mo> &#x23DF; <!--BOTTOM CURLY BRACKET--> </mo>
-</munder> 
-
-</math>
+#===============================================================================
+# <math>
+# 
+# <munder accentunder="true">
+#   <mrow>
+#     <mi> x </mi>
+#     <mo> + </mo>
+#     <mi> y </mi>
+#     <mo> + </mo>
+#     <mi> z </mi>
+#   </mrow>
+#   <mo> &#x23DF; <!--BOTTOM CURLY BRACKET--> </mo>
+# </munder> 
+# 
+# </math>
+#===============================================================================
         """
         math = Math()
         munder = MUnder()
@@ -937,4 +939,42 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\underbrace{x+y+z}\\)'))
+    
+    def test_math_munderover(self):
+        """
+#===============================================================================
+# <math displaystyle="true"> 
+# 
+#   <munderover >
+#     <mo> &#x222B; <!--INTEGRAL--> </mo>
+#     <mn> 0 </mn>
+#     <mi> &#x221E; <!--INFINITY--> </mi>
+#   </munderover>
+# 
+# </math>
+#===============================================================================
+        """
+        math = Math()
+        munderover = MUnderover()
+        
+        mo_1 = MathRun()
+        mo_1.add(TextNode(u'∫', type_text=u'math'))
+        munderover.add(mo_1)
+        
+        mi = MathRun()
+        mi.add(TextNode(u'0', type_text=u'math'))
+        munderover.add(mi)
+        
+        mo_2 = MathRun()
+        mo_2.add(TextNode(u'∞', type_text=u'math'))
+        munderover.add(mo_2)
+        
+        math.add(munderover)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\int_{0}^{\\infty }\\]'))
+        
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\int_{0}^{\\infty }\\)'))
         
