@@ -16,7 +16,10 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.omath import OMath
 from nti.contenttools.types.omath import OMathMr
+from nti.contenttools.types.omath import OMathAcc
+from nti.contenttools.types.omath import OMathBar
 from nti.contenttools.types.omath import OMathDPr
+from nti.contenttools.types.omath import OMathLim
 from nti.contenttools.types.omath import OMathRun
 from nti.contenttools.types.omath import OMathSub
 from nti.contenttools.types.omath import OMathSup
@@ -24,28 +27,22 @@ from nti.contenttools.types.omath import OMathNary
 from nti.contenttools.types.omath import OMathBase
 from nti.contenttools.types.omath import OMathFrac
 from nti.contenttools.types.omath import OMathPara
+from nti.contenttools.types.omath import OMathSPre
 from nti.contenttools.types.omath import OMathEqArr
 from nti.contenttools.types.omath import OMathNaryPr
 from nti.contenttools.types.omath import OMathMatrix
 from nti.contenttools.types.omath import OMathSubSup
 from nti.contenttools.types.omath import OMathDegree
+from nti.contenttools.types.omath import OMathLimLow
+from nti.contenttools.types.omath import OMathLimUpp
 from nti.contenttools.types.omath import OMathRadical
+from nti.contenttools.types.omath import OMathGroupChr
+from nti.contenttools.types.omath import OMathBorderBox
 from nti.contenttools.types.omath import OMathDelimiter
 from nti.contenttools.types.omath import OMathNumerator
 from nti.contenttools.types.omath import OMathSubscript
 from nti.contenttools.types.omath import OMathSuperscript
 from nti.contenttools.types.omath import OMathDenominator
-from nti.contenttools.types.omath import OMathFunc
-from nti.contenttools.types.omath import OMathFName
-from nti.contenttools.types.omath import OMathLimLow
-from nti.contenttools.types.omath import OMathLimUpp
-from nti.contenttools.types.omath import OMathLim
-from nti.contenttools.types.omath import OMathBar
-from nti.contenttools.types.omath import OMathAcc
-from nti.contenttools.types.omath import OMathSPre
-from nti.contenttools.types.omath import OMathBox
-from nti.contenttools.types.omath import OMathBorderBox
-from nti.contenttools.types.omath import OMathGroupChr
 
 from nti.contenttools.types.text import TextNode
 
@@ -1252,47 +1249,47 @@ class OMathTest(ContentToolsTestCase):
         """
         bar = OMathBar()
         bar.pos = u'top'
-       
+
         e_bar = OMathBase()
-        
+
         acc = OMathAcc()
         acc.accChr = u'\u0302'
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'x', type_text='omath'))
         e.add(run)
-        acc.add(e) 
-        
+        acc.add(e)
+
         e_bar.add(acc)
         bar.add(e_bar)
-        
+
         output = render_output(bar)
         assert_that(output, is_(u'\\overline{\\hat{x}}'))
-    
+
     def test_omath_bar_overline(self):
         bar = OMathBar()
         bar.pos = u'top'
-       
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'A+B', type_text='omath'))
         e.add(run)
-        
+
         bar.add(e)
-        
+
         output = render_output(bar)
         assert_that(output, is_(u'\\overline{A+B}'))
-    
+
     def test_omath_bar_underline(self):
         bar = OMathBar()
-       
+
         e = OMathBase()
         run = OMathRun()
         run.add(TextNode(u'A+B', type_text='omath'))
         e.add(run)
-        
+
         bar.add(e)
-        
+
         output = render_output(bar)
         assert_that(output, is_(u'\\underline{A+B}'))
 
@@ -1562,7 +1559,7 @@ class OMathTest(ContentToolsTestCase):
         omath.add(omath_para)
         output = render_output(omath)
         assert_that(output, is_(u'$$\\overline{x}$$'))
-    
+
     def test_omath_lim_upp(self):
         """
 #===============================================================================
@@ -1614,7 +1611,7 @@ class OMathTest(ContentToolsTestCase):
         acc.add(e_acc)
         e.add(acc)
         limupp.add(e)
-        
+
         lim = OMathLim()
         e_lim = OMathBase()
         run_lim = OMathRun()
@@ -1622,10 +1619,11 @@ class OMathTest(ContentToolsTestCase):
         e_lim.add(run_lim)
         lim.add(e_lim)
         limupp.add(lim)
-        
+
         output = render_output(limupp)
-        assert_that(output, is_(u'\\overset{n\\rightarrow \\infty }{\\hat{x}}'))
-    
+        assert_that(
+            output, is_(u'\\overset{n\\rightarrow \\infty }{\\hat{x}}'))
+
     def test_omath_spre(self):
         """
 #===============================================================================
@@ -1673,7 +1671,7 @@ class OMathTest(ContentToolsTestCase):
 #===============================================================================
         """
         spre = OMathSPre()
-        
+
         sub = OMathSub()
         acc_sub = OMathAcc()
         e_sub = OMathBase()
@@ -1683,7 +1681,7 @@ class OMathTest(ContentToolsTestCase):
         acc_sub.add(e_sub)
         sub.add(acc_sub)
         spre.add(sub)
-        
+
         sup = OMathSup()
         acc_sup = OMathAcc()
         e_sup = OMathBase()
@@ -1693,16 +1691,16 @@ class OMathTest(ContentToolsTestCase):
         acc_sup.add(e_sup)
         sup.add(acc_sup)
         spre.add(sup)
-        
+
         e = OMathBase()
         run_e = OMathRun()
         run_e.add(TextNode(u'A', type_text='omath'))
         e.add(run_e)
         spre.add(e)
-        
+
         output = render_output(spre)
         assert_that(output, is_(u'{^\\hat{x}_\\hat{y}}A'))
-    
+
     def test_omath_groupChr_pos_top(self):
         """
 #===============================================================================
@@ -1737,7 +1735,7 @@ class OMathTest(ContentToolsTestCase):
         group_chr = OMathGroupChr()
         group_chr.pos = u'top'
         group_chr.groupChr = u'\u23de'
-        
+
         e = OMathBase()
         acc = OMathAcc()
         e_acc = OMathBase()
@@ -1747,15 +1745,15 @@ class OMathTest(ContentToolsTestCase):
         acc.add(e_acc)
         e.add(acc)
         group_chr.add(e)
-        
+
         output = render_output(group_chr)
         assert_that(output, is_(u'\\overbrace{\\hat{x}}'))
-        
+
     def test_omath_groupChr_pos_top_2(self):
         group_chr = OMathGroupChr()
         group_chr.pos = u'top'
         group_chr.groupChr = u'\u23de'
-        
+
         e = OMathBase()
         acc = OMathAcc()
         e_acc = OMathBase()
@@ -1764,21 +1762,21 @@ class OMathTest(ContentToolsTestCase):
         e_acc.add(run)
         acc.add(e_acc)
         e.add(acc)
-        
+
         run_e = OMathBase()
         run_e.add(TextNode(u' - y + z', type_text='omath'))
         e.add(run_e)
-        
+
         group_chr.add(e)
-        
+
         output = render_output(group_chr)
         assert_that(output, is_(u'\\overbrace{\\hat{x} - y + z}'))
-    
+
     def test_omath_groupChr_pos_top_3(self):
         group_chr = OMathGroupChr()
         group_chr.pos = u'top'
         group_chr.groupChr = u'\u27f6'
-        
+
         e = OMathBase()
         acc = OMathAcc()
         e_acc = OMathBase()
@@ -1787,21 +1785,22 @@ class OMathTest(ContentToolsTestCase):
         e_acc.add(run)
         acc.add(e_acc)
         e.add(acc)
-        
+
         run_e = OMathBase()
         run_e.add(TextNode(u' - y', type_text='omath'))
         e.add(run_e)
-        
+
         group_chr.add(e)
-        
+
         output = render_output(group_chr)
-        assert_that(output, is_(u'\\underset{\\hat{x} - y}{\\longrightarrow }'))
-    
+        assert_that(
+            output, is_(u'\\underset{\\hat{x} - y}{\\longrightarrow }'))
+
     def test_omath_groupChr_pos_bottom(self):
         group_chr = OMathGroupChr()
         group_chr.pos = u'bot'
         group_chr.groupChr = u'\u23df'
-        
+
         e = OMathBase()
         acc = OMathAcc()
         e_acc = OMathBase()
@@ -1810,21 +1809,21 @@ class OMathTest(ContentToolsTestCase):
         e_acc.add(run)
         acc.add(e_acc)
         e.add(acc)
-        
+
         run_e = OMathBase()
         run_e.add(TextNode(u' - y + z', type_text='omath'))
         e.add(run_e)
-        
+
         group_chr.add(e)
-        
+
         output = render_output(group_chr)
         assert_that(output, is_(u'\\underbrace{\\hat{x} - y + z}'))
-    
+
     def test_omath_groupChr_pos_bottom_2(self):
         group_chr = OMathGroupChr()
         group_chr.pos = u'bot'
         group_chr.groupChr = u'\u27f6'
-        
+
         e = OMathBase()
         acc = OMathAcc()
         e_acc = OMathBase()
@@ -1833,21 +1832,22 @@ class OMathTest(ContentToolsTestCase):
         e_acc.add(run)
         acc.add(e_acc)
         e.add(acc)
-        
+
         run_e = OMathBase()
         run_e.add(TextNode(u' - y', type_text='omath'))
         e.add(run_e)
-        
+
         group_chr.add(e)
-        
+
         output = render_output(group_chr)
-        assert_that(output, is_(u'\\underset{\\longrightarrow }{\\hat{x} - y}'))
-    
+        assert_that(
+            output, is_(u'\\underset{\\longrightarrow }{\\hat{x} - y}'))
+
     def test_omath_groupChr_vertJC_top(self):
         group_chr = OMathGroupChr()
         group_chr.vertJc = u'top'
         group_chr.groupChr = u'\u21d1'
-        
+
         e = OMathBase()
         acc = OMathAcc()
         e_acc = OMathBase()
@@ -1856,21 +1856,21 @@ class OMathTest(ContentToolsTestCase):
         e_acc.add(run)
         acc.add(e_acc)
         e.add(acc)
-        
+
         run_e = OMathBase()
         run_e.add(TextNode(u' - y', type_text='omath'))
         e.add(run_e)
-        
+
         group_chr.add(e)
-        
+
         output = render_output(group_chr)
         assert_that(output, is_(u'\\underset{\\hat{x} - y}{\\Uparrow }'))
-    
+
     def test_omath_groupChr_vertJC_bottom(self):
         group_chr = OMathGroupChr()
         group_chr.vertJc = u'bot'
         group_chr.groupChr = u'\u21d1'
-        
+
         e = OMathBase()
         acc = OMathAcc()
         e_acc = OMathBase()
@@ -1879,16 +1879,16 @@ class OMathTest(ContentToolsTestCase):
         e_acc.add(run)
         acc.add(e_acc)
         e.add(acc)
-        
+
         run_e = OMathBase()
         run_e.add(TextNode(u' - y', type_text='omath'))
         e.add(run_e)
-        
+
         group_chr.add(e)
-        
+
         output = render_output(group_chr)
         assert_that(output, is_(u'\\underset{\\Uparrow }{\\hat{x} - y}'))
-    
+
     def test_omath_border_box(self):
         """
 <m:borderBox>
@@ -1924,7 +1924,7 @@ class OMathTest(ContentToolsTestCase):
 </m:borderBox>
         """
         border_box = OMathBorderBox()
-        
+
         e = OMathBase()
         acc = OMathAcc()
         e_acc = OMathBase()
@@ -1933,8 +1933,7 @@ class OMathTest(ContentToolsTestCase):
         e_acc.add(run)
         acc.add(e_acc)
         e.add(acc)
-        
+
         border_box.add(e)
         output = render_output(border_box)
         assert_that(output, is_(u'\\boxed{\\hat{A}}'))
-        

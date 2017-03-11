@@ -70,8 +70,9 @@ def render_children_output(node):
     render_children(result, node)
     return result.read()
 
+
 def render_node_with_newline(node):
     result = []
-    for child in node.children:
+    for child in node.children or ():
         result.append(render_output(child))
     return u' & '.join(result) + u' \\\\\n'
