@@ -311,7 +311,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child_1)
         node.add(child_2)
         output = render_output(node)
-        assert_that(output, is_(u'\\sqrt[\\sqrt[]{}]{}'))
+        assert_that(output, is_(u'\\sqrt[]{\\sqrt[]{}}'))
 
     def test_double_mroot_2(self):
         node = MRoot()
@@ -326,7 +326,7 @@ class TestMath(ContentToolsTestCase):
         node.add(child_2)
         node.add(child_1)
         output = render_output(node)
-        assert_that(output, is_(u'\\sqrt[]{\\sqrt[]{}}'))
+        assert_that(output, is_(u'\\sqrt[\\sqrt[]{}]{}'))
 
     def test_munder(self):
         node = MUnder()
@@ -1039,4 +1039,39 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\overbrace{x+y+z}\\)'))
+    
+    
+    def test_math_mroot(self):
+        """
+        example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mroot
+#===============================================================================
+# <math>
+# 
+#  <mroot>
+#     <mi>x</mi>
+#     <mn>3</mn>
+#  </mroot> 
+#  
+# </math>
+#===============================================================================
+        """
+        math = Math()
         
+        mroot = MRoot()
+        
+        mi = MathRun()
+        mi.add(TextNode(u'x', type_text=u'math'))
+        mroot.add(mi)
+        
+        mn = MathRun()
+        mn.add(TextNode(u'3', type_text=u'math'))
+        mroot.add(mn)
+        
+        math.add(mroot)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\sqrt[3]{x}\\]'))
+        
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\sqrt[3]{x}\\)'))
