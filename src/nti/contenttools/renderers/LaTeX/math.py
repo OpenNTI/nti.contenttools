@@ -260,9 +260,9 @@ def render_mroot(context, node):
         logger.warn("<MRoot> should only have 2 children")
     else:
         context.write(u'\\sqrt[')
-        render_node(context, node.children[0])
-        context.write(u']{')
         render_node(context, node.children[1])
+        context.write(u']{')
+        render_node(context, node.children[0])
         context.write(u'}')
     return node
 
