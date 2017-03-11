@@ -115,7 +115,7 @@ def set_mfenced_without_border(context, node):
 
 def render_math_run(context, node):
     """
-    render MathRun node
+    render MathRun node <mi>, <mo>, <mn>
     """
     return render_children(context, node)
 
