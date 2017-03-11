@@ -836,4 +836,48 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(X=\\begin{array}{ l  l }\nA & B \\\\\nC & D \\\\\nE & F \\\\\n\\end{array}\\)'))
+    
+    
+    def test_complete_math_msubsup_integral(self):
+        """
+        example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/msubsup
+#===============================================================================
+# <math displaystyle="true">   
+# 
+#   <msubsup>
+#     <mo> &#x222B;<!--Integral --> </mo>
+#     <mn> 0 </mn>
+#     <mn> 1 </mn>
+#   </msubsup>
+# 
+# </math>
+#===============================================================================
+        """
+        math = Math()
+        
+        msubsup = MSubSup()
+        
+        mo = MathRun()
+        mo.add(TextNode(u'∫', type_text=u'math'))
+        msubsup.add(mo)
+        
+        mn_1 = MathRun()
+        mn_1.add(TextNode(u'0', type_text=u'math'))
+        msubsup.add(mn_1)
+        
+        mn_2 = MathRun()
+        mn_2.add(TextNode(u'1', type_text=u'math'))
+        msubsup.add(mn_2)
+        
+        math.add(msubsup)
+        
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\int_{0}^{1}\\]'))
+        
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\int_{0}^{1}\\)'))
+        
+        
         
