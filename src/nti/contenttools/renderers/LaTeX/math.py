@@ -17,6 +17,7 @@ from nti.contenttools.renderers.LaTeX.base import render_command
 from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_children_output
+from nti.contenttools.renderers.LaTeX.base import render_node_with_newline
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
@@ -41,6 +42,7 @@ from nti.contenttools.types.interfaces import IMMenclose
 from nti.contenttools.types.interfaces import IMUnderover
 from nti.contenttools.types.interfaces import IMMultiscripts
 from nti.contenttools.types.interfaces import IMMprescripts
+
 
 """
 rendering MathML element
@@ -160,8 +162,7 @@ def render_mtr(context, node):
     """
     render <mtr> element
     """
-    render_children(context, node)
-    context.write(u'\\\\\n')
+    context.write(render_node_with_newline(node))
     return node
 
 

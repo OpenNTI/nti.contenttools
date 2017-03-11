@@ -19,6 +19,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_iterable
 from nti.contenttools.renderers.LaTeX.base import render_command
+from nti.contenttools.renderers.LaTeX.base import render_node_with_newline
 
 from nti.contenttools.renderers.LaTeX.utils import search_and_update_node_property
 from nti.contenttools.renderers.LaTeX.utils import search_node
@@ -378,14 +379,6 @@ def render_omath_mr(context, node):
     """
     context.write(render_node_with_newline(node))
     return node
-
-
-def render_node_with_newline(node):
-    result = []
-    for child in node.children:
-        result.append(render_output(child))
-    return u' & '.join(result) + u' \\\\\n'
-
 
 def render_omath_eqarr(context, node):
     """
