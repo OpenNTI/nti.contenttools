@@ -403,11 +403,11 @@ def render_menclose(context, node):
     notation = list(node.notation.split())
     for item in notation:
         if item == u'updiagonalstrike':
-            # TODO : need to use package : cancel, uncomment if we are able to
+            # TODO: need to use package : cancel, uncomment if we are able to
             # use cancel
             m_updiagonalstrike(context, node)
         elif item == u'downdiagonalstrike':
-            # TODO : need to use package : cancel, uncomment if we are able to
+            # TODO: need to use package : cancel, uncomment if we are able to
             # use cancel
             m_downdiagonalstrike(context, node)
         elif item == 'radical':
@@ -421,33 +421,33 @@ def render_menclose(context, node):
         elif item == 'bottom':
             m_bottom(context, node)
         elif item == 'verticalstrike':
-            # TODO : need to use package : cancel, uncomment if we are able to
+            # TODO: need to use package : cancel, uncomment if we are able to
             # use cancel
             pass
         elif item == 'horizontalstrike':
-            # TODO : need to use package : cancel, uncomment if we are able to
+            # TODO: need to use package : cancel, uncomment if we are able to
             # use cancel
             m_horizontalstrike(context, node)
             pass
         elif item == 'madruwb':
-            # TODO : create a method to handle this notation
+            # TODO: create a method to handle this notation
             pass
         elif item == 'updiagonalarrow':
-            # TODO : create a method to handle this notation
+            # TODO: create a method to handle this notation
             pass
         elif item == 'phasorangle':
-            # TODO : create a method to handle this notation
+            # TODO: create a method to handle this notation
             pass
         elif item == 'actuarial':
-            # TODO : create a method to handle this notation
+            # TODO: create a method to handle this notation
             pass
         elif item == 'box':
             m_box(context, node)
         elif item == 'roundedbox':
-            # TODO : create a method to handle this notation
+            # TODO: create a method to handle this notation
             pass
         elif item == 'circle':
-            # TODO : create a method to handle this notation
+            # TODO: create a method to handle this notation
             pass
         elif item == 'longdiv':
             m_longdiv(context, node)
@@ -483,7 +483,7 @@ def m_box(context, node):
 
 
 def m_longdiv(context, node):
-    # TODO : the render result will look odd, find a better command
+    # TODO: the render result will look odd, find a better command
     return render_command(context, u'overline', node)
 
 

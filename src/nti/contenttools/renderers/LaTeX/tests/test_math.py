@@ -33,8 +33,8 @@ from nti.contenttools.types.math import MathRun
 from nti.contenttools.types.math import MSubSup
 from nti.contenttools.types.math import MMenclose
 from nti.contenttools.types.math import MUnderover
-from nti.contenttools.types.math import MMultiscripts
 from nti.contenttools.types.math import MMprescripts
+from nti.contenttools.types.math import MMultiscripts
 
 from nti.contenttools.types.text import TextNode
 
@@ -549,7 +549,7 @@ class TestMath(ContentToolsTestCase):
         node.notation = u'longdiv'
         output = render_output(node)
         assert_that(output, is_(u'\\overline{}'))
-    
+
     def test_complete_math_msup(self):
         """
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/math
@@ -578,9 +578,9 @@ class TestMath(ContentToolsTestCase):
         """
         math = Math()
         mrow_main = MRow()
-        
+
         mrow = MRow()
-        
+
         msup_1 = MSup()
         mi_1 = MathRun()
         mi_1.add(TextNode(u'a', type_text=u'math'))
@@ -589,11 +589,11 @@ class TestMath(ContentToolsTestCase):
         msup_1.add(mi_1)
         msup_1.add(mn_1)
         mrow.add(msup_1)
-        
+
         mo_1 = MathRun()
         mo_1.add(TextNode(u'+', type_text=u'math'))
         mrow.add(mo_1)
-        
+
         msup_2 = MSup()
         mi_2 = MathRun()
         mi_2.add(TextNode(u'b', type_text=u'math'))
@@ -602,13 +602,13 @@ class TestMath(ContentToolsTestCase):
         msup_2.add(mi_2)
         msup_2.add(mn_2)
         mrow.add(msup_2)
-        
+
         mrow_main.add(mrow)
-        
+
         mo_2 = MathRun()
         mo_2.add(TextNode(u'=', type_text=u'math'))
         mrow_main.add(mo_2)
-        
+
         msup_3 = MSup()
         mi_3 = MathRun()
         mi_3.add(TextNode(u'c', type_text=u'math'))
@@ -617,17 +617,17 @@ class TestMath(ContentToolsTestCase):
         msup_3.add(mi_3)
         msup_3.add(mn_3)
         mrow_main.add(msup_3)
-        
+
         math.add(mrow_main)
-        
+
         output = render_output(math)
         assert_that(output, is_(u'\\[{a}^{2}+{b}^{2}={c}^{2}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\({a}^{2}+{b}^{2}={c}^{2}\\)'))
-    
+
     def test_complete_math_mfrac(self):
         """
         example from  : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mfrac
@@ -648,7 +648,7 @@ class TestMath(ContentToolsTestCase):
         """
         math = Math()
         mfrac = MFrac()
-        
+
         mfrac_1 = MFrac()
         mi_1 = MathRun()
         mi_1.add(TextNode(u'a', type_text=u'math'))
@@ -657,7 +657,7 @@ class TestMath(ContentToolsTestCase):
         mfrac_1.add(mi_1)
         mfrac_1.add(mi_2)
         mfrac.add(mfrac_1)
-        
+
         mfrac_2 = MFrac()
         mi_3 = MathRun()
         mi_3.add(TextNode(u'c', type_text=u'math'))
@@ -666,18 +666,18 @@ class TestMath(ContentToolsTestCase):
         mfrac_2.add(mi_3)
         mfrac_2.add(mi_4)
         mfrac.add(mfrac_2)
-        
+
         math.add(mfrac)
-        
+
         output = render_output(math)
         assert_that(output, is_(u'\\[\\frac{\\frac{a}{b}}{\\frac{c}{d}}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(output_inline, is_(u'\\(\\frac{\\frac{a}{b}}{\\frac{c}{d}}\\)'))
-    
-    
+        assert_that(
+            output_inline, is_(u'\\(\\frac{\\frac{a}{b}}{\\frac{c}{d}}\\)'))
+
     def test_complete_math_msub(self):
         """
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/msub
@@ -693,7 +693,7 @@ class TestMath(ContentToolsTestCase):
 #===============================================================================
         """
         math = Math()
-        
+
         msub = MSub()
         mi = MathRun()
         mi.add(TextNode(u'X', type_text=u'math'))
@@ -701,16 +701,16 @@ class TestMath(ContentToolsTestCase):
         mn = MathRun()
         mn.add(TextNode(u'1', type_text=u'math'))
         msub.add(mn)
-        
+
         math.add(msub)
         output = render_output(math)
         assert_that(output, is_(u'\\[{X}_{1}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\({X}_{1}\\)'))
-    
+
     def test_complete_math_msqrt(self):
         """
         example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/msqrt
@@ -725,7 +725,7 @@ class TestMath(ContentToolsTestCase):
 #===============================================================================
         """
         math = Math()
-        
+
         msqrt = Msqrt()
         mi = MathRun()
         mi.add(TextNode(u'X', type_text=u'math'))
@@ -734,13 +734,12 @@ class TestMath(ContentToolsTestCase):
         math.add(msqrt)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\sqrt{X}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\sqrt{X}\\)'))
-    
-    
+
     def test_complete_math_mtable(self):
         """
         example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mtable
@@ -768,20 +767,20 @@ class TestMath(ContentToolsTestCase):
 #===============================================================================
         """
         math = Math()
-        
+
         mi = MathRun()
         mi.add(TextNode(u'X', type_text=u'math'))
         math.add(mi)
-        
+
         mo = MathRun()
         mo.add(TextNode(u'=', type_text=u'math'))
         math.add(mo)
-        
+
         mtable = Mtable()
         mtable.number_of_col = 2
-        
+
         mtr_1 = Mtr()
-        
+
         mtd_1 = Mtd()
         mi_1 = MathRun()
         mi_1.add(TextNode(u'A', type_text=u'math'))
@@ -793,11 +792,11 @@ class TestMath(ContentToolsTestCase):
         mi_2.add(TextNode(u'B', type_text=u'math'))
         mtd_2.add(mi_2)
         mtr_1.add(mtd_2)
-        
+
         mtable.add(mtr_1)
-        
+
         mtr_2 = Mtr()
-        
+
         mtd_3 = Mtd()
         mi_3 = MathRun()
         mi_3.add(TextNode(u'C', type_text=u'math'))
@@ -809,11 +808,11 @@ class TestMath(ContentToolsTestCase):
         mi_4.add(TextNode(u'D', type_text=u'math'))
         mtd_4.add(mi_4)
         mtr_2.add(mtd_4)
-        
+
         mtable.add(mtr_2)
-        
+
         mtr_3 = Mtr()
-        
+
         mtd_5 = Mtd()
         mi_5 = MathRun()
         mi_5.add(TextNode(u'E', type_text=u'math'))
@@ -825,19 +824,20 @@ class TestMath(ContentToolsTestCase):
         mi_6.add(TextNode(u'F', type_text=u'math'))
         mtd_6.add(mi_6)
         mtr_3.add(mtd_6)
-        
+
         mtable.add(mtr_3)
-        
+
         math.add(mtable)
         output = render_output(math)
-        assert_that(output, is_(u'\\[X=\\begin{array}{ l  l }\nA & B \\\\\nC & D \\\\\nE & F \\\\\n\\end{array}\\]'))
-        
+        assert_that(output, is_(
+            u'\\[X=\\begin{array}{ l  l }\nA & B \\\\\nC & D \\\\\nE & F \\\\\n\\end{array}\\]'))
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(output_inline, is_(u'\\(X=\\begin{array}{ l  l }\nA & B \\\\\nC & D \\\\\nE & F \\\\\n\\end{array}\\)'))
-    
-    
+        assert_that(output_inline, is_(
+            u'\\(X=\\begin{array}{ l  l }\nA & B \\\\\nC & D \\\\\nE & F \\\\\n\\end{array}\\)'))
+
     def test_complete_math_msubsup_integral(self):
         """
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/msubsup
@@ -854,31 +854,31 @@ class TestMath(ContentToolsTestCase):
 #===============================================================================
         """
         math = Math()
-        
+
         msubsup = MSubSup()
-        
+
         mo = MathRun()
         mo.add(TextNode(u'∫', type_text=u'math'))
         msubsup.add(mo)
-        
+
         mn_1 = MathRun()
         mn_1.add(TextNode(u'0', type_text=u'math'))
         msubsup.add(mn_1)
-        
+
         mn_2 = MathRun()
         mn_2.add(TextNode(u'1', type_text=u'math'))
         msubsup.add(mn_2)
-        
+
         math.add(msubsup)
-        
+
         output = render_output(math)
         assert_that(output, is_(u'\\[\\int_{0}^{1}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(output_inline, is_(u'\\(\\int_{0}^{1}\\)'))     
-    
+        assert_that(output_inline, is_(u'\\(\\int_{0}^{1}\\)'))
+
     def test_math_munder(self):
         """
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/munder
@@ -901,45 +901,45 @@ class TestMath(ContentToolsTestCase):
         """
         math = Math()
         munder = MUnder()
-        
+
         mrow = MRow()
-        
+
         mi_1 = MathRun()
         mi_1.add(TextNode(u'x', type_text=u'math'))
         mrow.add(mi_1)
-        
+
         mo_1 = MathRun()
         mo_1.add(TextNode(u'+', type_text=u'math'))
         mrow.add(mo_1)
-        
+
         mi_2 = MathRun()
         mi_2.add(TextNode(u'y', type_text=u'math'))
         mrow.add(mi_2)
-        
+
         mo_2 = MathRun()
         mo_2.add(TextNode(u'+', type_text=u'math'))
         mrow.add(mo_2)
-        
+
         mi_3 = MathRun()
         mi_3.add(TextNode(u'z', type_text=u'math'))
         mrow.add(mi_3)
-        
+
         munder.add(mrow)
-        
+
         mo_4 = MathRun()
         mo_4.add(TextNode(u'⏟', type_text=u'math'))
         munder.add(mo_4)
-        
+
         math.add(munder)
-        
+
         output = render_output(math)
         assert_that(output, is_(u'\\[\\underbrace{x+y+z}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\underbrace{x+y+z}\\)'))
-    
+
     def test_math_munderover(self):
         """
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/munderover
@@ -957,28 +957,28 @@ class TestMath(ContentToolsTestCase):
         """
         math = Math()
         munderover = MUnderover()
-        
+
         mo_1 = MathRun()
         mo_1.add(TextNode(u'∫', type_text=u'math'))
         munderover.add(mo_1)
-        
+
         mi = MathRun()
         mi.add(TextNode(u'0', type_text=u'math'))
         munderover.add(mi)
-        
+
         mo_2 = MathRun()
         mo_2.add(TextNode(u'∞', type_text=u'math'))
         munderover.add(mo_2)
-        
+
         math.add(munderover)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\int_{0}^{\\infty }\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\int_{0}^{\\infty }\\)'))
-    
+
     def test_math_mover(self):
         """
         https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mover
@@ -1001,46 +1001,45 @@ class TestMath(ContentToolsTestCase):
         """
         math = Math()
         mover = MOver()
-        
+
         mrow = MRow()
-        
+
         mi_1 = MathRun()
         mi_1.add(TextNode(u'x', type_text=u'math'))
         mrow.add(mi_1)
-        
+
         mo_1 = MathRun()
         mo_1.add(TextNode(u'+', type_text=u'math'))
         mrow.add(mo_1)
-        
+
         mi_2 = MathRun()
         mi_2.add(TextNode(u'y', type_text=u'math'))
         mrow.add(mi_2)
-        
+
         mo_2 = MathRun()
         mo_2.add(TextNode(u'+', type_text=u'math'))
         mrow.add(mo_2)
-        
+
         mi_3 = MathRun()
         mi_3.add(TextNode(u'z', type_text=u'math'))
         mrow.add(mi_3)
-        
+
         mover.add(mrow)
-        
+
         mo_4 = MathRun()
         mo_4.add(TextNode(u'⏞', type_text=u'math'))
         mover.add(mo_4)
-        
+
         math.add(mover)
-        
+
         output = render_output(math)
         assert_that(output, is_(u'\\[\\overbrace{x+y+z}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\overbrace{x+y+z}\\)'))
-    
-    
+
     def test_math_mroot(self):
         """
         example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mroot
@@ -1056,21 +1055,21 @@ class TestMath(ContentToolsTestCase):
 #===============================================================================
         """
         math = Math()
-        
+
         mroot = MRoot()
-        
+
         mi = MathRun()
         mi.add(TextNode(u'x', type_text=u'math'))
         mroot.add(mi)
-        
+
         mn = MathRun()
         mn.add(TextNode(u'3', type_text=u'math'))
         mroot.add(mn)
-        
+
         math.add(mroot)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\sqrt[3]{x}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)

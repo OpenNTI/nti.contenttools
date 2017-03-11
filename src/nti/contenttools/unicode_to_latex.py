@@ -24,6 +24,8 @@ class FrozenDict(dict):
 
 
 _unicode_to_latex = None
+
+
 def unicode_to_latex():
     global _unicode_to_latex
     if _unicode_to_latex is None:

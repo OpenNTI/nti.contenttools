@@ -21,8 +21,8 @@ from nti.contenttools.renderers.LaTeX.base import render_iterable
 from nti.contenttools.renderers.LaTeX.base import render_command
 from nti.contenttools.renderers.LaTeX.base import render_node_with_newline
 
-from nti.contenttools.renderers.LaTeX.utils import search_and_update_node_property
 from nti.contenttools.renderers.LaTeX.utils import search_node
+from nti.contenttools.renderers.LaTeX.utils import search_and_update_node_property
 
 from nti.contenttools.unicode_to_latex import replace_unicode_with_latex_tag
 
@@ -53,13 +53,13 @@ from nti.contenttools.types.omath import IOMathNaryPr
 from nti.contenttools.types.omath import IOMathMatrix
 from nti.contenttools.types.omath import IOMathSubSup
 from nti.contenttools.types.omath import IOMathRadical
+from nti.contenttools.types.omath import IOMathGroupChr
+from nti.contenttools.types.omath import IOMathBorderBox
 from nti.contenttools.types.omath import IOMathDelimiter
 from nti.contenttools.types.omath import IOMathNumerator
 from nti.contenttools.types.omath import IOMathSubscript
 from nti.contenttools.types.omath import IOMathSuperscript
 from nti.contenttools.types.omath import IOMathDenominator
-from nti.contenttools.types.omath import IOMathGroupChr
-from nti.contenttools.types.omath import IOMathBorderBox
 
 
 def render_omath(context, node):
@@ -327,7 +327,7 @@ def render_omath_delimiter(context, node):
                         node,
                         field)
                     if found_eq_arr:
-                        render_iterable(context, 
+                        render_iterable(context,
                                         node.children[1:num_of_children])
                     else:
                         begChr = replace_unicode_with_latex_tag(
@@ -335,7 +335,7 @@ def render_omath_delimiter(context, node):
                         endChr = replace_unicode_with_latex_tag(
                             node.children[0].endChr)
                         context.write(begChr)
-                        render_iterable(context, 
+                        render_iterable(context,
                                         node.children[1:num_of_children])
                         context.write(endChr)
         else:
@@ -379,6 +379,7 @@ def render_omath_mr(context, node):
     """
     context.write(render_node_with_newline(node))
     return node
+
 
 def render_omath_eqarr(context, node):
     """
@@ -565,28 +566,31 @@ def render_omath_groupchr(context, node):
     """
     if node.pos:
         pos = node.pos
-        if pos =='top':
+        if pos == 'top':
             if node.groupChr == u'\u23de':
                 render_command(context, u'overbrace', node)
             else:
                 render_underset_groupChr(context, node)
-        elif pos =='bot':
+        elif pos == 'bot':
             if node.groupChr == u'\u23df':
                 render_command(context, u'underbrace', node)
             else:
                 render_groupChr_underset(context, node)
         else:
-            logger.warn('Unhandled <m:groupChr> element, groupChrPr position = %s', node.pos)
+            logger.warn(
+                'Unhandled <m:groupChr> element, groupChrPr position = %s', node.pos)
     elif node.vertJc:
         if node.vertJc == u'top':
             render_underset_groupChr(context, node)
         elif node.vertJc == u'bot':
             render_groupChr_underset(context, node)
         else:
-            logger.warn('Unhandled <m:groupChr> element, groupChrPr vertJc %s', node.vertJc)
+            logger.warn(
+                'Unhandled <m:groupChr> element, groupChrPr vertJc %s', node.vertJc)
     else:
-        render_command(context, 'underbrace', node)        
+        render_command(context, 'underbrace', node)
     return node
+
 
 def render_underset_groupChr(context, node):
     groupChr = replace_unicode_with_latex_tag(node.groupChr)
@@ -595,6 +599,7 @@ def render_underset_groupChr(context, node):
     context.write(groupChr)
     context.write(u'}')
     return node
+
 
 def render_groupChr_underset(context, node):
     groupChr = replace_unicode_with_latex_tag(node.groupChr)
@@ -605,12 +610,13 @@ def render_groupChr_underset(context, node):
     context.write(u'}')
     return node
 
+
 def render_omath_border_box(context, node):
     """
     render <m:borderBox>
     """
     return render_command(context, u'boxed', node)
-    
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -775,10 +781,12 @@ class OMathSPreRenderer(RendererMixin):
 class OMathBoxRenderer(RendererMixin):
     func = staticmethod(render_omath_box)
 
+
 @component.adapter(IOMathGroupChr)
 class OMathGroupChrRenderer(RendererMixin):
     func = staticmethod(render_omath_groupchr)
-    
+
+
 @component.adapter(IOMathBorderBox)
 class OMathBorderBoxRenderer(RendererMixin):
     func = staticmethod(render_omath_border_box)
