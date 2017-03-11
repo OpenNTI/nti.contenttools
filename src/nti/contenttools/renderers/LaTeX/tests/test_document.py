@@ -32,29 +32,29 @@ class TestDocument(ContentToolsTestCase):
         output = render_output(document)
         assert_that(output,
                     is_(u'\\documentclass{manga}\n\\usepackage{graphicx}\n\\title{bleach}\n\\author{kube}\n'))
-        
+
     def test_body(self):
         body = Body()
         output = render_output(body)
         assert_that(output,
                     is_(u'\\begin{document}\n\n\\end{document}\n'))
-    
+
     def test_body_with_children(self):
         body = Body()
         section_1 = Section(title='Adventure', label='adventure101')
         section_2 = Section(title='Climate', label='climate101')
-        body.add(section_1) 
+        body.add(section_1)
         body.add(section_2)
         output = render_output(body)
         assert_that(output,
                     is_(u'\\begin{document}\n\section{Adventure}\n\label{adventure101}\n\section{Climate}\n\label{climate101}\n\n\\end{document}\n'))
-        
+
     def test_epub_body(self):
         body = EPUBBody()
         output = render_output(body)
         assert_that(output,
                     is_(u'\\begin{document}\n\n\\end{document}\n'))
-        
+
     def test_body_and_document(self):
         document = Document(doc_type='book',
                             packages=('graphicx',))

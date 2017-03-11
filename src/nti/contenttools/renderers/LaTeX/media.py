@@ -5,7 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from nti.contenttools.renderers.LaTeX.base import render_node, render_children
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -13,33 +12,37 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
+from nti.contenttools.renderers.LaTeX.base import render_node
+from nti.contenttools.renderers.LaTeX.base import render_children
+
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
-from nti.contenttools.types.interfaces import IImage
-from nti.contenttools.types.interfaces import IVideo
-from nti.contenttools.types.interfaces import IFigure
-from nti.contenttools.types.interfaces import IDocxImage
-from nti.contenttools.types.interfaces import IEquationImage
-
-from nti.contenttools.types.interfaces import ICell
 from nti.contenttools.types.interfaces import IRow
-
+from nti.contenttools.types.interfaces import ICell
+from nti.contenttools.types.interfaces import IImage
+from nti.contenttools.types.interfaces import IFigure
 from nti.contenttools.types.interfaces import ISidebar
+from nti.contenttools.types.interfaces import IDocxImage
 from nti.contenttools.types.interfaces import IOpenstaxNote
-from nti.contenttools.types.interfaces import IOpenstaxExampleNote
+from nti.contenttools.types.interfaces import IEquationImage
 from nti.contenttools.types.interfaces import IOpenstaxNoteBody
+from nti.contenttools.types.interfaces import IOpenstaxExampleNote
+
 
 def render_image_annotation(context, node):
     return render_image(context, node, u'ntiincludeannotationgraphics')
 
+
 def render_image_noannotation(context, node):
     return render_image(context, node, u'ntiincludenoannotationgraphics')
 
+
 def render_image(context, node, command):
-    params, command = set_image_params_and_command(node,command)
-    new_path = node.path if node.predefined_image_path else 'images/%s' %(node.path)
+    params, command = set_image_params_and_command(node, command)
+    new_path = node.path if node.predefined_image_path else 'images/%s' % (
+        node.path)
     context.write(u'\\')
     context.write(command)
     context.write(u'[')
@@ -50,23 +53,27 @@ def render_image(context, node, command):
     context.write(u'}')
     return node
 
+
 def set_image_params_and_command(node, command):
     width = node.width
     height = node.height
-    MAX_WIDTH = 650.0 #600 is the maximum width of images in the platform (webapp)
+    # 600 is the maximum width of images in the platform (webapp)
+    MAX_WIDTH = 650.0
 
     check_sidebar = check_image_in_sidebar(node)
     if check_sidebar:
-        MAX_WIDTH = 500 #500 is the maximum width of an image if it is located inside a sidebar
+        # 500 is the maximum width of an image if it is located inside a
+        # sidebar
+        MAX_WIDTH = 500
 
     check_table, image_in_a_row = check_image_in_table(node)
-    if check_table :
-        width_cell = MAX_WIDTH/image_in_a_row
+    if check_table:
+        width_cell = MAX_WIDTH / image_in_a_row
         if node.width > width_cell:
             if node.height != 0:
                 height = int(float(width_cell / node.width) * node.height)
             width = width_cell
-    else: 
+    else:
         if node.width > MAX_WIDTH:
             if node.height != 0:
                 height = int(float(MAX_WIDTH / node.width) * node.height)
@@ -79,11 +86,13 @@ def set_image_params_and_command(node, command):
     if node.width < threshold or node.height < threshold:
         command = u'includegraphics'
 
-    #make sure if image is an equation image or inline_image, the command will be 'includegraphics'
+    # make sure if image is an equation image or inline_image, the command
+    # will be 'includegraphics'
     if node.equation_image == True or node.inline_image == True:
         command = u'includegraphics'
 
     return params, command
+
 
 def check_image_in_table(node):
     """
@@ -98,12 +107,14 @@ def check_image_in_table(node):
             parent = parent.__parent__
     return False, 0
 
+
 def check_image_in_sidebar(self):
     """
     check if image is located inside sidebar
     """
     parent = self.__parent__
-    sidebar = [ISidebar, IOpenstaxNote, IOpenstaxExampleNote, IOpenstaxNoteBody]
+    sidebar = (ISidebar, IOpenstaxNote, 
+               IOpenstaxExampleNote, IOpenstaxNoteBody)
     while parent is not None:
         for IType in sidebar:
             if IType.providedBy(parent):
@@ -114,7 +125,7 @@ def check_image_in_sidebar(self):
 
 def render_docx_image(context, node):
     command = u'ntiincludeannotationgraphics'
-    params, command = set_image_params_and_command(node,command)
+    params, command = set_image_params_and_command(node, command)
     context.write(u'\\')
     context.write(command)
     context.write(u'[')
@@ -134,16 +145,16 @@ def render_figure(context, node):
         caption = get_variant_field_string_value(node.caption).rstrip()
     else:
         caption = get_variant_field_string_value(node.image_alt).rstrip()
-    
+
     if node.title:
         title = get_variant_field_string_value(node.title).rstrip()
-    
+
     if node.label:
         label = get_variant_field_string_value(node.label).rstrip()
-         
+
     context.write(u'\\begin{figure}\n\\begin{center}\n')
     if title:
-        title = u'\\textbf{%s}\\\\\n' %(title)
+        title = u'\\textbf{%s}\\\\\n' % (title)
         context.write(title)
     render_children(context, node)
     if caption:
@@ -157,26 +168,27 @@ def render_figure(context, node):
     context.write(u'\n\\end{center}\n\\end{figure}\n')
     return node
 
+
 def render_equation_image(context, node):
     context.write(u'\n\\begin{center}\n')
-    
+
     if node.image:
         render_node(context, node.image)
     elif node.text:
         text = get_variant_field_string_value(node.tex)
         context.write(text)
-    
+
     context.write(u' \\hspace{20 mm} ')
-    
+
     if node.label:
         label = get_variant_field_string_value(node.label)
         if u'\\label{' not in label:
-            label = u'\\label{%}' %(label)
+            label = u'\\label{%}' % (label)
         context.write(label)
-    
+
     context.write(u'\n\\end{center}\n')
     return node
-        
+
 
 @component.adapter(IImage)
 @interface.implementer(IRenderer)
@@ -194,6 +206,7 @@ class ImageRenderer(object):
         else:
             return render_image_noannotation(context, node)
     __call__ = render
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -213,9 +226,11 @@ class RendererMixin(object):
 class FigureRenderer(RendererMixin):
     func = staticmethod(render_figure)
 
+
 @component.adapter(IDocxImage)
 class DocxImageRenderer(RendererMixin):
     func = staticmethod(render_docx_image)
+
 
 @component.adapter(IEquationImage)
 class EquationImageRenderer(RendererMixin):

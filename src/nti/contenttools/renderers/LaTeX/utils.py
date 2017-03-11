@@ -38,13 +38,13 @@ def search_node(provided, root):
     """
     if provided.providedBy(root):
         return True
-    else:
-        if hasattr(root, u'children'):
-            for node in root:
-                found = search_node(provided, node)
-                if found:
-                    return found
+    elif hasattr(root, u'children'):
+        for node in root:
+            found = search_node(provided, node)
+            if found:
+                return found
     return False
+
 
 def search_and_update_node_property(provided, root, field):
     """
@@ -56,13 +56,13 @@ def search_and_update_node_property(provided, root, field):
             if hasattr(root, name):
                 setattr(root, name, value)
         return True
-    else:
-        if hasattr(root, u'children'):
-            for node in root:
-                found = search_and_update_node_property(provided, node, field)
-                if found:
-                    return found
+    elif hasattr(root, u'children'):
+        for node in root:
+            found = search_and_update_node_property(provided, node, field)
+            if found:
+                return found
     return False
+
 
 def get_variant_field_string_value(field):
     """
