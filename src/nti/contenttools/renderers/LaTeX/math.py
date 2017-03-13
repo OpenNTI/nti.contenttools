@@ -13,8 +13,8 @@ from zope import component
 from zope import interface
 
 from nti.contenttools.renderers.LaTeX.base import render_node
-from nti.contenttools.renderers.LaTeX.base import render_command
 from nti.contenttools.renderers.LaTeX.base import render_output
+from nti.contenttools.renderers.LaTeX.base import render_command
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 from nti.contenttools.renderers.LaTeX.base import render_node_with_newline
