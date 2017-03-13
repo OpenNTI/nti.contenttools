@@ -1293,3 +1293,8 @@ class TestMath(ContentToolsTestCase):
         output = render_output(math)
         assert_that(output, is_(u'\\[{_{b}^{a}}X_{d}^{c}\\]'))
         
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\({_{b}^{a}}X_{d}^{c}\\)'))
+        
