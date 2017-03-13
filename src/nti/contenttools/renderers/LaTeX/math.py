@@ -116,17 +116,17 @@ def set_mfenced_without_border(context, node):
     context.write(node.opener)
     if node.separators:
         separators = list(node.separators)
-        check  = len(node.children) - 1
-        diff = check - len(separators) 
+        check = len(node.children) - 1
+        diff = check - len(separators)
         if diff > 0:
-            ext_list = [separators[-1]]*diff
+            ext_list = [separators[-1]] * diff
             separators.extend(ext_list)
         elif diff < 0:
-            separators = separators[0:check] 
-        render_node(context,node.children[0])
+            separators = separators[0:check]
+        render_node(context, node.children[0])
         for i, sep in enumerate(separators):
             context.write(sep)
-            render_node(context,node.children[i+1])
+            render_node(context, node.children[i + 1])
     else:
         render_children(context, node)
     context.write(node.close)
@@ -371,18 +371,19 @@ def render_mmultiscript(context, node):
     """
     render <mmultiscript> element
     """
-    if node.prescripts : 
+    if node.prescripts:
         render_node(context, node.prescripts)
     else:
         logger.warn(u'<mmultiscript> prescripts is None')
-    
+
     if node.base:
         render_mmultiscripts_base(context, node)
     else:
         logger.warn(u'<mmultiscript> base is None')
     return node
 
-def render_mmultiscripts_base(context,node):
+
+def render_mmultiscripts_base(context, node):
     if len(node.base) == 3:
         render_node(context, node.base[0])
         context.write(u'_{')
@@ -393,7 +394,8 @@ def render_mmultiscripts_base(context,node):
     else:
         logger.warn('mmultiscripts base does not have 3 sub node')
     return node
-    
+
+
 def render_mprescripts(context, node):
     """
     render <mprescripts> element

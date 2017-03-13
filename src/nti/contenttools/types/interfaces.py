@@ -720,8 +720,8 @@ class IMMprescripts(IDocumentStructureNode):
 
 
 class IMMultiscripts(IDocumentStructureNode):
-    base = ListOrTuple(title = "Multiscripts base",
-                       required = False)
+    base = ListOrTuple(title="Multiscripts base",
+                       required=False)
 
     prescripts = Object(IDocumentStructureNode, title="prescript",
                         required=False)
