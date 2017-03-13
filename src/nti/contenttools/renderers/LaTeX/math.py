@@ -114,7 +114,18 @@ def set_mfenced_without_border(context, node):
     if node.close == u'}':
         node.close = u'\}'
     context.write(node.opener)
-    render_children(context, node)
+    if node.separators:
+        separators = list(node.separators)
+        diff = len(node.children) - 1 - len(separators) 
+        if diff > 0:
+            ext_list = [separators[-1]]*diff
+            separators.extend(ext_list)         
+        render_node(context,node.children[0])
+        for i, sep in enumerate(separators):
+            context.write(sep)
+            render_node(context,node.children[i+1])
+    else:
+        render_children(context, node)
     context.write(node.close)
     return node
 
