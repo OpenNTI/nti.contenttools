@@ -1074,3 +1074,30 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\sqrt[3]{x}\\)'))
+    
+    def test_math_mtext(self):
+        """
+        example: https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mtext 
+#===============================================================================
+# <math> 
+# 
+#   <mtext> Theorem of Pythagoras </mtext>  
+#
+# </math>
+#===============================================================================
+        """
+        math = Math()
+        mtext = MText()
+        mtext.add(TextNode(u'Theorem of Pythagoras', type_text='math'))
+        math.add(mtext)
+       
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\text{Theorem of Pythagoras}\\]'))
+
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\text{Theorem of Pythagoras}\\)'))
+        
+        #TODO : mtext shoud be able to handle string /* and */ correctly:
+        #mtext.add(TextNode(u' /* comment here */ ', type_text='math'))

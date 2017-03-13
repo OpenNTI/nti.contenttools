@@ -387,6 +387,8 @@ def render_mnone(context, node):
 def render_mtext(context, node):
     """
     render <mtext> element
+    TODO : mtext shoud be able to handle string /* and */ correctly:
+    mtext.add(TextNode(u' /* comment here */ ', type_text='math'))
     """
     base = render_children_output(node)
     if base:
