@@ -1297,4 +1297,57 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\({_{b}^{a}}X_{d}^{c}\\)'))
+    
+    def test_math_mmultiscripts_mprescripts_2(self):
+        """
+        example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mmultiscripts
+#===============================================================================
+# <math>  
+# 
+#     <mmultiscripts>
+# 
+#         <mi>X</mi>      <!-- base expression -->
+# 
+#         <none />        <!-- postsubscript -->
+#         <mi>c</mi>      <!-- postsuperscript -->
+# 
+#         <mprescripts />
+#         <mi>b</mi>      <!-- presubscript -->
+#         <none />        <!-- presuperscript -->
+# 
+#     </mmultiscripts>
+# 
+# </math>
+#===============================================================================
+        """
+        math = Math()
+        
+        mmultiscripts = MMultiscripts()
+        
+        mi_1 = MathRun()
+        mi_1.add(TextNode(u'X', type_text=u'math'))
+        
+        mi_2 = MNone()
+        
+        mi_3 = MathRun()
+        mi_3.add(TextNode(u'c', type_text=u'math'))
+        
+        mmultiscripts.base = [mi_1, mi_2, mi_3]
+        
+        mmultiscripts.prescripts = MMprescripts()
+        mi_4 = MathRun()
+        mi_4.add(TextNode(u'b', type_text=u'math'))
+        mmultiscripts.prescripts.sub = mi_4
+        
+        mi_5 = MNone()
+        mmultiscripts.prescripts.sup = mi_5
+        
+        math.add(mmultiscripts)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[{_{b}^{}}X_{}^{c}\\]'))
+        
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\({_{b}^{}}X_{}^{c}\\)'))
         
