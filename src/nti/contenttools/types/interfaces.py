@@ -599,7 +599,7 @@ class IMathRun(IDocumentStructureNode):
 
 class IMFenced(IDocumentStructureNode):
     """
-    Node for MathML element <mfence>
+    Node for MathML element <mfenced>
     """
 
     opener = ValidTextLine(title="Open mfence",

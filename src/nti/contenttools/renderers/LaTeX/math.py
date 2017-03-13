@@ -109,6 +109,10 @@ def set_matrix_border(context, node):
 
 
 def set_mfenced_without_border(context, node):
+    if node.opener == u'{' :
+        node.opener = u'\{'
+    if node.close == u'}':
+        node.close = u'\}'
     context.write(node.opener)
     render_children(context, node)
     context.write(node.close)
