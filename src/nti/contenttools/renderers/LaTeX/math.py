@@ -40,8 +40,8 @@ from nti.contenttools.types.interfaces import IMathRun
 from nti.contenttools.types.interfaces import IMSubSup
 from nti.contenttools.types.interfaces import IMMenclose
 from nti.contenttools.types.interfaces import IMUnderover
-from nti.contenttools.types.interfaces import IMMultiscripts
 from nti.contenttools.types.interfaces import IMMprescripts
+from nti.contenttools.types.interfaces import IMMultiscripts
 
 
 """
@@ -109,7 +109,7 @@ def set_matrix_border(context, node):
 
 
 def set_mfenced_without_border(context, node):
-    if node.opener == u'{' :
+    if node.opener == u'{':
         node.opener = u'\{'
     if node.close == u'}':
         node.close = u'\}'

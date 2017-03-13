@@ -1074,7 +1074,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\sqrt[3]{x}\\)'))
-    
+
     def test_math_mtext(self):
         """
         example: https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mtext 
@@ -1090,7 +1090,7 @@ class TestMath(ContentToolsTestCase):
         mtext = MText()
         mtext.add(TextNode(u'Theorem of Pythagoras', type_text='math'))
         math.add(mtext)
-       
+
         output = render_output(math)
         assert_that(output, is_(u'\\[\\text{Theorem of Pythagoras}\\]'))
 
@@ -1098,10 +1098,10 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\text{Theorem of Pythagoras}\\)'))
-        
-        #TODO : mtext shoud be able to handle string /* and */ correctly:
+
+        # TODO : mtext shoud be able to handle string /* and */ correctly:
         #mtext.add(TextNode(u' /* comment here */ ', type_text='math'))
-    
+
     def test_math_mfenced_1(self):
         """
         example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mfenced
@@ -1117,8 +1117,8 @@ class TestMath(ContentToolsTestCase):
 # </math>
 #===============================================================================
         """
-        math  = Math()
-        
+        math = Math()
+
         mfenced = MFenced()
         mfenced.opener = u'{'
         mfenced.close = u'}'
@@ -1137,7 +1137,7 @@ class TestMath(ContentToolsTestCase):
         mi_5 = MathRun()
         mi_5.add(TextNode(u'e', type_text='math'))
         mfenced.add(mi_5)
-        
+
         math.add(mfenced)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\{abcde\\}\\]'))
@@ -1146,6 +1146,3 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\{abcde\\}\\)'))
-
-        
-        
