@@ -1648,9 +1648,10 @@ class ICNXProblemSolution(IDocumentStructureNode):
     Node for cnx problem solution
     """
 
-    # TODO: title should be a type of TextNode
-    title = Object(INode, title="Title",
-                   required=False)
+    title = Variant((Object(INode,
+                            title="Title"),
+                     ValidTextLine(title="Label")),
+                    required=False)
 
     label = Variant((Object(IDocumentStructureNode,
                             title="Label"),
