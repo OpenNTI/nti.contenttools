@@ -1146,7 +1146,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\{abcde\\}\\)'))
-    
+
     def test_math_mfenced_2(self):
         """
         example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mfenced
@@ -1164,8 +1164,8 @@ class TestMath(ContentToolsTestCase):
 # </math>
 #===============================================================================
         """
-        math  = Math()
-        
+        math = Math()
+
         mfenced = MFenced()
         mfenced.opener = u'{'
         mfenced.close = u'}'
@@ -1185,7 +1185,7 @@ class TestMath(ContentToolsTestCase):
         mi_5 = MathRun()
         mi_5.add(TextNode(u'e', type_text='math'))
         mfenced.add(mi_5)
-        
+
         math.add(mfenced)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\{a;b;c,d,e\\}\\]'))
@@ -1194,7 +1194,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\{a;b;c,d,e\\}\\)'))
-        
+
     def test_math_mfenced_3(self):
         """
         example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mfenced
@@ -1212,8 +1212,8 @@ class TestMath(ContentToolsTestCase):
 # </math>
 #===============================================================================
         """
-        math  = Math()
-        
+        math = Math()
+
         mfenced = MFenced()
         mfenced.opener = u'['
         mfenced.close = u']'
@@ -1233,7 +1233,7 @@ class TestMath(ContentToolsTestCase):
         mi_5 = MathRun()
         mi_5.add(TextNode(u'e', type_text='math'))
         mfenced.add(mi_5)
-        
+
         math.add(mfenced)
         output = render_output(math)
         assert_that(output, is_(u'\\[[a|b|c|d|e]\\]'))
@@ -1266,38 +1266,38 @@ class TestMath(ContentToolsTestCase):
 #===============================================================================
         """
         math = Math()
-        
+
         mmultiscripts = MMultiscripts()
-        
+
         mi_1 = MathRun()
         mi_1.add(TextNode(u'X', type_text=u'math'))
-        
+
         mi_2 = MathRun()
         mi_2.add(TextNode(u'd', type_text=u'math'))
-        
+
         mi_3 = MathRun()
         mi_3.add(TextNode(u'c', type_text=u'math'))
-        
+
         mmultiscripts.base = [mi_1, mi_2, mi_3]
-        
+
         mmultiscripts.prescripts = MMprescripts()
         mi_4 = MathRun()
         mi_4.add(TextNode(u'b', type_text=u'math'))
         mmultiscripts.prescripts.sub = mi_4
-        
+
         mi_5 = MathRun()
         mi_5.add(TextNode(u'a', type_text=u'math'))
         mmultiscripts.prescripts.sup = mi_5
-        
+
         math.add(mmultiscripts)
         output = render_output(math)
         assert_that(output, is_(u'\\[{_{b}^{a}}X_{d}^{c}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\({_{b}^{a}}X_{d}^{c}\\)'))
-    
+
     def test_math_mmultiscripts_mprescripts_2(self):
         """
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mmultiscripts
@@ -1321,33 +1321,32 @@ class TestMath(ContentToolsTestCase):
 #===============================================================================
         """
         math = Math()
-        
+
         mmultiscripts = MMultiscripts()
-        
+
         mi_1 = MathRun()
         mi_1.add(TextNode(u'X', type_text=u'math'))
-        
+
         mi_2 = MNone()
-        
+
         mi_3 = MathRun()
         mi_3.add(TextNode(u'c', type_text=u'math'))
-        
+
         mmultiscripts.base = [mi_1, mi_2, mi_3]
-        
+
         mmultiscripts.prescripts = MMprescripts()
         mi_4 = MathRun()
         mi_4.add(TextNode(u'b', type_text=u'math'))
         mmultiscripts.prescripts.sub = mi_4
-        
+
         mi_5 = MNone()
         mmultiscripts.prescripts.sup = mi_5
-        
+
         math.add(mmultiscripts)
         output = render_output(math)
         assert_that(output, is_(u'\\[{_{b}^{}}X_{}^{c}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\({_{b}^{}}X_{}^{c}\\)'))
-        
