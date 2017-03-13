@@ -116,10 +116,13 @@ def set_mfenced_without_border(context, node):
     context.write(node.opener)
     if node.separators:
         separators = list(node.separators)
-        diff = len(node.children) - 1 - len(separators) 
+        check  = len(node.children) - 1
+        diff = check - len(separators) 
         if diff > 0:
             ext_list = [separators[-1]]*diff
-            separators.extend(ext_list)         
+            separators.extend(ext_list)
+        elif diff < 0:
+            separators = separators[0:check] 
         render_node(context,node.children[0])
         for i, sep in enumerate(separators):
             context.write(sep)

@@ -1150,6 +1150,8 @@ class TestMath(ContentToolsTestCase):
     def test_math_mfenced_2(self):
         """
         example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mfenced
+        The last separator is repeated (,)
+        Sample rendering: {a;b;c,d,e}
 #===============================================================================
 # <math>
 #   <mfenced open="{" close="}" separators=";;,"> 
@@ -1192,6 +1194,55 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\{a;b;c,d,e\\}\\)'))
+        
+    def test_math_mfenced_3(self):
+        """
+        example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mfenced
+        All excess is ignored (,)
+        Sample rendering: [a|b|c|d|e]
+#===============================================================================
+# <math>
+#   <mfenced open="[" close="]" separators="||||,"> 
+#     <mi>a</mi> 
+#     <mi>b</mi> 
+#     <mi>c</mi> 
+#     <mi>d</mi> 
+#     <mi>e</mi> 
+#   </mfenced> 
+# </math>
+#===============================================================================
+        """
+        math  = Math()
+        
+        mfenced = MFenced()
+        mfenced.opener = u'['
+        mfenced.close = u']'
+        mfenced.separators = "||||,"
+        mi_1 = MathRun()
+        mi_1.add(TextNode(u'a', type_text='math'))
+        mfenced.add(mi_1)
+        mi_2 = MathRun()
+        mi_2.add(TextNode(u'b', type_text='math'))
+        mfenced.add(mi_2)
+        mi_3 = MathRun()
+        mi_3.add(TextNode(u'c', type_text='math'))
+        mfenced.add(mi_3)
+        mi_4 = MathRun()
+        mi_4.add(TextNode(u'd', type_text='math'))
+        mfenced.add(mi_4)
+        mi_5 = MathRun()
+        mi_5.add(TextNode(u'e', type_text='math'))
+        mfenced.add(mi_5)
+        
+        math.add(mfenced)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[[a|b|c|d|e]\\]'))
+
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\([a|b|c|d|e]\\)'))
+
 
         
         
