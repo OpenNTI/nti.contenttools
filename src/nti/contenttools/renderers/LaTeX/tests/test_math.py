@@ -455,7 +455,7 @@ class TestMath(ContentToolsTestCase):
         node.sub = node_sub
         node.sup = node_sup
         multiscript_node = MMultiscripts()
-        multiscript_node.base = MathRun()
+        multiscript_node.base = []
         multiscript_node.prescripts = node
         output = render_output(multiscript_node)
         assert_that(output, is_(u'{_{}^{}}'))
@@ -475,7 +475,7 @@ class TestMath(ContentToolsTestCase):
         node.sub = node_sub
         node.sup = node_sup
         multiscript_node = MMultiscripts()
-        multiscript_node.base = MathRun()
+        multiscript_node.base = []
         multiscript_node.prescripts = node
         output = render_output(multiscript_node)
         assert_that(output, is_(u'{_{}^{}}'))
@@ -1243,6 +1243,53 @@ class TestMath(ContentToolsTestCase):
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\([a|b|c|d|e]\\)'))
 
-
+    def test_math_mmultiscripts_mprescripts(self):
+        """
+        example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mmultiscripts
+#===============================================================================
+# <math>  
+# 
+#     <mmultiscripts>
+# 
+#         <mi>X</mi>      <!-- base expression -->  
+# 
+#         <mi>d</mi>      <!-- postsubscript -->
+#         <mi>c</mi>      <!-- postsuperscript -->
+# 
+#         <mprescripts />
+#         <mi>b</mi>      <!-- presubscript -->
+#         <mi>a</mi>      <!-- presuperscript -->
+# 
+#     </mmultiscripts>
+# 
+# </math>
+#===============================================================================
+        """
+        math = Math()
         
+        mmultiscripts = MMultiscripts()
+        
+        mi_1 = MathRun()
+        mi_1.add(TextNode(u'X', type_text=u'math'))
+        
+        mi_2 = MathRun()
+        mi_2.add(TextNode(u'd', type_text=u'math'))
+        
+        mi_3 = MathRun()
+        mi_3.add(TextNode(u'c', type_text=u'math'))
+        
+        mmultiscripts.base = [mi_1, mi_2, mi_3]
+        
+        mmultiscripts.prescripts = MMprescripts()
+        mi_4 = MathRun()
+        mi_4.add(TextNode(u'b', type_text=u'math'))
+        mmultiscripts.prescripts.sub = mi_4
+        
+        mi_5 = MathRun()
+        mi_5.add(TextNode(u'a', type_text=u'math'))
+        mmultiscripts.prescripts.sup = mi_5
+        
+        math.add(mmultiscripts)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[{_{b}^{a}}X_{d}^{c}\\]'))
         
