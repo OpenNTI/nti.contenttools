@@ -371,14 +371,29 @@ def render_mmultiscript(context, node):
     """
     render <mmultiscript> element
     """
-    if node.prescripts and node.base:
+    if node.prescripts : 
         render_node(context, node.prescripts)
-        render_node(context, node.base)
     else:
-        logger.warn(u'<mmultiscript> prescripts or base is None')
+        logger.warn(u'<mmultiscript> prescripts is None')
+    
+    if node.base:
+        render_mmultiscripts_base(context, node)
+    else:
+        logger.warn(u'<mmultiscript> base is None')
     return node
 
-
+def render_mmultiscripts_base(context,node):
+    if len(node.base) == 3:
+        render_node(context, node.base[0])
+        context.write(u'_{')
+        render_node(context, node.base[1])
+        context.write(u'}^{')
+        render_node(context, node.base[2])
+        context.write(u'}')
+    else:
+        logger.warn('mmultiscripts base does not have 3 sub node')
+    return node
+    
 def render_mprescripts(context, node):
     """
     render <mprescripts> element
