@@ -220,15 +220,21 @@ def _process_msubsup_elements(element):
 
 
 def _process_mi_elements(element):
-    return MathRun.process(element)
+    node = MathRun.process(element)
+    node.element_type = u'identifier'
+    return node
 
 
 def _process_mn_elements(element):
-    return MathRun.process(element)
+    node = MathRun.process(element)
+    node.element_type = u'numeric'
+    return node
 
 
 def _process_mo_elements(element):
-    return MathRun.process(element)
+    node = MathRun.process(element)
+    node.element_type = u'operator'
+    return node
 
 
 def _process_mspace_elements(element):
