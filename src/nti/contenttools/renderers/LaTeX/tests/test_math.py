@@ -1587,3 +1587,50 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\({m}_{1\,2}\\)'))
+    
+    def test_invisible_operator_4(self):
+        """
+        example from : https://www.w3.org/TR/MathML3/chapter3.html
+#===============================================================================
+# <mrow>
+#   <mn> 2 </mn>
+#   <mo> &#x2064;<!--INVISIBLE PLUS--> </mo>
+#   <mfrac>
+#     <mn> 3 </mn>
+#     <mn> 4 </mn>
+#   </mfrac>
+# </mrow>
+#===============================================================================
+        """
+        math  = Math()
+        mrow = MRow()
+        
+        mn = MathRun()
+        mn.add(TextNode(u'2', type_text='math'))
+        mrow.add(mn)
+        
+        mo = MathRun()
+        mo.element_type = u'operator'
+        mo.add(TextNode(u'\u2064', type_text='math'))
+        mrow.add(mo)
+        
+        mfrac = MFrac()
+        
+        mn_1 = MathRun()
+        mn_1.add(TextNode(u'3', type_text='math'))
+        mfrac.add(mn_1)
+        
+        mn_2 = MathRun()
+        mn_2.add(TextNode(u'4', type_text='math'))
+        mfrac.add(mn_2)
+        
+        mrow.add(mfrac)
+        
+        math.add(mrow)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[2\\,\\frac{3}{4}\\]'))
+
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(2\\,\\frac{3}{4}\\)'))
