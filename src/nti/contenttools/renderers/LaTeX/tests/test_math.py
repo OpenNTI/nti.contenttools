@@ -1140,12 +1140,12 @@ class TestMath(ContentToolsTestCase):
 
         math.add(mfenced)
         output = render_output(math)
-        assert_that(output, is_(u'\\[\\{abcde\\}\\]'))
+        assert_that(output, is_(u'\\[\\{a,b,c,d,e\\}\\]'))
 
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(output_inline, is_(u'\\(\\{abcde\\}\\)'))
+        assert_that(output_inline, is_(u'\\(\\{a,b,c,d,e\\}\\)'))
 
     def test_math_mfenced_2(self):
         """
@@ -1298,26 +1298,24 @@ class TestMath(ContentToolsTestCase):
         math  = Math()
         
         mfenced = MFenced()
-        mfenced.open = u'['
+        mfenced.opener = u'['
         
-        mrow = MRow()
         mn_1 = MathRun()
         mn_1.add(TextNode(u'0', type_text='math'))
-        mrow.add(mn_1)
+        mfenced.add(mn_1)
         
         mn_2 = MathRun()
-        mn_2.add(TextNode(u'b', type_text='math'))
-        mrow.add(mn_2)
+        mn_2.add(TextNode(u'1', type_text='math'))
+        mfenced.add(mn_2)
         
-        mfenced.add(mrow)
         math.add(mfenced)
         output = render_output(math)
-        assert_that(output, is_(u'\\[(a+b)\\]'))
+        assert_that(output, is_(u'\\[[0,1)\\]'))
 
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(output_inline, is_(u'\\((a+b)\\)'))
+        assert_that(output_inline, is_(u'\\([0,1)\\)'))
 
     def test_math_mmultiscripts_mprescripts(self):
         """

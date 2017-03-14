@@ -109,35 +109,42 @@ def set_matrix_border(context, node):
 
 
 def set_mfenced_without_border(context, node):
-    if node.opener == u'{':
-        node.opener = u'\{'
-    if node.close == u'}':
-        node.close = u'\}'
-    if not node.opener:
-        node.opener = u'('
-    if not node.close:
-        node.close = u')'
+    node = check_mfenced_open_close(node)
     context.write(node.opener)
+    check = len(node.children) - 1
     if node.separators:
         separators = list(node.separators)
-        check = len(node.children) - 1
         diff = check - len(separators)
         if diff > 0:
             ext_list = [separators[-1]] * diff
             separators.extend(ext_list)
         elif diff < 0:
             separators = separators[0:check]
-        render_node(context, node.children[0])
-        for i, sep in enumerate(separators):
-            context.write(sep)
-            render_node(context, node.children[i + 1])
+        render_mfenced_children(context, node, separators)
     else:
-        render_children(context, node)
+        separators = [u','] * check
+        render_mfenced_children(context, node, separators)
     context.write(node.close)
     return node
 
-def set_mfenced_without_mrow(context, node):
-    pass
+def check_mfenced_open_close(node):
+    if not node.opener:
+        node.opener = u'('
+    elif node.opener == u'{':
+        node.opener = u'\{'
+    
+    if not node.close:
+        node.close = u')'
+    elif node.close == u'}':
+        node.close = u'\}'    
+    return node
+    
+def render_mfenced_children(context, node, separators):
+    render_node(context, node.children[0])
+    for i, sep in enumerate(separators):
+        context.write(sep)
+        render_node(context, node.children[i + 1])
+    return node
 
 def render_math_run(context, node):
     """
