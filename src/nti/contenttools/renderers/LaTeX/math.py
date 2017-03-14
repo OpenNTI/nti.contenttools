@@ -153,7 +153,13 @@ def render_math_run(context, node):
     """
     render MathRun node <mi>, <mo>, <mn>
     """
-    return render_children(context, node)
+    output = render_children_output(node)
+    if node.element_type == u'operator':
+        if output == u'\u2061':
+            pass
+    else:
+        context.write(output)
+    return node
 
 
 def render_mtable(context, node):

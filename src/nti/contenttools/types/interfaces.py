@@ -594,7 +594,15 @@ class IMSubSup(IDocumentStructureNode):
 class IMathRun(IDocumentStructureNode):
     """
     Node covering general MathML element
+    element_type value could be : 'operator', 'numeric', 'identifier'
+    adapter sets the element_type value:
+        if <mn> then element_type = 'numeric'
+        if <mo> then element_type = 'operator'
+        if <mi> then element_type = 'identifier'
     """
+    
+    element_type = ValidTextLine(title="Element Type",
+                                 required = False)
 
 
 class IMFenced(IDocumentStructureNode):
