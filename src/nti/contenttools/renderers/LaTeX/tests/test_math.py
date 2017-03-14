@@ -1242,6 +1242,82 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\([a|b|c|d|e]\\)'))
+    
+    def test_math_mfenced_4(self):
+        """
+        example from : https://www.w3.org/TR/MathML3/chapter3.html
+        when there is no open and close
+#===============================================================================
+# <mfenced>
+#   <mrow>
+#     <mi> a </mi>
+#     <mo> + </mo>
+#     <mi> b </mi>
+#   </mrow>
+# </mfenced>
+#===============================================================================
+        """
+        math  = Math()
+        
+        mfenced = MFenced()
+        
+        mrow = MRow()
+        mi_1 = MathRun()
+        mi_1.add(TextNode(u'a', type_text='math'))
+        mrow.add(mi_1)
+        
+        mo = MathRun()
+        mo.add(TextNode(u'+', type_text='math'))
+        mrow.add(mo)
+        
+        mi_2 = MathRun()
+        mi_2.add(TextNode(u'b', type_text='math'))
+        mrow.add(mi_2)
+        
+        mfenced.add(mrow)
+        math.add(mfenced)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[(a+b)\\]'))
+
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\((a+b)\\)'))
+    
+    def test_math_mfenced_5(self):
+        """
+        example from : https://www.w3.org/TR/MathML3/chapter3.html
+        when there is no close
+#===============================================================================
+# <mfenced open="[">
+#   <mn> 0 </mn>
+#   <mn> 1 </mn>
+# </mfenced>
+#===============================================================================
+        """
+        math  = Math()
+        
+        mfenced = MFenced()
+        mfenced.open = u'['
+        
+        mrow = MRow()
+        mn_1 = MathRun()
+        mn_1.add(TextNode(u'0', type_text='math'))
+        mrow.add(mn_1)
+        
+        mn_2 = MathRun()
+        mn_2.add(TextNode(u'b', type_text='math'))
+        mrow.add(mn_2)
+        
+        mfenced.add(mrow)
+        math.add(mfenced)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[(a+b)\\]'))
+
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\((a+b)\\)'))
 
     def test_math_mmultiscripts_mprescripts(self):
         """

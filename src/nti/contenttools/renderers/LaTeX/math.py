@@ -113,6 +113,10 @@ def set_mfenced_without_border(context, node):
         node.opener = u'\{'
     if node.close == u'}':
         node.close = u'\}'
+    if not node.opener:
+        node.opener = u'('
+    if not node.close:
+        node.close = u')'
     context.write(node.opener)
     if node.separators:
         separators = list(node.separators)
@@ -132,6 +136,8 @@ def set_mfenced_without_border(context, node):
     context.write(node.close)
     return node
 
+def set_mfenced_without_mrow(context, node):
+    pass
 
 def render_math_run(context, node):
     """
