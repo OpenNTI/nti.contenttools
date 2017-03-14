@@ -1242,7 +1242,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\([a|b|c|d|e]\\)'))
-    
+
     def test_math_mfenced_4(self):
         """
         example from : https://www.w3.org/TR/MathML3/chapter3.html
@@ -1257,23 +1257,23 @@ class TestMath(ContentToolsTestCase):
 # </mfenced>
 #===============================================================================
         """
-        math  = Math()
-        
+        math = Math()
+
         mfenced = MFenced()
-        
+
         mrow = MRow()
         mi_1 = MathRun()
         mi_1.add(TextNode(u'a', type_text='math'))
         mrow.add(mi_1)
-        
+
         mo = MathRun()
         mo.add(TextNode(u'+', type_text='math'))
         mrow.add(mo)
-        
+
         mi_2 = MathRun()
         mi_2.add(TextNode(u'b', type_text='math'))
         mrow.add(mi_2)
-        
+
         mfenced.add(mrow)
         math.add(mfenced)
         output = render_output(math)
@@ -1283,7 +1283,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\((a+b)\\)'))
-    
+
     def test_math_mfenced_5(self):
         """
         example from : https://www.w3.org/TR/MathML3/chapter3.html
@@ -1295,19 +1295,19 @@ class TestMath(ContentToolsTestCase):
 # </mfenced>
 #===============================================================================
         """
-        math  = Math()
-        
+        math = Math()
+
         mfenced = MFenced()
         mfenced.opener = u'['
-        
+
         mn_1 = MathRun()
         mn_1.add(TextNode(u'0', type_text='math'))
         mfenced.add(mn_1)
-        
+
         mn_2 = MathRun()
         mn_2.add(TextNode(u'1', type_text='math'))
         mfenced.add(mn_2)
-        
+
         math.add(mfenced)
         output = render_output(math)
         assert_that(output, is_(u'\\[[0,1)\\]'))

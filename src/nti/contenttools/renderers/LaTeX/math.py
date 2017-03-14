@@ -127,24 +127,27 @@ def set_mfenced_without_border(context, node):
     context.write(node.close)
     return node
 
+
 def check_mfenced_open_close(node):
     if not node.opener:
         node.opener = u'('
     elif node.opener == u'{':
         node.opener = u'\{'
-    
+
     if not node.close:
         node.close = u')'
     elif node.close == u'}':
-        node.close = u'\}'    
+        node.close = u'\}'
     return node
-    
+
+
 def render_mfenced_children(context, node, separators):
     render_node(context, node.children[0])
     for i, sep in enumerate(separators):
         context.write(sep)
         render_node(context, node.children[i + 1])
     return node
+
 
 def render_math_run(context, node):
     """
