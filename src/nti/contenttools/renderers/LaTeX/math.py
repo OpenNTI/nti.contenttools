@@ -159,7 +159,7 @@ def render_math_run(context, node):
     output = render_children_output(node)
     if node.element_type == u'operator':
         if output in INVISIBLE_OPERATORS:
-            pass
+            context.write(u'\\,')
     else:
         context.write(output)
     return node

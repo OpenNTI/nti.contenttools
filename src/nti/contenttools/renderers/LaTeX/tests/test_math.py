@@ -1355,12 +1355,12 @@ class TestMath(ContentToolsTestCase):
 
         math.add(mrow)
         output = render_output(math)
-        assert_that(output, is_(u'\\[f(x,y)\\]'))
+        assert_that(output, is_(u'\\[f\\,(x,y)\\]'))
 
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(output_inline, is_(u'\\(f(x,y)\\)'))
+        assert_that(output_inline, is_(u'\\(f\\,(x,y)\\)'))
 
     def test_math_mmultiscripts_mprescripts(self):
         """
@@ -1469,3 +1469,121 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\({_{b}^{}}X_{}^{c}\\)'))
+    
+    def test_invisible_operator_1(self):
+        """
+        example from : https://www.w3.org/TR/MathML3/chapter3.html
+#===============================================================================
+# <mrow>
+#   <mi> sin </mi>
+#   <mo> &#x2061;<!--FUNCTION APPLICATION--> </mo>
+#   <mi> x </mi>
+# </mrow>
+#===============================================================================
+        """
+        math  = Math()
+        mrow = MRow()
+        
+        mi_1 = MathRun()
+        mi_1.add(TextNode(u'sin', type_text='math'))
+        mrow.add(mi_1)
+        
+        mo = MathRun()
+        mo.element_type = u'operator'
+        mo.add(TextNode(u'\u2061', type_text='math'))
+        mrow.add(mo)
+        
+        mi_2 = MathRun()
+        mi_2.add(TextNode(u'x', type_text='math'))
+        mrow.add(mi_2)
+        
+        math.add(mrow)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[sin\\,x\\]'))
+
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(sin\\,x\\)'))
+    
+    def test_invisible_operator_2(self):
+        """
+        example from : https://www.w3.org/TR/MathML3/chapter3.html
+#===============================================================================
+# <mrow>
+#   <mi> x </mi>
+#   <mo> &#x2062;<!--INVISIBLE TIMES--> </mo>
+#   <mi> y </mi>
+# </mrow>
+#===============================================================================
+        """
+        math  = Math()
+        mrow = MRow()
+        
+        mi_1 = MathRun()
+        mi_1.add(TextNode(u'x', type_text='math'))
+        mrow.add(mi_1)
+        
+        mo = MathRun()
+        mo.element_type = u'operator'
+        mo.add(TextNode(u'\u2062', type_text='math'))
+        mrow.add(mo)
+        
+        mi_2 = MathRun()
+        mi_2.add(TextNode(u'y', type_text='math'))
+        mrow.add(mi_2)
+        
+        math.add(mrow)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[x\\,y\\]'))
+
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(x\\,y\\)'))
+    
+    def test_invisible_operator_3(self):
+        """
+        example from : https://www.w3.org/TR/MathML3/chapter3.html
+#===============================================================================
+# <msub>
+#   <mi> m </mi>
+#   <mrow>
+#     <mn> 1 </mn>
+#     <mo> &#x2063;<!--INVISIBLE SEPARATOR--> </mo>
+#     <mn> 2 </mn>
+#   </mrow>
+# </msub>
+#===============================================================================
+        """
+        math  = Math()
+        msub = MSub()
+        
+        mi = MathRun()
+        mi.add(TextNode(u'm', type_text='math'))
+        msub.add(mi)
+
+        mrow = MRow()
+        
+        mi_1 = MathRun()
+        mi_1.add(TextNode(u'1', type_text='math'))
+        mrow.add(mi_1)
+        
+        mo = MathRun()
+        mo.element_type = u'operator'
+        mo.add(TextNode(u'\u2063', type_text='math'))
+        mrow.add(mo)
+        
+        mi_2 = MathRun()
+        mi_2.add(TextNode(u'2', type_text='math'))
+        mrow.add(mi_2)
+        
+        msub.add(mrow)
+        math.add(msub)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[{m}_{1\,2}\\]'))
+
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\({m}_{1\,2}\\)'))
