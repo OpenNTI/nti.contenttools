@@ -1469,7 +1469,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\({_{b}^{}}X_{}^{c}\\)'))
-    
+
     def test_invisible_operator_1(self):
         """
         example from : https://www.w3.org/TR/MathML3/chapter3.html
@@ -1481,22 +1481,22 @@ class TestMath(ContentToolsTestCase):
 # </mrow>
 #===============================================================================
         """
-        math  = Math()
+        math = Math()
         mrow = MRow()
-        
+
         mi_1 = MathRun()
         mi_1.add(TextNode(u'sin', type_text='math'))
         mrow.add(mi_1)
-        
+
         mo = MathRun()
         mo.element_type = u'operator'
         mo.add(TextNode(u'\u2061', type_text='math'))
         mrow.add(mo)
-        
+
         mi_2 = MathRun()
         mi_2.add(TextNode(u'x', type_text='math'))
         mrow.add(mi_2)
-        
+
         math.add(mrow)
         output = render_output(math)
         assert_that(output, is_(u'\\[sin\\,x\\]'))
@@ -1505,7 +1505,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(sin\\,x\\)'))
-    
+
     def test_invisible_operator_2(self):
         """
         example from : https://www.w3.org/TR/MathML3/chapter3.html
@@ -1517,22 +1517,22 @@ class TestMath(ContentToolsTestCase):
 # </mrow>
 #===============================================================================
         """
-        math  = Math()
+        math = Math()
         mrow = MRow()
-        
+
         mi_1 = MathRun()
         mi_1.add(TextNode(u'x', type_text='math'))
         mrow.add(mi_1)
-        
+
         mo = MathRun()
         mo.element_type = u'operator'
         mo.add(TextNode(u'\u2062', type_text='math'))
         mrow.add(mo)
-        
+
         mi_2 = MathRun()
         mi_2.add(TextNode(u'y', type_text='math'))
         mrow.add(mi_2)
-        
+
         math.add(mrow)
         output = render_output(math)
         assert_that(output, is_(u'\\[x\\,y\\]'))
@@ -1541,7 +1541,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(x\\,y\\)'))
-    
+
     def test_invisible_operator_3(self):
         """
         example from : https://www.w3.org/TR/MathML3/chapter3.html
@@ -1556,28 +1556,28 @@ class TestMath(ContentToolsTestCase):
 # </msub>
 #===============================================================================
         """
-        math  = Math()
+        math = Math()
         msub = MSub()
-        
+
         mi = MathRun()
         mi.add(TextNode(u'm', type_text='math'))
         msub.add(mi)
 
         mrow = MRow()
-        
+
         mi_1 = MathRun()
         mi_1.add(TextNode(u'1', type_text='math'))
         mrow.add(mi_1)
-        
+
         mo = MathRun()
         mo.element_type = u'operator'
         mo.add(TextNode(u'\u2063', type_text='math'))
         mrow.add(mo)
-        
+
         mi_2 = MathRun()
         mi_2.add(TextNode(u'2', type_text='math'))
         mrow.add(mi_2)
-        
+
         msub.add(mrow)
         math.add(msub)
         output = render_output(math)
