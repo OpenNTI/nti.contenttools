@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from docutils.nodes import Invisible
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -149,13 +150,15 @@ def render_mfenced_children(context, node, separators):
     return node
 
 
+INVISIBLE_OPERATORS = (u'\u2061', u'\u2062', u'\u2063', u'\u2064')
+
 def render_math_run(context, node):
     """
     render MathRun node <mi>, <mo>, <mn>
     """
     output = render_children_output(node)
     if node.element_type == u'operator':
-        if output == u'\u2061':
+        if output in INVISIBLE_OPERATORS:
             pass
     else:
         context.write(output)
