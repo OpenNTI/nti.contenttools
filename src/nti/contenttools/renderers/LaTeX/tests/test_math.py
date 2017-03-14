@@ -1316,7 +1316,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\([0,1)\\)'))
-    
+
     def test_math_mfenced_6(self):
         """
         example from : https://www.w3.org/TR/MathML3/chapter3.html
@@ -1332,18 +1332,18 @@ class TestMath(ContentToolsTestCase):
 # </mrow>
 #===============================================================================
         """
-        math  = Math()
+        math = Math()
         mrow = MRow()
-        
+
         mi = MathRun()
         mi.add(TextNode(u'f', type_text='math'))
         mrow.add(mi)
-        
+
         mo = MathRun()
         mo.element_type = u'operator'
         mo.add(TextNode(u'\u2061', type_text='math'))
         mrow.add(mo)
-        
+
         mfenced = MFenced()
         mi_1 = MathRun()
         mi_1.add(TextNode(u'x', type_text='math'))
@@ -1352,7 +1352,7 @@ class TestMath(ContentToolsTestCase):
         mi_2.add(TextNode(u'y', type_text='math'))
         mfenced.add(mi_2)
         mrow.add(mfenced)
-        
+
         math.add(mrow)
         output = render_output(math)
         assert_that(output, is_(u'\\[f(x,y)\\]'))
