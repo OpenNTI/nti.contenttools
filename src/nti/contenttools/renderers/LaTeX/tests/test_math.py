@@ -1744,9 +1744,12 @@ class TestMath(ContentToolsTestCase):
 
         math.add(mrow)
         output = render_output(math)
-        #assert_that(output, is_(u''))
-        #TODO : something missed on the output
-        #assert_that(output, is_(u'\\[\\exists \\delta 0\\ni f\\,x1\\]'))
+        assert_that(output, is_(u'\\[\\exists \\delta >0\\ni f\\,(x)<1\\]'))
+        
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\exists \\delta >0\\ni f\\,(x)<1\\)'))
     
     def test_mrow_mo(self):
         mrow_1 = MRow()
