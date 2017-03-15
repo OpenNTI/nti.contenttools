@@ -2123,3 +2123,53 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\dot{x}\\)'))
+    
+    def test_mover_grave(self):
+        math = Math()
+        mrow = MRow()
+
+        mover_1 = MOver()
+        mover_1.accent = True
+        mi_1 = MathRun()
+        mi_1.element_type = 'identifier'
+        mi_1.add(TextNode(u'x', type_text=u'math'))
+        mover_1.add(mi_1)
+        mo_1 = MathRun()
+        mo_1.element_type = 'operator'
+        mo_1.add(TextNode(u'\u0060', type_text=u'math'))
+        mover_1.add(mo_1)
+
+        mrow.add(mover_1)
+        math.add(mrow)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\grave{x}\\]'))
+
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\grave{x}\\)'))
+    
+    def test_mover_grave_2(self):
+        math = Math()
+        mrow = MRow()
+
+        mover_1 = MOver()
+        mover_1.accent = True
+        mi_1 = MathRun()
+        mi_1.element_type = 'identifier'
+        mi_1.add(TextNode(u'x', type_text=u'math'))
+        mover_1.add(mi_1)
+        mo_1 = MathRun()
+        mo_1.element_type = 'operator'
+        mo_1.add(TextNode(u'\u02CB', type_text=u'math'))
+        mover_1.add(mo_1)
+
+        mrow.add(mover_1)
+        math.add(mrow)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\grave{x}\\]'))
+
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\grave{x}\\)'))
