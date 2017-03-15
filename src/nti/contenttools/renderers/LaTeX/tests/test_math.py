@@ -1755,6 +1755,10 @@ class TestMath(ContentToolsTestCase):
         mo_1.add(TextNode(u'>', type_text=u'math'))
         mrow_1.add(mo_1)
         
-        #TODO ega: why this test fail
+        mo_2 = MathRun()
+        mo_2.element_type = u'operator'
+        mo_2.add(TextNode(u'<', type_text=u'math'))
+        mrow_1.add(mo_2)
+
         output = render_output(mrow_1)
-        assert_that(output, is_(u'>'))
+        assert_that(output, is_(u'><'))
