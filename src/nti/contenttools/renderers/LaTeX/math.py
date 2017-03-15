@@ -387,11 +387,7 @@ def render_mover(context, node):
  ⃧a \annuity{a}
 a̐ \candra{a}
 ⃛a \dddot{a}
-ä \ddot{a}
-ȧ \dot{a}
 a̚ \droang{a} 
-à \grave{a}
-â \hat{a}
 a⃖ \leftarrowaccent{a}
 a⃐ \leftharpoonaccent{a}
 a⃡ \leftrightarrowaccent{a} 
@@ -409,6 +405,7 @@ a⃗ \vec{a}
     ddot_env_char = (u'\u00A8', u'\\textasciidieresis', u'\u0308', u'\\"', u'\u0324')
     dot_env_char = (u'\u0323', u'\u00B7', u'\u002E', u'\\cdot')
     grave_env_char = (u'\u0060', u'\\textasciigrave', u'\u02CB')
+    mathring_env_char = (u'\u00B0', u'\\textdegree', u'\u02DA', u'\\r{}')
     if u'\u23de' in base:
         context.write(u'\\overbrace{')
         render_node(context, node.children[0])
@@ -431,6 +428,8 @@ a⃗ \vec{a}
         render_command(context, u'dot', node.children[0])
     elif any(c in base for c in grave_env_char):
         render_command(context, u'grave', node.children[0])
+    elif any(c in base for c in mathring_env_char):
+        render_command(context, u'mathring', node.children[0])
     else:
         context.write(u'\\overset{')
         context.write(base)
