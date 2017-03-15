@@ -1634,3 +1634,114 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(2\\,\\frac{3}{4}\\)'))
+    
+    def test_text_embeeded_under_mo(self):
+        """
+        example : https://www.w3.org/TR/MathML3/chapter3.html#presm.mtext
+#===============================================================================
+# <mrow>
+#   <mo> there exists </mo>
+#   <mrow>
+#     <mrow>
+#       <mi> &#x3B4;<!--GREEK SMALL LETTER DELTA--> </mi>
+#       <mo> &gt; </mo>
+#       <mn> 0 </mn>
+#     </mrow>
+#     <mo> such that </mo>
+#     <mrow>
+#       <mrow>
+#         <mi> f </mi>
+#         <mo> &#x2061;<!--FUNCTION APPLICATION--> </mo>
+#         <mrow>
+#           <mo> ( </mo>
+#           <mi> x </mi>
+#           <mo> ) </mo>
+#         </mrow>
+#       </mrow>
+#       <mo> &lt; </mo>
+#       <mn> 1 </mn>
+#     </mrow>
+#   </mrow>
+# </mrow>
+#===============================================================================
+        """
+        math = Math()
+        mrow = MRow()
+        
+        mo = MathRun()
+        mo.element_type = u'operator'
+        mo.add(TextNode(u'there exists', type_text=u'math'))
+        mrow.add(mo)
+        
+        sub_mrow = MRow()
+        mrow_1 = MRow()
+        
+        mi_1 = MathRun()
+        mi_1.element_type = u'identifier'
+        mi_1.add(TextNode(u"\u03B4", type_text=u'math'))
+        mrow_1.add(mi_1)
+        
+        mo_1 = MathRun()
+        mo_1.element_type = u'operator'
+        mo_1.add(TextNode(u'>', type_text=u'math'))
+        mrow_1.add(mo_1)
+        
+        mn_1 = MathRun()
+        mn_1.element_type = u'numeric'
+        mn_1.add(TextNode(u'0', type_text=u'math'))
+        mrow_1.add(mn_1)
+        sub_mrow.add(mrow_1)
+        
+        sub_mo = MathRun()
+        sub_mo.element_type = u'operator'
+        sub_mo.add(TextNode(u'such that', type_text=u'math'))
+        sub_mrow.add(sub_mo)
+        
+        mrow_2 = MRow()
+        
+        sub_mrow_2 = MRow()
+        sub_mi_2 = MathRun()
+        sub_mi_2.element_type = u'identifier'
+        sub_mi_2.add(TextNode(u"f", type_text=u'math'))
+        sub_mrow_2.add(sub_mi_2)
+        
+        sub_mo_2 = MathRun()
+        sub_mo_2.element_type = u'operator'
+        sub_mo_2.add(TextNode(u"\u2061", type_text=u'math'))
+        sub_mrow_2.add(sub_mo_2)
+        
+        sub_sub_mrow_2 = MRow()
+        sub_sub_mo_2 = MathRun()
+        sub_sub_mo_2.element_type = u'operator'
+        sub_sub_mo_2.add(TextNode(u"(", type_text=u'math'))
+        sub_sub_mrow_2.add(sub_sub_mo_2)
+        
+        sub_sub_mi_2 = MathRun()
+        sub_sub_mi_2.element_type = u'identifier'
+        sub_sub_mi_2.add(TextNode(u"x", type_text=u'math'))
+        sub_sub_mrow_2.add(sub_sub_mi_2)
+        
+        sub_sub_mo_3 = MathRun()
+        sub_sub_mo_3.element_type = u'operator'
+        sub_sub_mo_3.add(TextNode(u"(", type_text=u'math'))
+        sub_sub_mrow_2.add(sub_sub_mo_3)
+        
+        sub_mrow_2.add(sub_sub_mrow_2)
+        mrow_2.add(sub_mrow_2)
+        
+        mo_2 = MathRun()
+        mo_2.element_type = u'operator'
+        mo_2.add(TextNode(u'<', type_text=u'math'))
+        mrow_2.add(mo_2)
+        
+        mn_2 = MathRun()
+        mn_2.element_type = u'numeric'
+        mn_2.add(TextNode(u'1', type_text=u'math'))
+        mrow_2.add(mn_2)
+        
+        sub_mrow.add(mrow_2)
+        mrow.add(sub_mrow)
+
+        math.add(mrow)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\exists \\delta 0\\ni f\\,x1\\]'))
