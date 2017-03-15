@@ -385,11 +385,8 @@ def render_mover(context, node):
     render <mover> element
     TODO ega: implement this :
  ⃧a \annuity{a}
-ă \breve{a}
 a̐ \candra{a}
-ǎ \check{a} ⃜a 
-\ddddot{a} ⃛a 
-\dddot{a}
+⃛a \dddot{a}
 ä \ddot{a}
 ȧ \dot{a}
 a̚ \droang{a} 
@@ -408,7 +405,7 @@ a⃗ \vec{a}
 ⃩a \widebridgeabove{a}
     """
     base = render_output(node.children[1])
-    print(base)
+    check_env_char = (u'\u02C5', u'\u02C7', u'0076', u'\\textasciicaron')
     if u'\u23de' in base:
         context.write(u'\\overbrace{')
         render_node(context, node.children[0])
@@ -423,7 +420,7 @@ a⃗ \vec{a}
         render_command(context, u'bar', node.children[0])
     elif u'\u02D8' in base or u'\\textasciibreve' in base:
         render_command(context, u'breve', node.children[0])
-    elif u'\u02C5' in base or u'v' in base:
+    elif any(c in base for c in check_env_char):
         render_command(context, u'check', node.children[0])
     else:
         context.write(u'\\overset{')
