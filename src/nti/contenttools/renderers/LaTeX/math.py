@@ -423,6 +423,8 @@ a⃗ \vec{a}
         render_command(context, u'bar', node.children[0])
     elif u'\u02D8' in base or u'\\textasciibreve' in base:
         render_command(context, u'breve', node.children[0])
+    elif u'\u02C5' in base or u'v' in base:
+        render_command(context, u'check', node.children[0])
     else:
         context.write(u'\\overset{')
         context.write(base)
