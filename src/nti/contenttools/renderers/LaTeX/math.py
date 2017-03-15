@@ -408,6 +408,7 @@ a⃗ \vec{a}
     check_env_char = (u'\u02C5', u'\u02C7', u'0076', u'\\textasciicaron')
     ddot_env_char = (u'\u00A8', u'\\textasciidieresis', u'\u0308', u'\\"', u'\u0324')
     dot_env_char = (u'\u0323', u'\u00B7', u'\u002E', u'\\cdot')
+    grave_env_char = (u'\u0060', u'\\textasciigrave', u'\u02CB')
     if u'\u23de' in base:
         context.write(u'\\overbrace{')
         render_node(context, node.children[0])
@@ -428,6 +429,8 @@ a⃗ \vec{a}
         render_command(context, u'ddot', node.children[0])
     elif any(c in base for c in dot_env_char):
         render_command(context, u'dot', node.children[0])
+    elif any(c in base for c in grave_env_char):
+        render_command(context, u'grave', node.children[0])
     else:
         context.write(u'\\overset{')
         context.write(base)
