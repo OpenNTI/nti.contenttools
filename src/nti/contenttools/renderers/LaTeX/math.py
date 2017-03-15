@@ -384,7 +384,6 @@ def render_mover(context, node):
     """
     render <mover> element
     TODO ega: implement this :
-á \acute{a}
  ⃧a \annuity{a}
 a⃰ \asteraccent{a} 
 ā \bar{a}
@@ -420,6 +419,8 @@ a⃗ \vec{a}
         render_command(context, u'hat', node.children[0])
     elif u'\u00B4' in base or u'\\textasciiacute' in base:
         render_command(context, u'acute', node.children[0])
+    elif u'\u002A' in base or u'\\ast' in base:
+        render_command(context, u'asteraccent', node.children[0])
     else:
         context.write(u'\\overset{')
         context.write(base)
