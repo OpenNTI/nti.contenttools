@@ -2223,3 +2223,53 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\mathring{x}\\)'))
+    
+    def test_mover_mathring_3(self):
+        math = Math()
+        mrow = MRow()
+
+        mover_1 = MOver()
+        mover_1.accent = True
+        mi_1 = MathRun()
+        mi_1.element_type = 'identifier'
+        mi_1.add(TextNode(u'x', type_text=u'math'))
+        mover_1.add(mi_1)
+        mo_1 = MathRun()
+        mo_1.element_type = 'operator'
+        mo_1.add(TextNode(u'\u02F3', type_text=u'math'))
+        mover_1.add(mo_1)
+
+        mrow.add(mover_1)
+        math.add(mrow)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\mathring{x}\\]'))
+
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\mathring{x}\\)'))
+    
+    def test_mover_mathring_4(self):
+        math = Math()
+        mrow = MRow()
+
+        mover_1 = MOver()
+        mover_1.accent = True
+        mi_1 = MathRun()
+        mi_1.element_type = 'identifier'
+        mi_1.add(TextNode(u'x', type_text=u'math'))
+        mover_1.add(mi_1)
+        mo_1 = MathRun()
+        mo_1.element_type = 'operator'
+        mo_1.add(TextNode(u'\u0325', type_text=u'math'))
+        mover_1.add(mo_1)
+
+        mrow.add(mover_1)
+        math.add(mrow)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\mathring{x}\\]'))
+
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\mathring{x}\\)'))
