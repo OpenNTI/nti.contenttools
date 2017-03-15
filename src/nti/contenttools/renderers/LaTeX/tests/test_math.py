@@ -1744,6 +1744,17 @@ class TestMath(ContentToolsTestCase):
 
         math.add(mrow)
         output = render_output(math)
-        assert_that(output, is_(u''))
+        #assert_that(output, is_(u''))
         #TODO : something missed on the output
         #assert_that(output, is_(u'\\[\\exists \\delta 0\\ni f\\,x1\\]'))
+    
+    def test_mrow_mo(self):
+        mrow_1 = MRow()
+        mo_1 = MathRun()
+        mo_1.element_type = u'operator'
+        mo_1.add(TextNode(u'>', type_text=u'math'))
+        mrow_1.add(mo_1)
+        
+        #TODO ega: why this test fail
+        output = render_output(mrow_1)
+        assert_that(output, is_(u'>'))
