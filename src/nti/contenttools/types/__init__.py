@@ -77,6 +77,7 @@ from nti.contenttools.types.math import MFenced
 from nti.contenttools.types.math import MSubSup
 from nti.contenttools.types.math import MMenclose
 from nti.contenttools.types.math import MUnderover
+from nti.contenttools.types.math import MLabeledTr
 from nti.contenttools.types.math import MMprescripts
 from nti.contenttools.types.math import MMultiscripts
 

@@ -31,8 +31,10 @@ from nti.contenttools.types.interfaces import IMFenced
 from nti.contenttools.types.interfaces import IMSubSup
 from nti.contenttools.types.interfaces import IMMenclose
 from nti.contenttools.types.interfaces import IMUnderover
+from nti.contenttools.types.interfaces import IMLabeledTr
 from nti.contenttools.types.interfaces import IMMprescripts
 from nti.contenttools.types.interfaces import IMMultiscripts
+
 
 from nti.contenttools.types.node import DocumentStructureNode
 
@@ -86,6 +88,9 @@ class Mtable(DocumentStructureNode):
     def set_number_of_col(self, number_of_col):
         self.number_of_col = number_of_col
 
+@interface.implementer(IMLabeledTr)
+class MLabeledTr(DocumentStructureNode):
+    createFieldProperties(IMLabeledTr)
 
 @interface.implementer(IMtr)
 class Mtr(DocumentStructureNode):
