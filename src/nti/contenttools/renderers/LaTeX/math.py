@@ -158,8 +158,12 @@ def render_math_run(context, node):
     """
     output = render_children_output(node)
     if node.element_type == u'operator':
-        if output in INVISIBLE_OPERATORS:
+        if output.strip() in INVISIBLE_OPERATORS:
             context.write(u'\\,')
+        elif output.strip() == u'there exists':
+            context.write(u'\\exists ')
+        elif output.strip() == u'such that':
+            context.write(u'\\ni ')
     else:
         context.write(output)
     return node
