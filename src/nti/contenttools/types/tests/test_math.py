@@ -35,6 +35,7 @@ from nti.contenttools.types.interfaces import IMFenced
 from nti.contenttools.types.interfaces import IMSubSup
 from nti.contenttools.types.interfaces import IMMenclose
 from nti.contenttools.types.interfaces import IMUnderover
+from nti.contenttools.types.interfaces import IMLabeledTr
 from nti.contenttools.types.interfaces import IMMprescripts
 from nti.contenttools.types.interfaces import IMMultiscripts
 
@@ -57,6 +58,7 @@ from nti.contenttools.types.math import MFenced
 from nti.contenttools.types.math import MSubSup
 from nti.contenttools.types.math import MMenclose
 from nti.contenttools.types.math import MUnderover
+from nti.contenttools.types.math import MLabeledTr
 from nti.contenttools.types.math import MMprescripts
 from nti.contenttools.types.math import MMultiscripts
 
@@ -116,6 +118,11 @@ class TestMath(ContentToolsTestCase):
         assert_that(node, validly_provides(IMTable))
         assert_that(node, verifiably_provides(IMTable))
         assert_that(node, has_property('number_of_col', is_(0)))
+    
+    def test_mlabeledtr(self):
+        node = MLabeledTr()
+        assert_that(node, validly_provides(IMLabeledTr))
+        assert_that(node, verifiably_provides(IMLabeledTr))
 
     def test_mtd(self):
         node = Mtd()
