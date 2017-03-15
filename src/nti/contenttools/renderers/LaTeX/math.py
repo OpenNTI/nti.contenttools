@@ -385,10 +385,13 @@ def render_mover(context, node):
     render <mover> element
     """
     base = render_output(node.children[1])
-    if u'23de' in base.lower() or u'\u23de' in unicode(base).split():
+    print(base)
+    if u'\u23de' in base:
         context.write(u'\\overbrace{')
         render_node(context, node.children[0])
         context.write(u'}')
+    elif u'\u005E' in base or u'^' in base:
+        render_command(context, u'hat', node.children[0])
     else:
         context.write(u'\\overset{')
         context.write(base)

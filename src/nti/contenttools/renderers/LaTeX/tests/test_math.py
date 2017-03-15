@@ -1765,3 +1765,55 @@ class TestMath(ContentToolsTestCase):
 
         output = render_output(mrow_1)
         assert_that(output, is_(u'><'))
+    
+    def test_mover_with_accent(self):
+        """
+#===============================================================================
+# <mrow>
+#   <mover accent="true">
+#     <mi> x </mi>
+#     <mo> &#x5E;<!--CIRCUMFLEX ACCENT--> </mo>
+#   </mover>
+#   <mtext>&#xA0;<!--NO-BREAK SPACE-->versus&#xA0;<!--NO-BREAK SPACE--></mtext>
+#   <mover accent="false">
+#     <mi> x </mi>
+#     <mo> &#x5E;<!--CIRCUMFLEX ACCENT--> </mo>
+#   </mover>
+# </mrow>
+#===============================================================================
+        """
+        math = Math()
+        mrow = MRow()
+        
+        mover_1 = MOver()
+        mover_1.accent = True
+        mi_1 = MathRun()
+        mi_1.element_type = 'identifier'
+        mi_1.add(TextNode(u'x', type_text=u'math'))
+        mover_1.add(mi_1)
+        mo_1 = MathRun()
+        mo_1.element_type = 'operator'
+        mo_1.add(TextNode(u'\u005E', type_text=u'math'))
+        mover_1.add(mo_1)
+        mrow.add(mover_1)
+        
+        mtext = MText()
+        mtext.add(TextNode(u' versus ', type_text=u'math'))
+        mrow.add(mtext)
+        
+        mover_2 = MOver()
+        mover_2.accent = False
+        mi_2 = MathRun()
+        mi_2.element_type = 'identifier'
+        mi_2.add(TextNode(u'x', type_text=u'math'))
+        mover_2.add(mi_2)
+        mo_2 = MathRun()
+        mo_2.element_type = 'operator'
+        mo_2.add(TextNode(u'\u005E', type_text=u'math'))
+        mover_2.add(mo_2)
+        mrow.add(mover_2)
+        
+        math.add(mrow)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\hat{x}\\text{ versus }\\hat{x}\\]'))
+        
