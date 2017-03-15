@@ -418,6 +418,8 @@ a⃗ \vec{a}
         context.write(u'}')
     elif u'\u005E' in base or u'^' in base:
         render_command(context, u'hat', node.children[0])
+    elif u'\u00B4' in base or u'\\textasciiacute' in base:
+        render_command(context, u'acute', node.children[0])
     else:
         context.write(u'\\overset{')
         context.write(base)
