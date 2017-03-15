@@ -600,9 +600,9 @@ class IMathRun(IDocumentStructureNode):
         if <mo> then element_type = 'operator'
         if <mi> then element_type = 'identifier'
     """
-    
+
     element_type = ValidTextLine(title="Element Type",
-                                 required = False)
+                                 required=False)
 
 
 class IMFenced(IDocumentStructureNode):
@@ -652,10 +652,12 @@ class IMTable(IDocumentStructureNode):
         set number of column
         """
 
+
 class IMLabeledTr(IDocumentStructureNode):
     """
     Node for MathML element <mlabeledtr>
     """
+
 
 class IMtr(IDocumentStructureNode):
 
@@ -713,7 +715,7 @@ class IMOver(IDocumentStructureNode):
     """
     Node for MathML element <mover>
     """
-    accent = Bool(title = u'Accent',
+    accent = Bool(title=u'Accent',
                   required=False)
 
 

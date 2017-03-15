@@ -88,9 +88,11 @@ class Mtable(DocumentStructureNode):
     def set_number_of_col(self, number_of_col):
         self.number_of_col = number_of_col
 
+
 @interface.implementer(IMLabeledTr)
 class MLabeledTr(DocumentStructureNode):
     createFieldProperties(IMLabeledTr)
+
 
 @interface.implementer(IMtr)
 class Mtr(DocumentStructureNode):
@@ -153,7 +155,7 @@ class MMprescripts(DocumentStructureNode):
 @interface.implementer(IMText)
 class MText(DocumentStructureNode):
     createFieldProperties(IMText)
-    
+
 @interface.implementer(IMNone)
 class MNone(DocumentStructureNode):
     createFieldProperties(IMNone)

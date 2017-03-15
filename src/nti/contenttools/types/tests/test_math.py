@@ -118,7 +118,7 @@ class TestMath(ContentToolsTestCase):
         assert_that(node, validly_provides(IMTable))
         assert_that(node, verifiably_provides(IMTable))
         assert_that(node, has_property('number_of_col', is_(0)))
-    
+
     def test_mlabeledtr(self):
         node = MLabeledTr()
         assert_that(node, validly_provides(IMLabeledTr))

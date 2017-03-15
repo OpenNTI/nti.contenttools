@@ -40,6 +40,7 @@ from nti.contenttools.types.interfaces import IMathRun
 from nti.contenttools.types.interfaces import IMSubSup
 from nti.contenttools.types.interfaces import IMMenclose
 from nti.contenttools.types.interfaces import IMUnderover
+from nti.contenttools.types.interfaces import IMLabeledTr
 from nti.contenttools.types.interfaces import IMMprescripts
 from nti.contenttools.types.interfaces import IMMultiscripts
 
@@ -389,7 +390,13 @@ def render_mover(context, node):
     ddot_env_char = (u'\u00A8', u'\\textasciidieresis', u'\u0308', u'\\"', u'\u0324')
     dot_env_char = (u'\u0323', u'\u00B7', u'\u002E', u'\\cdot')
     grave_env_char = (u'\u0060', u'\\textasciigrave', u'\u02CB')
-    mathring_env_char = (u'\u00B0', u'\\textdegree', u'\u02DA', u'\\r{}', u'\u02F3', u'\u0325')
+    mathring_env_char = (
+        u'\u00B0',
+        u'\\textdegree',
+        u'\u02DA',
+        u'\\r{}',
+        u'\u02F3',
+        u'\u0325')
     tilde_env_char = (u'~', u'\u007E', u'\\textasciitilde', u'\u02F7', u'\u0303')
     vec_env_char = (u'\u2192', u'\\rightarrow')
     if u'\u23de' in base:
