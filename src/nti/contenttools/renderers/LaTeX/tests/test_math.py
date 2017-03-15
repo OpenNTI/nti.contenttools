@@ -676,8 +676,8 @@ class TestMath(ContentToolsTestCase):
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(
-            output_inline, is_(u'\\(\\frac{\\frac{a}{b}}{\\frac{c}{d}}\\)'))
+        assert_that(output_inline, 
+                    is_(u'\\(\\frac{\\frac{a}{b}}{\\frac{c}{d}}\\)'))
 
     def test_complete_math_msub(self):
         """
@@ -830,14 +830,14 @@ class TestMath(ContentToolsTestCase):
 
         math.add(mtable)
         output = render_output(math)
-        assert_that(output, is_(
-            u'\\[X=\\begin{array}{ l  l }\nA & B \\\\\nC & D \\\\\nE & F \\\\\n\\end{array}\\]'))
+        assert_that(output, 
+                    is_(u'\\[X=\\begin{array}{ l  l }\nA & B \\\\\nC & D \\\\\nE & F \\\\\n\\end{array}\\]'))
 
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(output_inline, is_(
-            u'\\(X=\\begin{array}{ l  l }\nA & B \\\\\nC & D \\\\\nE & F \\\\\n\\end{array}\\)'))
+        assert_that(output_inline, 
+                    is_(u'\\(X=\\begin{array}{ l  l }\nA & B \\\\\nC & D \\\\\nE & F \\\\\n\\end{array}\\)'))
 
     def test_complete_math_msubsup_integral(self):
         """
@@ -1100,8 +1100,8 @@ class TestMath(ContentToolsTestCase):
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\text{Theorem of Pythagoras}\\)'))
 
-        # TODO : mtext shoud be able to handle string /* and */ correctly:
-        #mtext.add(TextNode(u' /* comment here */ ', type_text='math'))
+        # TODO: mtext shoud be able to handle string /* and */ correctly:
+        # mtext.add(TextNode(u' /* comment here */ ', type_text='math'))
 
     def test_math_mfenced_1(self):
         """
@@ -1750,8 +1750,8 @@ class TestMath(ContentToolsTestCase):
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(
-            output_inline, is_(u'\\(\\exists \\delta >0\\ni f\\,(x)<1\\)'))
+        assert_that(output_inline,
+                    is_(u'\\(\\exists \\delta >0\\ni f\\,(x)<1\\)'))
 
     def test_mrow_mo(self):
         mrow_1 = MRow()
@@ -1822,8 +1822,8 @@ class TestMath(ContentToolsTestCase):
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(
-            output_inline, is_(u'\\(\\hat{x}\\text{ versus }\\hat{x}\\)'))
+        assert_that(output_inline, 
+                    is_(u'\\(\\hat{x}\\text{ versus }\\hat{x}\\)'))
 
     def test_mover_acute(self):
         math = Math()
@@ -2444,6 +2444,5 @@ class TestMath(ContentToolsTestCase):
 
         math.add(mlabeledtr)
         output = render_output(math)
-        assert_that(
-            output,
-            is_(u'\\[E=m\\,{c}^{2} \\tag{\\text{(2.1)}} \\label{mlabeledtr:_text__2.1__}\\]'))
+        assert_that(output,
+                    is_(u'\\[E=m\\,{c}^{2} \\tag{\\text{(2.1)}} \\label{mlabeledtr:_text__2.1__}\\]'))
