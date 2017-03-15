@@ -192,11 +192,13 @@ class Label(DocumentStructureNode):
         super(Label, self).__init__()
         self.name = name
 
+
 class BlockQuote(DocumentStructureNode):
 
     def __init__(self, source=''):
         super(BlockQuote, self).__init__()
         self.source = source
+
 
 class AlternateContent(DocumentStructureNode):
     pass

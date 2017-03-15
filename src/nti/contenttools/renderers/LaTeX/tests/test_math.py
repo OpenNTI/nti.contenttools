@@ -632,7 +632,7 @@ class TestMath(ContentToolsTestCase):
         """
         example from  : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mfrac
 #===============================================================================
-# <math>  
+# <math>
 #   <mfrac bevelled="true">
 #      <mfrac>
 #         <mi> a </mi>
@@ -683,12 +683,12 @@ class TestMath(ContentToolsTestCase):
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/msub
 #===============================================================================
 # <math>
-# 
+#
 #   <msub>
 #     <mi>X</mi>
 #     <mn>1</mn>
-#   </msub> 
-# 
+#   </msub>
+#
 # </math>
 #===============================================================================
         """
@@ -716,11 +716,11 @@ class TestMath(ContentToolsTestCase):
         example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/msqrt
 #===============================================================================
 # <math>
-# 
+#
 #  <msqrt>
 #     <mi>x</mi>
-#   </msqrt> 
-# 
+#   </msqrt>
+#
 # </math>
 #===============================================================================
         """
@@ -745,7 +745,7 @@ class TestMath(ContentToolsTestCase):
         example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mtable
 #===============================================================================
 # <math>
-#     
+#
 #     <mi>X</mi>
 #     <mo>=</mo>
 #     <mtable frame="solid" rowlines="solid" align="axis 3">
@@ -762,7 +762,7 @@ class TestMath(ContentToolsTestCase):
 #              <mtd><mi>F</mi></mtd>
 #         </mtr>
 #     </mtable>
-# 
+#
 # </math>
 #===============================================================================
         """
@@ -842,14 +842,14 @@ class TestMath(ContentToolsTestCase):
         """
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/msubsup
 #===============================================================================
-# <math displaystyle="true">   
-# 
+# <math displaystyle="true">
+#
 #   <msubsup>
 #     <mo> &#x222B;<!--Integral --> </mo>
 #     <mn> 0 </mn>
 #     <mn> 1 </mn>
 #   </msubsup>
-# 
+#
 # </math>
 #===============================================================================
         """
@@ -884,7 +884,7 @@ class TestMath(ContentToolsTestCase):
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/munder
 #===============================================================================
 # <math>
-# 
+#
 # <munder accentunder="true">
 #   <mrow>
 #     <mi> x </mi>
@@ -894,8 +894,8 @@ class TestMath(ContentToolsTestCase):
 #     <mi> z </mi>
 #   </mrow>
 #   <mo> &#x23DF; <!--BOTTOM CURLY BRACKET--> </mo>
-# </munder> 
-# 
+# </munder>
+#
 # </math>
 #===============================================================================
         """
@@ -944,14 +944,14 @@ class TestMath(ContentToolsTestCase):
         """
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/munderover
 #===============================================================================
-# <math displaystyle="true"> 
-# 
+# <math displaystyle="true">
+#
 #   <munderover >
 #     <mo> &#x222B; <!--INTEGRAL--> </mo>
 #     <mn> 0 </mn>
 #     <mi> &#x221E; <!--INFINITY--> </mi>
 #   </munderover>
-# 
+#
 # </math>
 #===============================================================================
         """
@@ -984,7 +984,7 @@ class TestMath(ContentToolsTestCase):
         https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mover
 #===============================================================================
 # <math>
-# 
+#
 # <mover accent="true">
 #   <mrow>
 #     <mi> x </mi>
@@ -994,8 +994,8 @@ class TestMath(ContentToolsTestCase):
 #     <mi> z </mi>
 #   </mrow>
 #   <mo> &#x23DE; <!--TOP CURLY BRACKET--> </mo>
-# </mover> 
-# 
+# </mover>
+#
 # </math>
 #===============================================================================
         """
@@ -1045,12 +1045,12 @@ class TestMath(ContentToolsTestCase):
         example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mroot
 #===============================================================================
 # <math>
-# 
+#
 #  <mroot>
 #     <mi>x</mi>
 #     <mn>3</mn>
-#  </mroot> 
-#  
+#  </mroot>
+#
 # </math>
 #===============================================================================
         """
@@ -1077,11 +1077,11 @@ class TestMath(ContentToolsTestCase):
 
     def test_math_mtext(self):
         """
-        example: https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mtext 
+        example: https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mtext
 #===============================================================================
-# <math> 
-# 
-#   <mtext> Theorem of Pythagoras </mtext>  
+# <math>
+#
+#   <mtext> Theorem of Pythagoras </mtext>
 #
 # </math>
 #===============================================================================
@@ -1107,13 +1107,13 @@ class TestMath(ContentToolsTestCase):
         example : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mfenced
 #===============================================================================
 # <math>
-#   <mfenced open="{" close="}" separators=";;,"> 
-#     <mi>a</mi> 
-#     <mi>b</mi> 
-#     <mi>c</mi> 
-#     <mi>d</mi> 
-#     <mi>e</mi> 
-#   </mfenced> 
+#   <mfenced open="{" close="}" separators=";;,">
+#     <mi>a</mi>
+#     <mi>b</mi>
+#     <mi>c</mi>
+#     <mi>d</mi>
+#     <mi>e</mi>
+#   </mfenced>
 # </math>
 #===============================================================================
         """
@@ -1154,13 +1154,13 @@ class TestMath(ContentToolsTestCase):
         Sample rendering: {a;b;c,d,e}
 #===============================================================================
 # <math>
-#   <mfenced open="{" close="}" separators=";;,"> 
-#     <mi>a</mi> 
-#     <mi>b</mi> 
-#     <mi>c</mi> 
-#     <mi>d</mi> 
-#     <mi>e</mi> 
-#   </mfenced> 
+#   <mfenced open="{" close="}" separators=";;,">
+#     <mi>a</mi>
+#     <mi>b</mi>
+#     <mi>c</mi>
+#     <mi>d</mi>
+#     <mi>e</mi>
+#   </mfenced>
 # </math>
 #===============================================================================
         """
@@ -1202,13 +1202,13 @@ class TestMath(ContentToolsTestCase):
         Sample rendering: [a|b|c|d|e]
 #===============================================================================
 # <math>
-#   <mfenced open="[" close="]" separators="||||,"> 
-#     <mi>a</mi> 
-#     <mi>b</mi> 
-#     <mi>c</mi> 
-#     <mi>d</mi> 
-#     <mi>e</mi> 
-#   </mfenced> 
+#   <mfenced open="[" close="]" separators="||||,">
+#     <mi>a</mi>
+#     <mi>b</mi>
+#     <mi>c</mi>
+#     <mi>d</mi>
+#     <mi>e</mi>
+#   </mfenced>
 # </math>
 #===============================================================================
         """
@@ -1366,21 +1366,21 @@ class TestMath(ContentToolsTestCase):
         """
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mmultiscripts
 #===============================================================================
-# <math>  
-# 
+# <math>
+#
 #     <mmultiscripts>
-# 
-#         <mi>X</mi>      <!-- base expression -->  
-# 
+#
+#         <mi>X</mi>      <!-- base expression -->
+#
 #         <mi>d</mi>      <!-- postsubscript -->
 #         <mi>c</mi>      <!-- postsuperscript -->
-# 
+#
 #         <mprescripts />
 #         <mi>b</mi>      <!-- presubscript -->
 #         <mi>a</mi>      <!-- presuperscript -->
-# 
+#
 #     </mmultiscripts>
-# 
+#
 # </math>
 #===============================================================================
         """
@@ -1421,21 +1421,21 @@ class TestMath(ContentToolsTestCase):
         """
         example from : https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mmultiscripts
 #===============================================================================
-# <math>  
-# 
+# <math>
+#
 #     <mmultiscripts>
-# 
+#
 #         <mi>X</mi>      <!-- base expression -->
-# 
+#
 #         <none />        <!-- postsubscript -->
 #         <mi>c</mi>      <!-- postsuperscript -->
-# 
+#
 #         <mprescripts />
 #         <mi>b</mi>      <!-- presubscript -->
 #         <none />        <!-- presuperscript -->
-# 
+#
 #     </mmultiscripts>
-# 
+#
 # </math>
 #===============================================================================
         """
@@ -1923,7 +1923,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\breve{x}\\)'))
-    
+
     def test_mover_check(self):
         math = Math()
         mrow = MRow()
@@ -1948,7 +1948,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\check{x}\\)'))
-    
+
     def test_mover_check_2(self):
         math = Math()
         mrow = MRow()
@@ -1973,7 +1973,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\check{x}\\)'))
-    
+
     def test_mover_ddot(self):
         math = Math()
         mrow = MRow()
@@ -1998,7 +1998,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\ddot{x}\\)'))
-    
+
     def test_mover_ddot_3(self):
         math = Math()
         mrow = MRow()
@@ -2023,7 +2023,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\ddot{x}\\)'))
-    
+
     def test_mover_ddot_2(self):
         math = Math()
         mrow = MRow()
@@ -2048,7 +2048,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\ddot{x}\\)'))
-        
+
     def test_mover_dot(self):
         math = Math()
         mrow = MRow()
@@ -2098,7 +2098,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\dot{x}\\)'))
-    
+
     def test_mover_dot_3(self):
         math = Math()
         mrow = MRow()
@@ -2123,7 +2123,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\dot{x}\\)'))
-    
+
     def test_mover_grave(self):
         math = Math()
         mrow = MRow()
@@ -2148,7 +2148,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\grave{x}\\)'))
-    
+
     def test_mover_grave_2(self):
         math = Math()
         mrow = MRow()
@@ -2173,7 +2173,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\grave{x}\\)'))
-    
+
     def test_mover_mathring(self):
         math = Math()
         mrow = MRow()
@@ -2198,7 +2198,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\mathring{x}\\)'))
-    
+
     def test_mover_mathring_2(self):
         math = Math()
         mrow = MRow()
@@ -2223,7 +2223,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\mathring{x}\\)'))
-    
+
     def test_mover_mathring_3(self):
         math = Math()
         mrow = MRow()
@@ -2248,7 +2248,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\mathring{x}\\)'))
-    
+
     def test_mover_mathring_4(self):
         math = Math()
         mrow = MRow()
@@ -2268,7 +2268,7 @@ class TestMath(ContentToolsTestCase):
         math.add(mrow)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\mathring{x}\\]'))
-        
+
     def test_mover_tilde(self):
         math = Math()
         mrow = MRow()
@@ -2293,7 +2293,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\tilde{x}\\)'))
-    
+
     def test_mover_tilde_2(self):
         math = Math()
         mrow = MRow()
@@ -2318,7 +2318,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\tilde{x}\\)'))
-    
+
     def test_mover_tilde_3(self):
         math = Math()
         mrow = MRow()
@@ -2343,7 +2343,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\tilde{x}\\)'))
-    
+
     def test_mover_vec(self):
         math = Math()
         mrow = MRow()
