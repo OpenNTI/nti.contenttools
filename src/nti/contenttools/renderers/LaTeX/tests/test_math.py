@@ -2268,8 +2268,28 @@ class TestMath(ContentToolsTestCase):
         math.add(mrow)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\mathring{x}\\]'))
+        
+    def test_mover_tilde(self):
+        math = Math()
+        mrow = MRow()
+
+        mover_1 = MOver()
+        mover_1.accent = True
+        mi_1 = MathRun()
+        mi_1.element_type = 'identifier'
+        mi_1.add(TextNode(u'x', type_text=u'math'))
+        mover_1.add(mi_1)
+        mo_1 = MathRun()
+        mo_1.element_type = 'operator'
+        mo_1.add(TextNode(u'~', type_text=u'math'))
+        mover_1.add(mo_1)
+
+        mrow.add(mover_1)
+        math.add(mrow)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[\\tilde{x}\\]'))
 
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(output_inline, is_(u'\\(\\mathring{x}\\)'))
+        assert_that(output_inline, is_(u'\\(\\tilde{x}\\)'))
