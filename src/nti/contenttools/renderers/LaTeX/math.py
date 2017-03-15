@@ -383,22 +383,6 @@ def render_munderover(context, node):
 def render_mover(context, node):
     """
     render <mover> element
-    TODO ega: implement this :
- ⃧a \annuity{a}
-a̐ \candra{a}
-⃛a \dddot{a}
-a̚ \droang{a} 
-a⃖ \leftarrowaccent{a}
-a⃐ \leftharpoonaccent{a}
-a⃡ \leftrightarrowaccent{a} 
-å \mathring{a}
-a̕ \ocommatopright{a}
-a̒ \oturnedcomma{a}
-ả \ovhook{a}
-a⃑ \rightharpoonaccent{a}
-ã \tilde{a}
-a⃗ \vec{a}
-⃩a \widebridgeabove{a}
     """
     base = render_output(node.children[1])
     check_env_char = (u'\u02C5', u'\u02C7', u'0076', u'\\textasciicaron')
@@ -407,6 +391,7 @@ a⃗ \vec{a}
     grave_env_char = (u'\u0060', u'\\textasciigrave', u'\u02CB')
     mathring_env_char = (u'\u00B0', u'\\textdegree', u'\u02DA', u'\\r{}', u'\u02F3', u'\u0325')
     tilde_env_char = (u'~', u'\u007E', u'\\textasciitilde', u'\u02F7', u'\u0303')
+    vec_env_char = (u'\u2192', u'\\rightarrow')
     if u'\u23de' in base:
         context.write(u'\\overbrace{')
         render_node(context, node.children[0])
@@ -433,6 +418,8 @@ a⃗ \vec{a}
         render_command(context, u'mathring', node.children[0])
     elif any(c in base for c in tilde_env_char):
         render_command(context, u'tilde', node.children[0])
+    elif any(c in base for c in vec_env_char):
+        render_command(context, u'vec', node.children[0])
     else:
         context.write(u'\\overset{')
         context.write(base)
