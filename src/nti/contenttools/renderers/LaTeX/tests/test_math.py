@@ -1817,3 +1817,8 @@ class TestMath(ContentToolsTestCase):
         output = render_output(math)
         assert_that(output, is_(u'\\[\\hat{x}\\text{ versus }\\hat{x}\\]'))
         
+        inline_math = math
+        inline_math.equation_type = u'inline'
+        output_inline = render_output(inline_math)
+        assert_that(output_inline, is_(u'\\(\\hat{x}\\text{ versus }\\hat{x}\\)'))
+        

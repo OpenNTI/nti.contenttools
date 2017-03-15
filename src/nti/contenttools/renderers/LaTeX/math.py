@@ -383,6 +383,32 @@ def render_munderover(context, node):
 def render_mover(context, node):
     """
     render <mover> element
+    TODO ega: implement this :
+á \acute{a}
+ ⃧a \annuity{a}
+a⃰ \asteraccent{a} 
+ā \bar{a}
+ă \breve{a}
+a̐ \candra{a}
+ǎ \check{a} ⃜a 
+\ddddot{a} ⃛a 
+\dddot{a}
+ä \ddot{a}
+ȧ \dot{a}
+a̚ \droang{a} 
+à \grave{a}
+â \hat{a}
+a⃖ \leftarrowaccent{a}
+a⃐ \leftharpoonaccent{a}
+a⃡ \leftrightarrowaccent{a} 
+å \mathring{a}
+a̕ \ocommatopright{a}
+a̒ \oturnedcomma{a}
+ả \ovhook{a}
+a⃑ \rightharpoonaccent{a}
+ã \tilde{a}
+a⃗ \vec{a}
+⃩a \widebridgeabove{a}
     """
     base = render_output(node.children[1])
     print(base)
