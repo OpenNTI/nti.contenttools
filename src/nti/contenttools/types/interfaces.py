@@ -709,6 +709,8 @@ class IMOver(IDocumentStructureNode):
     """
     Node for MathML element <mover>
     """
+    accent = Bool(title = u'Accent',
+                  required=False)
 
 
 class IMMenclose(IDocumentStructureNode):
