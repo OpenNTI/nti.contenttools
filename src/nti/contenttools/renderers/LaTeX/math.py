@@ -421,7 +421,7 @@ a⃗ \vec{a}
         render_command(context, u'asteraccent', node.children[0])
     elif u'\u005F' in base :
         render_command(context, u'bar', node.children[0])
-    elif u'\u02D8' in base :
+    elif u'\u02D8' in base or u'\\textasciibreve' in base:
         render_command(context, u'breve', node.children[0])
     else:
         context.write(u'\\overset{')
