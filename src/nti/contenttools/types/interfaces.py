@@ -652,6 +652,10 @@ class IMTable(IDocumentStructureNode):
         set number of column
         """
 
+class IMLabeledTr(IDocumentStructureNode):
+    """
+    Node for MathML element <mlabeledtr>
+    """
 
 class IMtr(IDocumentStructureNode):
 
