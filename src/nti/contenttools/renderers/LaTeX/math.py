@@ -406,6 +406,7 @@ a⃗ \vec{a}
     """
     base = render_output(node.children[1])
     check_env_char = (u'\u02C5', u'\u02C7', u'0076', u'\\textasciicaron')
+    ddot_env_char = (u'\u00A8', u'\\textasciidieresis', u'\u0308', u'\\"')
     if u'\u23de' in base:
         context.write(u'\\overbrace{')
         render_node(context, node.children[0])
@@ -422,6 +423,8 @@ a⃗ \vec{a}
         render_command(context, u'breve', node.children[0])
     elif any(c in base for c in check_env_char):
         render_command(context, u'check', node.children[0])
+    elif any(c in base for c in ddot_env_char):
+        render_command(context, u'ddot', node.children[0])
     else:
         context.write(u'\\overset{')
         context.write(base)
