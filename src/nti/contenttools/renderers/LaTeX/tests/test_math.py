@@ -1634,7 +1634,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(2\\,\\frac{3}{4}\\)'))
-    
+
     def test_text_embeeded_under_mo(self):
         """
         example : https://www.w3.org/TR/MathML3/chapter3.html#presm.mtext
@@ -1667,97 +1667,98 @@ class TestMath(ContentToolsTestCase):
         """
         math = Math()
         mrow = MRow()
-        
+
         mo = MathRun()
         mo.element_type = u'operator'
         mo.add(TextNode(u'there exists', type_text=u'math'))
         mrow.add(mo)
-        
+
         sub_mrow = MRow()
         mrow_1 = MRow()
-        
+
         mi_1 = MathRun()
         mi_1.element_type = u'identifier'
         mi_1.add(TextNode(u"\u03B4", type_text=u'math'))
         mrow_1.add(mi_1)
-        
+
         mo_1 = MathRun()
         mo_1.element_type = u'operator'
         mo_1.add(TextNode(u'>', type_text=u'math'))
         mrow_1.add(mo_1)
-        
+
         mn_1 = MathRun()
         mn_1.element_type = u'numeric'
         mn_1.add(TextNode(u'0', type_text=u'math'))
         mrow_1.add(mn_1)
         sub_mrow.add(mrow_1)
-        
+
         sub_mo = MathRun()
         sub_mo.element_type = u'operator'
         sub_mo.add(TextNode(u'such that', type_text=u'math'))
         sub_mrow.add(sub_mo)
-        
+
         mrow_2 = MRow()
-        
+
         sub_mrow_2 = MRow()
         sub_mi_2 = MathRun()
         sub_mi_2.element_type = u'identifier'
         sub_mi_2.add(TextNode(u"f", type_text=u'math'))
         sub_mrow_2.add(sub_mi_2)
-        
+
         sub_mo_2 = MathRun()
         sub_mo_2.element_type = u'operator'
         sub_mo_2.add(TextNode(u"\u2061", type_text=u'math'))
         sub_mrow_2.add(sub_mo_2)
-        
+
         sub_sub_mrow_2 = MRow()
         sub_sub_mo_2 = MathRun()
         sub_sub_mo_2.element_type = u'operator'
         sub_sub_mo_2.add(TextNode(u"(", type_text=u'math'))
         sub_sub_mrow_2.add(sub_sub_mo_2)
-        
+
         sub_sub_mi_2 = MathRun()
         sub_sub_mi_2.element_type = u'identifier'
         sub_sub_mi_2.add(TextNode(u"x", type_text=u'math'))
         sub_sub_mrow_2.add(sub_sub_mi_2)
-        
+
         sub_sub_mo_3 = MathRun()
         sub_sub_mo_3.element_type = u'operator'
         sub_sub_mo_3.add(TextNode(u")", type_text=u'math'))
         sub_sub_mrow_2.add(sub_sub_mo_3)
-        
+
         sub_mrow_2.add(sub_sub_mrow_2)
         mrow_2.add(sub_mrow_2)
-        
+
         mo_2 = MathRun()
         mo_2.element_type = u'operator'
         mo_2.add(TextNode(u'<', type_text=u'math'))
         mrow_2.add(mo_2)
-        
+
         mn_2 = MathRun()
         mn_2.element_type = u'numeric'
         mn_2.add(TextNode(u'1', type_text=u'math'))
         mrow_2.add(mn_2)
-        
+
         sub_mrow.add(mrow_2)
         mrow.add(sub_mrow)
 
         math.add(mrow)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\exists \\delta >0\\ni f\\,(x)<1\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(output_inline, is_(u'\\(\\exists \\delta >0\\ni f\\,(x)<1\\)'))
-    
+        assert_that(
+            output_inline, is_(u'\\(\\exists \\delta >0\\ni f\\,(x)<1\\)'))
+
     def test_mrow_mo(self):
         mrow_1 = MRow()
         mo_1 = MathRun()
         mo_1.element_type = u'operator'
         mo_1.add(TextNode(u'>', type_text=u'math'))
         mrow_1.add(mo_1)
-        
+
         mo_2 = MathRun()
         mo_2.element_type = u'operator'
         mo_2.add(TextNode(u'<', type_text=u'math'))
@@ -1765,7 +1766,7 @@ class TestMath(ContentToolsTestCase):
 
         output = render_output(mrow_1)
         assert_that(output, is_(u'><'))
-    
+
     def test_mover_with_accent(self):
         """
 #===============================================================================
@@ -1784,7 +1785,7 @@ class TestMath(ContentToolsTestCase):
         """
         math = Math()
         mrow = MRow()
-        
+
         mover_1 = MOver()
         mover_1.accent = True
         mi_1 = MathRun()
@@ -1796,11 +1797,11 @@ class TestMath(ContentToolsTestCase):
         mo_1.add(TextNode(u'\u005E', type_text=u'math'))
         mover_1.add(mo_1)
         mrow.add(mover_1)
-        
+
         mtext = MText()
         mtext.add(TextNode(u' versus ', type_text=u'math'))
         mrow.add(mtext)
-        
+
         mover_2 = MOver()
         mover_2.accent = False
         mi_2 = MathRun()
@@ -1812,20 +1813,21 @@ class TestMath(ContentToolsTestCase):
         mo_2.add(TextNode(u'\u005E', type_text=u'math'))
         mover_2.add(mo_2)
         mrow.add(mover_2)
-        
+
         math.add(mrow)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\hat{x}\\text{ versus }\\hat{x}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
-        assert_that(output_inline, is_(u'\\(\\hat{x}\\text{ versus }\\hat{x}\\)'))
-    
+        assert_that(
+            output_inline, is_(u'\\(\\hat{x}\\text{ versus }\\hat{x}\\)'))
+
     def test_mover_acute(self):
         math = Math()
         mrow = MRow()
-        
+
         mover_1 = MOver()
         mover_1.accent = True
         mi_1 = MathRun()
@@ -1836,21 +1838,21 @@ class TestMath(ContentToolsTestCase):
         mo_1.element_type = 'operator'
         mo_1.add(TextNode(u'\u00B4', type_text=u'math'))
         mover_1.add(mo_1)
-        
+
         mrow.add(mover_1)
         math.add(mrow)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\acute{x}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\acute{x}\\)'))
-    
+
     def test_mover_asteraccent(self):
         math = Math()
         mrow = MRow()
-        
+
         mover_1 = MOver()
         mover_1.accent = True
         mi_1 = MathRun()
@@ -1861,21 +1863,21 @@ class TestMath(ContentToolsTestCase):
         mo_1.element_type = 'operator'
         mo_1.add(TextNode(u'\u002A', type_text=u'math'))
         mover_1.add(mo_1)
-        
+
         mrow.add(mover_1)
         math.add(mrow)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\asteraccent{x}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\asteraccent{x}\\)'))
-    
+
     def test_mover_bar(self):
         math = Math()
         mrow = MRow()
-        
+
         mover_1 = MOver()
         mover_1.accent = True
         mi_1 = MathRun()
@@ -1886,21 +1888,21 @@ class TestMath(ContentToolsTestCase):
         mo_1.element_type = 'operator'
         mo_1.add(TextNode(u'\u005F', type_text=u'math'))
         mover_1.add(mo_1)
-        
+
         mrow.add(mover_1)
         math.add(mrow)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\bar{x}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\bar{x}\\)'))
-        
-    def test_mover_bar(self):
+
+    def test_mover_breve(self):
         math = Math()
         mrow = MRow()
-        
+
         mover_1 = MOver()
         mover_1.accent = True
         mi_1 = MathRun()
@@ -1911,14 +1913,13 @@ class TestMath(ContentToolsTestCase):
         mo_1.element_type = 'operator'
         mo_1.add(TextNode(u'\u02D8', type_text=u'math'))
         mover_1.add(mo_1)
-        
+
         mrow.add(mover_1)
         math.add(mrow)
         output = render_output(math)
         assert_that(output, is_(u'\\[\\breve{x}\\]'))
-        
+
         inline_math = math
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\breve{x}\\)'))
-        
