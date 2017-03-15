@@ -406,6 +406,7 @@ a⃗ \vec{a}
     dot_env_char = (u'\u0323', u'\u00B7', u'\u002E', u'\\cdot')
     grave_env_char = (u'\u0060', u'\\textasciigrave', u'\u02CB')
     mathring_env_char = (u'\u00B0', u'\\textdegree', u'\u02DA', u'\\r{}', u'\u02F3', u'\u0325')
+    tilde_env_char = (u'~', u'\u007E', u'\\textasciitilde')
     if u'\u23de' in base:
         context.write(u'\\overbrace{')
         render_node(context, node.children[0])
@@ -430,6 +431,8 @@ a⃗ \vec{a}
         render_command(context, u'grave', node.children[0])
     elif any(c in base for c in mathring_env_char):
         render_command(context, u'mathring', node.children[0])
+    elif any(c in base for c in tilde_env_char):
+        render_command(context, u'tilde', node.children[0])
     else:
         context.write(u'\\overset{')
         context.write(base)
