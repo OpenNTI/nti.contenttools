@@ -15,7 +15,7 @@ from six import string_types
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
-FORBIDDEN_CHARACTERS = r'[<>:"/\\\|\?\*\s\-,\t\'\!]'
+FORBIDDEN_CHARACTERS = r'[<>:"/\\\|\?\*\s\-,\t\'\!{}()]'
 
 
 def create_label(name, value):
