@@ -33,6 +33,7 @@ from nti.contenttools.types.math import MathRun
 from nti.contenttools.types.math import MSubSup
 from nti.contenttools.types.math import MMenclose
 from nti.contenttools.types.math import MUnderover
+from nti.contenttools.types.math import MLabeledTr
 from nti.contenttools.types.math import MMprescripts
 from nti.contenttools.types.math import MMultiscripts
 
@@ -2368,3 +2369,79 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\vec{x}\\)'))
+    
+    def test_mlabeledtr(self):
+        """
+        example from https://www.w3.org/TR/MathML3/chapter3.html
+#===============================================================================
+# <mtable>
+#   <mlabeledtr id='e-is-m-c-square'>
+#     <mtd>
+#       <mtext> (2.1) </mtext>
+#     </mtd>
+#     <mtd>
+#      <mrow>
+#        <mi>E</mi>
+#        <mo>=</mo>
+#        <mrow>
+#         <mi>m</mi>
+#         <mo>&#x2062;<!--INVISIBLE TIMES--></mo>
+#         <msup>
+#          <mi>c</mi>
+#          <mn>2</mn>
+#         </msup>
+#        </mrow>
+#      </mrow>
+#     </mtd>
+#   </mlabeledtr>
+# </mtable>
+#===============================================================================
+        """
+        math = Math()
+        mlabeledtr = MLabeledTr()
+        
+        mtd_1 = Mtd()
+        mtext = MText()
+        mtext.add(TextNode(u'(2.1)', type_text=u'math'))
+        mtd_1.add(mtext)
+        mlabeledtr.add(mtd_1)
+        
+        mtd_2 = Mtd()
+        mrow = MRow()
+        mi = MathRun()
+        mi.element_type = u'identifier'
+        mi.add(TextNode(u'E', type_text=u'math'))
+        mrow.add(mi)
+        mo = MathRun()
+        mo.element_type = u'operator'
+        mo.add(TextNode(u'=', type_text=u'math'))
+        mrow.add(mo)
+        
+        sub_mrow = MRow()
+        sub_mi = MathRun()
+        sub_mi.element_type = u'identifier'
+        sub_mi.add(TextNode(u'm', type_text=u'math'))
+        sub_mrow.add(sub_mi)
+        sub_mo = MathRun()
+        sub_mo.element_type = u'operator'
+        sub_mo.add(TextNode(u'\u2062', type_text=u'math'))
+        sub_mrow.add(sub_mo)
+        
+        msup = MSup()
+        msup_mi = MathRun()
+        msup_mi.element_type = u'identifier'
+        msup_mi.add(TextNode(u'c', type_text=u'math'))
+        msup.add(msup_mi)
+        msup_mn = MathRun()
+        msup_mn.element_type = u'numeric'
+        msup_mn.add(TextNode(u'2', type_text=u'math'))
+        msup.add(msup_mn)
+        sub_mrow.add(msup)
+        
+        mrow.add(sub_mrow)
+        mtd_2.add(mrow)
+        mlabeledtr.add(mtd_2)
+        
+        math.add(mlabeledtr)
+        output = render_output(math)
+        assert_that(output, is_(u'\\[E=m\\,{c}^{2} \\tag{\\text{(2.1)}} \\label{mlabeledtr:_text__2.1__}\\]'))

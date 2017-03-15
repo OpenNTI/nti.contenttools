@@ -214,7 +214,7 @@ def render_mlabeledtr(context, node):
     render <mlabeledtr> element
     """
     if node.children:
-        tag = render_output(context, node.children[0])
+        tag = render_output(node.children[0])
         label = create_label('mlabeledtr', tag)
         children_num = len(node.children)
         render_iterable(context, node.children[1:children_num])
