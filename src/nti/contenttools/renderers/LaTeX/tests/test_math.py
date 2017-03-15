@@ -2369,7 +2369,7 @@ class TestMath(ContentToolsTestCase):
         inline_math.equation_type = u'inline'
         output_inline = render_output(inline_math)
         assert_that(output_inline, is_(u'\\(\\vec{x}\\)'))
-    
+
     def test_mlabeledtr(self):
         """
         example from https://www.w3.org/TR/MathML3/chapter3.html
@@ -2399,13 +2399,13 @@ class TestMath(ContentToolsTestCase):
         """
         math = Math()
         mlabeledtr = MLabeledTr()
-        
+
         mtd_1 = Mtd()
         mtext = MText()
         mtext.add(TextNode(u'(2.1)', type_text=u'math'))
         mtd_1.add(mtext)
         mlabeledtr.add(mtd_1)
-        
+
         mtd_2 = Mtd()
         mrow = MRow()
         mi = MathRun()
@@ -2416,7 +2416,7 @@ class TestMath(ContentToolsTestCase):
         mo.element_type = u'operator'
         mo.add(TextNode(u'=', type_text=u'math'))
         mrow.add(mo)
-        
+
         sub_mrow = MRow()
         sub_mi = MathRun()
         sub_mi.element_type = u'identifier'
@@ -2426,7 +2426,7 @@ class TestMath(ContentToolsTestCase):
         sub_mo.element_type = u'operator'
         sub_mo.add(TextNode(u'\u2062', type_text=u'math'))
         sub_mrow.add(sub_mo)
-        
+
         msup = MSup()
         msup_mi = MathRun()
         msup_mi.element_type = u'identifier'
@@ -2437,11 +2437,13 @@ class TestMath(ContentToolsTestCase):
         msup_mn.add(TextNode(u'2', type_text=u'math'))
         msup.add(msup_mn)
         sub_mrow.add(msup)
-        
+
         mrow.add(sub_mrow)
         mtd_2.add(mrow)
         mlabeledtr.add(mtd_2)
-        
+
         math.add(mlabeledtr)
         output = render_output(math)
-        assert_that(output, is_(u'\\[E=m\\,{c}^{2} \\tag{\\text{(2.1)}} \\label{mlabeledtr:_text__2.1__}\\]'))
+        assert_that(
+            output,
+            is_(u'\\[E=m\\,{c}^{2} \\tag{\\text{(2.1)}} \\label{mlabeledtr:_text__2.1__}\\]'))

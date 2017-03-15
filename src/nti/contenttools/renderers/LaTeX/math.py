@@ -209,6 +209,7 @@ def set_array_environment(context, node, string_col):
     context.write(u'\\end{array}')
     return node
 
+
 def render_mlabeledtr(context, node):
     """
     render <mlabeledtr> element
@@ -223,6 +224,7 @@ def render_mlabeledtr(context, node):
         context.write(u'} ')
         context.write(label)
     return node
+
 
 def render_mtr(context, node):
     """
@@ -738,7 +740,7 @@ class MTextRenderer(RendererMixin):
 @component.adapter(IMMenclose)
 class MencloseRenderer(RendererMixin):
     func = staticmethod(render_menclose)
-    
+
 @component.adapter(IMLabeledTr)
 class MLabeledTrRenderer(RendererMixin):
     func = staticmethod(render_mlabeledtr)
