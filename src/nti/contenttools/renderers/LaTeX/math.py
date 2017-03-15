@@ -12,12 +12,14 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
-from nti.contenttools.renderers.LaTeX.base import render_node
+from nti.contenttools.renderers.LaTeX.base import render_node, render_iterable
 from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_command
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 from nti.contenttools.renderers.LaTeX.base import render_node_with_newline
+
+from nti.contenttools.renderers.LaTeX.utils import create_label
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
@@ -207,6 +209,20 @@ def set_array_environment(context, node, string_col):
     context.write(u'\\end{array}')
     return node
 
+def render_mlabeledtr(context, node):
+    """
+    render <mlabeledtr> element
+    """
+    if node.children:
+        tag = render_output(context, node.children[0])
+        label = create_label('mlabeledtr', tag)
+        children_num = len(node.children)
+        render_iterable(context, node.children[1:children_num])
+        context.write(u' \\tag{')
+        context.write(tag)
+        context.write(u'} ')
+        context.write(label)
+    return node
 
 def render_mtr(context, node):
     """
@@ -722,3 +738,7 @@ class MTextRenderer(RendererMixin):
 @component.adapter(IMMenclose)
 class MencloseRenderer(RendererMixin):
     func = staticmethod(render_menclose)
+    
+@component.adapter(IMLabeledTr)
+class MLabeledTrRenderer(RendererMixin):
+    func = staticmethod(render_mlabeledtr)

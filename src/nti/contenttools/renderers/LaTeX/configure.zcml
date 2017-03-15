@@ -207,6 +207,10 @@
 			 for="nti.contenttools.types.interfaces.IMMenclose"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".math.MLabeledTrRenderer"
+			 for="nti.contenttools.types.interfaces.IMLabeledTr"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 	
 	<!-- Note -->
 	<adapter factory=".note.NoteRenderer"
