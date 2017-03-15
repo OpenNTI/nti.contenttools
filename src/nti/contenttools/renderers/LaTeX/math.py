@@ -164,6 +164,8 @@ def render_math_run(context, node):
             context.write(u'\\exists ')
         elif output.strip() == u'such that':
             context.write(u'\\ni ')
+        else:
+            context.write(output)
     else:
         context.write(output)
     return node
