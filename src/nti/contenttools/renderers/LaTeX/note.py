@@ -12,9 +12,9 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
-from nti.contenttools.renderers.LaTeX.base import render_node,\
-    render_environment
+from nti.contenttools.renderers.LaTeX.base import render_node
 from nti.contenttools.renderers.LaTeX.base import render_children
+from nti.contenttools.renderers.LaTeX.base import render_environment
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
@@ -23,11 +23,11 @@ from nti.contenttools.renderers.interfaces import IRenderer
 
 from nti.contenttools.types.interfaces import INote
 from nti.contenttools.types.interfaces import ISidebar
+from nti.contenttools.types.interfaces import IBlockQuote
 from nti.contenttools.types.interfaces import IOpenstaxNote
 from nti.contenttools.types.interfaces import INoteInteractive
 from nti.contenttools.types.interfaces import IOpenstaxNoteBody
 from nti.contenttools.types.interfaces import IOpenstaxExampleNote
-from nti.contenttools.types.interfaces import IBlockQuote
 
 
 def render_sidebar(context, node):
