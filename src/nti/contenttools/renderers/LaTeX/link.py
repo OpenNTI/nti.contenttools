@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: note.py 108984 2017-03-16 10:13:56Z egawati.panjei $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -38,13 +38,15 @@ def render_hyperlink(context, node):
             set_link(context, u'ntiidref', target)
     return node
 
+
 def set_link(context, command, target):
     context.write(u'\\')
     context.write(command)
     context.write(u'{')
     context.write(target)
     context.write(u'}')
-    
+
+
 @component.adapter(IHyperlink)
 @interface.implementer(IRenderer)
 class HyperlinkRenderer(object):

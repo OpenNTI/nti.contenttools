@@ -16,11 +16,11 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.note import Note
 from nti.contenttools.types.note import Sidebar
-from nti.contenttools.types.note import NoteInteractive
+from nti.contenttools.types.note import BlockQuote
 from nti.contenttools.types.note import OpenstaxNote
+from nti.contenttools.types.note import NoteInteractive
 from nti.contenttools.types.note import OpenstaxNoteBody
 from nti.contenttools.types.note import OpenstaxExampleNote
-from nti.contenttools.types.note import BlockQuote
 
 from nti.contenttools.types.run import Run
 from nti.contenttools.types.text import TextNode
@@ -124,4 +124,5 @@ class TestNote(ContentToolsTestCase):
         run.add(TextNode(u'this is blockquote'))
         node.add(run)
         output = render_output(node)
-        assert_that(output, is_(u'\\begin{quote}\nthis is blockquote\n\\end{quote}\n'))
+        assert_that(output, 
+                    is_(u'\\begin{quote}\nthis is blockquote\n\\end{quote}\n'))
