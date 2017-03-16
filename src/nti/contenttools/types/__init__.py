@@ -170,17 +170,10 @@ from nti.contenttools.types.code import Code
 from nti.contenttools.types.code import CodeLine
 from nti.contenttools.types.code import Verbatim
 
+from nti.contenttools.types.link import Hyperlink
 
 class Newline(DocumentStructureNode):
     pass
-
-
-class Hyperlink(DocumentStructureNode):
-
-    def __init__(self, target=None, type_='Normal'):
-        super(Hyperlink, self).__init__()
-        self.target = target
-        self.type = type_
 
 
 class Iframe(DocumentStructureNode):
@@ -192,7 +185,6 @@ class Label(DocumentStructureNode):
     def __init__(self, name=''):
         super(Label, self).__init__()
         self.name = name
-
 
 class AlternateContent(DocumentStructureNode):
     pass
