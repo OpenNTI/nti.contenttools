@@ -211,11 +211,12 @@ class INote(IDocumentStructureNode):
     """
 
 
-class Hyperlink(IDocumentStructureNode):
+class IHyperlink(IDocumentStructureNode):
 
-    target = ValidTextLine(title="Hyperlink Target",
-                           required=True,
-                           default=u'')
+    target = Variant((Object(IDocumentStructureNode),
+                      ValidTextLine()),
+                     title="Hyperlink Target",
+                     required=False)
 
     type = ValidTextLine(title="Hyperlink Type ",
                          required=True,
