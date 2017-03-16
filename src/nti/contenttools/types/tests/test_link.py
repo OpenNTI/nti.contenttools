@@ -17,6 +17,7 @@ from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
 from nti.contenttools.types.interfaces import IHyperlink
+
 from nti.contenttools.types.link import Hyperlink
 
 from nti.contenttools.tests import ContentToolsTestCase

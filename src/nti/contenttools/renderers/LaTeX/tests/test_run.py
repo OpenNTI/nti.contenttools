@@ -15,6 +15,7 @@ does_not = is_not
 from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.run import Run
+
 from nti.contenttools.types.text import TextNode
 
 from nti.contenttools.tests import ContentToolsTestCase
