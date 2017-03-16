@@ -26,6 +26,8 @@ from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 
 from nti.contenttools.types.interfaces import  ISidebar
 
+from nti.contenttools.types.interfaces import  IBlockQuote
+
 from nti.contenttools.types.note import Note
 from nti.contenttools.types.note import NoteInteractive
 from nti.contenttools.types.note import NoteInteractiveImage
@@ -35,6 +37,8 @@ from nti.contenttools.types.note import OpenstaxNoteBody
 from nti.contenttools.types.note import OpenstaxExampleNote
 
 from nti.contenttools.types.note import Sidebar
+
+from nti.contenttools.types.note import BlockQuote
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -89,3 +93,9 @@ class TestNote(ContentToolsTestCase):
         assert_that(node, has_property('title', is_(None)))
         assert_that(node, has_property('label', is_(None)))
         assert_that(node, has_property('type', is_(None)))
+    
+    def test_blockquote(self):
+        node = BlockQuote()
+        assert_that(node, validly_provides(IBlockQuote))
+        assert_that(node, verifiably_provides(IBlockQuote))
+        assert_that(node, has_property('source', is_(u'')))

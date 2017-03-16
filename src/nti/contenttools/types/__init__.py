@@ -164,6 +164,7 @@ from nti.contenttools.types.node import _Node
 from nti.contenttools.types.text import TextNode
 
 from nti.contenttools.types.note import Sidebar
+from nti.contenttools.types.note import BlockQuote
 
 from nti.contenttools.types.code import Code
 from nti.contenttools.types.code import CodeLine
@@ -191,13 +192,6 @@ class Label(DocumentStructureNode):
     def __init__(self, name=''):
         super(Label, self).__init__()
         self.name = name
-
-
-class BlockQuote(DocumentStructureNode):
-
-    def __init__(self, source=''):
-        super(BlockQuote, self).__init__()
-        self.source = source
 
 
 class AlternateContent(DocumentStructureNode):
