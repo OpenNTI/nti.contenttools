@@ -29,10 +29,11 @@ from nti.contenttools.types.interfaces import IOpenstaxNoteBody
 from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 from nti.contenttools.types.interfaces import IBlockQuote
 
+
 def render_sidebar(context, node):
     base = render_children_output(node)
 
-    # this is useful for glossary term 
+    # this is useful for glossary term
     # (for example glossary term in IFSTA epub)
     if node.type == u"sidebar_term":
         str_pos = base.find('-')
@@ -72,8 +73,10 @@ def render_sidebar(context, node):
     context.write(u'\n\\end{sidebar}\n')
     return node
 
+
 def render_blockquote(context, node):
     return render_environment(context, u'quote', node)
+
 
 def render_note(context, node):
     base = render_children_output(node)
@@ -150,9 +153,11 @@ class RendererMixin(object):
 class SidebarRenderer(RendererMixin):
     func = staticmethod(render_sidebar)
 
+
 @component.adapter(IBlockQuote)
 class BlockQuoteRenderer(RendererMixin):
     func = staticmethod(render_blockquote)
+
 
 @component.adapter(INote)
 class NoteRenderer(RendererMixin):

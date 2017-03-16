@@ -20,6 +20,7 @@ from nti.contenttools.types.note import NoteInteractive
 from nti.contenttools.types.note import OpenstaxNote
 from nti.contenttools.types.note import OpenstaxNoteBody
 from nti.contenttools.types.note import OpenstaxExampleNote
+from nti.contenttools.types.note import BlockQuote
 
 from nti.contenttools.types.run import Run
 from nti.contenttools.types.text import TextNode
@@ -41,7 +42,7 @@ class TestNote(ContentToolsTestCase):
         child = UnorderedList()
         node.add(child)
         output = render_output(node)
-        assert_that(output, 
+        assert_that(output,
                     is_(u'\\footnote{\\begin{itemize}\n\n\\end{itemize}\n}'))
 
     def test_note_interactive(self):
@@ -101,7 +102,7 @@ class TestNote(ContentToolsTestCase):
         node.title = u'this is title'
         node.label = u's_label'
         output = render_output(node)
-        assert_that(output, 
+        assert_that(output,
                     is_(u'\n\\begin{sidebar}{this is title}\n\\label{s_label}\n\\end{sidebar}\n'))
 
     def test_sidebar_term(self):
@@ -114,5 +115,13 @@ class TestNote(ContentToolsTestCase):
         node.add(child_2)
         node.add(child_3)
         output = render_output(node)
-        assert_that(output, 
+        assert_that(output,
                     is_(u'\n\\begin{sidebar}{term}\n\\label{sidebar_term:term}term - definition\n\\end{sidebar}\n'))
+
+    def test_blockquote(self):
+        node = BlockQuote()
+        run = Run()
+        run.add(TextNode(u'this is blockquote'))
+        node.add(run)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{quote}\nthis is blockquote\n\\end{quote}\n'))
