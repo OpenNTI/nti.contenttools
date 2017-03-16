@@ -17,18 +17,16 @@ from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
 from nti.contenttools.types.interfaces import IHyperlink
-from nti.contenttools.types.link import  Hyperlink
-
-from nti.contenttools.types.run import Run
-from nti.contenttools.types.text import TextNode
+from nti.contenttools.types.link import Hyperlink
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestLink(ContentToolsTestCase):
+
     def test_hyperlink(self):
         node = Hyperlink()
         assert_that(node, validly_provides(IHyperlink))
         assert_that(node, verifiably_provides(IHyperlink))
         assert_that(node, has_property('target', is_(None)))
         assert_that(node, has_property('type', is_(u'Normal')))
-        
