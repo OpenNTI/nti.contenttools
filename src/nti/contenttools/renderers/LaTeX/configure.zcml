@@ -423,4 +423,10 @@
 		 for="nti.contenttools.types.interfaces.IVerbatim"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+		 
+	<!-- Link -->
+	<adapter factory=".link.HyperlinkRenderer"
+		 for="nti.contenttools.types.interfaces.IHyperlink"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>
