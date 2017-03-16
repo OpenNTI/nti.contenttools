@@ -21,6 +21,8 @@ from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 
 from nti.contenttools.types.interfaces import ISidebar
 
+from nti.contenttools.types.interfaces import IBlockQuote
+
 from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.schema.fieldproperty import createFieldProperties
@@ -29,6 +31,11 @@ from nti.schema.fieldproperty import createFieldProperties
 @interface.implementer(ISidebar)
 class Sidebar(DocumentStructureNode):
     createFieldProperties(ISidebar)
+
+
+@interface.implementer(IBlockQuote)
+class BlockQuote(DocumentStructureNode):
+    createFieldProperties(IBlockQuote)
 
 
 @interface.implementer(INote)
