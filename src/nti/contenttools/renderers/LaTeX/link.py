@@ -44,3 +44,17 @@ def set_link(context, command, target):
     context.write(u'{')
     context.write(target)
     context.write(u'}')
+    
+@component.adapter(IHyperlink)
+@interface.implementer(IRenderer)
+class HyperlinkRenderer(object):
+
+    __slots__ = ('node',)
+
+    def __init__(self, node):
+        self.node = node
+
+    def render(self, context, node=None, *args, **kwargs):
+        node = self.node if node is None else node
+        return render_hyperlink(context, node)
+    __call__ = render
