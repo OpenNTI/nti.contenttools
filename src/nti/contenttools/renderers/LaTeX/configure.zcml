@@ -237,6 +237,10 @@
 			 for="nti.contenttools.types.interfaces.ISidebar"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+	<adapter factory=".note.BlockQuoteRenderer"
+			 for="nti.contenttools.types.interfaces.IBlockQuote"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 	
 	<!-- Footnote -->
 	<adapter factory=".footnote.FootnoteRenderer"
