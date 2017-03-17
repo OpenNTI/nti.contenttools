@@ -41,3 +41,8 @@ class TestTextNode(ContentToolsTestCase):
         node = TextNode(u'µ δ Τ', type_text='math')
         output = render_output(node)
         assert_that(output, is_(u'\mu  \delta  \Tau '))
+    
+    def test_text_verbatim(self):
+        node = TextNode(u'a = 2\nb=3', type_text='verbatim')
+        output = render_output(node)
+        assert_that(output, u'a = 2\nb=3')
