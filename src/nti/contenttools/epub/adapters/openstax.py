@@ -26,6 +26,8 @@ from lxml.html import HtmlComment
 
 from . import glossary
 
+from nti.contenttools._compat import unicode_
+
 class Chapter( types.Chapter ):
 
     @classmethod
@@ -268,7 +270,7 @@ class Hyperlink( types.Hyperlink ):
     def process(cls, link, epub ):
         me = cls()
 
-        me.target = link.attrib['href']
+        me.target = unicode_(link.attrib['href'])
 
         if link.text:
             me.add_child( types.TextNode( link.text ) )
