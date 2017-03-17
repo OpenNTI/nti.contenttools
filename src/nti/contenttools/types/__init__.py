@@ -172,6 +172,8 @@ from nti.contenttools.types.code import Verbatim
 
 from nti.contenttools.types.link import Hyperlink
 
+from nti.contenttools.types.alternate_content import AlternateContent
+from nti.contenttools.types.alternate_content import TextBoxContent
 
 class Newline(DocumentStructureNode):
     pass
@@ -186,15 +188,6 @@ class Label(DocumentStructureNode):
     def __init__(self, name=''):
         super(Label, self).__init__()
         self.name = name
-
-
-class AlternateContent(DocumentStructureNode):
-    pass
-
-
-class TextBoxContent(DocumentStructureNode):
-    pass
-
 
 class OpenstaxAttributions(DocumentStructureNode):
     pass
