@@ -38,5 +38,12 @@ class TestLink(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output, is_(u'\\ntiidref{fig:chem.10}'))
     
+    def test_hyperlink_youtube(self):
+        node = Hyperlink()
+        node.type = u'Youtube'
+        node.target = u'//www.youtube.com/embed/GUgtVXP0HJg?html5=1&rel=0'
+        output = render_output(node)
+        assert_that(output, is_(u'\\ntiincludevideo{//www.youtube.com/embed/GUgtVXP0HJg?html5=1&rel=0}'))
+    
     
         
