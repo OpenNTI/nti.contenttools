@@ -20,8 +20,9 @@ from nti.contenttools.types.text import TextNode
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestAlternateContent(ContentToolsTestCase):
-    
+
     def test_alternate_content(self):
         node = AlternateContent()
         run = Run()
@@ -29,7 +30,7 @@ class TestAlternateContent(ContentToolsTestCase):
         node.add(run)
         output = render_output(node)
         assert_that(output, is_(u'This is an alternate content'))
-        
+
     def test_text_box_content(self):
         node = TextBoxContent()
         run = Run()
