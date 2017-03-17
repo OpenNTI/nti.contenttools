@@ -439,4 +439,18 @@
 		 for="nti.contenttools.types.interfaces.ITextBoxContent"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+	
+	<!-- Chapter Assessment -->
+	<adapter factory=".chapter_assessment.ChapterExerciseRenderer"
+		 for="nti.contenttools.types.interfaces.IChapterExercise"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".chapter_assessment.ExerciseSectionRenderer"
+		 for="nti.contenttools.types.interfaces.IExerciseSection"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".chapter_assessment.ExerciseElementRenderer"
+		 for="nti.contenttools.types.interfaces.IExerciseElement"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>
