@@ -429,4 +429,14 @@
 		 for="nti.contenttools.types.interfaces.IHyperlink"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+		
+	<!-- Alternate Content -->
+	<adapter factory=".alternate_content.AlternateContentRenderer"
+		 for="nti.contenttools.types.interfaces.IAlternateContent"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".alternate_content.TextBoxContentRenderer"
+		 for="nti.contenttools.types.interfaces.ITextBoxContent"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>
