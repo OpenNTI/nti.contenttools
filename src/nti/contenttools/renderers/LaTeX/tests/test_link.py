@@ -21,7 +21,7 @@ from nti.contenttools.types.text import TextNode
 from nti.contenttools.tests import ContentToolsTestCase
 
 class TestLink(ContentToolsTestCase):
-    def test_hyperlink(self):
+    def test_hyperlink_href(self):
         node = Hyperlink()
         node.type = u'Normal'
         node.target = u'http://www.nationalgeographic.com/travel/features/best-trips-2017/'
@@ -30,4 +30,13 @@ class TestLink(ContentToolsTestCase):
         node.add(run)
         output = render_output(node)
         assert_that(output, is_(u'\\href{http://www.nationalgeographic.com/travel/features/best-trips-2017/}{Best Trips Nature}'))
+    
+    def test_hyperlink_ntiidref(self):
+        node = Hyperlink()
+        node.type = u'Pageref'
+        node.target = u'fig:chem.10'
+        output = render_output(node)
+        assert_that(output, is_(u'\\ntiidref{fig:chem.10}'))
+    
+    
         
