@@ -29,18 +29,18 @@ from nti.contenttools.types.interfaces import IMultipleChoices
 from nti.contenttools.types.interfaces import IProblemExercise
 from nti.contenttools.types.interfaces import IEndOfChapterSolution
 
-from nti.contenttools.types.exercise import Example
-from nti.contenttools.types.exercise import Problem
-from nti.contenttools.types.exercise import Exercise
-from nti.contenttools.types.exercise import Solution
-from nti.contenttools.types.exercise import ExerciseDiv
-from nti.contenttools.types.exercise import ExerciseCheck
-from nti.contenttools.types.exercise import ChapterExercise
-from nti.contenttools.types.exercise import ExerciseSection
-from nti.contenttools.types.exercise import ExerciseElement
-from nti.contenttools.types.exercise import MultipleChoices
-from nti.contenttools.types.exercise import ProblemExercise
-from nti.contenttools.types.exercise import EndOfChapterSolution
+from nti.contenttools.types.chapter_assessment import Example
+from nti.contenttools.types.chapter_assessment import Problem
+from nti.contenttools.types.chapter_assessment import Exercise
+from nti.contenttools.types.chapter_assessment import Solution
+from nti.contenttools.types.chapter_assessment import ExerciseDiv
+from nti.contenttools.types.chapter_assessment import ExerciseCheck
+from nti.contenttools.types.chapter_assessment import ChapterExercise
+from nti.contenttools.types.chapter_assessment import ExerciseSection
+from nti.contenttools.types.chapter_assessment import ExerciseElement
+from nti.contenttools.types.chapter_assessment import MultipleChoices
+from nti.contenttools.types.chapter_assessment import ProblemExercise
+from nti.contenttools.types.chapter_assessment import EndOfChapterSolution
 
 from nti.contenttools.tests import ContentToolsTestCase
 
