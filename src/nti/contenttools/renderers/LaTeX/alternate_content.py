@@ -19,14 +19,17 @@ from nti.contenttools.renderers.interfaces import IRenderer
 from nti.contenttools.types.interfaces import IAlternateContent
 from nti.contenttools.types.interfaces import ITextBoxContent
 
+
 def render_alternate_content(context, node):
     return render_children(context, node)
+
 
 def render_text_box_content(context, node):
     context.write(u'\\parbox[c]{\\textwidth}{')
     render_children(context, node)
     context.write(u'}')
     return node
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -45,7 +48,8 @@ class RendererMixin(object):
 @component.adapter(IAlternateContent)
 class AlternateContentRenderer(RendererMixin):
     func = staticmethod(render_alternate_content)
-    
+
+
 @component.adapter(ITextBoxContent)
 class TextBoxContentRenderer(RendererMixin):
-    func = staticmethod(render_text_box_content)    
+    func = staticmethod(render_text_box_content)
