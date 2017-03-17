@@ -12,8 +12,8 @@ from hamcrest import assert_that
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
-from nti.contenttools.types.alternate_content import AlternateContent
 from nti.contenttools.types.alternate_content import TextBoxContent
+from nti.contenttools.types.alternate_content import AlternateContent
 
 from nti.contenttools.types.run import Run
 from nti.contenttools.types.text import TextNode

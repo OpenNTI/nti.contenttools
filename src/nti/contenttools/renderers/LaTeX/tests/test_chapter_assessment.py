@@ -7,7 +7,6 @@ __docformat__ = "restructuredtext en"
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
 
-from hamcrest import is_
 from hamcrest import assert_that
 
 from nti.contenttools.renderers.LaTeX.base import render_output
@@ -21,7 +20,9 @@ from nti.contenttools.types.text import TextNode
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestChapterAssessment(ContentToolsTestCase):
+
     def test_chapter_assessment(self):
         node = ChapterExercise()
         run = Run()
@@ -29,7 +30,7 @@ class TestChapterAssessment(ContentToolsTestCase):
         node.add(run)
         output = render_output(node)
         assert_that(output, u'Chapter Exercise')
-        
+
     def test_exercise_section(self):
         node = ExerciseSection()
         run = Run()
@@ -37,7 +38,7 @@ class TestChapterAssessment(ContentToolsTestCase):
         node.add(run)
         output = render_output(node)
         assert_that(output, u'Exercise Section')
-    
+
     def test_exercise_element(self):
         node = ExerciseElement()
         run = Run()
