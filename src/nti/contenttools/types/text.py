@@ -37,6 +37,8 @@ def to_latex(text, type_text):
             text = replace_multi_char(text)
         elif text:
             text = replace_unicode_with_latex_tag(text)
+    elif type_text == 'verbatim':
+        return text
     elif text:
         text = PlainTextToLatexFragmentConverter(text)
     return text

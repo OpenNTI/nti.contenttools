@@ -35,12 +35,8 @@ class TestCode(ContentToolsTestCase):
     def test_verbatim(self):
         node = Verbatim()
         run = Run()
-        run.add(TextNode(u'a = 2\nb=3'))
+        run.add(TextNode(u'a = 2\nb=3', type_text='verbatim'))
         node.add(run)
         output = render_output(node)
-        # TODO : there is a problem here
-        # the text 'a = 2' should not be rendered to '$a = 2$'
-        # the text in verbatim environment should not be rendered using content
-        # fragment
         assert_that(output, 
                     is_(u'\\begin{verbatim}\na = 2\nb=3\n\\end{verbatim}\n'))
