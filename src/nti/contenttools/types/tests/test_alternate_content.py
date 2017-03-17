@@ -6,6 +6,7 @@ __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
+
 from hamcrest import assert_that
 
 from nti.testing.matchers import validly_provides
@@ -31,4 +32,3 @@ class TestAlternateContent(ContentToolsTestCase):
         node = TextBoxContent()
         assert_that(node, validly_provides(ITextBoxContent))
         assert_that(node, verifiably_provides(ITextBoxContent))
-

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: code.py 108562 2017-03-10 14:29:47Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -18,13 +18,14 @@ from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.schema.fieldproperty import createFieldProperties
 
+
 @interface.implementer(IAlternateContent)
 class AlternateContent(DocumentStructureNode):
     createFieldProperties(IAlternateContent)
 
     def __init__(self, *args, **kwargs):
         super(AlternateContent, self).__init__(*args, **kwargs)
-        
+
 
 @interface.implementer(ITextBoxContent)
 class TextBoxContent(DocumentStructureNode):
@@ -32,4 +33,3 @@ class TextBoxContent(DocumentStructureNode):
 
     def __init__(self, *args, **kwargs):
         super(TextBoxContent, self).__init__(*args, **kwargs)
-

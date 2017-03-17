@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: note.py 108984 2017-03-16 10:13:56Z egawati.panjei $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -16,8 +16,8 @@ from nti.contenttools.renderers.LaTeX.base import render_children
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
-from nti.contenttools.types.interfaces import IAlternateContent
 from nti.contenttools.types.interfaces import ITextBoxContent
+from nti.contenttools.types.interfaces import IAlternateContent
 
 
 def render_alternate_content(context, node):
