@@ -140,7 +140,7 @@ def process_free_response_solution(self):
 	solution = self.solution.solution
 	result = []
 	if isinstance(solution.children[0], types.Run) and len (solution.children[0].children) > 0:
-		solutions_list = solution.children[0].children
+		solution_list = solution.children[0].children
 		for item in solution_list:
 			result.append(item.render())
 	return result
