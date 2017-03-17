@@ -26,6 +26,7 @@ def render_hyperlink(context, node):
         render_children(context, node)
     else:
         target = get_variant_field_string_value(node.target)
+        target = target.replace(u'%', u'\\%')
         if node.type == u'Normal' or node.type == u'Thumbnail':
             context.write(u'\\href{')
             context.write(target)
