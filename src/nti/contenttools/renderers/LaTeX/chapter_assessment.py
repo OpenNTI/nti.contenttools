@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from nti.contenttools.renders.LaTeX.chapter_assessment import set_solution_tag
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -17,6 +18,10 @@ from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.types.interfaces import IChapterExercise
 from nti.contenttools.types.interfaces import IExerciseSection
 from nti.contenttools.types.interfaces import IExerciseElement
+from nti.contenttools.types.interfaces import IProblem
+
+from nti.contenttools.renderers.LaTeX.utils import create_label
+from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
@@ -37,13 +42,62 @@ types.EndOfChapterSolution.render = chapter_solution_renderer
 def render_chapter_exercise(context, node):
     return render_children(context, node)
 
-
 def render_exercise_section(context, node):
     return render_children(context, node)
 
-
 def render_exercise_element(context, node):
     return render_children(context, node)
+
+def render_problem(context, node):
+    context.write(u'\\begin{naquestion}\n')
+    if node.label:  
+        context.write(create_label(u'qid', node.label))
+        context.write(u'\n')
+    
+    if node.problem_type == u'free_response':
+        render_free_response(context, node)
+    elif node.problem_type == u'multiple_choice':
+        render_multiple_choice(context, node)
+    elif node.problem_type == u'ordering':
+        render_ordering(context, node)
+    elif node.problem_type == u'essay':
+        render_essay(context, node)
+    elif node.problem_type in (u'problem_exercise', u'problem_exercise_example'):
+        pass
+    
+    context.write(u'\\end{naquestion}\n')
+    return node
+
+def set_solution_tag(context, solution_list):
+    context.write(u'\\begin{naqsolutions}\n')
+    for item in solution_list:
+        context.write(u'\\naqsolution [1] ')
+        context.write(item)
+        context.write(u'\n')
+    context.write(u'\\end{naqsolutions}\n')
+
+def render_free_response(context, node):
+    context.write(u'\\begin{naqfreeresponsepart}\n')
+    question = get_variant_field_string_value(node.question)
+    context.write(question.rstrip())
+    context.write(u'\n')
+    solution = [get_variant_field_string_value(node.solution)]
+    set_solution_tag(context, node, solution)
+    context.write(u'\\end{naqfreeresponsepart}\n')
+    return node
+
+def render_multiple_choice(context, node):
+    pass
+
+def render_ordering(context, node):
+    pass
+
+def render_essay(context, node):
+    context.write(u'\\begin{naqessaypart}\n')
+    question = get_variant_field_string_value(node.question)
+    context.write(question.rstrip())
+    context.write(u'\n\\end{naqessaypart}')
+    return node
 
 
 @interface.implementer(IRenderer)
@@ -73,3 +127,7 @@ class ExerciseSectionRenderer(RendererMixin):
 @component.adapter(IExerciseElement)
 class ExerciseElementRenderer(RendererMixin):
     func = staticmethod(render_exercise_element)
+    
+@component.adapter(IProblem)
+class ProblemRenderer(RendererMixin):
+    func = staticmethod(render_problem)
