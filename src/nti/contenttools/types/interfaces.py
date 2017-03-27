@@ -1748,8 +1748,10 @@ class IDocxTable(IDocumentStructureNode):
     """
     Node for Docx Table
     """
-    border = Dict(title="Table Border",
+    borders = Dict(title="Table Border",
                   required = False)
+    grid = Int(title = "Table Grid",
+               required = False)
 
 class IDocxTRow(IDocumentStructureNode):
     """
