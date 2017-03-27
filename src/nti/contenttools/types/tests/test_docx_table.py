@@ -32,6 +32,7 @@ class TestDocxTable(ContentToolsTestCase):
         assert_that(node, verifiably_provides(IDocxTable))
         assert_that(node, has_property('borders', is_(None)))
         assert_that(node, has_property('grid', is_(None)))
+        assert_that(node, has_property('alignment', is_(None)))
 
     def test_docx_trow(self):
         node = DocxTRow()
