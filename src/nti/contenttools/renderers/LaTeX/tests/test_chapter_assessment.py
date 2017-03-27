@@ -48,7 +48,7 @@ class TestChapterAssessment(ContentToolsTestCase):
         node.add(run)
         output = render_output(node)
         assert_that(output, is_(u'Exercise Element'))
-    
+
     def test_problem(self):
         node = Problem()
         run = Run()
@@ -56,26 +56,31 @@ class TestChapterAssessment(ContentToolsTestCase):
         node.add(run)
         output = render_output(node)
         assert_that(output, is_(u'\\begin{naquestion}\n\\end{naquestion}\n'))
-    
+
     def test_problem_free_response(self):
         node = Problem()
         node.problem_type = u'free_response'
         run_question = Run()
         run_question.add(TextNode(u'1 + 1 = ?'))
         node.question = run_question
-        
+
         run_solution = Run()
         run_solution.add(TextNode(u'2'))
         node.solution = run_solution
-        
+
         output = render_output(node)
-        assert_that(output, is_(u'\\begin{naquestion}\n\\begin{naqfreeresponsepart}\n$1 + 1 =$ ?\n\\begin{naqsolutions}\n\\naqsolution [1] 2\n\\end{naqsolutions}\n\\end{naqfreeresponsepart}\n\\end{naquestion}\n'))
-    
+        assert_that(
+            output,
+            is_(u'\\begin{naquestion}\n\\begin{naqfreeresponsepart}\n$1 + 1 =$ ?\n\\begin{naqsolutions}\n\\naqsolution [1] 2\n\\end{naqsolutions}\n\\end{naqfreeresponsepart}\n\\end{naquestion}\n'))
+
     def test_problem_essay(self):
         node = Problem()
         node.problem_type = u'essay'
         run_question = Run()
-        run_question.add(TextNode(u'Read the passage and write an essay in response to the reading'))
+        run_question.add(
+            TextNode(u'Read the passage and write an essay in response to the reading'))
         node.question = run_question
         output = render_output(node)
-        assert_that(output, is_(u'\\begin{naquestion}\n\\begin{naqessaypart}\nRead the passage and write an essay in response to the reading\n\\end{naqessaypart}\\end{naquestion}\n'))
+        assert_that(
+            output,
+            is_(u'\\begin{naquestion}\n\\begin{naqessaypart}\nRead the passage and write an essay in response to the reading\n\\end{naqessaypart}\\end{naquestion}\n'))
