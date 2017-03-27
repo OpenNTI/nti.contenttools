@@ -70,3 +70,12 @@ class TestChapterAssessment(ContentToolsTestCase):
         
         output = render_output(node)
         assert_that(output, is_(u'\\begin{naquestion}\n\\begin{naqfreeresponsepart}\n$1 + 1 =$ ?\n\\begin{naqsolutions}\n\\naqsolution [1] 2\n\\end{naqsolutions}\n\\end{naqfreeresponsepart}\n\\end{naquestion}\n'))
+    
+    def test_problem_essay(self):
+        node = Problem()
+        node.problem_type = u'essay'
+        run_question = Run()
+        run_question.add(TextNode(u'Read the passage and write an essay in response to the reading'))
+        node.question = run_question
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{naquestion}\n\\begin{naqessaypart}\nRead the passage and write an essay in response to the reading\n\\end{naqessaypart}\\end{naquestion}\n'))
