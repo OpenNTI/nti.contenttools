@@ -15,7 +15,7 @@ from dolmen.builtins.interfaces import IIterable
 
 from nti.contentfragments.interfaces import IPlainTextContentFragment
 
-from nti.schema.field import Int
+from nti.schema.field import Int, TextLine
 from nti.schema.field import Bool
 from nti.schema.field import Dict
 from nti.schema.field import Object
@@ -1752,6 +1752,8 @@ class IDocxTable(IDocumentStructureNode):
                   required = False)
     grid = Int(title = "Table Grid",
                required = False)
+    alignment = TextLine(title = "Alignment",
+                         required = False)
 
 class IDocxTRow(IDocumentStructureNode):
     """
