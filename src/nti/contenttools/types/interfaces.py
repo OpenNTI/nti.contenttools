@@ -1769,3 +1769,6 @@ class IDocxTCell(IDocumentStructureNode):
     """
     Node for Docx Table Cell
     """
+    grid_span = Int(title="Grid Span",
+                    required= True,
+                    default = 0)

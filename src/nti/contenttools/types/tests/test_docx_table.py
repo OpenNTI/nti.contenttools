@@ -44,3 +44,4 @@ class TestDocxTable(ContentToolsTestCase):
         node = DocxTCell()
         assert_that(node, validly_provides(IDocxTCell))
         assert_that(node, verifiably_provides(IDocxTCell))
+        assert_that(node, has_property('grid_span', is_(0)))
