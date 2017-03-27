@@ -14,6 +14,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.types.chapter_assessment import ChapterExercise
 from nti.contenttools.types.chapter_assessment import ExerciseSection
 from nti.contenttools.types.chapter_assessment import ExerciseElement
+from nti.contenttools.types.chapter_assessment import Problem
 
 from nti.contenttools.types.run import Run
 from nti.contenttools.types.text import TextNode
@@ -46,3 +47,11 @@ class TestChapterAssessment(ContentToolsTestCase):
         node.add(run)
         output = render_output(node)
         assert_that(output, u'Exercise Element')
+    
+    def test_problem(self):
+        node = Problem()
+        run = Run()
+        run.add(TextNode(u'Problem'))
+        node.add(run)
+        output = render_output(node)
+        assert_that(output, u'Problem')
