@@ -7,6 +7,7 @@ __docformat__ = "restructuredtext en"
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
 
+from hamcrest import is_
 from hamcrest import assert_that
 
 from nti.contenttools.renderers.LaTeX.base import render_output
@@ -30,7 +31,7 @@ class TestChapterAssessment(ContentToolsTestCase):
         run.add(TextNode(u'Chapter Exercise'))
         node.add(run)
         output = render_output(node)
-        assert_that(output, u'Chapter Exercise')
+        assert_that(output, is_(u'Chapter Exercise'))
 
     def test_exercise_section(self):
         node = ExerciseSection()
@@ -38,7 +39,7 @@ class TestChapterAssessment(ContentToolsTestCase):
         run.add(TextNode(u'Exercise Section'))
         node.add(run)
         output = render_output(node)
-        assert_that(output, u'Exercise Section')
+        assert_that(output, is_(u'Exercise Section'))
 
     def test_exercise_element(self):
         node = ExerciseElement()
@@ -46,7 +47,7 @@ class TestChapterAssessment(ContentToolsTestCase):
         run.add(TextNode(u'Exercise Element'))
         node.add(run)
         output = render_output(node)
-        assert_that(output, u'Exercise Element')
+        assert_that(output, is_(u'Exercise Element'))
     
     def test_problem(self):
         node = Problem()
@@ -54,4 +55,18 @@ class TestChapterAssessment(ContentToolsTestCase):
         run.add(TextNode(u'Problem'))
         node.add(run)
         output = render_output(node)
-        assert_that(output, u'Problem')
+        assert_that(output, is_(u'\\begin{naquestion}\n\\end{naquestion}\n'))
+    
+    def test_problem_free_response(self):
+        node = Problem()
+        node.problem_type = u'free_response'
+        run_question = Run()
+        run_question.add(TextNode(u'1 + 1 = ?'))
+        node.question = run_question
+        
+        run_solution = Run()
+        run_solution.add(TextNode(u'2'))
+        node.solution = run_solution
+        
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{naquestion}\n\\begin{naqfreeresponsepart}\n$1 + 1 =$ ?\n\\begin{naqsolutions}\n\\naqsolution [1] 2\n\\end{naqsolutions}\n\\end{naqfreeresponsepart}\n\\end{naquestion}\n'))
