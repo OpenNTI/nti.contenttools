@@ -1743,3 +1743,20 @@ class IPreTag(IDocumentStructureNode):
     """
     Node for PreTag
     """
+    
+class IDocxTable(IDocumentStructureNode):
+    """
+    Node for Docx Table
+    """
+    border = Dict(title="Table Border",
+                  required = False)
+
+class IDocxTRow(IDocumentStructureNode):
+    """
+    Node for Docx Table Row
+    """
+
+class IDocxTCell(IDocumentStructureNode):
+    """
+    Node for Docx Table Cell
+    """
