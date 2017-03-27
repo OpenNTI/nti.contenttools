@@ -42,18 +42,21 @@ types.EndOfChapterSolution.render = chapter_solution_renderer
 def render_chapter_exercise(context, node):
     return render_children(context, node)
 
+
 def render_exercise_section(context, node):
     return render_children(context, node)
+
 
 def render_exercise_element(context, node):
     return render_children(context, node)
 
+
 def render_problem(context, node):
     context.write(u'\\begin{naquestion}\n')
-    if node.label:  
+    if node.label:
         context.write(create_label(u'qid', node.label))
         context.write(u'\n')
-    
+
     if node.problem_type == u'free_response':
         render_free_response(context, node)
     elif node.problem_type == u'multiple_choice':
@@ -64,9 +67,10 @@ def render_problem(context, node):
         render_essay(context, node)
     elif node.problem_type in (u'problem_exercise', u'problem_exercise_example'):
         pass
-    
+
     context.write(u'\\end{naquestion}\n')
     return node
+
 
 def set_solution_tag(context, node, solution_list):
     context.write(u'\\begin{naqsolutions}\n')
@@ -76,6 +80,7 @@ def set_solution_tag(context, node, solution_list):
         context.write(u'\n')
     context.write(u'\\end{naqsolutions}\n')
     return node
+
 
 def render_free_response(context, node):
     if node.question and node.solution:
@@ -88,11 +93,14 @@ def render_free_response(context, node):
         context.write(u'\\end{naqfreeresponsepart}\n')
     return node
 
+
 def render_multiple_choice(context, node):
     pass
 
+
 def render_ordering(context, node):
     pass
+
 
 def render_essay(context, node):
     context.write(u'\\begin{naqessaypart}\n')
@@ -129,7 +137,8 @@ class ExerciseSectionRenderer(RendererMixin):
 @component.adapter(IExerciseElement)
 class ExerciseElementRenderer(RendererMixin):
     func = staticmethod(render_exercise_element)
-    
+
+
 @component.adapter(IProblem)
 class ProblemRenderer(RendererMixin):
     func = staticmethod(render_problem)
