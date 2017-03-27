@@ -18,9 +18,6 @@ from nti.contenttools.renderers.interfaces import IRenderer
 from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_node
 
-from nti.contenttools.renderers.LaTeX.utils import create_label
-from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
-
 from nti.contenttools.types.interfaces import IDocxTable
 from nti.contenttools.types.interfaces import IDocxTRow
 from nti.contenttools.types.interfaces import IDocxTCell
@@ -81,15 +78,14 @@ def get_table_body(context, node):
 
     for child in node.children:
         render_node(context, child)
-        if 'insideH' in node.borders.keys() and node.borders['insideH'][
-                'val'] not in ['nil', 'none']:
+        if 'insideH' in node.borders.keys() and node.borders['insideH']['val'] not in ['nil', 'none']:
             context.write(u'\\hline\n')
 
-    if 'bottom' in node.borders.keys() and node.borders['bottom'][
-            'val'] not in ['nil', 'none']:
+    if 'bottom' in node.borders.keys() and node.borders['bottom']['val'] not in ['nil', 'none']:
         context.write(u'\\hline\n')
 
     return node
+
 
 def render_docx_trow(context, node):
     check = len(node.children) - 1
@@ -99,6 +95,7 @@ def render_docx_trow(context, node):
             context.write(u' & ')
     context.write(u'\\\\\n')
     return node
+
 
 def render_docx_tcell(context, node):
     if node.grid_span > 1:
@@ -110,6 +107,7 @@ def render_docx_tcell(context, node):
     else:
         render_children(context, node)
     return node
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -129,9 +127,11 @@ class RendererMixin(object):
 class DocxTableRenderer(RendererMixin):
     func = staticmethod(render_docx_table)
 
+
 @component.adapter(IDocxTRow)
 class DocxTRowRenderer(RendererMixin):
     func = staticmethod(render_docx_trow)
+
 
 @component.adapter(IDocxTCell)
 class DocxTCellRenderer(RendererMixin):
