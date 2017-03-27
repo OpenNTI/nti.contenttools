@@ -439,6 +439,12 @@
 		 for="nti.contenttools.types.interfaces.ITextBoxContent"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+		 
+	<!-- CNX Alternate Content -->
+	<adapter factory=".cnx_alternate_content.CNXProblemSolutionRenderer"
+		 for="nti.contenttools.types.interfaces.ICNXProblemSolution"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 	
 	<!-- Chapter Assessment -->
 	<adapter factory=".chapter_assessment.ChapterExerciseRenderer"
