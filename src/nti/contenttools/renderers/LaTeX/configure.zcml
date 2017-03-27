@@ -463,4 +463,18 @@
 		 for="nti.contenttools.types.interfaces.IProblem"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+		 
+	<!-- Docx Table -->
+	<adapter factory=".docx_table.DocxTableRenderer"
+		 for="nti.contenttools.types.interfaces.IDocxTable"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".docx_table.DocxTRowRenderer"
+		 for="nti.contenttools.types.interfaces.IDocxTRow"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+	<adapter factory=".docx_table.DocxTCellRenderer"
+		 for="nti.contenttools.types.interfaces.IDocxTCell"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>
