@@ -27,6 +27,7 @@ class DocxTable(DocumentStructureNode):
     def __init__(self, *args, **kwargs):
         super(DocxTable, self).__init__(*args, **kwargs)
 
+
 @interface.implementer(IDocxTRow)
 class DocxTRow(DocumentStructureNode):
     createFieldProperties(IDocxTRow)
@@ -34,9 +35,10 @@ class DocxTRow(DocumentStructureNode):
     def __init__(self, *args, **kwargs):
         super(DocxTRow, self).__init__(*args, **kwargs)
 
+
 @interface.implementer(IDocxTCell)
 class DocxTCell(DocumentStructureNode):
-    createFieldProperties(IDocxTRow)
+    createFieldProperties(IDocxTCell)
 
     def __init__(self, *args, **kwargs):
         super(DocxTCell, self).__init__(*args, **kwargs)
