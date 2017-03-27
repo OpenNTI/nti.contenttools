@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from nti.contenttools import cnx
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -14,7 +13,6 @@ from hamcrest import assert_that
 from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.cnx import CNXProblemSolution
-
 
 from nti.contenttools.types.run import Run
 from nti.contenttools.types.text import TextNode
@@ -36,4 +34,5 @@ class TestCNXAlternateContent(ContentToolsTestCase):
         node.add(run_2)
 
         output = render_output(node)
-        assert_that(output, is_(u'\\textbf{Title}\\\\\nCNX Problem\nCNX Solution'))
+        assert_that(output, 
+                    is_(u'\\textbf{Title}\\\\\nCNX Problem\nCNX Solution'))

@@ -12,10 +12,10 @@ from hamcrest import assert_that
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
+from nti.contenttools.types.chapter_assessment import Problem
 from nti.contenttools.types.chapter_assessment import ChapterExercise
 from nti.contenttools.types.chapter_assessment import ExerciseSection
 from nti.contenttools.types.chapter_assessment import ExerciseElement
-from nti.contenttools.types.chapter_assessment import Problem
 
 from nti.contenttools.types.run import Run
 from nti.contenttools.types.text import TextNode
@@ -69,18 +69,16 @@ class TestChapterAssessment(ContentToolsTestCase):
         node.solution = run_solution
 
         output = render_output(node)
-        assert_that(
-            output,
-            is_(u'\\begin{naquestion}\n\\begin{naqfreeresponsepart}\n$1 + 1 =$ ?\n\\begin{naqsolutions}\n\\naqsolution [1] 2\n\\end{naqsolutions}\n\\end{naqfreeresponsepart}\n\\end{naquestion}\n'))
+        assert_that(output,
+                    is_(u'\\begin{naquestion}\n\\begin{naqfreeresponsepart}\n$1 + 1 =$ ?\n\\begin{naqsolutions}\n\\naqsolution [1] 2\n\\end{naqsolutions}\n\\end{naqfreeresponsepart}\n\\end{naquestion}\n'))
 
     def test_problem_essay(self):
         node = Problem()
         node.problem_type = u'essay'
         run_question = Run()
-        run_question.add(
-            TextNode(u'Read the passage and write an essay in response to the reading'))
+        text_node = TextNode(u'Read the passage and write an essay in response to the reading')
+        run_question.add(text_node)
         node.question = run_question
         output = render_output(node)
-        assert_that(
-            output,
-            is_(u'\\begin{naquestion}\n\\begin{naqessaypart}\nRead the passage and write an essay in response to the reading\n\\end{naqessaypart}\\end{naquestion}\n'))
+        assert_that(output,
+                    is_(u'\\begin{naquestion}\n\\begin{naqessaypart}\nRead the passage and write an essay in response to the reading\n\\end{naqessaypart}\\end{naquestion}\n'))

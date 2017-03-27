@@ -1743,22 +1743,27 @@ class IPreTag(IDocumentStructureNode):
     """
     Node for PreTag
     """
-    
+
+
 class IDocxTable(IDocumentStructureNode):
     """
     Node for Docx Table
     """
     borders = Dict(title="Table Border",
-                  required = False)
-    grid = Int(title = "Table Grid",
-               required = False)
-    alignment = TextLine(title = "Alignment",
-                         required = False)
+                   required=False)
+
+    grid = Int(title="Table Grid",
+               required=False)
+
+    alignment = TextLine(title="Alignment",
+                         required=False)
+
 
 class IDocxTRow(IDocumentStructureNode):
     """
     Node for Docx Table Row
     """
+
 
 class IDocxTCell(IDocumentStructureNode):
     """

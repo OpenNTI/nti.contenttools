@@ -8,10 +8,8 @@ __docformat__ = "restructuredtext en"
 # pylint: disable=W0212,R0904
 
 from hamcrest import is_
-from hamcrest import is_not
 from hamcrest import assert_that
 from hamcrest import has_property
-does_not = is_not
 
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
