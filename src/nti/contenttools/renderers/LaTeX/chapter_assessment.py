@@ -66,24 +66,27 @@ def render_problem(context, node):
         pass
     
     context.write(u'\\end{naquestion}\n')
+    print(context.read())
     return node
 
-def set_solution_tag(context, solution_list):
+def set_solution_tag(context, node, solution_list):
     context.write(u'\\begin{naqsolutions}\n')
     for item in solution_list:
         context.write(u'\\naqsolution [1] ')
         context.write(item)
         context.write(u'\n')
     context.write(u'\\end{naqsolutions}\n')
+    return node
 
 def render_free_response(context, node):
-    context.write(u'\\begin{naqfreeresponsepart}\n')
-    question = get_variant_field_string_value(node.question)
-    context.write(question.rstrip())
-    context.write(u'\n')
-    solution = [get_variant_field_string_value(node.solution)]
-    set_solution_tag(context, node, solution)
-    context.write(u'\\end{naqfreeresponsepart}\n')
+    if node.question and node.solution:
+        context.write(u'\\begin{naqfreeresponsepart}\n')
+        question = get_variant_field_string_value(node.question)
+        context.write(question.rstrip())
+        context.write(u'\n')
+        solution = [get_variant_field_string_value(node.solution)]
+        set_solution_tag(context, node, solution)
+        context.write(u'\\end{naqfreeresponsepart}\n')
     return node
 
 def render_multiple_choice(context, node):
