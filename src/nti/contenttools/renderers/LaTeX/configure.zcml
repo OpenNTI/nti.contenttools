@@ -453,4 +453,8 @@
 		 for="nti.contenttools.types.interfaces.IExerciseElement"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+	<adapter factory=".chapter_assessment.ProblemRenderer"
+		 for="nti.contenttools.types.interfaces.IProblem"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>
