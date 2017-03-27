@@ -6,6 +6,7 @@ __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
+
 from hamcrest import assert_that
 
 from nti.testing.matchers import validly_provides
@@ -28,12 +29,12 @@ class TestCode(ContentToolsTestCase):
         node = Code()
         assert_that(node, validly_provides(ICode))
         assert_that(node, verifiably_provides(ICode))
-    
+
     def test_code_line(self):
         node = CodeLine()
         assert_that(node, validly_provides(ICodeLine))
         assert_that(node, verifiably_provides(ICodeLine))
-    
+
     def test_verbatim(self):
         node = Verbatim()
         assert_that(node, validly_provides(IVerbatim))

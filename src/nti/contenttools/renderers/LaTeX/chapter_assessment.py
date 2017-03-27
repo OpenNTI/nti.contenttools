@@ -20,10 +20,10 @@ from nti.contenttools.types.interfaces import IExerciseSection
 from nti.contenttools.types.interfaces import IExerciseElement
 from nti.contenttools.types.interfaces import IProblem
 
+from nti.contenttools.renderers.interfaces import IRenderer
+
 from nti.contenttools.renderers.LaTeX.utils import create_label
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
-
-from nti.contenttools.renderers.interfaces import IRenderer
 
 """
 types.ChapterExercise.render = chapter_exercise_renderer
