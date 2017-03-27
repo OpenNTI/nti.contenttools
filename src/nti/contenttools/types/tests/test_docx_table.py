@@ -14,13 +14,13 @@ from hamcrest import has_property
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
-from nti.contenttools.types.interfaces import IDocxTable
 from nti.contenttools.types.interfaces import IDocxTRow
 from nti.contenttools.types.interfaces import IDocxTCell
+from nti.contenttools.types.interfaces import IDocxTable
 
-from nti.contenttools.types.docx_table import DocxTable
 from nti.contenttools.types.docx_table import DocxTRow
 from nti.contenttools.types.docx_table import DocxTCell
+from nti.contenttools.types.docx_table import DocxTable
 
 from nti.contenttools.tests import ContentToolsTestCase
 
