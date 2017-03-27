@@ -5,7 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from nti.contenttools.renders.LaTeX.chapter_assessment import set_solution_tag
+
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -21,6 +21,7 @@ from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_valu
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
+
 def render_cnx_problem_solution(context, node):
     title = get_variant_field_string_value(node.title)
     context.write(u'\\textbf{')
@@ -28,6 +29,7 @@ def render_cnx_problem_solution(context, node):
     context.write(u'}\\\\\n')
     render_children(context, node)
     return node
+
 
 @component.adapter(ICNXProblemSolution)
 @interface.implementer(IRenderer)
