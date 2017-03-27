@@ -66,7 +66,6 @@ def render_problem(context, node):
         pass
     
     context.write(u'\\end{naquestion}\n')
-    print(context.read())
     return node
 
 def set_solution_tag(context, node, solution_list):
