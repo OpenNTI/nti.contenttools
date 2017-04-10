@@ -12,11 +12,11 @@ from hamcrest import is_not
 from hamcrest import assert_that
 does_not = is_not
 
-from nti.contenttools.renderers.LaTeX.base import render_output
+from lxml import html
 
 from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
 
-from lxml import html
+from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -47,4 +47,5 @@ class TestParagraphAdapter(ContentToolsTestCase):
         element = html.fromstring(script)
         node = Paragraph.process(element)
         output = render_output(node)
-        assert_that(output, is_(u'Organizations that specialize in the development of standards and codes often create them. In order to be enforceable by law, the AHJ must adopt stan-dards and codes. \\\\ \n\n'))
+        assert_that(output,
+                    is_(u'Organizations that specialize in the development of standards and codes often create them. In order to be enforceable by law, the AHJ must adopt stan-dards and codes. \\\\ \n\n'))
