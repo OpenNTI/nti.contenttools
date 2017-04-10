@@ -22,12 +22,15 @@ from nti.contenttools.adapters.epub.ifsta.note import Sidebar
 from nti.contenttools.adapters.epub.ifsta.lists import Item
 from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
 
+
 class Paragraph(types.Paragraph):
+
     @classmethod
     def process(cls, element, styles=(), reading_type=None):
         me = cls()
         me.reading_type = reading_type
-        if 'id' in element.attrib : me.label = element.attrib['id']
+        if 'id' in element.attrib:
+            me.label = element.attrib['id']
         me.styles.extend(styles)
         if u'class' in element.attrib:
             if element.attrib['class'] == u"ParaOverride-1":
@@ -41,7 +44,8 @@ class Paragraph(types.Paragraph):
                 subsection_list = [u'B-HEAD ParaOverride-1', u'B-Head']
                 sidebar_list = [u'Case-History ParaOverride-1']
                 bullet_list = [u'Bullet ParaOverride-1']
-                if any(substring in element.attrib['class'] for substring in sidebar_list):
+                if any(substring in element.attrib['class']
+                       for substring in sidebar_list):
                     sidebar_class = Sidebar()
                     if u'Case-History' in element.attrib['class']:
                         sidebar_class.title = u'Case History'
@@ -53,7 +57,7 @@ class Paragraph(types.Paragraph):
                     me.styles.append('Subsection')
                 elif any(substring in element.attrib['class'] for substring in bullet_list):
                     bullet_class = UnorderedList()
-                    new_item  = Item()
+                    new_item = Item()
                     new_item.children = me.children
                     bullet_class.children = [new_item]
                     me = bullet_class

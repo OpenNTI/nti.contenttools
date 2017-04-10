@@ -78,3 +78,12 @@ def check_paragraph_bullet(el):
             if child.element_type == 'bullet':
                 return True
     return False
+
+def process_span_elements(element):
+    span_class = element.attrib['class'] if u'class' in element.attrib else u''
+    if 'bullet' in span_class:
+        el = Run()
+        el.element_type = 'bullet' 
+    else:
+        el = Run.process(element)
+    return el
