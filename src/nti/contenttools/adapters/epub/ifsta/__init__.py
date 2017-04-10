@@ -29,8 +29,8 @@ def check_element_text(node, element):
 def check_child(node, element, reading_type=None):
     from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
     from nti.contenttools.adapters.epub.ifsta.run import Run
+    from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
     from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
-
     for child in element:
         if child.tag == 'p':
             node.add_child(Paragraph.process(child, [], reading_type))
@@ -48,8 +48,16 @@ def check_child(node, element, reading_type=None):
             node.add_child(Run.process(child, ['strike']))
         elif child.tag == 'em' or child.tag == 'emphasis':
             node.add_child(Run.process(child, ['italic']))
+        elif child.tag == 'sub':
+            node.add_child(Run.process(child, ['sub']))
+        elif child.tag == 'sup':
+            node.add_child(Run.process(child, ['sup']))
+        elif child.tag == 'div':
+            node.add_child(process_div_elements(child, node))
         else:
-            if not isinstance(child, HtmlComment):
+            if isinstance(child, HtmlComment):
+                pass
+            else:
                 logger.warn('Unhandled %s child: %s.', element, child)
                 check_element_text(node, child)
                 check_child(node, child)

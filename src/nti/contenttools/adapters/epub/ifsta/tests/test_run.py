@@ -70,3 +70,27 @@ class TestRunAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\textit{This is an italic text}'))
+    
+    def test_sub_element(self):
+        script = u'<div><sub>This is a sub text</sub></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\textsubscript{This is a sub text}'))
+    
+    def test_sup_element(self):
+        script = u'<div><sup>This is a sup text</sup></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\textsuperscript{This is a sup text}'))
+
+    def test_div_element(self):
+        script = u'<div><div><p>test paragraph under div element</p></div></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'test paragraph under div element\n\n'))
