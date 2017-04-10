@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from nti.contenttools.cnx.adapters.run_adapter import check_child
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -15,38 +16,54 @@ from nti.contenttools import types
 
 
 def check_element_text(node, element):
-    if element.text:
-        if element.text.isspace():
-            if len(element.text) == 1:
-                node.add_child(types.TextNode(u' '))
-            else:
-                pass
-        else:
-            node.add_child(types.TextNode(unicode(element.text)))
-    return node
+	if element.text:
+		if element.text.isspace():
+			if len(element.text) == 1:
+				node.add_child(types.TextNode(u' '))
+			else:
+				pass
+		else:
+			node.add_child(types.TextNode(unicode(element.text)))
+	return node
 
 
 def check_child(node, element, reading_type=None):
-    for child in element:
-        if child.tag == 'p':
-            from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
-            node.add_child(Paragraph.process(child, [], reading_type))
-        if child.tag == 'span':
-            from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
-            node.add_child(process_span_elements(child))
-        else:
-            if isinstance(child, HtmlComment):
-                pass
-            else:
-                logger.warn('Unhandled %s child: %s.', element, child)
-    return node
+	from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
+	from nti.contenttools.adapters.epub.ifsta.run import Run
+	from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
+	for child in element:
+		if child.tag == 'p':
+			node.add_child(Paragraph.process(child, [], reading_type))
+		elif child.tag == 'span':
+			node.add_child(process_span_elements(child))
+		elif child.tag == 'b':
+			node.add_child(Run.process(child, ['bold']))
+		elif child.tag == 'i':
+			node.add_child(Run.process(child, ['italic']))
+		elif child.tag == 'u':
+			node.add_child(Run.process(child, ['underline']))
+		elif child.tag == 'strong':
+			node.add_child(Run.process(child, ['bold']))
+		elif child.tag == 's':
+			node.add_child(Run.process(child, ['strike']))
+		elif child.tag == 'em' or child.tag == 'emphasis':
+			node.add_child(Run.process(child, ['italic']))
+		else:
+			if isinstance(child, HtmlComment):
+				pass
+			else:
+				logger.warn('Unhandled %s child: %s.', element, child)
+				check_element_text(node, child)
+				check_child(node, child)
+				check_element_tail(node, child)
+	return node
 
 
 def check_element_tail(node, element):
-    if element.tail:
-        if element.tail.isspace():
-            pass
-        else:
-            new_el_tail = element.tail.rstrip() + u' '
-            node.add_child(types.TextNode(new_el_tail))
-    return node
+	if element.tail:
+		if element.tail.isspace():
+			pass
+		else:
+			new_el_tail = element.tail.rstrip() + u' '
+			node.add_child(types.TextNode(new_el_tail))
+	return node
