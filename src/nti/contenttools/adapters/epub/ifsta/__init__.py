@@ -19,14 +19,13 @@ def check_element_text(node, element):
         if element.text.isspace():
             if len(element.text) == 1:
                 node.add_child(types.TextNode(u' '))
-            else:
-                pass
         else:
             node.add_child(types.TextNode(unicode(element.text)))
     return node
 
 
 def check_child(node, element, reading_type=None):
+    # XXX: Avoid circular imports
     from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
     from nti.contenttools.adapters.epub.ifsta.run import Run
     from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
@@ -55,11 +54,8 @@ def check_child(node, element, reading_type=None):
         elif child.tag == 'div':
             node.add_child(process_div_elements(child, node))
         else:
-            if isinstance(child, HtmlComment):
-                pass
-            else:
+            if not isinstance(child, HtmlComment):
                 logger.warn('Unhandled %s child: %s.', element, child)
-
     return node
 
 
