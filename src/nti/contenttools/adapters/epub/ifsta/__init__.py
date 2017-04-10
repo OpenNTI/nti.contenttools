@@ -31,6 +31,9 @@ def check_child(node, element, reading_type=None):
         if child.tag == 'p':
             from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
             node.add_child(Paragraph.process(child, [], reading_type))
+        if child.tag == 'span':
+            from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
+            node.add_child(process_span_elements(child))
         else:
             if isinstance(child, HtmlComment):
                 pass
