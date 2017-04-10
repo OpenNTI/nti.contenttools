@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: note.py 106706 2017-02-16 01:07:01Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -15,14 +15,17 @@ from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
 from nti.contenttools.adapters.epub.ifsta import check_element_tail
 
+
 class Sidebar(types.Sidebar):
+
     @classmethod
     def process(cls, element, sidebar_type=None):
         me = cls()
-        if 'id' in element.attrib : me.label = element.attrib['id']
+        if 'id' in element.attrib:
+            me.label = element.attrib['id']
         me = check_element_text(me, element)
         me = check_child(me, element)
         me = check_element_tail(me, element)
-        if me.title is None : 
+        if me.title is None:
             me.title = sidebar_type.title()
         return me
