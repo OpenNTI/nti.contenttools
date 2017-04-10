@@ -59,9 +59,7 @@ def check_child(node, element, reading_type=None):
                 pass
             else:
                 logger.warn('Unhandled %s child: %s.', element, child)
-                check_element_text(node, child)
-                check_child(node, child)
-                check_element_tail(node, child)
+
     return node
 
 
