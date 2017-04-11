@@ -14,8 +14,8 @@ from nti.contenttools import types
 from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
 
-from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
 from nti.contenttools.adapters.epub.ifsta.lists import Item
+from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
 
 from nti.contenttools.adapters.epub.ifsta.note import Sidebar
 

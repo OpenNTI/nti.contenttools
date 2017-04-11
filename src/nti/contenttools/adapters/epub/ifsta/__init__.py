@@ -11,16 +11,18 @@ logger = __import__('logging').getLogger(__name__)
 
 from lxml.html import HtmlComment
 
-from nti.contenttools import types
+from nti.contenttools._compat import unicode_
+
+from nti.contenttools.types import TextNode
 
 
 def check_element_text(node, element):
     if element.text:
         if element.text.isspace():
             if len(element.text) == 1:
-                node.add_child(types.TextNode(u' '))
+                node.add_child(TextNode(u' '))
         else:
-            node.add_child(types.TextNode(unicode(element.text)))
+            node.add_child(TextNode(unicode_(element.text)))
     return node
 
 
@@ -65,5 +67,5 @@ def check_element_tail(node, element):
             pass
         else:
             new_el_tail = element.tail.rstrip() + u' '
-            node.add_child(types.TextNode(new_el_tail))
+            node.add_child(TextNode(new_el_tail))
     return node
