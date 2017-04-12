@@ -90,4 +90,20 @@ class TestParagraphAdapter(ContentToolsTestCase):
         node = Run.process(element)
         output = render_output(node)
         assert_that(output,
-                    is_(u'\subsubsection{This is heading 5}\n\n'))
+                    is_(u'\\paragraph{This is heading 5}\n\n'))
+    
+    def test_h6(self):
+        script = u'<div><h6>This is heading 6</h6></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\subparagraph{This is heading 6}\n\n'))
+    
+    def test_h7(self):
+        script = u'<div><h7>This is heading 7</h7></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\subsubparagraph{This is heading 7}\n\n'))
