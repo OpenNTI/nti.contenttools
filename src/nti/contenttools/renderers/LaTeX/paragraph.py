@@ -114,7 +114,7 @@ def render_paragraph(context, node):
     code_style = False
     styles = list(node.styles or ())
     if len(styles) > 1:
-        logger.warn("Multiple style in paragraph node, %s", 
+        logger.warn("Multiple style in paragraph node, %s",
                     styles)
     style = styles[0] if styles else None
 
