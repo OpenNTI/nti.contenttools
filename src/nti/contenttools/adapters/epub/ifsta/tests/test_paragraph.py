@@ -14,6 +14,8 @@ does_not = is_not
 
 from lxml import html
 
+from nti.contenttools.adapters.epub.ifsta.run import Run
+
 from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
 
 from nti.contenttools.renderers.LaTeX.base import render_output
@@ -49,3 +51,35 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'Organizations that specialize in the development of standards and codes often create them. In order to be enforceable by law, the AHJ must adopt stan-dards and codes. \\\\ \n\n'))
+
+    def test_h1(self):
+        script = u'<div><h1>This is heading 1</h1></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\chapter{This is heading 1}\n\n'))
+    
+    def test_h2(self):
+        script = u'<div><h2>This is heading 2</h2></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\section{This is heading 2}\n\n'))
+    
+    def test_h3(self):
+        script = u'<div><h3>This is heading 3</h3></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\subsection{This is heading 3}\n\n'))
+    
+    def test_h4(self):
+        script = u'<div><h4>This is heading 4</h4></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\subsubsection{This is heading 4}\n\n'))
