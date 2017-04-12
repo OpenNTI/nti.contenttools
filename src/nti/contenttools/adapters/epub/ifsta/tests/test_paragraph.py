@@ -59,7 +59,7 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\chapter{This is heading 1}\n\n'))
-    
+
     def test_h2(self):
         script = u'<div><h2>This is heading 2</h2></div>'
         element = html.fromstring(script)
@@ -67,7 +67,7 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\section{This is heading 2}\n\n'))
-    
+
     def test_h3(self):
         script = u'<div><h3>This is heading 3</h3></div>'
         element = html.fromstring(script)
@@ -75,7 +75,7 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\subsection{This is heading 3}\n\n'))
-    
+
     def test_h4(self):
         script = u'<div><h4>This is heading 4</h4></div>'
         element = html.fromstring(script)
@@ -83,7 +83,7 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\subsubsection{This is heading 4}\n\n'))
-    
+
     def test_h5(self):
         script = u'<div><h5>This is heading 5</h5></div>'
         element = html.fromstring(script)
@@ -91,7 +91,7 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\paragraph{This is heading 5}\n\n'))
-    
+
     def test_h6(self):
         script = u'<div><h6>This is heading 6</h6></div>'
         element = html.fromstring(script)
@@ -99,7 +99,7 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\subparagraph{This is heading 6}\n\n'))
-    
+
     def test_h7(self):
         script = u'<div><h7>This is heading 7</h7></div>'
         element = html.fromstring(script)
