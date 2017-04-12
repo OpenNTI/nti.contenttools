@@ -27,7 +27,6 @@ from nti.contenttools.types.interfaces import IParagraph
 
 def _label_command(context, node, command):
     render_command(context, command, node)
-    context.write('\n')
     if node.label:  # check for label
         context.write(create_label(command, node.label))
     return node

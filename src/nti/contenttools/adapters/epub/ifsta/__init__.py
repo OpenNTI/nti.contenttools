@@ -34,7 +34,7 @@ def check_child(node, element, reading_type=None):
     from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
     for child in element:
         if child.tag == 'p':
-            node.add_child(Paragraph.process(child, [], reading_type))
+            node.add_child(Paragraph.process(child, []))
         elif child.tag == 'span':
             node.add_child(process_span_elements(child))
         elif child.tag == 'b':
@@ -55,6 +55,20 @@ def check_child(node, element, reading_type=None):
             node.add_child(Run.process(child, ['sup']))
         elif child.tag == 'div':
             node.add_child(process_div_elements(child, node))
+        elif child.tag == 'h1':
+            node.add_child(Paragraph.process(child, ['Heading1']))
+        elif child.tag == 'h2':
+            node.add_child(Paragraph.process(child, ['Heading2']))
+        elif child.tag == 'h3':
+            node.add_child(Paragraph.process(child, ['Heading3']))
+        elif child.tag == 'h4':
+            node.add_child(Paragraph.process(child, ['Heading4']))
+        elif child.tag == 'h5':
+            node.add_child(Paragraph.process(child, ['Heading5']))
+        elif child.tag == 'h6':
+            node.add_child(Paragraph.process(child, ['Heading6']))
+        elif child.tag == 'h7':
+            node.add_child(Paragraph.process(child, ['Heading7']))
         else:
             if not isinstance(child, HtmlComment):
                 logger.warn('Unhandled %s child: %s.', element, child)
