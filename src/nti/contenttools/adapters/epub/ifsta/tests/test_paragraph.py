@@ -83,3 +83,11 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\subsubsection{This is heading 4}\n\n'))
+    
+    def test_h5(self):
+        script = u'<div><h5>This is heading 5</h5></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\subsubsection{This is heading 5}\n\n'))
