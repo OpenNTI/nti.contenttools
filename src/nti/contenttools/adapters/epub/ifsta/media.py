@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: media.py 110445 2017-04-10 13:34:47Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -9,16 +9,12 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from nti.contenttools import types
+import os
+from six import StringIO
 
 from PIL import Image as PILImage
 
-import os
-
-try:
-    import cStringIO as StringIO
-except:
-    import StringIO
+from nti.contenttools import types
 
 from nti.contenttools.adapters.epub.ifsta.run import Run
 from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
@@ -31,7 +27,7 @@ class Image(types.Image):
         path = element.attrib['src']
         if u'../' in path:
             path = path.replace('../', '')
-        head, filename = os.path.split(path)
+        _, filename = os.path.split(path)
         me.predefined_image_path = True
         me.path = u'Images/CourseAssets/%s/%s' % (epub.book_title, filename)
         me.inline_image = inline_image
@@ -39,7 +35,6 @@ class Image(types.Image):
             me.caption = types.TextNode(element.attrib['alt'])
 
         zipfile = epub.zipfile
-
         image_path = os.path.join(epub.content_path, path)
         if image_path in zipfile.namelist():
             image_data = StringIO.StringIO(zipfile.read(image_path))
@@ -48,7 +43,6 @@ class Image(types.Image):
         else:
             logger.warn('COULD NOT FIND Image : %s', image_path)
             return types.Run()
-
         return me
 
 
@@ -57,8 +51,8 @@ def save_image(image_data, filepath, epub):
     if not os.path.exists(os.path.dirname(filepath)):
         os.makedirs(os.path.dirname(filepath))
 
-    with open(filepath, 'wb') as file:
-        file.write(image_data.read())
+    with open(filepath, 'wb') as fp:
+        fp.write(image_data.read())
 
 
 class Figure(types.Figure):

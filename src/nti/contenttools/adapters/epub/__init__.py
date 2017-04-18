@@ -9,20 +9,22 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from lxml import etree, html
 
 import os
 import codecs
+
+from lxml import html
+from lxml import etree
+
+from nti.contenttools import types
 
 from nti.contenttools.adapters.epub.reader import EPUBReader
 
 from nti.contenttools.adapters.epub.ifsta import adapt as adapt_ifsta
 
-from nti.contenttools.util.string_replacer import rename_filename
-
-from nti.contenttools import types
-
 from nti.contenttools.renderers.LaTeX.base import render_output
+
+from nti.contenttools.util.string_replacer import rename_filename
 
 
 class EPUBParser(object):
@@ -63,9 +65,8 @@ class EPUBParser(object):
         logger.info(epub_reader.spine)
 
     def create_main_latex(self):
-        main_tex_content = generate_main_tex_content(
-            self.epub_reader.metadata,
-            self.latex_filenames)
+        main_tex_content = generate_main_tex_content(self.epub_reader.metadata,
+                                                     self.latex_filenames)
         self.write_to_file(main_tex_content, self.tex_main_file)
 
     def write_to_file(self, content, filename, type_=None):
@@ -107,8 +108,8 @@ def get_included_tex(included_tex_list):
 
 
 def generate_main_tex_content(metadata, included_tex_list):
-    title = u'\\title{%s}\n' % metadata[u'title'] if 'title' in metadata else u''
     author = u''
+    title = u'\\title{%s}\n' % metadata[u'title'] if 'title' in metadata else u''
     if u'creator' in metadata.keys():
         author = u'\\author{%s}\n' % metadata['creator']
     package = get_packages()

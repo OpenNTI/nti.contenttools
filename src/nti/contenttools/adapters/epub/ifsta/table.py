@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: table.py 110445 2017-04-10 13:34:47Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -9,9 +9,9 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from nti.contenttools import types
-
 from lxml.html import HtmlComment
+
+from nti.contenttools import types
 
 from nti.contenttools.adapters.epub.ifsta.run import Run
 
@@ -54,9 +54,8 @@ class Table(types.Table):
             elif child.tag == 'caption':
                 caption = Run.process(child, epub=epub)
                 me.caption = caption
-            else:
-                if not isinstance(child, HtmlComment):
-                    logger.warn('Unhandled %s child: %s.', element, child)
+            elif not isinstance(child, HtmlComment):
+                logger.warn('Unhandled %s child: %s.', element, child)
         return me
 
 
@@ -77,11 +76,8 @@ class TBody(types.TBody):
                     me.add_child(Row.process(child, False, epub))
                 number_of_col = me.children[count_child].number_of_col
                 count_child = count_child + 1
-            else:
-                if isinstance(child, HtmlComment):
-                    pass
-                else:
-                    logger.warn('Unhandled <tbody> child: %s.', child.tag)
+            elif not isinstance(child, HtmlComment):
+                logger.warn('Unhandled <tbody> child: %s.', child.tag)
         me.number_of_col = number_of_col
         return me
 
@@ -99,11 +95,8 @@ class THead(types.THead):
                 me.add_child(Row.process(child, border, epub))
                 number_of_col = me.children[count_child].number_of_col
                 count_child = count_child + 1
-            else:
-                if isinstance(child, HtmlComment):
-                    pass
-                else:
-                    logger.warn('Unhandled <thead> child: %s.', child.tag)
+            elif not isinstance(child, HtmlComment):
+                logger.warn('Unhandled <thead> child: %s.', child.tag)
         me.number_of_col = number_of_col
         return me
 
@@ -143,11 +136,8 @@ class Row (types.Row):
                 if number_of_col == 0:
                     me.children[0].is_first_cell_in_the_row = True
                 number_of_col += 1
-            else:
-                if isinstance(child, HtmlComment):
-                    pass
-                else:
-                    logger.warn('Unhandled <tr> child: %s.', child.tag)
+            elif not isinstance(child, HtmlComment):
+                logger.warn('Unhandled <tr> child: %s.', child.tag)
         me.number_of_col = number_of_col
         return me
 

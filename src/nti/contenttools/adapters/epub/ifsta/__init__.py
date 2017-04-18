@@ -11,11 +11,12 @@ logger = __import__('logging').getLogger(__name__)
 
 from lxml.html import HtmlComment
 
+from nti.contenttools import types
+
 from nti.contenttools._compat import unicode_
 
 from nti.contenttools.types import TextNode
 
-from nti.contenttools import types
 
 def adapt(fragment, epub=None):
     body = fragment.find('body')
@@ -46,15 +47,15 @@ def check_element_text(node, element):
 
 def check_child(node, element, epub=None):
     # XXX: Avoid circular imports
+    from nti.contenttools.adapters.epub.ifsta.lists import OrderedList
+    from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
+    from nti.contenttools.adapters.epub.ifsta.media import Image
+    from nti.contenttools.adapters.epub.ifsta.media import Figure
     from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
     from nti.contenttools.adapters.epub.ifsta.run import Run
     from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
     from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
     from nti.contenttools.adapters.epub.ifsta.table import Table
-    from nti.contenttools.adapters.epub.ifsta.lists import OrderedList
-    from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
-    from nti.contenttools.adapters.epub.ifsta.media import Image
-    from nti.contenttools.adapters.epub.ifsta.media import Figure
 
     for child in element:
         if child.tag == 'p':
@@ -103,9 +104,8 @@ def check_child(node, element, epub=None):
             node.add_child(Image.process(child, epub=epub))
         elif child.tag == 'figure':
             node.add_child(Figure.process(child, epub=epub))
-        else:
-            if not isinstance(child, HtmlComment):
-                logger.warn('Unhandled %s child: %s.', element, child)
+        elif not isinstance(child, HtmlComment):
+            logger.warn('Unhandled %s child: %s.', element, child)
     return node
 
 
