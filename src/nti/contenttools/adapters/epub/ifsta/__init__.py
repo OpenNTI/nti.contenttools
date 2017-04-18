@@ -17,7 +17,6 @@ from nti.contenttools.types import TextNode
 
 from nti.contenttools import types
 
-
 def adapt(fragment, epub=None):
     body = fragment.find('body')
     epub_body = EPUBBody.process(body)
