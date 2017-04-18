@@ -15,6 +15,7 @@ from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
 from nti.contenttools.adapters.epub.ifsta import check_element_tail
 
+
 class OrderedList(types.OrderedList):
 
     @classmethod
@@ -37,7 +38,7 @@ class OrderedList(types.OrderedList):
             elif u'arabic' in numbering_type:
                 me.format = 'decimal'
             else:
-                logger.warn("UNHANDLED OrderedList numbering format type %s", 
+                logger.warn("UNHANDLED OrderedList numbering format type %s",
                             numbering_type)
 
         for child in element:
@@ -60,7 +61,7 @@ class UnorderedList(types.UnorderedList):
 
     @classmethod
     def process(cls, element):
-        ##TODO : still need to avoid the circular import
+        # TODO : still need to avoid the circular import
         from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
         from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
         me = cls()
@@ -74,7 +75,7 @@ class UnorderedList(types.UnorderedList):
             elif u'square' in numbering_style:
                 me.format = u'blacksquare'
             else:
-                logger.warn("UNHANDLED UnorderedList numbering format type %s", 
+                logger.warn("UNHANDLED UnorderedList numbering format type %s",
                             numbering_style)
         for child in element:
             el = None

@@ -20,7 +20,9 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestTable(ContentToolsTestCase):
+
     def test_table(self):
         script = u'<div><table>\
         <tr>\
@@ -38,8 +40,7 @@ class TestTable(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\n\\begin{table}\n\\begin{tabular}{ l  l  l }\nA & B & C\\\\\n1 & 2 & 3\\\\\n\n\\end{tabular}\n\\end{table}\n'))
-    
-    
+
     def test_table_2(self):
         script = u'<div><table>\
         <tr>\
