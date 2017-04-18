@@ -29,6 +29,8 @@ class Table(types.Table):
         
         if u'border' in element.attrib.keys():
             me.border = element.attrib[u'border']
+         
+        me.number_of_col_body = 0    
 
         for child in element:
             if child.tag == 'colgroup':
@@ -39,7 +41,10 @@ class Table(types.Table):
                 else:
                     me.add_child(TBody.process(child, False))
             elif child.tag == 'tr':
-                me.add_child(Row.process(child, me.border))
+                row = Row.process(child, me.border)
+                me.add_child(row)
+                if row.number_of_col > me.number_of_col_body:
+                    me.number_of_col_body = row.number_of_col
             elif child.tag == 'thead':
                 me.add_child(THead.process(child, me.border))
             elif child.tag == 'tfoot':
