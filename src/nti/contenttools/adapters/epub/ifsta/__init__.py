@@ -41,7 +41,7 @@ def check_child(node, element, epub=None):
         if child.tag == 'p':
             node.add_child(Paragraph.process(child, [], epub=epub))
         elif child.tag == 'span':
-            node.add_child(process_span_elements(child))
+            node.add_child(process_span_elements(child, epub=epub))
         elif child.tag == 'b':
             node.add_child(Run.process(child, ['bold'], epub=epub))
         elif child.tag == 'i':
@@ -79,7 +79,7 @@ def check_child(node, element, epub=None):
         elif child.tag == 'ul':
             node.add_child(UnorderedList.process(child, epub=epub))
         elif child.tag == 'table':
-            node.add_child(Table.process(child))
+            node.add_child(Table.process(child, epub=epub))
         elif child.tag == 'img':
             node.add_child(Image.process(child, epub=epub))
         else:

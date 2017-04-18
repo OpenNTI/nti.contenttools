@@ -44,7 +44,7 @@ class OrderedList(types.OrderedList):
         for child in element:
             el = None
             if child.tag == 'li':
-                el = Item.process(child, epub)
+                el = Item.process(child, epub=epub)
             else:
                 logger.info('OrderedList child %s', child.tag)
                 el = Item()
@@ -80,7 +80,7 @@ class UnorderedList(types.UnorderedList):
         for child in element:
             el = None
             if child.tag == 'li':
-                el = Item.process(child, bullet_type=me.format)
+                el = Item.process(child, bullet_type=me.format, epub=epub)
             elif child.tag == 'div':
                 el = process_div_elements(child, me, epub)
             elif child.tag == 'p':
