@@ -86,12 +86,12 @@ def check_paragraph_bullet(el):
     return False
 
 
-def process_span_elements(element):
+def process_span_elements(element, epub=None):
     attrib = element.attrib
     span_class = attrib['class'] if u'class' in attrib else u''
     if 'bullet' in span_class:
         el = Run()
         el.element_type = 'bullet'
     else:
-        el = Run.process(element)
+        el = Run.process(element, epub=epub)
     return el
