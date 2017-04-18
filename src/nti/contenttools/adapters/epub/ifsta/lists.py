@@ -19,7 +19,7 @@ from nti.contenttools.adapters.epub.ifsta import check_element_tail
 class OrderedList(types.OrderedList):
 
     @classmethod
-    def process(cls, element):
+    def process(cls, element, epub=None):
         me = cls()
         if 'data-number-style' in element.attrib:
             numbering_type = element.attrib['data-number-style']
@@ -44,7 +44,7 @@ class OrderedList(types.OrderedList):
         for child in element:
             el = None
             if child.tag == 'li':
-                el = Item.process(child)
+                el = Item.process(child, epub)
             else:
                 logger.info('OrderedList child %s', child.tag)
                 el = Item()
@@ -60,7 +60,7 @@ class OrderedList(types.OrderedList):
 class UnorderedList(types.UnorderedList):
 
     @classmethod
-    def process(cls, element):
+    def process(cls, element, epub=None):
         # TODO : still need to avoid the circular import
         from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
         from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
@@ -82,9 +82,9 @@ class UnorderedList(types.UnorderedList):
             if child.tag == 'li':
                 el = Item.process(child, bullet_type=me.format)
             elif child.tag == 'div':
-                el = process_div_elements(child, me)
+                el = process_div_elements(child, me, epub)
             elif child.tag == 'p':
-                el = Paragraph.process(child)
+                el = Paragraph.process(child, epub)
             else:
                 el = Item()
 
@@ -100,10 +100,10 @@ class UnorderedList(types.UnorderedList):
 class Item(types.Item):
 
     @classmethod
-    def process(cls, element, bullet_type=None):
+    def process(cls, element, bullet_type=None, epub=None):
         me = cls()
         me = check_element_text(me, element)
-        me = check_child(me, element)
+        me = check_child(me, element, epub)
         me = check_element_tail(me, element)
         me.bullet_type = bullet_type
         return me

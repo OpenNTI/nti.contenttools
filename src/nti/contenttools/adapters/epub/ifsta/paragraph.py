@@ -32,7 +32,7 @@ class Paragraph(types.Paragraph):
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride',)
 
     @classmethod
-    def process(cls, element, styles=(), reading_type=None):
+    def process(cls, element, styles=(), reading_type=None, epub=None):
         me = cls()
         attrib = element.attrib
         me.reading_type = reading_type
@@ -42,7 +42,7 @@ class Paragraph(types.Paragraph):
         if u'class' in attrib:
             if attrib['class'] != u"ParaOverride-1":
                 me = check_element_text(me, element)
-                me = check_child(me, element, reading_type)
+                me = check_child(me, element, epub)
                 me = check_element_tail(me, element)
                 if any(s in attrib['class'] for s in cls.sidebar_list):
                     sidebar_class = Sidebar()
@@ -77,6 +77,6 @@ class Paragraph(types.Paragraph):
                     me.add_child(types.TextNode("\\\\\n"))
         else:
             me = check_element_text(me, element)
-            me = check_child(me, element, reading_type)
+            me = check_child(me, element, epub)
             me = check_element_tail(me, element)
         return me
