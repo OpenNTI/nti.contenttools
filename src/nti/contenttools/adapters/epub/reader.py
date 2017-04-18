@@ -20,7 +20,7 @@ from zipfile import ZipFile
 
 from nti.contenttools import types
 
-class EPUBReader( object ):
+class EPUBReader(object):
     """Class to open and read EPUB documents."""
 
     def __init__(self, file, epub):
