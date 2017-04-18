@@ -137,5 +137,3 @@ class EPUBReader( object ):
         self.document.author = self.author
         self.document.title = self.title
         self.docfrags = docfrags
-
-    

@@ -15,6 +15,25 @@ from nti.contenttools._compat import unicode_
 
 from nti.contenttools.types import TextNode
 
+from nti.contenttools import types
+
+
+def adapt(fragment, epub=None):
+    body = fragment.find('body')
+    epub_body = EPUBBody.process(body)
+    return epub_body
+
+
+class EPUBBody(types.EPUBBody):
+
+    @classmethod
+    def process(cls, element, epub=None):
+        me = cls()
+        me = check_element_text(me, element)
+        me = check_child(me, element, epub)
+        me = check_element_tail(me, element)
+        return me
+
 
 def check_element_text(node, element):
     if element.text:
@@ -36,7 +55,8 @@ def check_child(node, element, epub=None):
     from nti.contenttools.adapters.epub.ifsta.lists import OrderedList
     from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
     from nti.contenttools.adapters.epub.ifsta.media import Image
-    
+    from nti.contenttools.adapters.epub.ifsta.media import Figure
+
     for child in element:
         if child.tag == 'p':
             node.add_child(Paragraph.process(child, [], epub=epub))
@@ -82,6 +102,8 @@ def check_child(node, element, epub=None):
             node.add_child(Table.process(child, epub=epub))
         elif child.tag == 'img':
             node.add_child(Image.process(child, epub=epub))
+        elif child.tag == 'figure':
+            node.add_child(Figure.process(child, epub=epub))
         else:
             if not isinstance(child, HtmlComment):
                 logger.warn('Unhandled %s child: %s.', element, child)
