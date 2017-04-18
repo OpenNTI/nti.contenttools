@@ -18,19 +18,21 @@ from nti.contenttools.adapters.epub.ifsta.run import Run
 from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
 
+
 class Table(types.Table):
+
     @classmethod
     def process(cls, element):
         me = cls()
-        if 'id' in element.attrib : 
+        if 'id' in element.attrib:
             me.label = element.attrib['id']
-        
+
         me = check_element_text(me, element)
-        
+
         if u'border' in element.attrib.keys():
             me.border = element.attrib[u'border']
-         
-        me.number_of_col_body = 0    
+
+        me.number_of_col_body = 0
 
         for child in element:
             if child.tag == 'colgroup':
@@ -59,11 +61,12 @@ class Table(types.Table):
 
 
 class TBody(types.TBody):
+
     @classmethod
     def process(cls, element, border=None):
         me = cls()
         me.border = border
-        number_of_col = 0 
+        number_of_col = 0
         count_child = -1
         me = check_element_text(me, element)
         for child in element:
@@ -75,19 +78,21 @@ class TBody(types.TBody):
                 number_of_col = me.children[count_child].number_of_col
                 count_child = count_child + 1
             else:
-                if isinstance(child,HtmlComment):
+                if isinstance(child, HtmlComment):
                     pass
                 else:
-                    logger.warn('Unhandled <tbody> child: %s.',child.tag)
+                    logger.warn('Unhandled <tbody> child: %s.', child.tag)
         me.number_of_col = number_of_col
         return me
 
-class THead(types.THead):  
+
+class THead(types.THead):
+
     @classmethod
     def process(cls, element, border=None):
         me = cls()
         me.border = border
-        number_of_col = 0 
+        number_of_col = 0
         count_child = -1
         for child in element:
             if child.tag == 'tr':
@@ -95,18 +100,20 @@ class THead(types.THead):
                 number_of_col = me.children[count_child].number_of_col
                 count_child = count_child + 1
             else:
-                if isinstance(child,HtmlComment):
+                if isinstance(child, HtmlComment):
                     pass
                 else:
-                    logger.warn('Unhandled <thead> child: %s.',child.tag)
+                    logger.warn('Unhandled <thead> child: %s.', child.tag)
         me.number_of_col = number_of_col
         return me
 
+
 class TFoot(types.TFoot):
+
     @classmethod
     def process(cls, element):
         me = cls()
-        number_of_col = 0 
+        number_of_col = 0
         count_child = -1
         for child in element:
             if child.tag == 'tr':
@@ -114,13 +121,16 @@ class TFoot(types.TFoot):
                 number_of_col = me.children[count_child].number_of_col
                 count_child = count_child + 1
             else:
-                if isinstance(child,HtmlComment): pass
+                if isinstance(child, HtmlComment):
+                    pass
                 else:
-                    logger.warn('Unhandled <tfoot> child: %s.',child.tag)
+                    logger.warn('Unhandled <tfoot> child: %s.', child.tag)
         me.number_of_col = number_of_col
         return me
 
+
 class Row (types.Row):
+
     @classmethod
     def process(cls, element, border=None):
         me = cls()
@@ -134,19 +144,21 @@ class Row (types.Row):
                     me.children[0].is_first_cell_in_the_row = True
                 number_of_col += 1
             else:
-                if isinstance(child,HtmlComment):
+                if isinstance(child, HtmlComment):
                     pass
                 else:
-                    logger.warn('Unhandled <tr> child: %s.',child.tag)
+                    logger.warn('Unhandled <tr> child: %s.', child.tag)
         me.number_of_col = number_of_col
         return me
 
+
 class Cell(types.Cell):
+
     @classmethod
-    def process(cls, element, border = None):
+    def process(cls, element, border=None):
         me = cls()
         me.border = border
-        
+
         if u'valign' in element.attrib.keys():
             me.v_alignment = element.attrib[u'valign']
 
@@ -158,7 +170,7 @@ class Cell(types.Cell):
             if u'text-align' in style:
                 idx = style.find(u'text-align')
                 text_align = style[idx:style.find(u';')]
-                me.h_alignment = text_align[text_align.find(u':')+1:].strip()
+                me.h_alignment = text_align[text_align.find(u':') + 1:].strip()
 
         me = check_element_text(me, element)
         me = check_child(me, element)
