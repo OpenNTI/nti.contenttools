@@ -14,7 +14,7 @@ import six
 import logging
 import argparse
 
-from nti.contenttools.epub_parser import EPUBParser
+from nti.contenttools.adapters.epub.parser import EPUBParser
 
 from nti.contenttools.util import string_replacer
 
