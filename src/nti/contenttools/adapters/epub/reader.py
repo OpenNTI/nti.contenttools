@@ -9,16 +9,13 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 import os
-import shutil
-import subprocess
 
-from argparse import ArgumentParser
 from lxml import etree, html
-from lxml.html import html5parser, XHTMLParser
-from tempfile import mkdtemp
+
 from zipfile import ZipFile
 
 from nti.contenttools import types
+
 
 class EPUBReader(object):
     """Class to open and read EPUB documents."""
@@ -29,20 +26,22 @@ class EPUBReader(object):
             for child in container:
                 if child.tag == '{urn:oasis:names:tc:opendocument:xmlns:container}rootfiles':
                     for rootfile in child:
-                        if rootfile.attrib['media-type'] == 'application/oebps-package+xml':
+                        if rootfile.attrib[
+                                'media-type'] == 'application/oebps-package+xml':
                             rootfilename = rootfile.attrib['full-path']
-                            break;
+                            break
             return rootfilename
 
-        def _extract_manifest( manifest ):
+        def _extract_manifest(manifest):
             result = {}
             for item in manifest:
-                if hasattr(item, 'tag') and item.tag == '{http://www.idpf.org/2007/opf}item':
-                    result[item.attrib['id']] = { 'href': item.attrib['href'],
-                                              'media-type': item.attrib['media-type'] }
+                if hasattr(
+                        item, 'tag') and item.tag == '{http://www.idpf.org/2007/opf}item':
+                    result[item.attrib['id']] = {'href': item.attrib['href'],
+                                                 'media-type': item.attrib['media-type']}
             return result
 
-        def _extract_metadata( metadata ):
+        def _extract_metadata(metadata):
             result = {}
             for element in metadata:
                 if element.tag == '{http://purl.org/dc/elements/1.1/}title':
@@ -71,13 +70,13 @@ class EPUBReader(object):
                     print('Unknown element: %s' % element.tag)
             return result
 
-        def _extract_spine( spine ):
+        def _extract_spine(spine):
             result = []
             for itemref in spine:
                 result.append(itemref.attrib['idref'])
             return result
 
-        self.zipfile = ZipFile( file )
+        self.zipfile = ZipFile(file)
         epub.zipfile = self.zipfile
         self.metadata = {}
         self.manifest = {}
@@ -87,8 +86,8 @@ class EPUBReader(object):
         self.video_list = []
 
         container = etree.fromstring(self.zipfile.read(u'META-INF/container.xml'))
-        rootfile = etree.fromstring(self.zipfile.read(_get_rootfile( container )))
-        self.content_path = os.path.dirname(_get_rootfile( container ))
+        rootfile = etree.fromstring(self.zipfile.read(_get_rootfile(container)))
+        self.content_path = os.path.dirname(_get_rootfile(container))
         epub.content_path = self.content_path
 
         for element in rootfile:
@@ -111,8 +110,8 @@ class EPUBReader(object):
         self.author = u''
         if 'creator' in self.metadata.keys():
             self.author = self.metadata['creator']
-        
-        logger.info('SPINE: %s',self.spine)
+
+        logger.info('SPINE: %s', self.spine)
         check_item = False
         spine_dict = {}
         docfrags = {}
@@ -125,10 +124,14 @@ class EPUBReader(object):
             elif item in ['htmltoc']:
                 pass
             else:
-                spine_dict.update({item:check_item})
-                docfragment = html.fromstring(self.zipfile.read(self.content_path+'/'+self.manifest[item]['href']))
-                docfrags.update({item:docfragment})
-                
+                spine_dict.update({item: check_item})
+                docfragment = html.fromstring(
+                    self.zipfile.read(
+                        self.content_path +
+                        '/' +
+                        self.manifest[item]['href']))
+                docfrags.update({item: docfragment})
+
         self.document = types.Document()
         self.document.author = self.author
         self.document.title = self.title
