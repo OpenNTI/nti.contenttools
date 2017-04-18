@@ -61,9 +61,9 @@ class UnorderedList(types.UnorderedList):
 
     @classmethod
     def process(cls, element, epub=None):
-        # TODO : still need to avoid the circular import
-        from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
+        # TODO: still need to avoid the circular import
         from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
+        from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
         me = cls()
         if 'style' in element.attrib:
             numbering_style = element.attrib['style']

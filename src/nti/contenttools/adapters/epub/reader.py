@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: reader.py 110888 2017-04-18 10:15:40Z egawati.panjei $
+.. $Id$
 """
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
@@ -9,18 +9,22 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 import os
-
-from lxml import etree, html
-
 from zipfile import ZipFile
+
+from lxml import html
+from lxml import etree
 
 from nti.contenttools import types
 
+etree_fromstring = getattr(etree, 'fromstring')
+
 
 class EPUBReader(object):
-    """Class to open and read EPUB documents."""
+    """
+    Class to open and read EPUB documents.
+    """
 
-    def __init__(self, file, epub):
+    def __init__(self, source, epub):
         def _get_rootfile(container):
             rootfilename = ''
             for child in container:
@@ -76,7 +80,7 @@ class EPUBReader(object):
                 result.append(itemref.attrib['idref'])
             return result
 
-        self.zipfile = ZipFile(file)
+        self.zipfile = ZipFile(source)
         epub.zipfile = self.zipfile
         self.metadata = {}
         self.manifest = {}
@@ -85,8 +89,10 @@ class EPUBReader(object):
         self.image_list = []
         self.video_list = []
 
-        container = etree.fromstring(self.zipfile.read(u'META-INF/container.xml'))
-        rootfile = etree.fromstring(self.zipfile.read(_get_rootfile(container)))
+        container = etree_fromstring(
+            self.zipfile.read(u'META-INF/container.xml'))
+        rootfile = etree_fromstring(
+            self.zipfile.read(_get_rootfile(container)))
         self.content_path = os.path.dirname(_get_rootfile(container))
         epub.content_path = self.content_path
 

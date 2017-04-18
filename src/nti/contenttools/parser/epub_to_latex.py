@@ -10,6 +10,7 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 import os
+import six
 import logging
 import argparse
 
@@ -39,7 +40,8 @@ def _title_escape(title):
 
 def _configure_logging(level='INFO'):
     numeric_level = getattr(logging, level.upper(), None)
-    numeric_level = logging.INFO if not isinstance(numeric_level, int) else numeric_level
+    if not isinstance(numeric_level, six.integer_types):
+        numeric_level = logging.INFO
     logging.basicConfig(level=numeric_level)
 
 
@@ -67,10 +69,10 @@ def main():
     # create a txt file to store information about image's name and location
     # used in nticard
     epub = EPUBParser(inputfile, args.output, args.type)
-    epub.nticard_images_filename = os.path.join(
-        args.output,
-        'nticard_images.txt')
+    epub.nticard_images_filename = os.path.join(args.output,
+                                                'nticard_images.txt')
     epub.process_fragment()
+
 
 if __name__ == '__main__':  # pragma: no cover
     main()

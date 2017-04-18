@@ -20,6 +20,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestList(ContentToolsTestCase):
     def test_ordered_list(self):
         script = u'<div><ol><li>item 1</li><li>item 2</li></ol><div>'
@@ -28,7 +29,7 @@ class TestList(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\begin{enumerate}\n\\item item 1 \n\\item item 2 \n\n\\end{enumerate}\n'))
-    
+
     def test_unordered_list(self):
         script = u'<div><ul><li>item 1</li><li>item 2</li></ul><div>'
         element = html.fromstring(script)
@@ -36,5 +37,3 @@ class TestList(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\begin{itemize}\n\\item item 1 \n\\item item 2 \n\n\\end{itemize}\n'))
-
-
