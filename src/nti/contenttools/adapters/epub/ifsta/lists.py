@@ -15,7 +15,6 @@ from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
 from nti.contenttools.adapters.epub.ifsta import check_element_tail
 
-
 class OrderedList(types.OrderedList):
 
     @classmethod
@@ -61,6 +60,9 @@ class UnorderedList(types.UnorderedList):
 
     @classmethod
     def process(cls, element):
+        ##TODO : still need to avoid the circular import
+        from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
+        from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
         me = cls()
         if 'style' in element.attrib:
             numbering_style = element.attrib['style']
@@ -77,12 +79,10 @@ class UnorderedList(types.UnorderedList):
         for child in element:
             el = None
             if child.tag == 'li':
-                el = Item.process(child, format=me.format)
+                el = Item.process(child, bullet_type=me.format)
             elif child.tag == 'div':
-                from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
                 el = process_div_elements(child, me)
             elif child.tag == 'p':
-                from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
                 el = Paragraph.process(child)
             else:
                 el = Item()
@@ -99,10 +99,10 @@ class UnorderedList(types.UnorderedList):
 class Item(types.Item):
 
     @classmethod
-    def process(cls, element, format_=None):
+    def process(cls, element, bullet_type=None):
         me = cls()
         me = check_element_text(me, element)
         me = check_child(me, element)
         me = check_element_tail(me, element)
-        me.bullet_type = format_
+        me.bullet_type = bullet_type
         return me

@@ -33,6 +33,8 @@ def check_child(node, element, reading_type=None):
     from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
     from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
     from nti.contenttools.adapters.epub.ifsta.table import Table
+    from nti.contenttools.adapters.epub.ifsta.lists import OrderedList
+    from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
     for child in element:
         if child.tag == 'p':
             node.add_child(Paragraph.process(child, []))
@@ -70,6 +72,10 @@ def check_child(node, element, reading_type=None):
             node.add_child(Paragraph.process(child, ['Heading6']))
         elif child.tag == 'h7':
             node.add_child(Paragraph.process(child, ['Heading7']))
+        elif child.tag == 'ol':
+            node.add_child(OrderedList.process(child))
+        elif child.tag == 'ul':
+            node.add_child(UnorderedList.process(child))
         elif child.tag == 'table':
             node.add_child(Table.process(child))
         else:
