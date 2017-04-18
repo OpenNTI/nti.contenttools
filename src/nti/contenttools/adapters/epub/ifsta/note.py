@@ -19,12 +19,12 @@ from nti.contenttools.adapters.epub.ifsta import check_element_tail
 class Sidebar(types.Sidebar):
 
     @classmethod
-    def process(cls, element, sidebar_type=None):
+    def process(cls, element, sidebar_type=None, epub=None):
         me = cls()
         if 'id' in element.attrib:
             me.label = element.attrib['id']
         me = check_element_text(me, element)
-        me = check_child(me, element)
+        me = check_child(me, element, epub)
         me = check_element_tail(me, element)
         if me.title is None:
             me.title = sidebar_type.title()
