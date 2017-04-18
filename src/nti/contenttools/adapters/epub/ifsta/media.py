@@ -77,7 +77,7 @@ class Figure(types.Figure):
             elif child.tag == u'figure':
                 me.add_child(Figure.process(child, epub))
             elif child.tag == u'div':
-                me.add_child(process_div_elements(child, me))
+                me.add_child(process_div_elements(child, me, epub=epub))
             else:
                 logger.warn('Unhandled figure child %s', child.tag)
         return me
