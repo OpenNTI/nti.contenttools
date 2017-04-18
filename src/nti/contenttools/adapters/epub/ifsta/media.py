@@ -20,6 +20,13 @@ try:
     import cStringIO as StringIO
 except:
     import StringIO
+    
+from nti.contenttools.adapters.epub.ifsta.run import Run
+from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
+
+from nti.contenttools.adapters.epub.ifsta import check_child
+from nti.contenttools.adapters.epub.ifsta import check_element_text
+
 
 class Image(types.Image):
     @classmethod
@@ -55,3 +62,30 @@ def save_image(image_data, filepath, epub):
 
     with open( filepath, 'wb' ) as file:
         file.write(image_data.read())
+
+class Figure(types.Figure):
+    @classmethod
+    def process(cls, element, epub=None):
+        me = cls()
+        if u'id' in element.attrib : me.label = element.attrib[u'id']
+        for child in element:
+            if child.tag == u'figcaption':
+                me.caption = Run.process(child, epub=epub)
+            elif child.tag == u'span':
+                if u'data-type' in child.attrib : me.data_type = child.attrib[u'data-type']
+                if u'id' in child.attrib : me.image_id = child.attrib[u'id']
+                if u'data-alt' in child.attrib : me.image_alt = types.TextNode(child.attrib[u'data-alt'])
+                img = get_figure_image(child, epub)
+                me.add_child(img)
+            elif child.tag == u'figure':
+                me.add_child(Figure.process(child, epub))
+            elif child.tag == u'div':
+                me.add_child(process_div_elements(child, me))
+            else:
+                logger.warn('Unhandled figure child %s', child.tag)
+        return me
+
+def get_figure_image(element, epub=None):
+    for child in element:
+        if child.tag == u'img':
+            return Image.process(child, epub=epub)
