@@ -38,5 +38,5 @@ class Hyperlink( types.Hyperlink ):
         if link.text:
             me.add_child(types.TextNode(link.text ) )
         for child in link:
-            me.add_child(Run.process( child))
+            me.add_child(Run.process(child))
         return me
