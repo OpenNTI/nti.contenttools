@@ -23,13 +23,13 @@ from nti.contenttools.adapters.epub.ifsta.note import Sidebar
 class Run(types.Run):
 
     @classmethod
-    def process(cls, element, styles=[], reading_type=None):
+    def process(cls, element, styles=[], reading_type=None, epub=None):
         me = cls()
         if 'id' in element.attrib:
             me.label = element.attrib['id']
         me.styles.extend(styles)
         me = check_element_text(me, element)
-        me = check_child(me, element, reading_type)
+        me = check_child(me, element, epub)
         if element.tail:
             _t = cls()
             _t.add_child(me)
@@ -59,10 +59,10 @@ def examine_div_element_for_sidebar(el, caption, body_text):
     return caption, body_text
 
 
-def process_div_elements(element, parent):
+def process_div_elements(element, parent, epub=None):
     attrib = element.attrib
     class_type = attrib['class'] if 'class' in attrib else None
-    el = Run.process(element)
+    el = Run.process(element, epub=epub)
     if class_type == u"Basic-Text-Frame":
         el.element_type = u"Basic-Text-Frame"
         # need to check if there the div has sidebar-head and sidebar-text

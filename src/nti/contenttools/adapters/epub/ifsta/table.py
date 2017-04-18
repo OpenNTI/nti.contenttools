@@ -22,7 +22,7 @@ from nti.contenttools.adapters.epub.ifsta import check_element_text
 class Table(types.Table):
 
     @classmethod
-    def process(cls, element):
+    def process(cls, element, epub=None):
         me = cls()
         if 'id' in element.attrib:
             me.label = element.attrib['id']
@@ -39,20 +39,20 @@ class Table(types.Table):
                 pass
             elif child.tag == 'tbody':
                 if me.border:
-                    me.add_child(TBody.process(child, True))
+                    me.add_child(TBody.process(child, True, epub))
                 else:
-                    me.add_child(TBody.process(child, False))
+                    me.add_child(TBody.process(child, False, epub))
             elif child.tag == 'tr':
                 row = Row.process(child, me.border)
                 me.add_child(row)
                 if row.number_of_col > me.number_of_col_body:
                     me.number_of_col_body = row.number_of_col
             elif child.tag == 'thead':
-                me.add_child(THead.process(child, me.border))
+                me.add_child(THead.process(child, me.border, epub))
             elif child.tag == 'tfoot':
-                me.add_child(TFoot.process(child))
+                me.add_child(TFoot.process(child, epub))
             elif child.tag == 'caption':
-                caption = Run.process(child)
+                caption = Run.process(child, epub=epub)
                 me.caption = caption
             else:
                 if not isinstance(child, HtmlComment):
@@ -63,7 +63,7 @@ class Table(types.Table):
 class TBody(types.TBody):
 
     @classmethod
-    def process(cls, element, border=None):
+    def process(cls, element, border=None, epub=None):
         me = cls()
         me.border = border
         number_of_col = 0
@@ -72,9 +72,9 @@ class TBody(types.TBody):
         for child in element:
             if child.tag == 'tr':
                 if me.border:
-                    me.add_child(Row.process(child, me.border))
+                    me.add_child(Row.process(child, me.border, epub))
                 else:
-                    me.add_child(Row.process(child))
+                    me.add_child(Row.process(child, False, epub))
                 number_of_col = me.children[count_child].number_of_col
                 count_child = count_child + 1
             else:
@@ -89,14 +89,14 @@ class TBody(types.TBody):
 class THead(types.THead):
 
     @classmethod
-    def process(cls, element, border=None):
+    def process(cls, element, border=None, epub=None):
         me = cls()
         me.border = border
         number_of_col = 0
         count_child = -1
         for child in element:
             if child.tag == 'tr':
-                me.add_child(Row.process(child, border))
+                me.add_child(Row.process(child, border, epub))
                 number_of_col = me.children[count_child].number_of_col
                 count_child = count_child + 1
             else:
@@ -111,13 +111,13 @@ class THead(types.THead):
 class TFoot(types.TFoot):
 
     @classmethod
-    def process(cls, element):
+    def process(cls, element, epub=None):
         me = cls()
         number_of_col = 0
         count_child = -1
         for child in element:
             if child.tag == 'tr':
-                me.add_child(Row.process(child))
+                me.add_child(Row.process(child, False, epub))
                 number_of_col = me.children[count_child].number_of_col
                 count_child = count_child + 1
             else:
@@ -132,14 +132,14 @@ class TFoot(types.TFoot):
 class Row (types.Row):
 
     @classmethod
-    def process(cls, element, border=None):
+    def process(cls, element, border=None, epub=None):
         me = cls()
         me.border = border
         number_of_col = 0
         me = check_element_text(me, element)
         for child in element:
             if child.tag == 'td' or child.tag == 'th':
-                me.add_child(Cell.process(child, border))
+                me.add_child(Cell.process(child, border, epub))
                 if number_of_col == 0:
                     me.children[0].is_first_cell_in_the_row = True
                 number_of_col += 1
@@ -155,7 +155,7 @@ class Row (types.Row):
 class Cell(types.Cell):
 
     @classmethod
-    def process(cls, element, border=None):
+    def process(cls, element, border=None, epub=None):
         me = cls()
         me.border = border
 
@@ -173,5 +173,5 @@ class Cell(types.Cell):
                 me.h_alignment = text_align[text_align.find(u':') + 1:].strip()
 
         me = check_element_text(me, element)
-        me = check_child(me, element)
+        me = check_child(me, element, epub)
         return me
