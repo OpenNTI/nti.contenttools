@@ -7,6 +7,8 @@ __docformat__ = "restructuredtext en"
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
 
+logger = __import__('logging').getLogger(__name__)
+
 from hamcrest import is_
 from hamcrest import is_not
 from hamcrest import assert_that
@@ -34,11 +36,10 @@ class TestDocumentAdapter(ContentToolsTestCase):
         element = html.fromstring(script)
 
         node = EPUBBody.process(element)
+
         assert_that(node, validly_provides(IEPUBBody))
         assert_that(node, verifiably_provides(IEPUBBody))
 
         output = render_output(node)
         assert_that(output,
                     is_(u'This is the first paragraph\n\n'))
-
-

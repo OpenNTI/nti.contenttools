@@ -17,6 +17,9 @@ from nti.contenttools.renderers.model import DefaultRendererContext
 
 
 def render_node(context, node):
+    logger.info(node)
+    logger.info(context)
+    logger.info(context.name)
     renderer = component.getAdapter(node,
                                     IRenderer,
                                     name=context.name)
