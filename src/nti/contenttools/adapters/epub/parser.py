@@ -15,7 +15,9 @@ from nti.contenttools.adapters.epub.reader import EPUBReader
 
 from nti.contenttools.adapters.epub.ifsta import adapt as adapt_ifsta
 
-from nti.contenttools.renderers.LaTeX.base import render_output
+from nti.contenttools.renderers.model import DefaultRendererContext
+
+from nti.contenttools.renderers.LaTeX.base import render_node
 
 from nti.contenttools.util.string_replacer import rename_filename
 
@@ -56,10 +58,11 @@ class EPUBParser(object):
             if IEPUBBody.providedBy(epub_chapter):
                 logger.info('render EPUB body')
                 logger.info(epub_chapter)
-                ##TODO : find out why the following line cause ComponentLookupError(object, interface, name)
+                ##TODO : find out why line 65 causes ComponentLookupError(object, interface, name)
                 ##HOWEVER nose2 -v  -s src/nti/contenttools/adapters/epub/ifsta/tests/ test_document is OK
-                tex_content = render_output(epub_chapter)
-                self.write_to_file(tex_content, tex_filename)
+                context = DefaultRendererContext(name="LaTeX")
+                render_node(context, epub_chapter)
+                self.write_to_file(context.read(), tex_filename)
         self.create_main_latex()
         logger.info(epub_reader.spine)
 
