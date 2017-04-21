@@ -14,13 +14,19 @@ does_not = is_not
 
 from lxml import html
 
+from zope import component
+
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
+
+from nti.contenttools.renderers.interfaces import IRenderer
+from nti.contenttools.renderers.model import DefaultRendererContext
 
 from nti.contenttools.types.interfaces import IEPUBBody
 
 from nti.contenttools.adapters.epub.ifsta import EPUBBody
 
+from nti.contenttools.renderers.LaTeX.base import render_node
 from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.tests import ContentToolsTestCase
@@ -36,6 +42,14 @@ class TestDocumentAdapter(ContentToolsTestCase):
         assert_that(node, validly_provides(IEPUBBody))
         assert_that(node, verifiably_provides(IEPUBBody))
 
+        renderer = component.getAdapter(node,
+                                    IRenderer,
+                                    name=u'LaTeX')
+        context = DefaultRendererContext(name="LaTeX")
+        renderer.render(context, node)
+
         output = render_output(node)
         assert_that(output,
                     is_(u'This is the first paragraph\n\n'))
+
+        assert_that(output, is_(context.read()))

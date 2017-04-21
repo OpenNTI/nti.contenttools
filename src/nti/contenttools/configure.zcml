@@ -16,5 +16,6 @@
 	<utility factory=".latex._ExtendedTextLatexEscaper" name="extended" />
 
 	<include package=".renderers" />
+	<include package=".adapters" />
 
 </configure>
