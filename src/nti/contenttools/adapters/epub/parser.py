@@ -19,6 +19,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.util.string_replacer import rename_filename
 
+from nti.contenttools.types.interfaces import IEPUBBody
 
 class EPUBParser(object):
 
@@ -46,16 +47,16 @@ class EPUBParser(object):
             self.current_dir = item
             if self.epub_type == 'ifsta':
                 epub_chapter = adapt_ifsta(fragment, self)
-                print('EPUB epub_chapter')
-                print(type(epub_chapter))
             else:
                 pass
                 # TODO create generic adapter
                 #epub_chapter = adapt(fragment)
             tex_filename = u'%s.tex' % rename_filename(item)
             self.latex_filenames.append(tex_filename)
-            tex_content = render_output(epub_chapter)
-            self.write_to_file(tex_content, tex_filename)
+            if IEPUBBody.providedBy(epub_chapter):
+                logger.info('render EPUB body')
+                tex_content = render_output(epub_chapter)
+                self.write_to_file(tex_content, tex_filename)
         self.create_main_latex()
         logger.info(epub_reader.spine)
 
