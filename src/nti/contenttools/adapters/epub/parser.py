@@ -46,6 +46,8 @@ class EPUBParser(object):
             self.current_dir = item
             if self.epub_type == 'ifsta':
                 epub_chapter = adapt_ifsta(fragment, self)
+                print('EPUB epub_chapter')
+                print(type(epub_chapter))
             else:
                 pass
                 # TODO create generic adapter
