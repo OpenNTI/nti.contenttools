@@ -20,7 +20,7 @@ from nti.contenttools.types import TextNode
 
 def adapt(fragment, epub=None):
     body = fragment.find('body')
-    epub_body = EPUBBody.process(body)
+    epub_body = EPUBBody.process(body, epub)
     return epub_body
 
 
