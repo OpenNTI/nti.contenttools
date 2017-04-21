@@ -23,6 +23,7 @@ from nti.contenttools.util.string_replacer import rename_filename
 
 from nti.contenttools.types.interfaces import IEPUBBody
 
+
 class EPUBParser(object):
 
     def __init__(self, input_file, output_directory, epub_type):
@@ -56,10 +57,12 @@ class EPUBParser(object):
             tex_filename = u'%s.tex' % rename_filename(item)
             self.latex_filenames.append(tex_filename)
             if IEPUBBody.providedBy(epub_chapter):
-                logger.info('render EPUB body')
-                logger.info(epub_chapter)
-                ##TODO : find out why line 65 causes ComponentLookupError(object, interface, name)
-                ##HOWEVER nose2 -v  -s src/nti/contenttools/adapters/epub/ifsta/tests/ test_document is OK
+                logger.debug('render EPUB body')
+                logger.debug(epub_chapter)
+                # TODO : find out why line 65 causes ComponentLookupError(object, interface, name)
+                # HOWEVER nose2 -v  -s
+                # src/nti/contenttools/adapters/epub/ifsta/tests/ test_document
+                # is OK
                 context = DefaultRendererContext(name="LaTeX")
                 render_node(context, epub_chapter)
                 self.write_to_file(context.read(), tex_filename)
@@ -80,7 +83,7 @@ class EPUBParser(object):
 
 
 def get_packages():
-    LATEX_PACKAGES = [u'graphix',
+    LATEX_PACKAGES = (u'graphix',
                       u'hyperref',
                       u'ulem',
                       u'Tabbing',
@@ -91,7 +94,7 @@ def get_packages():
                       u'ntiassessment',
                       u'ntislidedeck',
                       u'ntiglossary',
-                      ]
+                      )
     package_list = []
     package_list_append = package_list.append
     for package in LATEX_PACKAGES:
@@ -110,6 +113,7 @@ def get_included_tex(included_tex_list):
 
 
 DOC_STRING = u'\\documentclass{book}\n%s%s%s\\begin{document}\n%s\\end{document}'
+
 
 def generate_main_tex_content(metadata, included_tex_list):
     author = u''

@@ -26,10 +26,10 @@ from nti.contenttools.types.interfaces import IEPUBBody
 
 from nti.contenttools.adapters.epub.ifsta import EPUBBody
 
-from nti.contenttools.renderers.LaTeX.base import render_node
 from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.tests import ContentToolsTestCase
+
 
 class TestDocumentAdapter(ContentToolsTestCase):
 
@@ -43,8 +43,8 @@ class TestDocumentAdapter(ContentToolsTestCase):
         assert_that(node, verifiably_provides(IEPUBBody))
 
         renderer = component.getAdapter(node,
-                                    IRenderer,
-                                    name=u'LaTeX')
+                                        IRenderer,
+                                        name=u'LaTeX')
         context = DefaultRendererContext(name="LaTeX")
         renderer.render(context, node)
 
