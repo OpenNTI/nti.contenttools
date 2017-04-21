@@ -52,4 +52,4 @@ class Body(DocumentStructureNode):
 
 @interface.implementer(IEPUBBody)
 class EPUBBody(DocumentStructureNode):
-    pass
+    createFieldProperties(IEPUBBody)
