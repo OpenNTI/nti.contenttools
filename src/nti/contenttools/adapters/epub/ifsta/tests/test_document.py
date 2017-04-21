@@ -14,6 +14,11 @@ does_not = is_not
 
 from lxml import html
 
+from nti.testing.matchers import validly_provides
+from nti.testing.matchers import verifiably_provides
+
+from nti.contenttools.types.interfaces import IEPUBBody
+
 from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
 
 from nti.contenttools.adapters.epub.ifsta import EPUBBody
@@ -27,7 +32,11 @@ class TestDocumentAdapter(ContentToolsTestCase):
     def test_simple_epub_body(self):
         script = u'<div><p>This is the first paragraph</p></div>'
         element = html.fromstring(script)
+
         node = EPUBBody.process(element)
+        assert_that(node, validly_provides(IEPUBBody))
+        assert_that(node, verifiably_provides(IEPUBBody))
+
         output = render_output(node)
         assert_that(output,
                     is_(u'This is the first paragraph\n\n'))
