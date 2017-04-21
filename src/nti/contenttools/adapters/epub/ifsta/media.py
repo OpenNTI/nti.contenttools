@@ -37,7 +37,7 @@ class Image(types.Image):
         zipfile = epub.zipfile
         image_path = os.path.join(epub.content_path, path)
         if image_path in zipfile.namelist():
-            image_data = StringIO.StringIO(zipfile.read(image_path))
+            image_data = StringIO(zipfile.read(image_path))
             save_image(image_data, me.path, epub)
             me.width, me.height = PILImage.open(image_data).size
         else:
