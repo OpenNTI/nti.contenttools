@@ -56,6 +56,8 @@ class EPUBParser(object):
             if IEPUBBody.providedBy(epub_chapter):
                 logger.info('render EPUB body')
                 logger.info(epub_chapter)
+                ##TODO : find out why the following line cause ComponentLookupError(object, interface, name)
+                ##HOWEVER nose2 -v  -s src/nti/contenttools/adapters/epub/ifsta/tests/ test_document OK
                 tex_content = render_output(epub_chapter)
                 self.write_to_file(tex_content, tex_filename)
         self.create_main_latex()
