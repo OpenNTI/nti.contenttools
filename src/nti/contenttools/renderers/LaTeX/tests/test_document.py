@@ -53,7 +53,7 @@ class TestDocument(ContentToolsTestCase):
         body = EPUBBody()
         output = render_output(body)
         assert_that(output,
-                    is_(u'\\begin{document}\n\n\\end{document}\n'))
+                    is_(u''))
 
     def test_body_and_document(self):
         document = Document(doc_type='book',
