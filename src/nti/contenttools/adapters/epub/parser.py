@@ -55,6 +55,7 @@ class EPUBParser(object):
             self.latex_filenames.append(tex_filename)
             if IEPUBBody.providedBy(epub_chapter):
                 logger.info('render EPUB body')
+                logger.info(epub_chapter)
                 tex_content = render_output(epub_chapter)
                 self.write_to_file(tex_content, tex_filename)
         self.create_main_latex()
