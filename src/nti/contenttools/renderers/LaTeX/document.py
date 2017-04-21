@@ -64,10 +64,6 @@ def render_body(context, body, optional=''):
 
 
 def render_epub_body(context, body):
-    #context.write(u'\\begin{document}\n')
-    #for idx in enumerate(body.children or ()):
-    #    context.write(u'\\include{file_%s.tex}\n' % idx)
-    #context.write(u'\n\\end{document}\n')
     render_children(context, body)
     return body
 
