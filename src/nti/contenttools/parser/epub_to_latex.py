@@ -14,6 +14,10 @@ import six
 import logging
 import argparse
 
+from zope.configuration import xmlconfig
+
+import nti.contenttools
+
 from nti.contenttools.adapters.epub.parser import EPUBParser
 
 from nti.contenttools.util import string_replacer
@@ -21,7 +25,7 @@ from nti.contenttools.util import string_replacer
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
 
-def _parse_args():
+def parse_args():
     arg_parser = argparse.ArgumentParser(description="NTI EPUB-Latex Parser")
     arg_parser.add_argument('inputfile',
                             help="The epub filepath")
@@ -34,30 +38,35 @@ def _parse_args():
     return arg_parser.parse_args()
 
 
-def _title_escape(title):
+def title_escape(title):
     return string_replacer.rename_filename(title)
 
 
-def _configure_logging(level='INFO'):
+def configure_logging(level='INFO'):
     numeric_level = getattr(logging, level.upper(), None)
     if not isinstance(numeric_level, six.integer_types):
         numeric_level = logging.INFO
     logging.basicConfig(level=numeric_level)
 
 
-def _setup_configs():
-    _configure_logging()
+def setup_configs():
+    configure_logging()
+
+
+def setup_context(context=None):
+    context = xmlconfig.file('configure.zcml',
+                             package=nti.contenttools,
+                             context=context)
+    return context
 
 
 def main():
     # Parse command line args
-    args = _parse_args()
-
-    _setup_configs()
-
-    inputfile = os.path.expanduser(args.inputfile)
+    args = parse_args()
+    setup_configs()
 
     # Verify the input file exists
+    inputfile = os.path.expanduser(args.inputfile)
     if not os.path.exists(inputfile):
         logger.info('The source file, %s, does not exist.', inputfile)
         exit()
@@ -65,6 +74,8 @@ def main():
     # Create the output directory if it does not exist
     if not os.path.exists(args.output):
         os.mkdir(args.output)
+
+    setup_context()
 
     # create a txt file to store information about image's name and location
     # used in nticard
