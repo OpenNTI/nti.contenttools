@@ -88,7 +88,7 @@ class EPUBParser(object):
             main_tex_content = generate_main_tex_content(self.epub_reader.metadata,
                                                          self.latex_filenames)
         else:
-            reading_def = u'chapter{Readings}\n\n%s' % (
+            reading_def = u'\\chapter{Readings}\n\n%s' % (
                 get_included_tex(self.latex_filenames, self.book_title))
             reading_dir = u'%s/Definitions/Readings/' % (self.output_directory)
             self.write_to_file(reading_def, reading_dir, u'Readings.tex')
