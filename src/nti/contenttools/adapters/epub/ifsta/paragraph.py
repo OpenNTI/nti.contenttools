@@ -52,11 +52,14 @@ class Paragraph(types.Paragraph):
                     me = sidebar_class
                 elif any(s in attrib['class'] for s in cls.section_list):
                     me.styles.append('Section')
-                    label = Run()
-                    label.children = me.children
-                    me.label = label
+                    add_sectioning_label(me)
+                    if epub:
+                        epub.section_list.append(me.label)
                 elif any(s in attrib['class'] for s in cls.subsection_list):
                     me.styles.append('Subsection')
+                    add_sectioning_label(me)
+                    if epub:
+                        epub.subsection_list.append(me.label)
                 elif any(s in attrib['class'] for s in cls.bullet_list):
                     new_item = Item()
                     bullet_class = UnorderedList()
@@ -83,3 +86,9 @@ class Paragraph(types.Paragraph):
             me = check_child(me, element, epub)
             me = check_element_tail(me, element)
         return me
+    
+def add_sectioning_label(node):
+    label = Run()
+    label.children = node.children
+    node.label = label
+    return node

@@ -50,6 +50,7 @@ def render_sidebar(context, node):
         label = get_variant_field_string_value(node.label)
         if label:
             label = u'\\label{%s}' % (label)
+            node.label = label
 
     context.write(u'\n\\begin{sidebar}')
 

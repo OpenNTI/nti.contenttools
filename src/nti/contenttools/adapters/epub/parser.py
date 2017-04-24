@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from docutils.nodes import section
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -20,6 +21,8 @@ from nti.contenttools.adapters.epub.ifsta import adapt as adapt_ifsta
 from nti.contenttools.renderers.model import DefaultRendererContext
 
 from nti.contenttools.renderers.LaTeX.base import render_node
+
+from nti.contenttools.renderers.LaTeX.utils import create_label
 
 from nti.contenttools.util.string_replacer import rename_filename
 
@@ -40,6 +43,10 @@ class EPUBParser(object):
         self.input_file = input_file
         self.output_directory = output_directory
         self.tex_filepath = []
+
+        self.section_list = []
+        self.subsection_list = []
+        self.sidebar_term_list = []
 
         self.epub_reader = EPUBReader(input_file, self)
         main_title = rename_filename(self.epub_reader.title)
@@ -82,7 +89,16 @@ class EPUBParser(object):
                         tex_filename)
         self.create_main_latex()
         logger.info(epub_reader.spine)
+        if self.reading_def_dir:
+            self.process_additional_file()
 
+    def process_additional_file(self):
+        section_labels = process_sectioning_list(self.section_list, u'section')
+        subsection_labels = process_sectioning_list(self.subsection_list, u'subsection')
+        section_labels = section_labels + subsection_labels
+        content = u''.join(section_labels)
+        self.write_to_file(content, self.output_directory, 'section_list.txt')    
+            
     def create_main_latex(self):
         if not self.reading_def_dir:
             main_tex_content = generate_main_tex_content(self.epub_reader.metadata,
@@ -149,3 +165,14 @@ def generate_main_tex_content(metadata, included_tex_list):
     package = get_packages()
     latex = get_included_tex(included_tex_list)
     return DOC_STRING % (package, title, author, latex)
+
+
+def process_sectioning_list(labels, section_type):
+    rendered_labels = []
+    for label in labels:
+        label = create_label(section_type, label)
+        label = label.replace(u'\\label', u'\\ref')
+        label = u'%s\\\\\n' %(label)
+        rendered_labels.append(label)
+    return rendered_labels
+
