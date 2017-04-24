@@ -86,9 +86,10 @@ class EPUBParser(object):
                     self.write_to_file(context.read(),
                                        self.reading_def_dir,
                                        tex_filename)
-                    self.glossary_terms = \
-                        generate_glossary_term_from_sidebar(epub_chapter,
-                                                            self.glossary_terms)
+                    
+                    generate_glossary_term_from_sidebar(epub_chapter,
+                                                        self.glossary_terms,
+                                                        self.glossary_labels)
                 else:
                     self.write_to_file(context.read(),
                                        self.output_directory,
@@ -112,6 +113,10 @@ class EPUBParser(object):
         glossaries = json.dumps(self.glossary_terms, sort_keys=True, indent=4 * ' ')
         self.write_to_file(glossaries, self.output_directory, 'glossary.json')
 
+        glossary_labels_content = u''.join(self.glossary_labels)
+        self.write_to_file(glossary_labels_content, 
+                           self.output_directory, 
+                           'glossary_label.txt')
 
     def create_main_latex(self):
         if not self.reading_def_dir:
@@ -193,16 +198,20 @@ def generate_sectioning_list(labels, section_type):
     return rendered_labels
 
 
-def generate_glossary_term_from_sidebar(epub_body, glossary_terms):
-    glossary_terms = search_sidebar_term(epub_body, glossary_terms)
-    return glossary_terms
+def generate_glossary_term_from_sidebar(epub_body, glossary_terms, glossary_labels):
+    search_sidebar_term(epub_body, glossary_terms, glossary_labels)
+    #return glossary_terms
 
 
-def search_sidebar_term(root, sidebars):
+def search_sidebar_term(root, sidebars, labels):
     if ISidebar.providedBy(root):
         if root.type == u"sidebar_term":
             sidebars[root.title] = root.base
+            if root.label:
+                label = root.label.replace('\\label','\\ref')
+                label = u'%s\\\\\n' % (label)
+                labels.append(label)
     elif hasattr(root, u'children'):
         for node in root:
-            search_sidebar_term(node, sidebars)
+            search_sidebar_term(node, sidebars, labels)
     return sidebars
