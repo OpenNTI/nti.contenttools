@@ -14,6 +14,8 @@ import os
 
 import codecs
 
+import simplejson as json
+
 from nti.contenttools.adapters.epub.reader import EPUBReader
 
 from nti.contenttools.adapters.epub.ifsta import adapt as adapt_ifsta
@@ -94,9 +96,9 @@ class EPUBParser(object):
         self.create_main_latex()
         logger.info(epub_reader.spine)
         if self.reading_def_dir:
-            self.process_additional_file()
+            self.process_support_files()
 
-    def process_additional_file(self):
+    def process_support_files(self):
         section_labels = generate_sectioning_list(self.section_list,
                                                   u'section')
         subsection_labels = generate_sectioning_list(self.subsection_list,
@@ -106,7 +108,11 @@ class EPUBParser(object):
         self.write_to_file(content,
                            self.output_directory,
                            'section_list.txt')
-        print(self.glossary_terms)
+        
+        glossaries = json.dumps(self.glossary_terms, sort_keys=True, indent=4 * ' ')
+        glossary_file = u'%s/glossary.json' %(self.output_directory)
+        with codecs.open(glossary_file, 'w', 'utf-8' ) as fp:
+            fp.write(glossaries)
 
     def create_main_latex(self):
         if not self.reading_def_dir:
