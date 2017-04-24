@@ -27,7 +27,7 @@ from nti.contenttools.renderers.LaTeX.utils import create_label
 from nti.contenttools.util.string_replacer import rename_filename
 
 from nti.contenttools.types.interfaces import IEPUBBody
-
+from nti.contenttools.types.interfaces import ISidebar
 
 EPUB_COURSE_TYPE = ('ifsta')
 
@@ -46,7 +46,7 @@ class EPUBParser(object):
 
         self.section_list = []
         self.subsection_list = []
-        self.sidebar_term_list = []
+        self.glossary_terms = {}
 
         self.epub_reader = EPUBReader(input_file, self)
         main_title = rename_filename(self.epub_reader.title)
@@ -71,6 +71,7 @@ class EPUBParser(object):
             self.current_dir = item
             if self.epub_type == 'ifsta':
                 epub_chapter = adapt_ifsta(fragment, self)
+                self.glossary_terms = generate_glossary_term_from_sidebar(epub_chapter, self.glossary_terms)
             else:
                 pass
                 # TODO create generic adapter
@@ -183,3 +184,16 @@ def generate_sectioning_list(labels, section_type):
         label = u'%s\\\\\n' % (label)
         rendered_labels.append(label)
     return rendered_labels
+
+def generate_glossary_term_from_sidebar(epub_body, glossary_terms):
+    glossary_terms = search_sidebar_term(epub_body, glossary_terms)
+    return glossary_terms
+
+def search_sidebar_term(root, sidebars):
+    if ISidebar.providedBy(root):
+        if root.type == u"sidebar_term":
+            sidebars[root.title] = root.base
+    elif hasattr(root, u'children'):
+        for node in root:
+            search_sidebar_term(node, sidebars)
+    return sidebars
