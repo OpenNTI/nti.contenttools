@@ -250,7 +250,9 @@ class ISidebar(IDocumentStructureNode):
 
     type = ValidTextLine(title="Sidebar Type",
                          required=False)
-
+    
+    base = ValidTextLine(title="The Base",
+                         required=False)
 
 class IBlockQuote(IDocumentStructureNode):
     source = ValidTextLine(title="Block Quote Source",

@@ -43,6 +43,7 @@ def render_sidebar(context, node):
                 node.title = term
             if node.label is None:
                 node.label = u'sidebar_term:%s' % term.replace(u" ", u"_")
+        node.base = base
 
     label = u''
     title = get_variant_field_string_value(node.title) if node.title else u''
