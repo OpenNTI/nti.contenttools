@@ -54,8 +54,8 @@ class EPUBParser(object):
         self.tex_main_file = u'MAIN_%s.tex' % main_title
 
         if epub_type in EPUB_COURSE_TYPE:
-            reading_def_dir = u'%s/Definitions/Readings/%s' % (
-                output_directory, self.book_title)
+            data = (output_directory, self.book_title)
+            reading_def_dir = u'%s/Definitions/Readings/%s' % data
             if not os.path.exists(reading_def_dir):
                 os.makedirs(reading_def_dir)
             self.reading_def_dir = reading_def_dir
@@ -81,44 +81,51 @@ class EPUBParser(object):
                 context = DefaultRendererContext(name="LaTeX")
                 render_node(context, epub_chapter)
                 if self.reading_def_dir:
-                    self.write_to_file(context.read(), self.reading_def_dir, tex_filename)
+                    self.write_to_file(context.read(), 
+                                       self.reading_def_dir,
+                                        tex_filename)
                 else:
-                    self.write_to_file(
-                        context.read(),
-                        self.output_directory,
-                        tex_filename)
+                    self.write_to_file(context.read(),
+                                       self.output_directory,
+                                       tex_filename)
         self.create_main_latex()
         logger.info(epub_reader.spine)
         if self.reading_def_dir:
             self.process_additional_file()
 
     def process_additional_file(self):
-        section_labels = generate_sectioning_list(self.section_list, u'section')
-        subsection_labels = generate_sectioning_list(self.subsection_list, u'subsection')
+        section_labels = generate_sectioning_list(self.section_list,
+                                                  u'section')
+        subsection_labels = generate_sectioning_list(self.subsection_list, 
+                                                     u'subsection')
         section_labels = section_labels + subsection_labels
         content = u''.join(section_labels)
-        self.write_to_file(content, self.output_directory, 'section_list.txt')
+        self.write_to_file(content, 
+                           self.output_directory,
+                        'section_list.txt')
 
     def create_main_latex(self):
         if not self.reading_def_dir:
             main_tex_content = generate_main_tex_content(self.epub_reader.metadata,
                                                          self.latex_filenames)
         else:
-            reading_def = u'\\chapter{Readings}\n\n%s' % (
-                get_included_tex(self.latex_filenames, self.book_title))
+            included = get_included_tex(self.latex_filenames, self.book_title)
+            reading_def = u'\\chapter{Readings}\n\n%s' % included
             reading_dir = u'%s/Definitions/Readings/' % (self.output_directory)
             self.write_to_file(reading_def, reading_dir, u'Readings.tex')
 
             latex_main_list = (u'Definitions/Readings/Readings.tex',)
             main_tex_content = generate_main_tex_content(self.epub_reader.metadata,
                                                          latex_main_list)
-        self.write_to_file(main_tex_content, self.output_directory, self.tex_main_file)
+        self.write_to_file(main_tex_content, 
+                           self.output_directory, 
+                           self.tex_main_file)
 
     def write_to_file(self, content, folder, filename):
         filepath = u'%s/%s' % (folder, filename)
         self.tex_filepath.append(filepath)
-        with codecs.open(filepath, 'w', 'utf-8') as file_:
-            file_.write(content)
+        with codecs.open(filepath, 'w', 'utf-8') as fp:
+            fp.write(content)
 
 
 def get_packages():
@@ -158,8 +165,9 @@ DOC_STRING = u'\\documentclass{book}\n%s%s%s\\begin{document}\n%s\\end{document}
 
 
 def generate_main_tex_content(metadata, included_tex_list):
-    author = u''
-    title = u'\\title{%s}\n' % metadata[u'title'] if 'title' in metadata else u''
+    title = author = u''
+    if 'title' in metadata:
+        title = u'\\title{%s}\n' % metadata[u'title']
     if u'creator' in metadata.keys():
         author = u'\\author{%s}\n' % metadata['creator']
     package = get_packages()

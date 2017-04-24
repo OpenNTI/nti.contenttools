@@ -25,12 +25,12 @@ from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
 
 class Paragraph(types.Paragraph):
 
-    section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1')
     bullet_list = (u'Bullet ParaOverride-1',)
     sidebar_list = (u'Case-History ParaOverride-1',)
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head',)
+    section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1')
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride',)
-
+        
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
         me = cls()
@@ -86,7 +86,8 @@ class Paragraph(types.Paragraph):
             me = check_child(me, element, epub)
             me = check_element_tail(me, element)
         return me
-    
+
+
 def add_sectioning_label(node):
     label = Run()
     label.children = node.children
