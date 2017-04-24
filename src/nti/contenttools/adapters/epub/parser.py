@@ -71,7 +71,6 @@ class EPUBParser(object):
             self.current_dir = item
             if self.epub_type == 'ifsta':
                 epub_chapter = adapt_ifsta(fragment, self)
-                self.glossary_terms = generate_glossary_term_from_sidebar(epub_chapter, self.glossary_terms)
             else:
                 pass
                 # TODO create generic adapter
@@ -85,6 +84,7 @@ class EPUBParser(object):
                     self.write_to_file(context.read(), 
                                        self.reading_def_dir,
                                         tex_filename)
+                    self.glossary_terms = generate_glossary_term_from_sidebar(epub_chapter, self.glossary_terms)
                 else:
                     self.write_to_file(context.read(),
                                        self.output_directory,
@@ -104,6 +104,7 @@ class EPUBParser(object):
         self.write_to_file(content, 
                            self.output_directory,
                         'section_list.txt')
+        print(self.glossary_terms)
 
     def create_main_latex(self):
         if not self.reading_def_dir:
