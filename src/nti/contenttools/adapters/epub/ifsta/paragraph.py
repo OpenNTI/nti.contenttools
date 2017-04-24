@@ -25,7 +25,7 @@ from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
 
 class Paragraph(types.Paragraph):
 
-    section_list = (u'A-Head', u'A-HEAD',)
+    section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1')
     bullet_list = (u'Bullet ParaOverride-1',)
     sidebar_list = (u'Case-History ParaOverride-1',)
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head',)
@@ -52,6 +52,9 @@ class Paragraph(types.Paragraph):
                     me = sidebar_class
                 elif any(s in attrib['class'] for s in cls.section_list):
                     me.styles.append('Section')
+                    label = Run()
+                    label.children = me.children
+                    me.label = label
                 elif any(s in attrib['class'] for s in cls.subsection_list):
                     me.styles.append('Subsection')
                 elif any(s in attrib['class'] for s in cls.bullet_list):
