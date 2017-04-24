@@ -87,18 +87,19 @@ class EPUBParser(object):
         if not self.reading_def_dir:
             main_tex_content = generate_main_tex_content(self.epub_reader.metadata,
                                                          self.latex_filenames)
-            self.write_to_file(
-                main_tex_content,
-                self.output_directory,
-                self.tex_main_file)
         else:
             reading_def = u'chapter{Readings}\n\n%s' % (
                 get_included_tex(self.latex_filenames, self.book_title))
             reading_dir = u'%s/Definitions/Readings/' % (self.output_directory)
             self.write_to_file(reading_def, reading_dir, u'Readings.tex')
 
-    def write_to_file(self, content, dir, filename):
-        filepath = u'%s/%s' % (dir, filename)
+            latex_main_list = (u'Definitions/Readings/Readings.tex',)
+            main_tex_content = generate_main_tex_content(self.epub_reader.metadata,
+                                                         latex_main_list)
+        self.write_to_file(main_tex_content, self.output_directory, self.tex_main_file)
+
+    def write_to_file(self, content, folder, filename):
+        filepath = u'%s/%s' % (folder, filename)
         self.tex_filepath.append(filepath)
         with codecs.open(filepath, 'w', 'utf-8') as file_:
             file_.write(content)
