@@ -93,12 +93,12 @@ class EPUBParser(object):
             self.process_additional_file()
 
     def process_additional_file(self):
-        section_labels = process_sectioning_list(self.section_list, u'section')
-        subsection_labels = process_sectioning_list(self.subsection_list, u'subsection')
+        section_labels = generate_sectioning_list(self.section_list, u'section')
+        subsection_labels = generate_sectioning_list(self.subsection_list, u'subsection')
         section_labels = section_labels + subsection_labels
         content = u''.join(section_labels)
-        self.write_to_file(content, self.output_directory, 'section_list.txt')    
-            
+        self.write_to_file(content, self.output_directory, 'section_list.txt')
+
     def create_main_latex(self):
         if not self.reading_def_dir:
             main_tex_content = generate_main_tex_content(self.epub_reader.metadata,
@@ -167,12 +167,11 @@ def generate_main_tex_content(metadata, included_tex_list):
     return DOC_STRING % (package, title, author, latex)
 
 
-def process_sectioning_list(labels, section_type):
+def generate_sectioning_list(labels, section_type):
     rendered_labels = []
     for label in labels:
         label = create_label(section_type, label)
         label = label.replace(u'\\label', u'\\ref')
-        label = u'%s\\\\\n' %(label)
+        label = u'%s\\\\\n' % (label)
         rendered_labels.append(label)
     return rendered_labels
-
