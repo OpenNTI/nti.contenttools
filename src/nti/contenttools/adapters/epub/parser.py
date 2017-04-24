@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import os
+
 import codecs
 
 from nti.contenttools.adapters.epub.reader import EPUBReader
@@ -22,6 +24,9 @@ from nti.contenttools.renderers.LaTeX.base import render_node
 from nti.contenttools.util.string_replacer import rename_filename
 
 from nti.contenttools.types.interfaces import IEPUBBody
+
+
+EPUB_COURSE_TYPE = ('ifsta')
 
 
 class EPUBParser(object):
@@ -41,6 +46,15 @@ class EPUBParser(object):
         self.book_title = main_title
         self.tex_main_file = u'MAIN_%s.tex' % main_title
 
+        if epub_type in EPUB_COURSE_TYPE:
+            reading_def_dir = u'%s/Definitions/Readings/%s' % (
+                output_directory, self.book_title)
+            if not os.path.exists(reading_def_dir):
+                os.makedirs(reading_def_dir)
+            self.reading_def_dir = reading_def_dir
+        else:
+            self.reading_def_dir = None
+
     def process_fragment(self):
         epub_reader = self.epub_reader
         docfrags = epub_reader.docfrags
@@ -57,29 +71,37 @@ class EPUBParser(object):
             tex_filename = u'%s.tex' % rename_filename(item)
             self.latex_filenames.append(tex_filename)
             if IEPUBBody.providedBy(epub_chapter):
-                logger.debug('render EPUB body')
-                logger.debug(epub_chapter)
-                # TODO : find out why line 65 causes ComponentLookupError(object, interface, name)
-                # HOWEVER nose2 -v  -s
-                # src/nti/contenttools/adapters/epub/ifsta/tests/ test_document
-                # is OK
                 context = DefaultRendererContext(name="LaTeX")
                 render_node(context, epub_chapter)
-                self.write_to_file(context.read(), tex_filename)
+                if self.reading_def_dir:
+                    self.write_to_file(context.read(), self.reading_def_dir, tex_filename)
+                else:
+                    self.write_to_file(
+                        context.read(),
+                        self.output_directory,
+                        tex_filename)
         self.create_main_latex()
         logger.info(epub_reader.spine)
 
     def create_main_latex(self):
-        main_tex_content = generate_main_tex_content(self.epub_reader.metadata,
-                                                     self.latex_filenames)
-        self.write_to_file(main_tex_content, self.tex_main_file)
+        if not self.reading_def_dir:
+            main_tex_content = generate_main_tex_content(self.epub_reader.metadata,
+                                                         self.latex_filenames)
+            self.write_to_file(
+                main_tex_content,
+                self.output_directory,
+                self.tex_main_file)
+        else:
+            reading_def = u'chapter{Readings}\n\n%s' % (
+                get_included_tex(self.latex_filenames, self.book_title))
+            reading_dir = u'%s/Definitions/Readings/' % (self.output_directory)
+            self.write_to_file(reading_def, reading_dir, u'Readings.tex')
 
-    def write_to_file(self, content, filename, type_=None):
-        if type_ is None:
-            filepath = u'%s/%s' % (self.output_directory, filename)
-            self.tex_filepath.append(filepath)
-            with codecs.open(filepath, 'w', 'utf-8') as file_:
-                file_.write(content)
+    def write_to_file(self, content, dir, filename):
+        filepath = u'%s/%s' % (dir, filename)
+        self.tex_filepath.append(filepath)
+        with codecs.open(filepath, 'w', 'utf-8') as file_:
+            file_.write(content)
 
 
 def get_packages():
@@ -103,11 +125,14 @@ def get_packages():
     return u''.join(package_list)
 
 
-def get_included_tex(included_tex_list):
+def get_included_tex(included_tex_list, sub_dir=None):
     result = []
     result_append = result.append
     for tex in included_tex_list:
-        inc = u'\\include{%s}\n' % (tex)
+        if sub_dir:
+            inc = u'\\include{%s/%s}\n' % (sub_dir, tex)
+        else:
+            inc = u'\\include{%s}\n' % (tex)
         result_append(inc)
     return u''.join(result)
 
