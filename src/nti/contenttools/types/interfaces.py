@@ -11,8 +11,6 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope.location.interfaces import IContained
 
-from dolmen.builtins.interfaces import IIterable
-
 from nti.contentfragments.interfaces import IPlainTextContentFragment
 
 from nti.schema.field import Int
@@ -31,7 +29,7 @@ class _INode(IContained):
     """
 
 
-class INode(_INode, IIterable):
+class INode(_INode):
 
     children = IndexedIterable(Object(_INode, title='the node'),
                                title='List of nodes',
@@ -48,6 +46,10 @@ class INode(_INode, IIterable):
         remove a node
         """
 
+    def __iter__():
+        """
+        Return an iterator object.
+        """
 
 class ITextNode(INode, IPlainTextContentFragment):
     pass
@@ -739,6 +741,7 @@ class IMMprescripts(IDocumentStructureNode):
 
 
 class IMMultiscripts(IDocumentStructureNode):
+
     base = ListOrTuple(title="Multiscripts base",
                        required=False)
 
