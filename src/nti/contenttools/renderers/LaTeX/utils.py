@@ -26,7 +26,11 @@ def create_label(name, value):
         value = "Chapter review and summary"
         return \label{chapter:Chapter_review_and_summary}
     """
-    value = re.sub(FORBIDDEN_CHARACTERS, '_', value)
+    if isinstance(value, string_types):
+        value = re.sub(FORBIDDEN_CHARACTERS, '_', value)
+    else:
+        value = render_output(value)
+        value = re.sub(FORBIDDEN_CHARACTERS, '_', value)
     return u'\\label{%s:%s}' % (name, value)
 
 
