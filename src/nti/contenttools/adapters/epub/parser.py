@@ -110,7 +110,9 @@ class EPUBParser(object):
                            self.output_directory,
                            'section_list.txt')
 
-        glossaries = json.dumps(self.glossary_terms, sort_keys=True, indent=4 * ' ')
+        glossaries = json.dumps(self.glossary_terms,
+                                sort_keys=True, 
+                                indent='\t')
         self.write_to_file(glossaries, self.output_directory, 'glossary.json')
 
         glossary_labels_content = u''.join(self.glossary_labels)
