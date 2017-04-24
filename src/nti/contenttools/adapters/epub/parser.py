@@ -73,18 +73,20 @@ class EPUBParser(object):
                 epub_chapter = adapt_ifsta(fragment, self)
             else:
                 pass
-                # TODO create generic adapter
-                #epub_chapter = adapt(fragment)
+                # TODO: create generic adapter
+                # epub_chapter = adapt(fragment)
             tex_filename = u'%s.tex' % rename_filename(item)
             self.latex_filenames.append(tex_filename)
             if IEPUBBody.providedBy(epub_chapter):
                 context = DefaultRendererContext(name="LaTeX")
                 render_node(context, epub_chapter)
                 if self.reading_def_dir:
-                    self.write_to_file(context.read(), 
+                    self.write_to_file(context.read(),
                                        self.reading_def_dir,
-                                        tex_filename)
-                    self.glossary_terms = generate_glossary_term_from_sidebar(epub_chapter, self.glossary_terms)
+                                       tex_filename)
+                    self.glossary_terms = \
+                        generate_glossary_term_from_sidebar(epub_chapter,
+                                                            self.glossary_terms)
                 else:
                     self.write_to_file(context.read(),
                                        self.output_directory,
@@ -97,13 +99,13 @@ class EPUBParser(object):
     def process_additional_file(self):
         section_labels = generate_sectioning_list(self.section_list,
                                                   u'section')
-        subsection_labels = generate_sectioning_list(self.subsection_list, 
+        subsection_labels = generate_sectioning_list(self.subsection_list,
                                                      u'subsection')
         section_labels = section_labels + subsection_labels
         content = u''.join(section_labels)
-        self.write_to_file(content, 
+        self.write_to_file(content,
                            self.output_directory,
-                        'section_list.txt')
+                           'section_list.txt')
         print(self.glossary_terms)
 
     def create_main_latex(self):
@@ -119,8 +121,8 @@ class EPUBParser(object):
             latex_main_list = (u'Definitions/Readings/Readings.tex',)
             main_tex_content = generate_main_tex_content(self.epub_reader.metadata,
                                                          latex_main_list)
-        self.write_to_file(main_tex_content, 
-                           self.output_directory, 
+        self.write_to_file(main_tex_content,
+                           self.output_directory,
                            self.tex_main_file)
 
     def write_to_file(self, content, folder, filename):
@@ -186,9 +188,11 @@ def generate_sectioning_list(labels, section_type):
         rendered_labels.append(label)
     return rendered_labels
 
+
 def generate_glossary_term_from_sidebar(epub_body, glossary_terms):
     glossary_terms = search_sidebar_term(epub_body, glossary_terms)
     return glossary_terms
+
 
 def search_sidebar_term(root, sidebars):
     if ISidebar.providedBy(root):

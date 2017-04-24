@@ -50,7 +50,6 @@ setup(
     install_requires=[
         'setuptools',
         'docutils',
-        'dolmen.builtins',
         'lxml',
         'Pillow',
         'simplejson',
