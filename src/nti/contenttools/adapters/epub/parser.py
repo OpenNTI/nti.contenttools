@@ -44,11 +44,11 @@ class EPUBParser(object):
 
         self.input_file = input_file
         self.output_directory = output_directory
-        self.tex_filepath = []
 
         self.section_list = []
         self.subsection_list = []
         self.glossary_terms = {}
+        self.glossary_labels = []
 
         self.epub_reader = EPUBReader(input_file, self)
         main_title = rename_filename(self.epub_reader.title)
@@ -110,9 +110,8 @@ class EPUBParser(object):
                            'section_list.txt')
         
         glossaries = json.dumps(self.glossary_terms, sort_keys=True, indent=4 * ' ')
-        glossary_file = u'%s/glossary.json' %(self.output_directory)
-        with codecs.open(glossary_file, 'w', 'utf-8' ) as fp:
-            fp.write(glossaries)
+        self.write_to_file(glossaries, self.output_directory, 'glossary.json')
+
 
     def create_main_latex(self):
         if not self.reading_def_dir:
@@ -133,7 +132,6 @@ class EPUBParser(object):
 
     def write_to_file(self, content, folder, filename):
         filepath = u'%s/%s' % (folder, filename)
-        self.tex_filepath.append(filepath)
         with codecs.open(filepath, 'w', 'utf-8') as fp:
             fp.write(content)
 
