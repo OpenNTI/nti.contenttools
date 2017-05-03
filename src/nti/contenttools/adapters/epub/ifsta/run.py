@@ -33,7 +33,8 @@ class Run(types.Run):
         if element.tail:
             _t = cls()
             _t.add_child(me)
-            _t.add_child(types.TextNode(element.tail.replace('\r', '')))
+            tail = element.tail.replace('\r', '').replace('\t', '')
+            _t.add_child(types.TextNode(tail))
             me = _t
         return me
 
