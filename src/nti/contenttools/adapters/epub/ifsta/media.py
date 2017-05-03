@@ -43,7 +43,16 @@ class Image(types.Image):
         else:
             logger.warn('COULD NOT FIND Image : %s', image_path)
             return types.Run()
-        return me
+        
+        if u'-' in filename:
+            figure = Figure()
+            title, ext = os.path.splitext(filename)
+            figure.label = u'fig:%s_%s' %(epub.book_title, title)
+            figure.caption = u'Figure %s' % (title.replace('-', '.'))
+            figure.add(me)
+            return figure
+        else:
+            return me
 
 
 def save_image(image_data, filepath, epub):
