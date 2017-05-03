@@ -48,6 +48,7 @@ def render_sidebar(context, node):
     title = label = u''
     if node.title:
         title = get_variant_field_string_value(node.title)
+        title = title.rstrip()
     if node.label:
         label = get_variant_field_string_value(node.label)
         if label:
