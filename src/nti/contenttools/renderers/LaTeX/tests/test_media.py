@@ -85,7 +85,7 @@ class TestMedia(ContentToolsTestCase):
         output = render_output(figure)
         assert_that(
             output,
-            is_(u'\\begin{figure}\n\\begin{center}\n\n\\end{center}\n\\end{figure}\n'))
+            is_(u'\\begin{figure}\n\\begin{center}\n\n\n\\end{center}\n\\end{figure}\n'))
 
     def test_figure_with_title(self):
         figure = Figure()
@@ -93,7 +93,7 @@ class TestMedia(ContentToolsTestCase):
         output = render_output(figure)
         assert_that(
             output,
-            is_(u'\\begin{figure}\n\\begin{center}\n\\textbf{This is a figure title}\\\\\n\n\\end{center}\n\\end{figure}\n'))
+            is_(u'\\begin{figure}\n\\begin{center}\n\\textbf{This is a figure title}\\\\\n\n\n\\end{center}\n\\end{figure}\n'))
 
     def test_figure_with_caption(self):
         figure = Figure()
@@ -101,7 +101,7 @@ class TestMedia(ContentToolsTestCase):
         output = render_output(figure)
         assert_that(
             output,
-            is_(u'\\begin{figure}\n\\begin{center}\n\\caption{This is figure caption}\n\n\\end{center}\n\\end{figure}\n'))
+            is_(u'\\begin{figure}\n\\begin{center}\n\n\\caption{This is figure caption}\n\n\\end{center}\n\\end{figure}\n'))
 
     def test_figure_with_label(self):
         figure = Figure()
@@ -111,7 +111,7 @@ class TestMedia(ContentToolsTestCase):
         output = render_output(figure)
         assert_that(
             output,
-            is_(u'\\begin{figure}\n\\begin{center}\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
+            is_(u'\\begin{figure}\n\\begin{center}\n\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
 
     def test_figure_with_image(self):
         figure = Figure()
@@ -124,7 +124,7 @@ class TestMedia(ContentToolsTestCase):
         output = render_output(figure)
         assert_that(
             output,
-            is_(u'\\begin{figure}\n\\begin{center}\n\\ntiincludeannotationgraphics[width=500px,height=450px]{images/foo.png}\n\\end{center}\n\\end{figure}\n'))
+            is_(u'\\begin{figure}\n\\begin{center}\n\\ntiincludeannotationgraphics[width=500px,height=450px]{images/foo.png}\n\n\\end{center}\n\\end{figure}\n'))
 
     def test_figure(self):
         figure = Figure()
@@ -140,7 +140,7 @@ class TestMedia(ContentToolsTestCase):
         output = render_output(figure)
         assert_that(
             output,
-            is_(u'\\begin{figure}\n\\begin{center}\n\\textbf{fig title}\\\\\n\\ntiincludeannotationgraphics[width=70px,height=90px]{images/foo.png}\\caption{fig caption}\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
+            is_(u'\\begin{figure}\n\\begin{center}\n\\textbf{fig title}\\\\\n\\ntiincludeannotationgraphics[width=70px,height=90px]{images/foo.png}\n\\caption{fig caption}\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
 
     def test_docx_image(self):
         node = DocxImage()
