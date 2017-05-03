@@ -49,6 +49,7 @@ class EPUBParser(object):
         self.subsection_list = []
         self.glossary_terms = {}
         self.glossary_labels = []
+        self.figure_labels = {}
 
         self.epub_reader = EPUBReader(input_file, self)
         main_title = rename_filename(self.epub_reader.title)
@@ -119,6 +120,11 @@ class EPUBParser(object):
         self.write_to_file(glossary_labels_content,
                            self.output_directory,
                            'glossary_label.txt')
+        
+        figure_labels = json.dumps(self.figure_labels,
+                                sort_keys=True, 
+                                indent='\t')
+        self.write_to_file(figure_labels, self.output_directory, 'figure_labels.json')
 
     def create_main_latex(self):
         if not self.reading_def_dir:
