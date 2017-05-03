@@ -51,9 +51,10 @@ class Image(types.Image):
             figure.label = u'fig:%s_%s' %(epub.book_title, title)
             figure.caption = u'Figure %s' % (title.replace('-', '.'))
             figure.add(me)
+            epub.figure_labels[figure.caption] = figure.label
             return figure
         else:
-            return me
+            return types.Run()
 
 
 def save_image(image_data, filepath, epub):
