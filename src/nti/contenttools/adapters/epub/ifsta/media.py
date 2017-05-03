@@ -19,6 +19,7 @@ from nti.contenttools import types
 from nti.contenttools.adapters.epub.ifsta.run import Run
 from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
 
+
 class Image(types.Image):
 
     @classmethod
@@ -43,12 +44,12 @@ class Image(types.Image):
         else:
             logger.warn('COULD NOT FIND Image : %s', image_path)
             return types.Run()
-        
+
         if u'-' in filename:
             figure = Figure()
             figure.centered = False
-            title, ext = os.path.splitext(filename)
-            figure.label = u'fig:%s_%s' %(epub.book_title, title)
+            title, _ = os.path.splitext(filename)
+            figure.label = u'fig:%s_%s' % (epub.book_title, title)
             figure.caption = u'Figure %s' % (title.replace('-', '.'))
             figure.add(me)
             epub.figure_labels[figure.caption] = figure.label

@@ -68,8 +68,7 @@ class EPUBParser(object):
 
         if css_json is not None:
             with codecs.open(css_json, 'r', 'utf-8') as fp:
-                css = fp.read()
-                self.css_dict = json.loads(css)
+                self.css_dict = json.load(fp)
 
     def process_fragment(self):
         epub_reader = self.epub_reader
@@ -130,7 +129,8 @@ class EPUBParser(object):
         figure_labels = json.dumps(self.figure_labels,
                                    sort_keys=True,
                                    indent='\t')
-        self.write_to_file(figure_labels, self.output_directory, 'figure_labels.json')
+        self.write_to_file(
+            figure_labels, self.output_directory, 'figure_labels.json')
 
     def create_main_latex(self):
         if not self.reading_def_dir:
