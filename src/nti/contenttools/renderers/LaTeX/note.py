@@ -29,13 +29,14 @@ from nti.contenttools.types.interfaces import INoteInteractive
 from nti.contenttools.types.interfaces import IOpenstaxNoteBody
 from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 
+from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
 def render_sidebar(context, node):
-    base = render_children_output(node)
-
     # this is useful for glossary term
     # (for example glossary term in IFSTA epub)
     if node.type == u"sidebar_term":
+        search_run_node_and_remove_styles(node)
+        base = render_children_output(node)
         str_pos = base.find('-')
         if str_pos > -1:
             term = base[0:str_pos].strip()
@@ -44,6 +45,8 @@ def render_sidebar(context, node):
             if node.label is None:
                 node.label = u'sidebar_term:%s' % term.replace(u" ", u"_")
         node.base = base
+    else:
+        base = render_children_output(node)
 
     title = label = u''
     if node.title:
