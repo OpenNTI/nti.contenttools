@@ -115,7 +115,7 @@ def check_image_in_sidebar(self):
     check if image is located inside sidebar
     """
     parent = self.__parent__
-    sidebar = (ISidebar, IOpenstaxNote, 
+    sidebar = (ISidebar, IOpenstaxNote,
                IOpenstaxExampleNote, IOpenstaxNoteBody)
     while parent is not None:
         for IType in sidebar:
@@ -153,8 +153,8 @@ def render_figure(context, node):
 
     if node.label:
         label = get_variant_field_string_value(node.label).rstrip()
-    
-    if node.centered :  
+
+    if node.centered:
         context.write(u'\\begin{figure}\n\\begin{center}\n')
     else:
         context.write(u'\\begin{figure}[]\n')
@@ -171,7 +171,7 @@ def render_figure(context, node):
         context.write(u'\\label{')
         context.write(label)
         context.write(u'}')
-    
+
     if node.centered:
         context.write(u'\n\\end{center}\n\\end{figure}\n')
     else:
