@@ -90,7 +90,7 @@ def check_paragraph_bullet(el):
 def process_span_elements(element, epub=None):
     attrib = element.attrib
     span_class = attrib['class'] if u'class' in attrib else u''
-    span_class = u'span_%s' % span_class
+    span_class = u'span_%s' % span_class.replace('-', '_')
     if 'bullet' in span_class:
         el = Run()
         el.element_type = 'bullet'
@@ -101,7 +101,11 @@ def process_span_elements(element, epub=None):
         el = Run.process(element, epub=epub)
         if span_class in epub.css_dict.keys():
             if 'fontStyle' in epub.css_dict[span_class].keys():
-                el.styles.extend(epub.css_dict[span_class]['fontStyle'])
+                style = epub.css_dict[span_class]['fontStyle']
+                if style == 'italic':
+                    el.styles.append(style)
             if 'fontWeight' in epub.css_dict[span_class].keys():
-                el.styles.extend(epub.css_dict[span_class]['fontWeight'])
+                weight = epub.css_dict[span_class]['fontWeight']
+                if weight =='bold':
+                    el.styles.append(weight)
     return el
