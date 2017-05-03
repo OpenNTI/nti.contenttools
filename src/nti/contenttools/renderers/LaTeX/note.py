@@ -31,6 +31,7 @@ from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 
 from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
+
 def render_sidebar(context, node):
     # this is useful for glossary term
     # (for example glossary term in IFSTA epub)
