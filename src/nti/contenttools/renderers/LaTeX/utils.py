@@ -35,12 +35,14 @@ def create_label(name, value):
         value = re.sub(FORBIDDEN_CHARACTERS, '_', value)
     return u'\\label{%s:%s}' % (name, value)
 
+
 def search_run_node_and_remove_styles(root):
     if IRunNode.providedBy(root):
         root.styles = []
     elif hasattr(root, u'children'):
         for node in root:
             search_run_node_and_remove_styles(node)
+
 
 def search_node(provided, root):
     """
