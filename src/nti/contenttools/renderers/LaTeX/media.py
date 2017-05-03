@@ -153,12 +153,16 @@ def render_figure(context, node):
 
     if node.label:
         label = get_variant_field_string_value(node.label).rstrip()
-
-    context.write(u'\\begin{figure}\n\\begin{center}\n')
+    
+    if node.centered :  
+        context.write(u'\\begin{figure}\n\\begin{center}\n')
+    else:
+        context.write(u'\\begin{figure}[]\n')
     if title:
         title = u'\\textbf{%s}\\\\\n' % (title)
         context.write(title)
     render_children(context, node)
+    context.write(u'\n')
     if caption:
         context.write(u'\\caption{')
         context.write(caption)
@@ -167,7 +171,11 @@ def render_figure(context, node):
         context.write(u'\\label{')
         context.write(label)
         context.write(u'}')
-    context.write(u'\n\\end{center}\n\\end{figure}\n')
+    
+    if node.centered:
+        context.write(u'\n\\end{center}\n\\end{figure}\n')
+    else:
+        context.write(u'\n\\end{figure}\n')
     return node
 
 

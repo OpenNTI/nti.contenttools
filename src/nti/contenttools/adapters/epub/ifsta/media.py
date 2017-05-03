@@ -46,6 +46,7 @@ class Image(types.Image):
         
         if u'-' in filename:
             figure = Figure()
+            figure.centered = False
             title, ext = os.path.splitext(filename)
             figure.label = u'fig:%s_%s' %(epub.book_title, title)
             figure.caption = u'Figure %s' % (title.replace('-', '.'))
