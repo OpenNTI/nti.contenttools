@@ -1235,6 +1235,8 @@ class IFigure(IDocumentStructureNode):
                      ValidTextLine()), title="Figure Title",
                     required=True,
                     default=u'')
+    centered = Bool(title="Figured Centered",
+                    default=True)
 
     def set_caption(caption):
         """
