@@ -36,7 +36,7 @@ EPUB_COURSE_TYPE = ('ifsta')
 
 class EPUBParser(object):
 
-    def __init__(self, input_file, output_directory, epub_type):
+    def __init__(self, input_file, output_directory, epub_type, css_json=None):
         self.image_list = []
         self.latex_filenames = []
         self.content_folder = []  # will be use to retrieve images or pdf
@@ -65,6 +65,11 @@ class EPUBParser(object):
             self.reading_def_dir = reading_def_dir
         else:
             self.reading_def_dir = None
+
+        if css_json is not None:
+            with codecs.open(css_json, 'r', 'utf-8') as fp:
+                css = fp.read()
+                self.css_dict = json.loads(css)
 
     def process_fragment(self):
         epub_reader = self.epub_reader
@@ -113,7 +118,7 @@ class EPUBParser(object):
                            'section_list.txt')
 
         glossaries = json.dumps(self.glossary_terms,
-                                sort_keys=True, 
+                                sort_keys=True,
                                 indent='\t')
         self.write_to_file(glossaries, self.output_directory, 'glossary.json')
 
@@ -121,10 +126,10 @@ class EPUBParser(object):
         self.write_to_file(glossary_labels_content,
                            self.output_directory,
                            'glossary_label.txt')
-        
+
         figure_labels = json.dumps(self.figure_labels,
-                                sort_keys=True, 
-                                indent='\t')
+                                   sort_keys=True,
+                                   indent='\t')
         self.write_to_file(figure_labels, self.output_directory, 'figure_labels.json')
 
     def create_main_latex(self):
