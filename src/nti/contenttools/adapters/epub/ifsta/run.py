@@ -106,6 +106,6 @@ def process_span_elements(element, epub=None):
                     el.styles.append(style)
             if 'fontWeight' in epub.css_dict[span_class].keys():
                 weight = epub.css_dict[span_class]['fontWeight']
-                if weight =='bold':
+                if weight == 'bold':
                     el.styles.append(weight)
     return el
