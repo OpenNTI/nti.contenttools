@@ -100,11 +100,11 @@ def process_span_elements(element, epub=None):
     else:
         el = Run.process(element, epub=epub)
         if span_class in epub.css_dict.keys():
-            if 'fontStyle' in epub.css_dict[span_class].keys():
+            if epub is not None and 'fontStyle' in epub.css_dict[span_class]:
                 style = epub.css_dict[span_class]['fontStyle']
                 if style == 'italic':
                     el.styles.append(style)
-            if 'fontWeight' in epub.css_dict[span_class].keys():
+            if epub is not None and 'fontWeight' in epub.css_dict[span_class]:
                 weight = epub.css_dict[span_class]['fontWeight']
                 if weight == 'bold':
                     el.styles.append(weight)
