@@ -121,7 +121,8 @@ class EPUBParser(object):
                                 indent='\t')
         self.write_to_file(glossaries, self.output_directory, 'glossary.json')
 
-        glossary_labels_content = u''.join(self.glossary_labels)
+        glossary_labels = list(sorted(self.glossary_labels))
+        glossary_labels_content = u''.join(glossary_labels)
         self.write_to_file(glossary_labels_content,
                            self.output_directory,
                            'glossary_label.txt')
