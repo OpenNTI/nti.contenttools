@@ -44,8 +44,10 @@ class Image(types.Image):
         else:
             logger.warn('COULD NOT FIND Image : %s', image_path)
             return types.Run()
-
-        if u'-' in filename:
+        
+        figures_without_caption = (u'Warning', u'Info')
+        
+        if u'-' in filename or u'Warning':
             figure = Figure()
             figure.centered = False
             title, _ = os.path.splitext(filename)
@@ -55,6 +57,11 @@ class Image(types.Image):
             figure.add(me)
             epub.figure_labels[figure.caption] = figure.label
             return figure
+        elif any(fig in filename for fig in figures_without_caption):
+            figure = Figure()
+            figure.centered = False
+            me.inline_image = True
+            figure.add(me)
         elif u'_' in filename:
             me.inline_image = True
             return me
