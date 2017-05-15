@@ -22,7 +22,7 @@ class Hyperlink(types.Hyperlink):
         self.type = 'Normal'
 
     @classmethod
-    def process(cls, link):
+    def process(cls, link, epub=None):
         me = cls()
         me.target = unicode_(link.attrib['href'])
         if u'class' in link.attrib:
