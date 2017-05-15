@@ -45,8 +45,8 @@ class Image(types.Image):
             logger.warn('COULD NOT FIND Image : %s', image_path)
             return types.Run()
 
-        figures_without_caption = (u'Warning', u'Icon',)
-        to_ignore = (u'Divider_Page',)
+        figures_without_caption = (u'Icon',)
+        to_ignore = (u'Divider_Page','Warning', 'Caution')
 
         if any(fig in filename for fig in figures_without_caption):
             figure = Figure()
