@@ -95,7 +95,7 @@ class TestNote(ContentToolsTestCase):
     def test_simple_sidebar(self):
         node = Sidebar()
         output = render_output(node)
-        assert_that(output, is_(u'\n\\begin{sidebar}{}\n\n\\end{sidebar}\n'))
+        assert_that(output, is_(u'\n\\begin{sidebar}{}\n\n\\end{sidebar}\n\\\\\n'))
 
     def test_sidebar(self):
         node = Sidebar()
@@ -103,7 +103,7 @@ class TestNote(ContentToolsTestCase):
         node.label = u's_label'
         output = render_output(node)
         assert_that(output,
-                    is_(u'\n\\begin{sidebar}{this is title}\n\\label{s_label}\n\\end{sidebar}\n'))
+                    is_(u'\n\\begin{sidebar}{this is title}\n\\label{s_label}\n\\end{sidebar}\n\\\\\n'))
 
     def test_sidebar_term(self):
         node = Sidebar()
@@ -116,7 +116,7 @@ class TestNote(ContentToolsTestCase):
         node.add(child_3)
         output = render_output(node)
         assert_that(output,
-                    is_(u'\n\\begin{sidebar}{term}\n\\label{sidebar_term:term}term - definition\n\\end{sidebar}\n'))
+                    is_(u'\n\\begin{sidebar}{term}\n\\label{sidebar_term:term}term - definition\n\\end{sidebar}\n\\\\\n'))
 
     def test_blockquote(self):
         node = BlockQuote()

@@ -78,7 +78,7 @@ def render_sidebar(context, node):
         context.write(title)
         context.write(u'}\n')
     context.write(base)
-    context.write(u'\n\\end{sidebar}\n')
+    context.write(u'\n\\end{sidebar}\n\\\\\n')
     return node
 
 
