@@ -56,12 +56,15 @@ def check_child(node, element, epub=None):
     from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
     from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
     from nti.contenttools.adapters.epub.ifsta.table import Table
+    from nti.contenttools.adapters.epub.ifsta.link import Hyperlink
 
     for child in element:
         if child.tag == 'p':
             node.add_child(Paragraph.process(child, [], epub=epub))
         elif child.tag == 'span':
             node.add_child(process_span_elements(child, epub=epub))
+        elif child.tag == 'a':
+            node.add_child(Hyperlink.process(child, epub=epub))
         elif child.tag == 'b':
             node.add_child(Run.process(child, ['bold'], epub=epub))
         elif child.tag == 'i':
