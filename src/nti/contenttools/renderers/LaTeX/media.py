@@ -157,7 +157,10 @@ def render_figure(context, node):
     if node.centered:
         context.write(u'\\begin{figure}\n\\begin{center}\n')
     else:
-        context.write(u'\\begin{figure}[]\n')
+        if node.floating:
+            context.write(u'\\begin{figure}[]\n')
+        else:
+            context.write(u'\\begin{figure}[h]\n')
     if title:
         title = u'\\textbf{%s}\\\\\n' % (title)
         context.write(title)
