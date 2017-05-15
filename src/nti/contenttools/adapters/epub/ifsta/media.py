@@ -45,20 +45,20 @@ class Image(types.Image):
             logger.warn('COULD NOT FIND Image : %s', image_path)
             return types.Run()
 
-        figures_without_caption = (u'Warning', u'Info',)
+        figures_without_caption = (u'Warning', u'Icon',)
         to_ignore = (u'Divider_Page',)
 
         if any(fig in filename for fig in figures_without_caption):
-            logger.info('HERE')
             figure = Figure()
+            title, _ = os.path.splitext(filename)
+            figure.label = u'fig:%s_%s' % (epub.book_title, title)
             figure.centered = False
             me.inline_image = True
             figure.add(me)
             return figure
         elif any(fig in filename for fig in to_ignore):
-            logger.info('HERE ignored')
             return types.Run()
-        elif u'-' in filename or u'Warning':
+        elif u'-' in filename:
             figure = Figure()
             figure.centered = False
             title, _ = os.path.splitext(filename)
