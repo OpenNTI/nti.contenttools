@@ -51,9 +51,13 @@ class Image(types.Image):
             title, _ = os.path.splitext(filename)
             figure.label = u'fig:%s_%s' % (epub.book_title, title)
             figure.caption = u'Figure %s' % (title.replace('-', '.'))
+            me.inline_image = True
             figure.add(me)
             epub.figure_labels[figure.caption] = figure.label
             return figure
+        elif u'_' in filename:
+            me.inline_image = True
+            return me
         else:
             return types.Run()
 
