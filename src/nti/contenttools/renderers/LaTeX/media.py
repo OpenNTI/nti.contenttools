@@ -158,9 +158,9 @@ def render_figure(context, node):
         context.write(u'\\begin{figure}\n\\begin{center}\n')
     else:
         if node.floating:
-            context.write(u'\\begin{figure}[]\n')
-        else:
             context.write(u'\\begin{figure}[h]\n')
+        else:
+            context.write(u'\\begin{figure}[]\n')
     if title:
         title = u'\\textbf{%s}\\\\\n' % (title)
         context.write(title)
