@@ -70,6 +70,7 @@ def render_list(context, node):
 
 def render_item(context, node):
     desc = render_children_output(node)
+    desc = desc.rstrip()
     if u'\\chapter' in desc:
         context.write(desc)
     else:
