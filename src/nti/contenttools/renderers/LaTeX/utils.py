@@ -33,6 +33,7 @@ def create_label(name, value):
     else:
         value = render_output(value)
         value = re.sub(FORBIDDEN_CHARACTERS, '_', value)
+    value = value.replace(u'_textbf_', u'').replace(u'_textit_', u'')
     return u'\\label{%s:%s}' % (name, value)
 
 
