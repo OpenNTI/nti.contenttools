@@ -5,6 +5,9 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from pty import CHILD
+from re import search
+
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -17,10 +20,14 @@ from nti.contenttools._compat import unicode_
 
 from nti.contenttools.types import TextNode
 
+from nti.contenttools.types.interfaces import ISidebar, IFigure, ITextNode
+
 
 def adapt(fragment, epub=None):
     body = fragment.find('body')
     epub_body = EPUBBody.process(body, epub)
+    #The next line only work for IFSTA fixed (to reduce the amount of unnessary text)
+    epub_body.children.pop(0)
     return epub_body
 
 
