@@ -46,7 +46,7 @@ class Image(types.Image):
             return types.Run()
 
         figures_without_caption = (u'Icon',)
-        to_ignore = (u'Divider_Page','Warning', 'Caution')
+        to_ignore = (u'Divider_Page', u'Warning', u'Caution')
 
         if any(fig in filename for fig in figures_without_caption):
             figure = Figure()

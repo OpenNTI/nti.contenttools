@@ -5,7 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from nti.contenttools.types.interfaces import ITextNode
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -23,18 +22,18 @@ from nti.contenttools.adapters.epub.ifsta.note import Sidebar
 from nti.contenttools.adapters.epub.ifsta.lists import Item
 from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
 
+from nti.contenttools.types.interfaces import ITextNode
+
 
 class Paragraph(types.Paragraph):
 
     bullet_list = (u'Bullet ParaOverride-1',)
-    sidebar_list = (
-        u'Case-History ParaOverride-1',
-    )
+    sidebar_list = (u'Case-History ParaOverride-1',)
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head',)
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride',)
     bold_italic_text = ('C-Head ParaOverride-1',)
-    
+
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
         me = cls()
@@ -45,9 +44,9 @@ class Paragraph(types.Paragraph):
         me.styles.extend(styles)
         captions = (u'Caption ParaOverride-1',)
         sidebars_heads = (u'Caution-Warning-Heads ParaOverride-1',
-                      u'sidebars-heads ParaOverride-1',)
+                          u'sidebars-heads ParaOverride-1',)
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
-                     u'sidebars-body-text ParaOverride-1',)
+                         u'sidebars-body-text ParaOverride-1',)
         if u'class' in attrib:
             if attrib['class'] != u"ParaOverride-1":
                 me = check_element_text(me, element)
@@ -120,6 +119,7 @@ def add_sectioning_label(node):
     node.label = label
     return node
 
+
 def get_caption_token(root):
     if ITextNode.providedBy(root):
         return root
@@ -129,4 +129,3 @@ def get_caption_token(root):
             if result:
                 return result
     return False
-    

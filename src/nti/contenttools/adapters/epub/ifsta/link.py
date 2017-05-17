@@ -19,7 +19,7 @@ from nti.contenttools.adapters.epub.ifsta.run import Run
 class Hyperlink(types.Hyperlink):
 
     def __init__(self):
-        self.type = 'Normal'
+        self.type = u'Normal'
 
     @classmethod
     def process(cls, link, epub=None):
