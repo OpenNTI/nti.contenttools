@@ -54,6 +54,7 @@ class Image(types.Image):
             figure.label = u'fig:%s_%s' % (epub.book_title, title)
             figure.centered = False
             figure.floating = True
+            figure.icon = True
             me.inline_image = True
             figure.add(me)
             return figure
