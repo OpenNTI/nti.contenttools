@@ -204,6 +204,7 @@ def search_and_update_figure_caption(root, captions):
     if IFigure.providedBy(root):
         old_cap = root.caption
         if old_cap in captions.keys():
+            type(captions[old_cap])
             root.caption = captions[old_cap]
     elif hasattr(root, u'children'):
         for node in root:
