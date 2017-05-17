@@ -30,7 +30,9 @@ def adapt(fragment, epub=None):
     epub_body.children.pop(0)
     nodes = []
     nodes = search_sidebar_info(epub_body, nodes)
-    logger.info(nodes)
+    figures = add_icon_to_sidebar_info(nodes)
+    for figure in figures:
+        remove_extra_figure_icon(epub_body, figure)
     return epub_body
 
 
@@ -131,6 +133,7 @@ def check_element_tail(node, element):
             node.add_child(TextNode(new_el_tail))
     return node
 
+
 def search_sidebar_info(root,nodes):
     if ISidebar.providedBy(root):
         if root.type == u"sidebar_term":
@@ -147,3 +150,34 @@ def search_sidebar_info(root,nodes):
             else:
                 search_sidebar_info(child, nodes)
     return nodes
+
+def add_icon_to_sidebar_info(nodes):
+    figures = get_particular_nodes(nodes, IFigure)
+    sidebars = get_particular_nodes(nodes, ISidebar)
+    if len(figures) == len(sidebars):
+        for i, sidebar in enumerate(sidebars):
+            sidebar.children.insert(0, figures[i])
+    else:
+        logger.warn("The number of sidebar and figure icon is different")
+    return figures        
+
+def remove_extra_figure_icon(root, figure):
+    if figure == root:
+        if hasattr(root, u'__parent__'):
+            if not (ISidebar.providedBy(root.__parent__)):
+                nchildren = []
+                parent = root.__parent__.children
+                for child in parent:
+                    if not (child == figure):
+                        nchildren.append(child)
+                parent = nchildren
+    elif hasattr(root, u'children'):
+        for node in root:
+            remove_extra_figure_icon(node, figure)
+
+def get_particular_nodes(nodes, ntype):
+    snodes = []
+    for node in nodes:
+        if ntype.providedBy(node):
+            snodes.append(node)
+    return snodes
