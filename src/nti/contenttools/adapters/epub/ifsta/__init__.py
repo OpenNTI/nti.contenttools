@@ -197,15 +197,16 @@ def process_paragraph_captions(captions):
     rendered_captions = {}
     for token,caption in captions.items():
         output = render_output(caption)
-        rendered_captions[token] = output
+        rendered_captions[token] = output.rstrip()
     return rendered_captions
 
 def search_and_update_figure_caption(root, captions):
     if IFigure.providedBy(root):
         old_cap = root.caption
         if old_cap in captions.keys():
-            type(captions[old_cap])
             root.caption = captions[old_cap]
+        else:
+            logger.warn("PARAGRAPH CAPTION NOT FOUND for %s", old_cap)
     elif hasattr(root, u'children'):
         for node in root:
             search_and_update_figure_caption(node, captions)

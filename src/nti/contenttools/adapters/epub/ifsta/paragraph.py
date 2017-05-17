@@ -90,7 +90,7 @@ class Paragraph(types.Paragraph):
                     me.add_child(types.TextNode("\\\\\n"))
                 elif attrib['class'] in captions:
                     me.element_type = u'caption'
-                    token = get_caption_token(me.children[1])
+                    token = get_caption_token(me.children[1]).rstrip()
                     me.children = me.children[2:]
                     epub.captions[token] = me
                 elif attrib['class'] == u'definition ParaOverride-1':
