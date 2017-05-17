@@ -29,6 +29,11 @@ def adapt(fragment, epub=None):
     #The next line only work for IFSTA fixed (to reduce the amount of unnessary text)
     epub_body.children.pop(0)
     nodes = []
+    
+    #ifsta epub has what is called sidebar info
+    #each sidebar info has icon, 
+    #unfortunately on the xhmtl, it is separated in different div tag
+    #the following lines are to get the icon as sidebar child
     nodes = search_sidebar_info(epub_body, nodes)
     figures = add_icon_to_sidebar_info(nodes)
     for figure in figures:
