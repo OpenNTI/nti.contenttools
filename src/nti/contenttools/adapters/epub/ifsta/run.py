@@ -44,6 +44,8 @@ def examine_div_element_for_sidebar(el, caption, body_text):
         if isinstance(child, types.Paragraph):
             if child.element_type == u'sidebars-heads':
                 caption.add_child(child)
+                logger.info('sidebars-body')
+                logger.info(child)
             elif child.element_type == u'sidebars-body':
                 check_list = check_paragraph_bullet(child)
                 if check_list:
@@ -64,18 +66,21 @@ def process_div_elements(element, parent, epub=None):
     attrib = element.attrib
     class_type = attrib['class'] if 'class' in attrib else None
     el = Run.process(element, epub=epub)
+    
     if class_type == u"Basic-Text-Frame":
         el.element_type = u"Basic-Text-Frame"
-        # need to check if there the div has sidebar-head and sidebar-text
-        caption = Run()
-        body_text = Run()
-        caption, body_text = \
+    
+    # need to check if there the div has sidebar-head and sidebar-text
+    caption = Run()
+    body_text = Run()
+    caption, body_text = \
             examine_div_element_for_sidebar(el, caption, body_text)
-        if caption.children and body_text.children:
-            new_el = Sidebar()
-            new_el.title = caption
-            new_el.children = body_text.children
-            el = new_el
+    if caption.children and body_text.children:
+        new_el = Sidebar()
+        new_el.title = caption
+        new_el.children = body_text.children
+        el = new_el
+        
     return el
 
 
