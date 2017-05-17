@@ -51,6 +51,8 @@ class EPUBParser(object):
         self.glossary_labels = []
         self.figure_labels = {}
         self.css_dict = {}
+        self.captions = []
+        self.figures = []
 
         self.epub_reader = EPUBReader(input_file, self)
         main_title = rename_filename(self.epub_reader.title)

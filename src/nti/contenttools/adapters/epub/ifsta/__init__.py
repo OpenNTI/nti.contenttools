@@ -22,6 +22,7 @@ from nti.contenttools.types import TextNode
 
 from nti.contenttools.types.interfaces import ISidebar, IFigure, ITextNode
 
+from nti.contenttools.renderers.LaTeX.base import render_output
 
 def adapt(fragment, epub=None):
     body = fragment.find('body')
@@ -38,6 +39,7 @@ def adapt(fragment, epub=None):
     figures = add_icon_to_sidebar_info(nodes)
     for figure in figures:
         remove_extra_figure_icon(epub_body, figure)
+    
     return epub_body
 
 
@@ -186,3 +188,10 @@ def get_particular_nodes(nodes, ntype):
         if ntype.providedBy(node):
             snodes.append(node)
     return snodes
+
+def process_paragraph_captions(captions):
+    rendered_captions = []
+    for caption in captions:
+        output = render_output(caption)
+        rendered_captions.append(output)
+    return rendered_captions

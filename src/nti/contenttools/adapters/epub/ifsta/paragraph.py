@@ -33,7 +33,7 @@ class Paragraph(types.Paragraph):
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride',)
     bold_italic_text = ('C-Head ParaOverride-1',)
-
+    
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
         me = cls()
@@ -42,6 +42,7 @@ class Paragraph(types.Paragraph):
         if 'id' in attrib:
             me.label = attrib['id']
         me.styles.extend(styles)
+        captions = (u'Caption ParaOverride-1',)
         sidebars_heads = (u'Caution-Warning-Heads ParaOverride-1',
                       u'sidebars-heads ParaOverride-1',)
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
@@ -86,6 +87,9 @@ class Paragraph(types.Paragraph):
                 elif attrib['class'] in sidebars_body:
                     me.element_type = u"sidebars-body"
                     me.add_child(types.TextNode("\\\\\n"))
+                elif attrib['class'] in captions:
+                    me.element_type = u'caption'
+                    epub.captions.append(me)
                 elif attrib['class'] == u'definition ParaOverride-1':
                     sidebar = Sidebar()
                     sidebar.type = u"sidebar_term"
