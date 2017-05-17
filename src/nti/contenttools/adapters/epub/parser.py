@@ -51,7 +51,7 @@ class EPUBParser(object):
         self.glossary_labels = []
         self.figure_labels = {}
         self.css_dict = {}
-        self.captions = []
+        self.captions = {}
         self.figures = []
 
         self.epub_reader = EPUBReader(input_file, self)

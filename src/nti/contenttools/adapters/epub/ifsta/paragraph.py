@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from nti.contenttools.types.interfaces import ITextNode
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -89,7 +90,9 @@ class Paragraph(types.Paragraph):
                     me.add_child(types.TextNode("\\\\\n"))
                 elif attrib['class'] in captions:
                     me.element_type = u'caption'
-                    epub.captions.append(me)
+                    token = get_caption_token(me.children[1])
+                    me.children = me.children[2:]
+                    epub.captions[token] = me
                 elif attrib['class'] == u'definition ParaOverride-1':
                     sidebar = Sidebar()
                     sidebar.type = u"sidebar_term"
@@ -97,7 +100,6 @@ class Paragraph(types.Paragraph):
                     el = Run()
                     el.add_child(sidebar)
                     el.add_child(types.TextNode("\\\\\n"))
-                    me = el
                 elif any(s in attrib['class'] for s in cls.paragraph_list):
                     me.add_child(types.TextNode("\\\\\n"))
             else:
@@ -116,3 +118,14 @@ def add_sectioning_label(node):
     label.children = node.children
     node.label = label
     return node
+
+def get_caption_token(root):
+    if ITextNode.providedBy(root):
+        return root
+    elif hasattr(root, u'children'):
+        for node in root:
+            result = get_caption_token(node)
+            if result:
+                return result
+    return False
+    
