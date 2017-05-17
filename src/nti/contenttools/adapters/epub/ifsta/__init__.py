@@ -5,10 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from pty import CHILD
-from re import search
-from buildtools import process
-
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -21,31 +17,35 @@ from nti.contenttools._compat import unicode_
 
 from nti.contenttools.types import TextNode
 
-from nti.contenttools.types.interfaces import ISidebar, IFigure, ITextNode,\
-    IParagraph
+from nti.contenttools.types.interfaces import IFigure
+from nti.contenttools.types.interfaces import ISidebar
+from nti.contenttools.types.interfaces import ITextNode
+from nti.contenttools.types.interfaces import IParagraph
 
 from nti.contenttools.renderers.LaTeX.base import render_output
+
 
 def adapt(fragment, epub=None):
     body = fragment.find('body')
     epub_body = EPUBBody.process(body, epub)
-    #The next line only work for IFSTA fixed (to reduce the amount of unnessary text)
+    # The next line only work for IFSTA fixed (to reduce the amount of
+    # unnessary text)
     epub_body.children.pop(0)
     nodes = []
-    
-    #ifsta epub has what is called sidebar info
-    #each sidebar info has icon, 
-    #unfortunately on the xhmtl, it is separated in different div tag
-    #the following lines are to get the icon as sidebar child
+
+    # ifsta epub has what is called sidebar info
+    # each sidebar info has icon,
+    # unfortunately on the xhmtl, it is separated in different div tag
+    # the following lines are to get the icon as sidebar child
     nodes = search_sidebar_info(epub_body, nodes)
     figures = add_icon_to_sidebar_info(nodes)
     for figure in figures:
         remove_extra_figure_icon(epub_body, figure)
-    
+
     captions = process_paragraph_captions(epub.captions)
     search_and_update_figure_caption(epub_body, captions)
     remove_paragraph_caption_from_epub_body(epub_body)
-    
+
     return epub_body
 
 
@@ -74,12 +74,16 @@ def check_child(node, element, epub=None):
     # XXX: Avoid circular imports
     from nti.contenttools.adapters.epub.ifsta.lists import OrderedList
     from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
+    
     from nti.contenttools.adapters.epub.ifsta.media import Image
     from nti.contenttools.adapters.epub.ifsta.media import Figure
+    
     from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
+    
     from nti.contenttools.adapters.epub.ifsta.run import Run
     from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
     from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
+    
     from nti.contenttools.adapters.epub.ifsta.table import Table
     from nti.contenttools.adapters.epub.ifsta.link import Hyperlink
 
@@ -147,7 +151,7 @@ def check_element_tail(node, element):
     return node
 
 
-def search_sidebar_info(root,nodes):
+def search_sidebar_info(root, nodes):
     if ISidebar.providedBy(root):
         if root.type == u"sidebar_term":
             pass
@@ -164,6 +168,7 @@ def search_sidebar_info(root,nodes):
                 search_sidebar_info(child, nodes)
     return nodes
 
+
 def add_icon_to_sidebar_info(nodes):
     figures = get_particular_nodes(nodes, IFigure)
     sidebars = get_particular_nodes(nodes, ISidebar)
@@ -172,14 +177,15 @@ def add_icon_to_sidebar_info(nodes):
             sidebar.children.insert(0, figures[i])
     else:
         logger.warn("The number of sidebar and figure icon is different")
-    return figures        
+    return figures
+
 
 def remove_extra_figure_icon(root, figure):
     if figure == root:
         if hasattr(root, u'__parent__'):
             parent = root.__parent__
             children = []
-            if not (ISidebar.providedBy(parent)):
+            if not ISidebar.providedBy(parent):
                 for child in parent.children:
                     if not IFigure.providedBy(child):
                         children.append(child)
@@ -188,6 +194,7 @@ def remove_extra_figure_icon(root, figure):
         for node in root:
             remove_extra_figure_icon(node, figure)
 
+
 def get_particular_nodes(nodes, ntype):
     snodes = []
     for node in nodes:
@@ -195,12 +202,14 @@ def get_particular_nodes(nodes, ntype):
             snodes.append(node)
     return snodes
 
+
 def process_paragraph_captions(captions):
     rendered_captions = {}
-    for token,caption in captions.items():
+    for token, caption in captions.items():
         output = render_output(caption)
         rendered_captions[token] = output.strip()
     return rendered_captions
+
 
 def search_and_update_figure_caption(root, captions):
     if IFigure.providedBy(root):
@@ -212,7 +221,7 @@ def search_and_update_figure_caption(root, captions):
     elif hasattr(root, u'children'):
         for node in root:
             search_and_update_figure_caption(node, captions)
-            
+
 
 def remove_paragraph_caption_from_epub_body(root):
     if IParagraph.providedBy(root):

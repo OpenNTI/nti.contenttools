@@ -28,10 +28,10 @@ from nti.contenttools.renderers.LaTeX.utils import create_label
 
 from nti.contenttools.util.string_replacer import rename_filename
 
-from nti.contenttools.types.interfaces import IEPUBBody
 from nti.contenttools.types.interfaces import ISidebar
+from nti.contenttools.types.interfaces import IEPUBBody
 
-EPUB_COURSE_TYPE = ('ifsta')
+EPUB_COURSE_TYPE = (u'ifsta')
 
 
 class EPUBParser(object):
@@ -87,7 +87,7 @@ class EPUBParser(object):
                 # epub_chapter = adapt(fragment)
             tex_filename = u'%s.tex' % rename_filename(item)
             self.latex_filenames.append(tex_filename)
-            logger.info("Processing ...")  
+            logger.info("Processing ...")
             logger.info(tex_filename)
             if IEPUBBody.providedBy(epub_chapter):
                 context = DefaultRendererContext(name="LaTeX")
