@@ -28,7 +28,6 @@ class Paragraph(types.Paragraph):
     bullet_list = (u'Bullet ParaOverride-1',)
     sidebar_list = (
         u'Case-History ParaOverride-1',
-        u'Caution-Warning-Text ParaOverride-1',
     )
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head',)
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
@@ -43,6 +42,10 @@ class Paragraph(types.Paragraph):
         if 'id' in attrib:
             me.label = attrib['id']
         me.styles.extend(styles)
+        sidebars_heads = (u'Caution-Warning-Heads ParaOverride-1',
+                      u'sidebars-heads ParaOverride-1',)
+        sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
+                     u'sidebars-body-text ParaOverride-1',)
         if u'class' in attrib:
             if attrib['class'] != u"ParaOverride-1":
                 me = check_element_text(me, element)
@@ -78,9 +81,9 @@ class Paragraph(types.Paragraph):
                     new_item.children = me.children
                     bullet_class.children = [new_item]
                     me = bullet_class
-                elif attrib['class'] == u"sidebars-heads ParaOverride-1":
+                elif attrib['class'] in sidebars_heads:
                     me.element_type = u'sidebars-heads'
-                elif attrib['class'] == u"sidebars-body-text ParaOverride-1":
+                elif attrib['class'] in sidebars_body:
                     me.element_type = u"sidebars-body"
                     me.add_child(types.TextNode("\\\\\n"))
                 elif attrib['class'] == u'definition ParaOverride-1':
