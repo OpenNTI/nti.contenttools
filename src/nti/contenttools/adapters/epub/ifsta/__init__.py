@@ -21,7 +21,8 @@ from nti.contenttools._compat import unicode_
 
 from nti.contenttools.types import TextNode
 
-from nti.contenttools.types.interfaces import ISidebar, IFigure, ITextNode
+from nti.contenttools.types.interfaces import ISidebar, IFigure, ITextNode,\
+    IParagraph
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
@@ -43,6 +44,7 @@ def adapt(fragment, epub=None):
     
     captions = process_paragraph_captions(epub.captions)
     search_and_update_figure_caption(epub_body, captions)
+    remove_paragraph_caption_from_epub_body(epub_body)
     
     return epub_body
 
@@ -210,3 +212,17 @@ def search_and_update_figure_caption(root, captions):
     elif hasattr(root, u'children'):
         for node in root:
             search_and_update_figure_caption(node, captions)
+            
+
+def remove_paragraph_caption_from_epub_body(root):
+    if IParagraph.providedBy(root):
+        if hasattr(root, u'__parent__') and root.element_type == u'caption':
+            parent = root.__parent__
+            children = []
+            for child in parent.children:
+                if not child.element_type == u'caption':
+                    children.append(child)
+            parent.children = children
+    elif hasattr(root, u'children'):
+        for node in root:
+            remove_paragraph_caption_from_epub_body(node)
