@@ -18,6 +18,7 @@ from nti.contenttools.renderers.LaTeX.base import render_environment
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
+from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
 from nti.contenttools.renderers.interfaces import IRenderer
 
@@ -28,8 +29,6 @@ from nti.contenttools.types.interfaces import IOpenstaxNote
 from nti.contenttools.types.interfaces import INoteInteractive
 from nti.contenttools.types.interfaces import IOpenstaxNoteBody
 from nti.contenttools.types.interfaces import IOpenstaxExampleNote
-
-from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
 
 def render_sidebar(context, node):

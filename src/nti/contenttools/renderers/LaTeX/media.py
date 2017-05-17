@@ -140,9 +140,9 @@ def render_docx_image(context, node):
 
 
 def render_figure(context, node):
-    caption = u''
-    title = u''
     label = u''
+    title = u''
+    caption = u''
     if node.caption:
         caption = get_variant_field_string_value(node.caption).rstrip()
     else:
