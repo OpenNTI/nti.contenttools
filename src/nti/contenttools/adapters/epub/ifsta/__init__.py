@@ -150,7 +150,7 @@ def search_sidebar_info(root,nodes):
     else:
         for child in root.children:
             if IFigure.providedBy(child):
-                if child.floating == True:
+                if child.floating == True and child.icon == True:
                     nodes.append(child)
             else:
                 search_sidebar_info(child, nodes)
@@ -168,7 +168,6 @@ def add_icon_to_sidebar_info(nodes):
 
 def remove_extra_figure_icon(root, figure):
     if figure == root:
-        logger.info("HERE")
         if hasattr(root, u'__parent__'):
             parent = root.__parent__
             children = []

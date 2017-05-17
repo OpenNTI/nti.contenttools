@@ -1237,7 +1237,9 @@ class IFigure(IDocumentStructureNode):
                     default=u'')
     centered = Bool(title="Figured Centered",
                     default=True)
-    floating = Bool(title="Figured Centered",
+    floating = Bool(title="Floating Figure",
+                    default=False)
+    icon = Bool(title="Figure as an icon",
                     default=False)
 
     def set_caption(caption):
