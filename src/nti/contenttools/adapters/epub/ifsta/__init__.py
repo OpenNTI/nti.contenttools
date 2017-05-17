@@ -168,14 +168,15 @@ def add_icon_to_sidebar_info(nodes):
 
 def remove_extra_figure_icon(root, figure):
     if figure == root:
+        logger.info("HERE")
         if hasattr(root, u'__parent__'):
-            if not (ISidebar.providedBy(root.__parent__)):
-                nchildren = []
-                parent = root.__parent__.children
-                for child in parent:
-                    if not (child == figure):
-                        nchildren.append(child)
-                parent = nchildren
+            parent = root.__parent__
+            children = []
+            if not (ISidebar.providedBy(parent)):
+                for child in parent.children:
+                    if not IFigure.providedBy(child):
+                        children.append(child)
+                parent.children = children
     elif hasattr(root, u'children'):
         for node in root:
             remove_extra_figure_icon(node, figure)
