@@ -100,6 +100,7 @@ class Paragraph(types.Paragraph):
                     el = Run()
                     el.add_child(sidebar)
                     el.add_child(types.TextNode("\\\\\n"))
+                    me = el
                 elif any(s in attrib['class'] for s in cls.paragraph_list):
                     me.add_child(types.TextNode("\\\\\n"))
             else:
