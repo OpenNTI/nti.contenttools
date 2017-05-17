@@ -7,6 +7,7 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 from pty import CHILD
 from re import search
+from buildtools import process
 
 __docformat__ = "restructuredtext en"
 
@@ -39,6 +40,9 @@ def adapt(fragment, epub=None):
     figures = add_icon_to_sidebar_info(nodes)
     for figure in figures:
         remove_extra_figure_icon(epub_body, figure)
+    
+    captions = process_paragraph_captions(epub.captions)
+    search_and_update_figure_caption(epub_body, captions)
     
     return epub_body
 
@@ -190,8 +194,17 @@ def get_particular_nodes(nodes, ntype):
     return snodes
 
 def process_paragraph_captions(captions):
-    rendered_captions = []
-    for caption in captions:
+    rendered_captions = {}
+    for token,caption in captions.items():
         output = render_output(caption)
-        rendered_captions.append(output)
+        rendered_captions[token] = output
     return rendered_captions
+
+def search_and_update_figure_caption(root, captions):
+    if IFigure.providedBy(root):
+        old_cap = root.caption
+        if old_cap in captions.keys():
+            root.caption = captions[old_cap]
+    elif hasattr(root, u'children'):
+        for node in root:
+            search_and_update_figure_caption(node, captions)
