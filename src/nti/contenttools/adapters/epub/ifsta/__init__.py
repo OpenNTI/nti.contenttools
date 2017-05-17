@@ -199,7 +199,7 @@ def process_paragraph_captions(captions):
     rendered_captions = {}
     for token,caption in captions.items():
         output = render_output(caption)
-        rendered_captions[token] = output.rstrip()
+        rendered_captions[token] = output.strip()
     return rendered_captions
 
 def search_and_update_figure_caption(root, captions):

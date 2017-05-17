@@ -87,6 +87,8 @@ class EPUBParser(object):
                 # epub_chapter = adapt(fragment)
             tex_filename = u'%s.tex' % rename_filename(item)
             self.latex_filenames.append(tex_filename)
+            logger.info("Processing ...")  
+            logger.info(tex_filename)
             if IEPUBBody.providedBy(epub_chapter):
                 context = DefaultRendererContext(name="LaTeX")
                 render_node(context, epub_chapter)
