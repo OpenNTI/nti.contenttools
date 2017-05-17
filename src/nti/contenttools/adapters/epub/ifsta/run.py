@@ -44,8 +44,6 @@ def examine_div_element_for_sidebar(el, caption, body_text):
         if isinstance(child, types.Paragraph):
             if child.element_type == u'sidebars-heads':
                 caption.add_child(child)
-                logger.info('sidebars-body')
-                logger.info(child)
             elif child.element_type == u'sidebars-body':
                 check_list = check_paragraph_bullet(child)
                 if check_list:
