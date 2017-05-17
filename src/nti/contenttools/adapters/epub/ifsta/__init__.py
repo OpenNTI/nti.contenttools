@@ -28,6 +28,9 @@ def adapt(fragment, epub=None):
     epub_body = EPUBBody.process(body, epub)
     #The next line only work for IFSTA fixed (to reduce the amount of unnessary text)
     epub_body.children.pop(0)
+    nodes = []
+    nodes = search_sidebar_info(epub_body, nodes)
+    logger.info(nodes)
     return epub_body
 
 
@@ -127,3 +130,20 @@ def check_element_tail(node, element):
             new_el_tail = element.tail.rstrip() + u' '
             node.add_child(TextNode(new_el_tail))
     return node
+
+def search_sidebar_info(root,nodes):
+    if ISidebar.providedBy(root):
+        if root.type == u"sidebar_term":
+            pass
+        else:
+            nodes.append(root)
+    if ITextNode.providedBy(root):
+        pass
+    else:
+        for child in root.children:
+            if IFigure.providedBy(child):
+                if child.floating == True:
+                    nodes.append(child)
+            else:
+                search_sidebar_info(child, nodes)
+    return nodes
