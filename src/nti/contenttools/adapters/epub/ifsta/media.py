@@ -65,8 +65,9 @@ class Image(types.Image):
             figure.centered = False
             title, _ = os.path.splitext(filename)
             figure.label = u'fig:%s_%s' % (epub.book_title, title)
-            figure.caption = u'Figure %s' % (title.replace('-', '.'))
+            figure.caption = u'%s' % (title.replace('-', '.'))
             figure.add(me)
+            epub.figures.append(figure)
             epub.figure_labels[figure.caption] = figure.label
             return figure
         elif u'_' in filename:
