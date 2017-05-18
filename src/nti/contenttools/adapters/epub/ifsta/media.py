@@ -51,7 +51,6 @@ class Image(types.Image):
         if any(fig in filename for fig in figures_without_caption):
             figure = Figure()
             title, _ = os.path.splitext(filename)
-            figure.label = u'fig:%s_%s' % (epub.book_title, title)
             figure.centered = False
             figure.floating = True
             figure.icon = True
