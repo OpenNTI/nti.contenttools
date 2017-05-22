@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from nti.contenttools.types.interfaces import ITextNode
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -54,6 +55,10 @@ def examine_div_element_for_sidebar(el, caption, body_text):
                     body_text.add_child(bullet_class)
                 else:
                     body_text.add_child(child)
+            elif child.element_type == u'caption':
+                pass
+            else:
+                body_text.add_child(child)
         elif isinstance(child, Run):
             caption, body_text = examine_div_element_for_sidebar(child,
                                                                  caption,
@@ -113,4 +118,13 @@ def process_span_elements(element, epub=None):
                 weight = epub.css_dict[span_class]['fontWeight']
                 if weight == 'bold':
                     el.styles.append(weight)
+    check_span_child(el)
     return el
+
+def check_span_child(span_node):
+    for child in span_node:
+        if ITextNode.providedBy(child):
+            if child.endswith('-'):
+                logger.info(child)
+                child = child[:-1]
+                logger.info(child)
