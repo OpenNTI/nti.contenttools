@@ -54,8 +54,6 @@ def examine_div_element_for_sidebar(el, caption, body_text):
                     body_text.add_child(bullet_class)
                 else:
                     body_text.add_child(child)
-            else:
-                body_text.add_child(child)
         elif isinstance(child, Run):
             caption, body_text = examine_div_element_for_sidebar(child,
                                                                  caption,
@@ -81,10 +79,8 @@ def process_div_elements(element, parent, epub=None):
         new_el = Sidebar()
         new_el.title = caption
         new_el.children = body_text.children
-        new_el.type = u'sidebar_info'
         el = new_el
-    elif body_text.children:
-        el.element_type = 'sidebar-member'
+
     return el
 
 
