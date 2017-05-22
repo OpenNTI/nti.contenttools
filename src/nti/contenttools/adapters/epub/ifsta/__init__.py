@@ -184,12 +184,8 @@ def process_sidebar_info_members(snodes):
             if ISidebar.providedBy(node):
                 sidebar = node
             else:
-                parent = node.__parent__
-                logger.info("Before")
-                logger.info(parent.children)  
+                parent = node.__parent__ 
                 parent.children.remove(node)
-                logger.info("After")
-                logger.info(parent.children)
                 sidebar.children.append(node)
 
 def search_sidebar_info(root, nodes):
