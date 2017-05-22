@@ -28,11 +28,11 @@ from nti.contenttools.types.interfaces import ITextNode
 class Paragraph(types.Paragraph):
 
     bullet_list = (u'Bullet ParaOverride-1',)
+    bold_italic_text = ('C-Head ParaOverride-1',)
     sidebar_list = (u'Case-History ParaOverride-1',)
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head',)
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride',)
-    bold_italic_text = ('C-Head ParaOverride-1',)
 
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):

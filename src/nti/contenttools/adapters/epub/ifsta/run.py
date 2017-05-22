@@ -5,7 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from nti.contenttools.types.interfaces import ITextNode
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -19,6 +18,8 @@ from nti.contenttools.adapters.epub.ifsta.lists import Item
 from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
 
 from nti.contenttools.adapters.epub.ifsta.note import Sidebar
+
+from nti.contenttools.types.interfaces import ITextNode
 
 
 class Run(types.Run):
@@ -120,6 +121,7 @@ def process_span_elements(element, epub=None):
                     el.styles.append(weight)
     check_span_child(el)
     return el
+
 
 def check_span_child(span_node):
     for child in span_node:
