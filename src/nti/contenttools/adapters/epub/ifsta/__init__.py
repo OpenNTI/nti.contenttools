@@ -169,8 +169,8 @@ def search_sidebar_info_members(root, snodes):
         pass
     else:
         for child in root.children:
-            if IRunNode.providedBy(child):
-                if child.element_type == 'sidebar-member':
+            if IParagraph.providedBy(child):
+                if child.element_type == u'sidebars-body':
                     snodes.append(child)
                 else:
                     search_sidebar_info_members(child, snodes)
