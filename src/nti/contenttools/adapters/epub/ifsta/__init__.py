@@ -5,9 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from docutils.nodes import sidebar
-from platform import node
-from test.test_mutants import Parent
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -22,7 +19,6 @@ from nti.contenttools.types import TextNode
 
 from nti.contenttools.types.interfaces import IFigure
 from nti.contenttools.types.interfaces import ISidebar
-from nti.contenttools.types.interfaces import IRunNode
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
 
@@ -35,16 +31,12 @@ def adapt(fragment, epub=None):
     # The next line only work for IFSTA fixed (to reduce the amount of
     # unnessary text)
     epub_body.children.pop(0)
-    
-    sidebar_nodes = []
-    sidebar_nodes = search_sidebar_info_members(epub_body, sidebar_nodes)
-    process_sidebar_info_members(sidebar_nodes)
-    
+    nodes = []
+
     # ifsta epub has what is called sidebar info
     # each sidebar info has icon,
     # unfortunately on the xhmtl, it is separated in different div tag
     # the following lines are to get the icon as sidebar child
-    nodes = []
     nodes = search_sidebar_info(epub_body, nodes)
     figures = add_icon_to_sidebar_info(nodes)
     for figure in figures:
@@ -53,7 +45,7 @@ def adapt(fragment, epub=None):
     captions = process_paragraph_captions(epub.captions)
     search_and_update_figure_caption(epub_body, captions)
     remove_paragraph_caption_from_epub_body(epub_body)
-    
+
     return epub_body
 
 
@@ -158,35 +150,6 @@ def check_element_tail(node, element):
             node.add_child(TextNode(new_el_tail))
     return node
 
-
-def search_sidebar_info_members(root, snodes):
-    if ISidebar.providedBy(root):
-        if root.type == u"sidebar_term":
-            pass
-        elif root.type == u"sidebar_info":
-            snodes.append(root)
-    if ITextNode.providedBy(root):
-        pass
-    else:
-        for child in root.children:
-            if IParagraph.providedBy(child):
-                if child.element_type == u'sidebars-body':
-                    snodes.append(child)
-                else:
-                    search_sidebar_info_members(child, snodes)
-            else:
-                search_sidebar_info_members(child, snodes)
-    return snodes
-
-def process_sidebar_info_members(snodes):
-    if len(snodes) > 1 and ISidebar.providedBy(snodes[0]): 
-        for node in snodes:
-            if ISidebar.providedBy(node):
-                sidebar = node
-            else:
-                parent = node.__parent__  
-                parent.children.remove(node)
-                sidebar.children.append(node)
 
 def search_sidebar_info(root, nodes):
     if ISidebar.providedBy(root):
