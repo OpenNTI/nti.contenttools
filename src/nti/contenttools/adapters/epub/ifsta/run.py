@@ -54,6 +54,8 @@ def examine_div_element_for_sidebar(el, caption, body_text):
                     body_text.add_child(bullet_class)
                 else:
                     body_text.add_child(child)
+            else:
+                body_text.add_child(child)
         elif isinstance(child, Run):
             caption, body_text = examine_div_element_for_sidebar(child,
                                                                  caption,
