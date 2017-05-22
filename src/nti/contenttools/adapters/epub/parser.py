@@ -77,6 +77,10 @@ class EPUBParser(object):
         docfrags = epub_reader.docfrags
         self.latex_filenames = []
         for item in epub_reader.spine:
+            logger.info("Processing ...")
+            tex_filename = u'%s.tex' % rename_filename(item)
+            logger.info(tex_filename)
+            
             fragment = docfrags[item]
             self.current_dir = item
             if self.epub_type == 'ifsta':
@@ -85,10 +89,8 @@ class EPUBParser(object):
                 pass
                 # TODO: create generic adapter
                 # epub_chapter = adapt(fragment)
-            tex_filename = u'%s.tex' % rename_filename(item)
+            
             self.latex_filenames.append(tex_filename)
-            logger.info("Processing ...")
-            logger.info(tex_filename)
             if IEPUBBody.providedBy(epub_chapter):
                 context = DefaultRendererContext(name="LaTeX")
                 render_node(context, epub_chapter)

@@ -79,8 +79,10 @@ def process_div_elements(element, parent, epub=None):
         new_el = Sidebar()
         new_el.title = caption
         new_el.children = body_text.children
+        new_el.type = u'sidebar_info'
         el = new_el
-
+    elif body_text.children:
+        el.element_type = 'sidebar-member'
     return el
 
 
