@@ -102,7 +102,6 @@ class Paragraph(types.Paragraph):
                     me = el
                 elif any(s in attrib['class'] for s in cls.paragraph_list):
                     me.add_child(types.TextNode("\\\\\n"))
-                    logger.info('FOUND Body-Text Par')
             else:
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)
