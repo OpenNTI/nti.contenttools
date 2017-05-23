@@ -14,7 +14,7 @@ does_not = is_not
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
-from nti.contenttools.types.interfaces import IGlossary
+from nti.contenttools.types.interfaces import IGlossary, IGlossaryEntry
 from nti.contenttools.types.interfaces import IGlossaryList
 from nti.contenttools.types.interfaces import IGlossaryItem
 from nti.contenttools.types.interfaces import IGlossaryDT
@@ -29,6 +29,7 @@ from nti.contenttools.types.glossary import GlossaryDT
 from nti.contenttools.types.glossary import GlossaryDD
 from nti.contenttools.types.glossary import GlossaryTerm
 from nti.contenttools.types.glossary import GlossaryDefinition
+from nti.contenttools.types.glossary import GlossaryEntry
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -64,6 +65,11 @@ class TestGlossary(ContentToolsTestCase):
         node = GlossaryTerm()
         assert_that(node, validly_provides(IGlossaryTerm))
         assert_that(node, verifiably_provides(IGlossaryTerm))
+    
+    def test_glossary_entry(self):
+        node = GlossaryEntry()
+        assert_that(node, validly_provides(IGlossaryEntry))
+        assert_that(node, verifiably_provides(IGlossaryEntry))
 
     def test_glossary_definition(self):
         node = GlossaryDefinition()
