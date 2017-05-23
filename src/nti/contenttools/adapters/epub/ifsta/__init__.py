@@ -31,7 +31,7 @@ def adapt(fragment, epub=None):
     # The next line only work for IFSTA fixed (to reduce the amount of
     # unnessary text)
     epub_body.children.pop(0)
-    
+
     if epub.epub_type == 'ifsta':
         # ifsta epub has what is called sidebar info
         # each sidebar info has icon,
@@ -238,3 +238,7 @@ def remove_paragraph_caption_from_epub_body(root):
     elif hasattr(root, u'children'):
         for node in root:
             remove_paragraph_caption_from_epub_body(node)
+
+
+def search_sidebar_head_and_body(root, nodes):
+    pass

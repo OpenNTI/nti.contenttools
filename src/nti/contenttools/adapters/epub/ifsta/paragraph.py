@@ -5,7 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from nti.contenttools.renderers.LaTeX.base import render_output
+
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -50,6 +50,7 @@ class Paragraph(types.Paragraph):
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
                          u'Caution-Warning-Text',
                          u'sidebars-body-text ParaOverride-1',)
+        definition_list = (u'definition',)
         if u'class' in attrib:
             if attrib['class'] != u"ParaOverride-1":
                 me = check_element_text(me, element)
@@ -87,6 +88,11 @@ class Paragraph(types.Paragraph):
                     me = bullet_class
                 elif attrib['class'] in sidebars_heads:
                     me.element_type = u'sidebars-heads'
+                    if epub.epub_type == u'ifsta_rf':
+                        el = Sidebar()
+                        el.type = u'sidebar-head'
+                        el.title = me
+                        me = el
                 elif attrib['class'] in sidebars_body:
                     me.element_type = u"sidebars-body"
                     me.add_child(types.TextNode("\\\\\n"))
@@ -95,7 +101,7 @@ class Paragraph(types.Paragraph):
                     token = get_caption_token(me.children[1]).rstrip()
                     me.children = me.children[2:]
                     epub.captions[token] = me
-                elif attrib['class'] == u'definition ParaOverride-1':
+                elif any(s in attrib['class'] for s in definition_list):
                     sidebar = Sidebar()
                     sidebar.type = u"sidebar_term"
                     sidebar.children = me.children
