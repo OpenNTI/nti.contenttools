@@ -28,8 +28,6 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
-from nti.contenttools.util.string_replacer import single_to_plural_word
-from nti.contenttools.util.string_replacer import plural_to_single_word
 
 def adapt(fragment, epub=None):
     body = fragment.find('body')
@@ -297,9 +295,7 @@ def search_and_update_glossary_entries(root,sidebars):
         term = render_output(root.term).strip()
         term_lower = term.lower()
         term_capital = term.title()
-        term_single = single_to_plural_word(term)
-        term_plural = plural_to_single_word(term)
-        terms = (term, term_lower, term_capital, term_plural, term_single, )
+        terms = (term, term_lower, term_capital)
         for word in terms:
             if word in sidebars.keys():
                 root.definition = sidebars[word]
