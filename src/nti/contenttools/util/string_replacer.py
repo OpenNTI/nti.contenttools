@@ -73,13 +73,6 @@ def create_label(label_type, arg):
 
 	return u'\\label{%s:%s}' % (label_type, arg) 
 
-def capital_to_lower_case(text):
-	words = text.split()
-	result = []
-	for word in words:
-		result.append(word.lower())
-	new_text = u' '.join(result)
-	return new_text
 
 def single_to_plural_word(word):
 	end_char = ['ch', 'x', 's']
