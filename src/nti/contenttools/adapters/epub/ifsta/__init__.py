@@ -46,7 +46,11 @@ def adapt(fragment, epub=None):
         captions = process_paragraph_captions(epub.captions)
         search_and_update_figure_caption(epub_body, captions)
         remove_paragraph_caption_from_epub_body(epub_body)
-
+    else:
+        snodes = []
+        search_sidebar_head_and_body(epub_body, snodes)
+        process_sidebar_head_and_body(snodes)
+        
     return epub_body
 
 
@@ -241,4 +245,24 @@ def remove_paragraph_caption_from_epub_body(root):
 
 
 def search_sidebar_head_and_body(root, nodes):
-    pass
+    if ISidebar.providedBy(root):
+        if root.type == u'sidebar-head':
+            nodes.append(root)
+    if ITextNode.providedBy(root):
+        pass
+    elif root.children is not None:
+        for child in root.children:
+            if IParagraph.providedBy(child):
+                if child.element_type == u"sidebars-body":
+                    nodes.append(child)
+            else:
+                search_sidebar_head_and_body(child, nodes)
+                
+def process_sidebar_head_and_body(nodes):
+    for child in nodes:
+        if ISidebar.providedBy(child):
+            sidebar = child
+        else:
+            parent = child.__parent__
+            parent.children.remove(child)
+            sidebar.add(child)
