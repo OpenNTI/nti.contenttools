@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from docutils.nodes import definition
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -1318,6 +1319,22 @@ class IGlossaryTerm(IDocumentStructureNode):
     """
     Node for glossary term
     """
+    
+class IGlossaryEntry(IDocumentStructureNode):
+    """
+    Node for glossary entry (better one)
+    """
+    term = Variant((Object(IDocumentStructureNode),
+                    ValidTextLine()), 
+                   title="Glossary Term",
+                   required=True,
+                   default=u'')
+    
+    definition = Variant((Object(IDocumentStructureNode),
+                          ValidTextLine()), 
+                         title="Glossary Definition",
+                         required=True,
+                         default=u'') 
 
 
 class ISolution (IDocumentStructureNode):

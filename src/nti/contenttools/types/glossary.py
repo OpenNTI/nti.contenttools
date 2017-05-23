@@ -17,6 +17,7 @@ from nti.contenttools.types.interfaces import IGlossaryDD
 from nti.contenttools.types.interfaces import IGlossaryItem
 from nti.contenttools.types.interfaces import IGlossaryList
 from nti.contenttools.types.interfaces import IGlossaryTerm
+from nti.contenttools.types.interfaces import IGlossaryEntry
 from nti.contenttools.types.interfaces import IGlossaryDefinition
 
 from nti.contenttools.types.node import DocumentStructureNode
@@ -75,3 +76,7 @@ class GlossaryTerm(DocumentStructureNode):
 @interface.implementer(IGlossaryDefinition)
 class GlossaryDefinition(DocumentStructureNode):
     createFieldProperties(IGlossaryDefinition)
+
+@interface.implementer(IGlossaryEntry)
+class GlossaryEntry(DocumentStructureNode):
+    createFieldProperties(IGlossaryEntry)

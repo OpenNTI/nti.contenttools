@@ -128,6 +128,7 @@ from nti.contenttools.types.glossary import GlossaryDD
 from nti.contenttools.types.glossary import GlossaryList
 from nti.contenttools.types.glossary import GlossaryItem
 from nti.contenttools.types.glossary import GlossaryTerm
+from nti.contenttools.types.glossary import GlossaryEntry
 from nti.contenttools.types.glossary import GlossaryDefinition
 
 from nti.contenttools.types.footnote import Footnote

@@ -71,7 +71,7 @@ def examine_div_element_for_sidebar(el, caption, body_text):
 def process_div_elements(element, parent, epub=None):
     el = Run.process(element, epub=epub)
     
-    if epub.epub_type == 'ifsta':
+    if epub is not None and epub.epub_type == 'ifsta':
         logger.info(epub.epub_type)
     # need to check if there the div has sidebar-head and sidebar-text
         caption = Run()
