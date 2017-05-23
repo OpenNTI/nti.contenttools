@@ -31,6 +31,11 @@ def adapt(fragment, epub=None):
     # The next line only work for IFSTA fixed (to reduce the amount of
     # unnessary text)
     epub_body.children.pop(0)
+    
+    sidebars = {}
+    labels = []
+    search_sidebar_term(epub_body, sidebars, labels)
+    logger.info(labels)
 
     if epub.epub_type == 'ifsta':
         # ifsta epub has what is called sidebar info
@@ -266,3 +271,20 @@ def process_sidebar_head_and_body(nodes):
             parent = child.__parent__
             parent.children.remove(child)
             sidebar.add(child)
+
+def generate_glossary_term_from_sidebar(epub_body, glossary_terms, glossary_labels):
+    search_sidebar_term(epub_body, glossary_terms, glossary_labels)
+
+
+def search_sidebar_term(root, sidebars, labels):
+    if ISidebar.providedBy(root):
+        if root.type == u"sidebar_term":
+            sidebars[root.title] = root.base
+            if root.label:
+                label = root.label.replace('\\label', '\\ref')
+                label = u'%s\\\\\n' % (label)
+                labels.append(label)
+    elif hasattr(root, u'children'):
+        for node in root:
+            search_sidebar_term(node, sidebars, labels)
+    return sidebars
