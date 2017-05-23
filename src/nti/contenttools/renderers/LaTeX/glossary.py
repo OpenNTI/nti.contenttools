@@ -9,8 +9,6 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-import six
-
 from zope import component
 from zope import interface
 
@@ -20,8 +18,9 @@ from nti.contenttools.types.interfaces import IGlossaryEntry
 
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 
+
 def render_glossary_entry(context, node):
-    term  = get_variant_field_string_value(node.term)
+    term = get_variant_field_string_value(node.term)
     definition = get_variant_field_string_value(node.definition)
     context.write(u'\\ntiglossaryentry{')
     context.write(term)
@@ -29,6 +28,7 @@ def render_glossary_entry(context, node):
     context.write(definition)
     context.write(u'}')
     return node
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
