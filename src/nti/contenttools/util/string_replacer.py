@@ -71,31 +71,4 @@ def create_label(label_type, arg):
 	for ch in FORBIDDEN_CHARACTERS :
 		if ch in arg : arg = arg.replace(ch, u'_')
 
-	return u'\\label{%s:%s}' % (label_type, arg) 
-
-
-def single_to_plural_word(word):
-	end_char = ['ch', 'x', 's']
-	length = len(word)
-	if length == 0:
-		return word
-	elif word[length-1] in end_char:
-		return word + u'es'
-	elif word[length-2:length-1] in end_char:
-		return word + u'es'
-	else:
-		return word + u's'
-
-def plural_to_single_word(word):
-	length = len(word)
-	end_char = ['ch', 'x', 's']
-	if length == 0:
-		return word
-	elif word[length-2:length-1] == 'es' and word[length-1] in end_char:
-		return word[0:length-3]
-	elif word[length-2:length-1] == 'es' and word[length-2:length-1] in end_char:
-		return word[0:length-3]
-	elif word[length-1] == 's':
-		return word[0:length-2]
-	else:
-		return word
+	return u'\\label{%s:%s}' % (label_type, arg)
