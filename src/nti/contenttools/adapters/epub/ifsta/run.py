@@ -117,7 +117,7 @@ def process_span_elements(element, epub=None):
                 el = Run()
                 t_el = Run()
                 check_element_text(t_el,element)
-                #t_el.styles.append('bold')
+                t_el.styles.append('bold')
                 glossary = GlossaryEntry()
                 glossary.term = t_el
                 el.add(glossary)
