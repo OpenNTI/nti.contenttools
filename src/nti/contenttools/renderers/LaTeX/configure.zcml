@@ -463,6 +463,12 @@
 		 for="nti.contenttools.types.interfaces.IProblem"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+	
+	<!-- Glossary -->
+	<adapter factory=".glossary.GlossaryEntryRenderer"
+		 for="nti.contenttools.types.interfaces.IGlossaryEntry"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 		 
 	<!-- Docx Table -->
 	<adapter factory=".docx_table.DocxTableRenderer"
