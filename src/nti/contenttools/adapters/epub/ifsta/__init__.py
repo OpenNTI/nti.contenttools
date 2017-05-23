@@ -136,6 +136,8 @@ def check_child(node, element, epub=None):
             node.add_child(Image.process(child, epub=epub))
         elif child.tag == 'figure':
             node.add_child(Figure.process(child, epub=epub))
+        elif child.tag == 'br':
+            node.add_child(TextNode(u'\\\\\n'))
         elif not isinstance(child, HtmlComment):
             logger.warn('Unhandled %s child: %s.', element, child)
     return node
@@ -159,7 +161,7 @@ def search_sidebar_info(root, nodes):
             nodes.append(root)
     if ITextNode.providedBy(root):
         pass
-    else:
+    elif root.children is not None:
         for child in root.children:
             if IFigure.providedBy(child):
                 if child.floating == True and child.icon == True:

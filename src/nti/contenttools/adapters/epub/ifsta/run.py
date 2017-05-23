@@ -13,6 +13,7 @@ from nti.contenttools import types
 
 from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
+from nti.contenttools.adapters.epub.ifsta import check_element_tail
 
 from nti.contenttools.adapters.epub.ifsta.lists import Item
 from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
@@ -104,6 +105,7 @@ def process_span_elements(element, epub=None):
     span_class = u'span_%s' % span_class.replace('-', '_')
     if 'bullet' in span_class:
         el = Run()
+        check_element_tail(el, element)
         el.element_type = 'bullet'
     elif 'NOTE' in span_class:
         el = Run.process(element, epub=epub)
