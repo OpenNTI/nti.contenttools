@@ -5,6 +5,8 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from docutils.nodes import sidebar
+from lib2to3.pgen2.tokenize import Single
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -17,13 +19,18 @@ from nti.contenttools._compat import unicode_
 
 from nti.contenttools.types import TextNode
 
-from nti.contenttools.types.interfaces import IFigure
+from nti.contenttools.types.interfaces import IFigure, IGlossaryEntry
 from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
 
 from nti.contenttools.renderers.LaTeX.base import render_output
+from nti.contenttools.renderers.LaTeX.base import render_children_output
+from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
+from nti.contenttools.util.string_replacer import single_to_plural_word
+from nti.contenttools.util.string_replacer import plural_to_single_word
+from nti.contenttools.util.string_replacer import capital_to_lower_case
 
 def adapt(fragment, epub=None):
     body = fragment.find('body')
@@ -31,7 +38,7 @@ def adapt(fragment, epub=None):
     # The next line only work for IFSTA fixed (to reduce the amount of
     # unnessary text)
     epub_body.children.pop(0)
-
+    
     if epub.epub_type == 'ifsta':
         # ifsta epub has what is called sidebar info
         # each sidebar info has icon,
@@ -47,6 +54,11 @@ def adapt(fragment, epub=None):
         search_and_update_figure_caption(epub_body, captions)
         remove_paragraph_caption_from_epub_body(epub_body)
     else:
+        sidebars = {}
+        search_sidebar_terms(epub_body, sidebars)
+        logger.info(sidebars.keys())
+        search_and_update_glossary_entries(epub_body,sidebars)
+        
         snodes = []
         search_sidebar_head_and_body(epub_body, snodes)
         process_sidebar_head_and_body(snodes)
@@ -266,3 +278,30 @@ def process_sidebar_head_and_body(nodes):
             parent = child.__parent__
             parent.children.remove(child)
             sidebar.add(child)
+
+def search_sidebar_terms(root, sidebars):
+    if ISidebar.providedBy(root):
+        if root.type == u"sidebar_term":
+            search_run_node_and_remove_styles(root)
+            base = render_children_output(root)
+            str_pos = base.find('-')
+            if str_pos > -1:
+                term = base[0:str_pos].strip()
+                sidebars[term] = base
+    elif hasattr(root, u'children'):
+        for node in root:
+            search_sidebar_terms(node, sidebars)
+            
+def search_and_update_glossary_entries(root,sidebars):
+    if IGlossaryEntry.providedBy(root):
+        search_run_node_and_remove_styles(root.term)
+        term = render_output(root.term).strip()
+        term_lower = capital_to_lower_case(term)
+        term_single = single_to_plural_word(term)
+        term_plural = plural_to_single_word(term)
+        terms = (term, term_lower, term_plural, term_single)
+        if any(word in terms for word in sidebars.keys()):
+            root.definition = sidebars[term]
+    elif hasattr(root, u'children'):
+        for node in root:
+            search_and_update_glossary_entries(node, sidebars)
