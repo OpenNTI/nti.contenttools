@@ -31,7 +31,7 @@ from nti.contenttools.util.string_replacer import rename_filename
 from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import IEPUBBody
 
-EPUB_COURSE_TYPE = (u'ifsta')
+EPUB_COURSE_TYPE = (u'ifsta', u'ifsta_rf')
 
 
 class EPUBParser(object):
@@ -79,7 +79,7 @@ class EPUBParser(object):
         for item in epub_reader.spine:
             fragment = docfrags[item]
             self.current_dir = item
-            if self.epub_type == 'ifsta':
+            if self.epub_type == 'ifsta' or self.epub_type == 'ifsta_rf':
                 epub_chapter = adapt_ifsta(fragment, self)
             else:
                 pass
