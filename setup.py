@@ -4,11 +4,7 @@ from setuptools import setup, find_packages
 VERSION = '0.0.0'
 
 TESTS_REQUIRE = [
-    'fudge',
-    'nose2[coverage_plugin]',
     'nti.testing',
-    'pyhamcrest',
-    'z3c.baseregistry',
     'zope.testrunner',
 ]
 
@@ -43,6 +39,7 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: Implementation :: CPython',
     ],
     packages=find_packages('src'),
     package_dir={'': 'src'},
@@ -51,7 +48,6 @@ setup(
         'setuptools',
         'docutils',
         'lxml',
-        'nltk',
         'nti.contentfragments',
         'nti.schema',
         'Pillow',
@@ -63,6 +59,7 @@ setup(
         'zope.location',
         'zope.security',
         'zope.traversing',
+        'zopyx.txng3.ext',
     ],
     extras_require={
         'test': TESTS_REQUIRE,
