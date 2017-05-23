@@ -48,6 +48,7 @@ setup(
         'setuptools',
         'docutils',
         'lxml',
+        'nltk',
         'nti.contentfragments',
         'nti.schema',
         'Pillow',
