@@ -70,15 +70,15 @@ def examine_div_element_for_sidebar(el, caption, body_text):
 
 def process_div_elements(element, parent, epub=None):
     el = Run.process(element, epub=epub)
-    
+
     if epub is not None and epub.epub_type == 'ifsta':
         logger.info(epub.epub_type)
-    # need to check if there the div has sidebar-head and sidebar-text
+        # need to check if there the div has sidebar-head and sidebar-text
         caption = Run()
         body_text = Run()
         caption, body_text = examine_div_element_for_sidebar(el,
-                                                         caption,
-                                                         body_text)
+                                                             caption,
+                                                             body_text)
         if caption.children and body_text.children:
             new_el = Sidebar()
             new_el.title = caption
@@ -128,4 +128,3 @@ def check_span_child(span_node):
             if child.endswith('-'):
                 logger.info(child)
                 child = child[:-1]
-                logger.info(child)
