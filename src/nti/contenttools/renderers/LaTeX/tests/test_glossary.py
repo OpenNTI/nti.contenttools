@@ -18,17 +18,18 @@ from nti.contenttools.types.text import TextNode
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestGlossary(ContentToolsTestCase):
+
     def test_glossary_entry(self):
         node = GlossaryEntry()
-        
+
         term = TextNode(u'term')
         definition = TextNode(u'definition')
-        
+
         node.term = term
         node.definition = definition
-        
+
         output = render_output(node)
-        
-        assert_that(output,is_(u'\\ntiglossaryentry{term}{definition}'))
-        
+
+        assert_that(output, is_(u'\\ntiglossaryentry{term}{definition}'))

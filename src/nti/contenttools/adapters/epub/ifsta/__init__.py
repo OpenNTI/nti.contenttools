@@ -5,8 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from docutils.nodes import sidebar
-from lib2to3.pgen2.tokenize import Single
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -35,7 +33,7 @@ def adapt(fragment, epub=None):
     # The next line only work for IFSTA fixed (to reduce the amount of
     # unnessary text)
     epub_body.children.pop(0)
-    
+
     if epub.epub_type == 'ifsta':
         # ifsta epub has what is called sidebar info
         # each sidebar info has icon,
@@ -54,12 +52,12 @@ def adapt(fragment, epub=None):
         sidebars = {}
         search_sidebar_terms(epub_body, sidebars)
         logger.info(sidebars.keys())
-        search_and_update_glossary_entries(epub_body,sidebars)
-        
+        search_and_update_glossary_entries(epub_body, sidebars)
+
         snodes = []
         search_sidebar_head_and_body(epub_body, snodes)
         process_sidebar_head_and_body(snodes)
-        
+
     return epub_body
 
 
@@ -266,7 +264,8 @@ def search_sidebar_head_and_body(root, nodes):
                     nodes.append(child)
             else:
                 search_sidebar_head_and_body(child, nodes)
-                
+
+
 def process_sidebar_head_and_body(nodes):
     for child in nodes:
         if ISidebar.providedBy(child):
@@ -275,6 +274,7 @@ def process_sidebar_head_and_body(nodes):
             parent = child.__parent__
             parent.children.remove(child)
             sidebar.add(child)
+
 
 def search_sidebar_terms(root, sidebars):
     if ISidebar.providedBy(root):
@@ -288,8 +288,9 @@ def search_sidebar_terms(root, sidebars):
     elif hasattr(root, u'children'):
         for node in root:
             search_sidebar_terms(node, sidebars)
-            
-def search_and_update_glossary_entries(root,sidebars):
+
+
+def search_and_update_glossary_entries(root, sidebars):
     if IGlossaryEntry.providedBy(root):
         search_run_node_and_remove_styles(root.term)
         term = render_output(root.term).strip()

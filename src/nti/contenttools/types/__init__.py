@@ -11,11 +11,11 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from nti.contenttools import unicode_to_latex
+
 from nti.contentfragments.interfaces import PlainTextContentFragment
 
 from nti.contentfragments.latex import PlainTextToLatexFragmentConverter
-
-from .. import unicode_to_latex
 
 from nti.contenttools.types.document import Body
 from nti.contenttools.types.document import Document
@@ -176,6 +176,7 @@ from nti.contenttools.types.link import Hyperlink
 from nti.contenttools.types.alternate_content import AlternateContent
 from nti.contenttools.types.alternate_content import TextBoxContent
 
+
 class Newline(DocumentStructureNode):
     pass
 
@@ -189,6 +190,7 @@ class Label(DocumentStructureNode):
     def __init__(self, name=''):
         super(Label, self).__init__()
         self.name = name
+
 
 class OpenstaxAttributions(DocumentStructureNode):
     pass
@@ -206,9 +208,8 @@ class NaqSymmathPart(DocumentStructureNode):
 
     def __init__(self):
         self.text = u''
-        self.solution = u''
         self.label = u''
-
+        self.solution = u''
 
 class NaqSymmathPartSolution(DocumentStructureNode):
     pass
