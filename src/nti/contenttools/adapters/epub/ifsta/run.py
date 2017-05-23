@@ -11,6 +11,8 @@ logger = __import__('logging').getLogger(__name__)
 
 from nti.contenttools import types
 
+from nti.contenttools.types.glossary import GlossaryEntry
+
 from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
 from nti.contenttools.adapters.epub.ifsta import check_element_tail
@@ -97,6 +99,7 @@ def check_paragraph_bullet(el):
 
 
 def process_span_elements(element, epub=None):
+    glossary_span_class_lists = (u'span_CharOverride_17', )
     attrib = element.attrib
     span_class = attrib['class'] if u'class' in attrib else u''
     span_class = u'span_%s' % span_class.replace('-', '_')
@@ -110,15 +113,27 @@ def process_span_elements(element, epub=None):
     else:
         el = Run.process(element, epub=epub)
         if epub is not None and span_class in epub.css_dict:
-            if 'fontStyle' in epub.css_dict[span_class]:
-                style = epub.css_dict[span_class]['fontStyle']
-                if style == 'italic':
-                    el.styles.append(style)
-            if 'fontWeight' in epub.css_dict[span_class]:
-                weight = epub.css_dict[span_class]['fontWeight']
-                if weight == 'bold':
-                    el.styles.append(weight)
-    check_span_child(el)
+            if epub.epub_type == 'ifsta_rf' and span_class in glossary_span_class_lists:
+                el = Run()
+                t_el = Run()
+                check_element_text(t_el,element)
+                t_el.styles.append('bold')
+                glossary = GlossaryEntry()
+                glossary.term = t_el
+                el.add(glossary)
+                check_element_tail(el, element)
+            else:
+                if 'fontStyle' in epub.css_dict[span_class]:
+                    style = epub.css_dict[span_class]['fontStyle']
+                    if style == 'italic':
+                        el.styles.append(style)
+                if 'fontWeight' in epub.css_dict[span_class]:
+                    weight = epub.css_dict[span_class]['fontWeight']
+                    if weight == 'bold':
+                        el.styles.append(weight)
+                    
+    if epub is not None and epub.epub_type == u'ifsta':
+        check_span_child(el)
     return el
 
 
