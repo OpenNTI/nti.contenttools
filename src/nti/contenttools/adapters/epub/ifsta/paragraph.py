@@ -45,8 +45,10 @@ class Paragraph(types.Paragraph):
         me.styles.extend(styles)
         captions = (u'Caption ParaOverride-1',)
         sidebars_heads = (u'Caution-Warning-Heads ParaOverride-1',
+                          u'Caution-Warning-Heads',
                           u'sidebars-heads ParaOverride-1',)
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
+                         u'Caution-Warning-Text',
                          u'sidebars-body-text ParaOverride-1',)
         if u'class' in attrib:
             if attrib['class'] != u"ParaOverride-1":
