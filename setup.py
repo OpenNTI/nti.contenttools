@@ -51,6 +51,9 @@ setup(
         'setuptools',
         'docutils',
         'lxml',
+        'nltk',
+        'nti.contentfragments',
+        'nti.schema',
         'Pillow',
         'simplejson',
         'six',
@@ -60,8 +63,6 @@ setup(
         'zope.location',
         'zope.security',
         'zope.traversing',
-        'nti.contentfragments',
-        'nti.schema'
     ],
     extras_require={
         'test': TESTS_REQUIRE,
