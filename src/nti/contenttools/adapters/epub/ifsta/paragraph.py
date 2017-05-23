@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from nti.contenttools.renderers.LaTeX.base import render_output
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -27,7 +28,7 @@ from nti.contenttools.types.interfaces import ITextNode
 
 class Paragraph(types.Paragraph):
 
-    bullet_list = (u'Bullet ParaOverride-1',)
+    bullet_list = (u'Bullet ParaOverride-1', u'Bullet')
     bold_italic_text = ('C-Head ParaOverride-1',)
     sidebar_list = (u'Case-History ParaOverride-1',)
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head',)
