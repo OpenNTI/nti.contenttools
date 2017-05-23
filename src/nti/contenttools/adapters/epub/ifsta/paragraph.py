@@ -51,6 +51,7 @@ class Paragraph(types.Paragraph):
                          u'Caution-Warning-Text',
                          u'sidebars-body-text ParaOverride-1',)
         definition_list = (u'definition',)
+
         if u'class' in attrib:
             if attrib['class'] != u"ParaOverride-1":
                 me = check_element_text(me, element)
