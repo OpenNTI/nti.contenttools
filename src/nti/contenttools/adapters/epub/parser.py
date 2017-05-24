@@ -54,6 +54,8 @@ class EPUBParser(object):
         
         self.figures = []
         self.figure_node = []
+
+        self.sidebar_term_nodes = []
         
         self.section_list = []
         self.subsection_list = []
@@ -101,8 +103,8 @@ class EPUBParser(object):
                     self.write_to_file(context.read(),
                                        self.reading_def_dir,
                                        tex_filename)
-
-                    generate_glossary_term_from_sidebar(epub_chapter,
+                    if self.epub_type == u'ifsta':
+                        generate_glossary_term_from_sidebar(epub_chapter,
                                                         self.glossary_terms,
                                                         self.glossary_labels)
                 else:
@@ -115,6 +117,17 @@ class EPUBParser(object):
             self.process_support_files()
 
     def process_support_files(self):
+        if self.epub_type == 'ifsta_rf':
+            content_fig = self.generate_figure_tex()
+            self.write_to_file(content_fig,
+                self.output_directory,
+                'Figures.tex')
+
+            content_sidebar_term = self.generate_sidebar_terms_nodes()
+            self.write_to_file(content_sidebar_term,
+                self.output_directory,
+                'SidebarTerms.tex')
+
         section_labels = generate_sectioning_list(self.section_list,
                                                   u'section')
         subsection_labels = generate_sectioning_list(self.subsection_list,
@@ -142,17 +155,24 @@ class EPUBParser(object):
         self.write_to_file(
             figure_labels, self.output_directory, 'figure_labels.json')
 
-        if self.epub_type == 'ifsta_rf':
-            content_fig = self.generate_figure_tex()
-            self.write_to_file(content_fig,
-                self.output_directory,
-                'Figures.tex')
 
     def generate_figure_tex(self):
         figures = []
         for fig in self.figure_node:
             figures.append(render_output(fig))
         content = u'\n'.join(figures)
+        return content
+
+    def generate_sidebar_terms_nodes(self):
+        sidebars = []
+        for sidebar in self.sidebar_term_nodes:
+            self.glossary_terms[sidebar.title] = sidebar.base
+            if sidebar.label:
+                label = root.label.replace('\\label', '\\ref')
+                label = u'%s\\\\\n' % (label)
+                self.glossary_labels.append(label)
+            sidebars.append(render_output(sidebar))
+        content = u'\n'.join(sidebars)
         return content
 
     def create_main_latex(self):

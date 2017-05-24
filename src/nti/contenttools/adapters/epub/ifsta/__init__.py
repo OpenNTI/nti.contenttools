@@ -51,8 +51,7 @@ def adapt(fragment, epub=None):
         remove_paragraph_caption_from_epub_body(epub_body)
     else:
         sidebars = {}
-        search_sidebar_terms(epub_body, sidebars)
-        logger.info(sidebars.keys())
+        search_sidebar_terms(epub_body, sidebars, epub.sidebar_term_nodes)
         search_and_update_glossary_entries(epub_body, sidebars)
 
         snodes = []
@@ -282,7 +281,7 @@ def process_sidebar_head_and_body(nodes):
             sidebar.add(child)
 
 
-def search_sidebar_terms(root, sidebars):
+def search_sidebar_terms(root, sidebars, sidebar_nodes):
     if ISidebar.providedBy(root):
         if root.type == u"sidebar_term":
             search_run_node_and_remove_styles(root)
@@ -291,9 +290,13 @@ def search_sidebar_terms(root, sidebars):
             if str_pos > -1:
                 term = base[0:str_pos].strip()
                 sidebars[term] = base
+            sidebar_nodes.append(root)
+            parent = root.__parent__
+            parent.children.remove(root)
+
     elif hasattr(root, u'children'):
         for node in root:
-            search_sidebar_terms(node, sidebars)
+            search_sidebar_terms(node, sidebars, sidebar_nodes)
 
 
 def search_and_update_glossary_entries(root, sidebars):
