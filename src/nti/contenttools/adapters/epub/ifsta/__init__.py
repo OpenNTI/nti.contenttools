@@ -61,9 +61,8 @@ def adapt(fragment, epub=None):
 
         captions = update_caption_list(epub.caption_list)
 
-        figures = []
         search_and_update_figure_caption_reflowable(
-            epub_body, captions, figures)
+            epub_body, captions, epub.figure_node)
 
     return epub_body
 
@@ -332,9 +331,10 @@ def search_and_update_figure_caption_reflowable(root, captions, figures):
                 new_cap = new_cap.replace(token, u'')
                 root.caption = new_cap.rstrip()
                 figures.append(root)
+                parent = root.__parent__
+                parent.children.remove(root)
             else:
                 logger.warn('CAPTION NOT FOUND >> %s', old_cap)
     if hasattr(root, u'children'):
         for node in root:
-            search_and_update_figure_caption_reflowable(
-                node, captions, figures)
+            search_and_update_figure_caption_reflowable(node, captions, figures)

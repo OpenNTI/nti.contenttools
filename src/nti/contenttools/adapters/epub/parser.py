@@ -23,6 +23,7 @@ from nti.contenttools.adapters.epub.ifsta import adapt as adapt_ifsta
 from nti.contenttools.renderers.model import DefaultRendererContext
 
 from nti.contenttools.renderers.LaTeX.base import render_node
+from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.renderers.LaTeX.utils import create_label
 
@@ -52,6 +53,7 @@ class EPUBParser(object):
         self.glossary_terms = {}
         
         self.figures = []
+        self.figure_node = []
         
         self.section_list = []
         self.subsection_list = []
@@ -139,6 +141,19 @@ class EPUBParser(object):
                                    indent='\t')
         self.write_to_file(
             figure_labels, self.output_directory, 'figure_labels.json')
+
+        if self.epub_type == 'ifsta_rf':
+            content_fig = self.generate_figure_tex()
+            self.write_to_file(content_fig,
+                self.output_directory,
+                'Figures.tex')
+
+    def generate_figure_tex(self):
+        figures = []
+        for fig in self.figure_node:
+            figures.append(render_output(fig))
+        content = u'\n'.join(figures)
+        return content
 
     def create_main_latex(self):
         if not self.reading_def_dir:
