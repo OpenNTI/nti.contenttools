@@ -103,7 +103,6 @@ def check_child(node, element, epub=None):
 
     from nti.contenttools.adapters.epub.ifsta.run import Run
     from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
-    from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
 
     from nti.contenttools.adapters.epub.ifsta.table import Table
     from nti.contenttools.adapters.epub.ifsta.link import Hyperlink
@@ -112,8 +111,6 @@ def check_child(node, element, epub=None):
         processor = component.queryUtility(IChildProcessor, name=child.tag)
         if processor is not None:
             processor.process(child, node, element, epub=epub)
-        elif child.tag == 'span':
-            node.add_child(process_span_elements(child, epub=epub))
         elif child.tag == 'a':
             node.add_child(Hyperlink.process(child, epub=epub))
         elif child.tag == 'b':
