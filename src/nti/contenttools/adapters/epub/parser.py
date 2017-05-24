@@ -47,6 +47,7 @@ class EPUBParser(object):
 
         self.css_dict = {}
         self.captions = {}
+        self.caption_list = []
         self.figure_labels = {}
         self.glossary_terms = {}
         
