@@ -18,6 +18,8 @@ from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
 from nti.contenttools.adapters.epub.ifsta.run import Run
 from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
 
+from nti.contenttools.adapters.epub.ifsta.link import Hyperlink
+
 
 @interface.implementer(IChildProcessor)
 class _ParagraphChildProcessor(object):
@@ -48,5 +50,15 @@ class _SpanChildProcessor(object):
 
     def process(self, child, node, element, epub=None):
         result = process_span_elements(child, epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _HyperlinkChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Hyperlink.process(child, epub=epub)
         node.add_child(result)
         return result
