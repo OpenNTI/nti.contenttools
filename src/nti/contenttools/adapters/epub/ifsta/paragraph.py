@@ -43,7 +43,7 @@ class Paragraph(types.Paragraph):
         if 'id' in attrib:
             me.label = attrib['id']
         me.styles.extend(styles)
-        captions = (u'Caption ParaOverride-1',)
+        captions = (u'Caption ParaOverride-1', u'Caption', )
         sidebars_heads = (u'Caution-Warning-Heads ParaOverride-1',
                           u'Caution-Warning-Heads',
                           u'sidebars-heads ParaOverride-1',)
@@ -99,9 +99,10 @@ class Paragraph(types.Paragraph):
                     me.add_child(types.TextNode("\\\\\n"))
                 elif attrib['class'] in captions:
                     me.element_type = u'caption'
-                    token = get_caption_token(me.children[1]).rstrip()
-                    me.children = me.children[2:]
-                    epub.captions[token] = me
+                    if epub is not None and epub.epub_type == u'ifsta':
+                        token = get_caption_token(me.children[1]).rstrip()
+                        me.children = me.children[2:]
+                        epub.captions[token] = me
                 elif any(s in attrib['class'] for s in definition_list):
                     sidebar = Sidebar()
                     sidebar.type = u"sidebar_term"
