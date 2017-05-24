@@ -17,10 +17,11 @@ from nti.contenttools._compat import unicode_
 
 from nti.contenttools.types import TextNode
 
-from nti.contenttools.types.interfaces import IFigure, IGlossaryEntry
+from nti.contenttools.types.interfaces import IFigure
 from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
+from nti.contenttools.types.interfaces import IGlossaryEntry
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children_output
@@ -61,7 +62,8 @@ def adapt(fragment, epub=None):
         captions = update_caption_list(epub.caption_list)
 
         figures = []
-        search_and_update_figure_caption_reflowable(epub_body, captions, figures)
+        search_and_update_figure_caption_reflowable(
+            epub_body, captions, figures)
 
     return epub_body
 
@@ -311,11 +313,13 @@ def search_and_update_glossary_entries(root, sidebars):
         for node in root:
             search_and_update_glossary_entries(node, sidebars)
 
+
 def update_caption_list(captions):
     new_captions = []
     for caption in captions:
         new_captions.append(render_output(caption))
     return new_captions
+
 
 def search_and_update_figure_caption_reflowable(root, captions, figures):
     if IFigure.providedBy(root):
@@ -324,7 +328,7 @@ def search_and_update_figure_caption_reflowable(root, captions, figures):
             caps = [cap for cap in captions if old_cap in cap]
             if caps:
                 new_cap = caps[0]
-                token = u'Figure %s ' %(old_cap)
+                token = u'Figure %s ' % (old_cap)
                 new_cap = new_cap.replace(token, u'')
                 root.caption = new_cap.rstrip()
                 figures.append(root)
@@ -332,4 +336,5 @@ def search_and_update_figure_caption_reflowable(root, captions, figures):
                 logger.warn('CAPTION NOT FOUND >> %s', old_cap)
     if hasattr(root, u'children'):
         for node in root:
-            search_and_update_figure_caption_reflowable(node, captions, figures)
+            search_and_update_figure_caption_reflowable(
+                node, captions, figures)
