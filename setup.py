@@ -46,7 +46,6 @@ setup(
     namespace_packages=['nti'],
     install_requires=[
         'setuptools',
-        'docutils',
         'lxml',
         'nltk',
         'nti.contentfragments',
