@@ -25,6 +25,7 @@ from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
 
 from nti.contenttools.types.interfaces import ITextNode
 
+from nti.contenttools.renderers.LaTeX.base import render_output
 
 class Paragraph(types.Paragraph):
 
@@ -103,6 +104,11 @@ class Paragraph(types.Paragraph):
                         token = get_caption_token(me.children[1]).rstrip()
                         me.children = me.children[2:]
                         epub.captions[token] = me
+
+                    if epub is not None and epub.epub_type == u'ifsta_rf':
+                        epub.caption_list.append(me)
+                        me = Run()
+                        
                 elif any(s in attrib['class'] for s in definition_list):
                     sidebar = Sidebar()
                     sidebar.type = u"sidebar_term"
