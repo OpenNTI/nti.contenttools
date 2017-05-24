@@ -296,9 +296,11 @@ def search_and_update_glossary_entries(root, sidebars):
         term = render_output(root.term).strip()
         term_lower = term.lower()
         term_capital = term.title()
-        terms = (term, term_lower, term_capital)
+        terms = (term, term_lower, term_capital,)
         for word in terms:
             if word in sidebars.keys():
+                logger.info(term)
+                logger.info(word)
                 root.definition = sidebars[word]
     elif hasattr(root, u'children'):
         for node in root:

@@ -31,7 +31,7 @@ class Paragraph(types.Paragraph):
     bullet_list = (u'Bullet ParaOverride-1', u'Bullet')
     bold_italic_text = ('C-Head ParaOverride-1',)
     sidebar_list = (u'Case-History ParaOverride-1',)
-    subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head',)
+    subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD')
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride',)
 
