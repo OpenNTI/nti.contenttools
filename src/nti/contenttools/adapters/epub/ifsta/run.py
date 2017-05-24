@@ -28,7 +28,7 @@ from nti.contenttools.types.interfaces import ITextNode
 class Run(types.Run):
 
     @classmethod
-    def process(cls, element, styles=[], reading_type=None, epub=None):
+    def process(cls, element, styles=(), reading_type=None, epub=None):
         me = cls()
         if 'id' in element.attrib:
             me.label = element.attrib['id']
