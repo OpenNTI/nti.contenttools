@@ -19,6 +19,8 @@ from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
 @interface.implementer(IChildProcessor)
 class _ParagraphChildProcessor(object):
 
+    __slots__ = ()
+
     def process(self, child, node, element, epub=None):
         result = Paragraph.process(child, [], epub=epub)
         node.add_child(result)
