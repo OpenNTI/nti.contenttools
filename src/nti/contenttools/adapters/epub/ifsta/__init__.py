@@ -113,8 +113,6 @@ def check_child(node, element, epub=None):
             processor.process(child, node, element, epub=epub)
         elif child.tag == 'a':
             node.add_child(Hyperlink.process(child, epub=epub))
-        elif child.tag == 'b':
-            node.add_child(Run.process(child, ['bold'], epub=epub))
         elif child.tag == 'i':
             node.add_child(Run.process(child, ['italic'], epub=epub))
         elif child.tag == 'u':

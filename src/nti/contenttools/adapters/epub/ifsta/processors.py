@@ -15,6 +15,7 @@ from nti.contenttools.adapters.epub.ifsta.interfaces import IChildProcessor
 
 from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
 
+from nti.contenttools.adapters.epub.ifsta.run import Run
 from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
 
 
@@ -25,6 +26,17 @@ class _ParagraphChildProcessor(object):
 
     def process(self, child, node, element, epub=None):
         result = Paragraph.process(child, [], epub=epub)
+        node.add_child(result)
+        return result
+
+
+@interface.implementer(IChildProcessor)
+class _BoldChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Run.process(child, [u'bold'], epub=epub)
         node.add_child(result)
         return result
 
