@@ -42,6 +42,76 @@ class _BoldChildProcessor(object):
         node.add_child(result)
         return result
 
+@interface.implementer(IChildProcessor)
+class _ItalicChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Run.process(child, (u'italic',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _UnderlineChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Run.process(child, (u'underline',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _StrongChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Run.process(child, (u'bold',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _StrikeChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Run.process(child, (u'strike',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _EmphasisChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Run.process(child, (u'italic',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _SubscriptChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Run.process(child, (u'sub',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _SuperscriptChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Run.process(child, (u'sup',), epub=epub)
+        node.add_child(result)
+        return result
+
 
 @interface.implementer(IChildProcessor)
 class _SpanChildProcessor(object):

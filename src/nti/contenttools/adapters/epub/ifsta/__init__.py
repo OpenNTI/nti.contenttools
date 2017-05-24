@@ -111,20 +111,6 @@ def check_child(node, element, epub=None):
         processor = component.queryUtility(IChildProcessor, name=child.tag)
         if processor is not None:
             processor.process(child, node, element, epub=epub)
-        elif child.tag == 'i':
-            node.add_child(Run.process(child, ['italic'], epub=epub))
-        elif child.tag == 'u':
-            node.add_child(Run.process(child, ['underline'], epub=epub))
-        elif child.tag == 'strong':
-            node.add_child(Run.process(child, ['bold'], epub=epub))
-        elif child.tag == 's':
-            node.add_child(Run.process(child, ['strike'], epub=epub))
-        elif child.tag == 'em' or child.tag == 'emphasis':
-            node.add_child(Run.process(child, ['italic'], epub=epub))
-        elif child.tag == 'sub':
-            node.add_child(Run.process(child, ['sub'], epub=epub))
-        elif child.tag == 'sup':
-            node.add_child(Run.process(child, ['sup'], epub=epub))
         elif child.tag == 'div':
             node.add_child(process_div_elements(child, node, epub=epub))
         elif child.tag == 'h1':
