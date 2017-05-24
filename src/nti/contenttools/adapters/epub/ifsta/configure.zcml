@@ -18,5 +18,12 @@
 	<utility factory=".processors._SpanChildProcessor" name="span" />
 	<utility factory=".processors._ParagraphChildProcessor" name="p" />
 	<utility factory=".processors._HyperlinkChildProcessor" name="a" />
+	<utility factory=".processors._HeadingOneChildProcessor" name="h1" />
+	<utility factory=".processors._HeadingTwoChildProcessor" name="h2" />
+	<utility factory=".processors._HeadingThreeChildProcessor" name="h3" />
+	<utility factory=".processors._HeadingFourChildProcessor" name="h4" />
+	<utility factory=".processors._HeadingFiveChildProcessor" name="h5" />
+	<utility factory=".processors._HeadingSixChildProcessor" name="h6" />
+	<utility factory=".processors._HeadingSevenChildProcessor" name="h7" />
 
 </configure>

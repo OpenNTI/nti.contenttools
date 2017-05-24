@@ -113,20 +113,6 @@ def check_child(node, element, epub=None):
             processor.process(child, node, element, epub=epub)
         elif child.tag == 'div':
             node.add_child(process_div_elements(child, node, epub=epub))
-        elif child.tag == 'h1':
-            node.add_child(Paragraph.process(child, ['Heading1'], epub=epub))
-        elif child.tag == 'h2':
-            node.add_child(Paragraph.process(child, ['Heading2'], epub=epub))
-        elif child.tag == 'h3':
-            node.add_child(Paragraph.process(child, ['Heading3'], epub=epub))
-        elif child.tag == 'h4':
-            node.add_child(Paragraph.process(child, ['Heading4'], epub=epub))
-        elif child.tag == 'h5':
-            node.add_child(Paragraph.process(child, ['Heading5'], epub=epub))
-        elif child.tag == 'h6':
-            node.add_child(Paragraph.process(child, ['Heading6'], epub=epub))
-        elif child.tag == 'h7':
-            node.add_child(Paragraph.process(child, ['Heading7'], epub=epub))
         elif child.tag == 'ol':
             node.add_child(OrderedList.process(child, epub=epub))
         elif child.tag == 'ul':

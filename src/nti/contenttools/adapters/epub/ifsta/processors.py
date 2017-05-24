@@ -132,3 +132,73 @@ class _HyperlinkChildProcessor(object):
         result = Hyperlink.process(child, epub=epub)
         node.add_child(result)
         return result
+
+@interface.implementer(IChildProcessor)
+class _HeadingOneChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Paragraph.process(child, ('Heading1',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _HeadingTwoChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Paragraph.process(child, ('Heading2',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _HeadingThreeChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Paragraph.process(child, ('Heading3',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _HeadingFourChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Paragraph.process(child, ('Heading4',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _HeadingFiveChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Paragraph.process(child, ('Heading5',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _HeadingSixChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Paragraph.process(child, ('Heading6',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _HeadingSevenChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Paragraph.process(child, ('Heading7',), epub=epub)
+        node.add_child(result)
+        return result
