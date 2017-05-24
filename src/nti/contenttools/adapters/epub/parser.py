@@ -166,12 +166,12 @@ class EPUBParser(object):
     def generate_sidebar_terms_nodes(self):
         sidebars = []
         for sidebar in self.sidebar_term_nodes:
+            sidebars.append(render_output(sidebar))
             self.glossary_terms[sidebar.title] = sidebar.base
             if sidebar.label:
-                label = root.label.replace('\\label', '\\ref')
+                label = sidebar.label.replace('\\label', '\\ref')
                 label = u'%s\\\\\n' % (label)
                 self.glossary_labels.append(label)
-            sidebars.append(render_output(sidebar))
         content = u'\n'.join(sidebars)
         return content
 
