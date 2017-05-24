@@ -99,9 +99,6 @@ def check_child(node, element, epub=None):
     from nti.contenttools.adapters.epub.ifsta.media import Image
     from nti.contenttools.adapters.epub.ifsta.media import Figure
 
-    from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
-
-    from nti.contenttools.adapters.epub.ifsta.run import Run
     from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
 
     from nti.contenttools.adapters.epub.ifsta.table import Table
