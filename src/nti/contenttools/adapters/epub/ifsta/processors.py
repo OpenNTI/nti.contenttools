@@ -42,6 +42,7 @@ class _BoldChildProcessor(object):
         node.add_child(result)
         return result
 
+
 @interface.implementer(IChildProcessor)
 class _ItalicChildProcessor(object):
 
@@ -51,6 +52,7 @@ class _ItalicChildProcessor(object):
         result = Run.process(child, (u'italic',), epub=epub)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _UnderlineChildProcessor(object):
@@ -62,6 +64,7 @@ class _UnderlineChildProcessor(object):
         node.add_child(result)
         return result
 
+
 @interface.implementer(IChildProcessor)
 class _StrongChildProcessor(object):
 
@@ -71,6 +74,7 @@ class _StrongChildProcessor(object):
         result = Run.process(child, (u'bold',), epub=epub)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _StrikeChildProcessor(object):
@@ -82,6 +86,7 @@ class _StrikeChildProcessor(object):
         node.add_child(result)
         return result
 
+
 @interface.implementer(IChildProcessor)
 class _EmphasisChildProcessor(object):
 
@@ -92,6 +97,7 @@ class _EmphasisChildProcessor(object):
         node.add_child(result)
         return result
 
+
 @interface.implementer(IChildProcessor)
 class _SubscriptChildProcessor(object):
 
@@ -101,6 +107,7 @@ class _SubscriptChildProcessor(object):
         result = Run.process(child, (u'sub',), epub=epub)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _SuperscriptChildProcessor(object):
@@ -123,6 +130,7 @@ class _SpanChildProcessor(object):
         node.add_child(result)
         return result
 
+
 @interface.implementer(IChildProcessor)
 class _HyperlinkChildProcessor(object):
 
@@ -133,15 +141,17 @@ class _HyperlinkChildProcessor(object):
         node.add_child(result)
         return result
 
+
 @interface.implementer(IChildProcessor)
 class _HeadingOneChildProcessor(object):
 
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, ('Heading1',), epub=epub)
+        result = Paragraph.process(child, (u'Heading1',), epub=epub)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _HeadingTwoChildProcessor(object):
@@ -149,9 +159,10 @@ class _HeadingTwoChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, ('Heading2',), epub=epub)
+        result = Paragraph.process(child, (u'Heading2',), epub=epub)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _HeadingThreeChildProcessor(object):
@@ -159,9 +170,10 @@ class _HeadingThreeChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, ('Heading3',), epub=epub)
+        result = Paragraph.process(child, (u'Heading3',), epub=epub)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _HeadingFourChildProcessor(object):
@@ -169,9 +181,10 @@ class _HeadingFourChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, ('Heading4',), epub=epub)
+        result = Paragraph.process(child, (u'Heading4',), epub=epub)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _HeadingFiveChildProcessor(object):
@@ -179,9 +192,10 @@ class _HeadingFiveChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, ('Heading5',), epub=epub)
+        result = Paragraph.process(child, (u'Heading5',), epub=epub)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _HeadingSixChildProcessor(object):
@@ -189,9 +203,10 @@ class _HeadingSixChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, ('Heading6',), epub=epub)
+        result = Paragraph.process(child, (u'Heading6',), epub=epub)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _HeadingSevenChildProcessor(object):
@@ -199,6 +214,6 @@ class _HeadingSevenChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, ('Heading7',), epub=epub)
+        result = Paragraph.process(child, (u'Heading7',), epub=epub)
         node.add_child(result)
         return result

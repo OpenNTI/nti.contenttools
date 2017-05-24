@@ -9,12 +9,14 @@
 	<!-- Utilities -->
 	<utility factory=".processors._BoldChildProcessor" name="b" />
 	<utility factory=".processors._ItalicChildProcessor" name="i" />
+	<utility factory=".processors._StrikeChildProcessor" name="s" />
 	<utility factory=".processors._UnderlineChildProcessor" name="u" />
 	<utility factory=".processors._StrongChildProcessor" name="strong" />
-	<utility factory=".processors._StrikeChildProcessor" name="strike" />
+
 	<utility factory=".processors._EmphasisChildProcessor" name="em" />
 	<utility factory=".processors._SubscriptChildProcessor" name="sub" />
 	<utility factory=".processors._SuperscriptChildProcessor" name="sup" />
+
 	<utility factory=".processors._SpanChildProcessor" name="span" />
 	<utility factory=".processors._ParagraphChildProcessor" name="p" />
 	<utility factory=".processors._HyperlinkChildProcessor" name="a" />
