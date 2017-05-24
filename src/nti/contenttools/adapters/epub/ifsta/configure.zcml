@@ -7,6 +7,7 @@
 	<include package="zope.component" />
 	
 	<!-- Utilities -->
+	<utility factory=".processors._SpanChildProcessor" name="span" />
 	<utility factory=".processors._ParagraphChildProcessor" name="p" />
 
 </configure>
