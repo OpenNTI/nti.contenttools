@@ -11,9 +11,13 @@ logger = __import__('logging').getLogger(__name__)
 
 from lxml.html import HtmlComment
 
+from zope import component
+
 from nti.contenttools import types
 
 from nti.contenttools._compat import unicode_
+
+from nti.contenttools.adapters.epub.ifsta.interfaces import IChildProcessor
 
 from nti.contenttools.types import TextNode
 
@@ -105,8 +109,9 @@ def check_child(node, element, epub=None):
     from nti.contenttools.adapters.epub.ifsta.link import Hyperlink
 
     for child in element:
-        if child.tag == 'p':
-            node.add_child(Paragraph.process(child, [], epub=epub))
+        processor = component.queryUtility(IChildProcessor, name=child.tag)
+        if processor is not None:
+            processor.process(child, node, element, epub=epub)
         elif child.tag == 'span':
             node.add_child(process_span_elements(child, epub=epub))
         elif child.tag == 'a':
