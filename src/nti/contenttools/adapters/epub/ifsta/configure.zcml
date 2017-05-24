@@ -10,5 +10,6 @@
 	<utility factory=".processors._BoldChildProcessor" name="b" />
 	<utility factory=".processors._SpanChildProcessor" name="span" />
 	<utility factory=".processors._ParagraphChildProcessor" name="p" />
+	<utility factory=".processors._HyperlinkChildProcessor" name="a" />
 
 </configure>
