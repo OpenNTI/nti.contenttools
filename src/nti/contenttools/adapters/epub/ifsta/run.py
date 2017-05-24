@@ -74,7 +74,6 @@ def process_div_elements(element, parent, epub=None):
     el = Run.process(element, epub=epub)
 
     if epub is not None and epub.epub_type == 'ifsta':
-        logger.info(epub.epub_type)
         # need to check if there the div has sidebar-head and sidebar-text
         caption = Run()
         body_text = Run()
@@ -113,7 +112,7 @@ def process_span_elements(element, epub=None):
     else:
         el = Run.process(element, epub=epub)
         if epub is not None and span_class in epub.css_dict:
-            if      epub.epub_type == 'ifsta_rf' \
+            if  epub.epub_type == 'ifsta_rf' \
                 and span_class in glossary_span_class_lists:
                 el = Run()
                 t_el = Run()
