@@ -36,7 +36,7 @@ class _BoldChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Run.process(child, ('bold',), epub=epub)
+        result = Run.process(child, (u'bold',), epub=epub)
         node.add_child(result)
         return result
 
