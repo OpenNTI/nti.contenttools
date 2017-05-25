@@ -61,7 +61,8 @@ class EPUBParser(object):
         self.subsection_list = []
         self.glossary_labels = []
 
-        self.epub_reader = EPUBReader(input_file, self)
+        self.epub_reader = EPUBReader(input_file)
+        self.epub_reader(self)
         main_title = rename_filename(self.epub_reader.title)
         self.book_title = main_title
         self.tex_main_file = u'MAIN_%s.tex' % main_title
