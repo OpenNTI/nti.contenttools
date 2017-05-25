@@ -27,11 +27,11 @@ from nti.contenttools.types.interfaces import ITextNode
 
 class Paragraph(types.Paragraph):
 
-    bullet_list = (u'Bullet ParaOverride-1', u'Bullet')
-    bold_italic_text = ('C-Head ParaOverride-1', 'C-Head')
+    bullet_list = (u'Bullet')
+    bold_italic_text = ('C-Head', 'C-HEAD')
     sidebar_list = (u'Case-History ParaOverride-1',)
-    subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD')
-    section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
+    subsection_list = (u'B-Head', u'B-HEAD')
+    section_list = (u'A-Head', u'A-HEAD', )
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride',)
 
     @classmethod
@@ -42,14 +42,14 @@ class Paragraph(types.Paragraph):
         if 'id' in attrib:
             me.label = attrib['id']
         me.styles.extend(styles)
-        captions = (u'Caption ParaOverride-1', u'Caption', )
-        sidebars_heads = (u'Caution-Warning-Heads ParaOverride-1',
-                          u'Caution-Warning-Heads',
-                          u'sidebars-heads ParaOverride-1',)
-        sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
-                         u'Caution-Warning-Text',
-                         u'sidebars-body-text ParaOverride-1',)
-        definition_list = (u'definition',)
+        captions = (u'Caption', u'caption',)
+        sidebars_heads = (u'Caution-Warning-Heads',
+                          u'sidebars-heads',
+                          u'Sidebars-Heads',)
+        sidebars_body = (u'Caution-Warning-Text',
+                         u'sidebars-body-text',
+                         u'Sidebars-Body-Text',)
+        definition_list = (u'definition', u'Definition')
 
         if u'class' in attrib:
             if attrib['class'] != u"ParaOverride-1":
@@ -86,17 +86,17 @@ class Paragraph(types.Paragraph):
                     new_item.children = me.children
                     bullet_class.children = [new_item]
                     me = bullet_class
-                elif attrib['class'] in sidebars_heads:
+                elif any(s in attrib['class'] for s in sidebars_heads):
                     me.element_type = u'sidebars-heads'
                     if epub.epub_type == u'ifsta_rf':
                         el = Sidebar()
                         el.type = u'sidebar-head'
                         el.title = me
                         me = el
-                elif attrib['class'] in sidebars_body:
+                elif any(s in attrib['class'] for s in sidebars_body):
                     me.element_type = u"sidebars-body"
                     me.add_child(types.TextNode("\\\\\n"))
-                elif attrib['class'] in captions:
+                elif any(s in attrib['class'] for s in captions):
                     me.element_type = u'caption'
                     if epub is not None and epub.epub_type == u'ifsta':
                         token = get_caption_token(me.children[1]).rstrip()
