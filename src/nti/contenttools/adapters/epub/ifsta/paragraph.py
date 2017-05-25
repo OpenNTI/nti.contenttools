@@ -45,10 +45,12 @@ class Paragraph(types.Paragraph):
         captions = (u'Caption ParaOverride-1', u'Caption', )
         sidebars_heads = (u'Caution-Warning-Heads ParaOverride-1',
                           u'Caution-Warning-Heads',
-                          u'sidebars-heads ParaOverride-1',)
+                          u'sidebars-heads ParaOverride-1',
+                          u'sidebars-heads',)
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
                          u'Caution-Warning-Text',
-                         u'sidebars-body-text ParaOverride-1',)
+                         u'sidebars-body-text ParaOverride-1',
+                         u'sidebars-body-text',)
         definition_list = (u'definition',)
 
         if u'class' in attrib:
@@ -86,14 +88,14 @@ class Paragraph(types.Paragraph):
                     new_item.children = me.children
                     bullet_class.children = [new_item]
                     me = bullet_class
-                elif attrib['class'] in sidebars_heads:
+                elif any(s in attrib['class'] for s in sidebars_heads):
                     me.element_type = u'sidebars-heads'
                     if epub.epub_type == u'ifsta_rf':
                         el = Sidebar()
                         el.type = u'sidebar-head'
                         el.title = me
                         me = el
-                elif attrib['class'] in sidebars_body:
+                elif any(s in attrib['class'] for s in sidebars_body):
                     me.element_type = u"sidebars-body"
                     me.add_child(types.TextNode("\\\\\n"))
                 elif attrib['class'] in captions:
