@@ -13,12 +13,22 @@ from zope import interface
 
 from nti.contenttools.adapters.epub.ifsta.interfaces import IChildProcessor
 
+from nti.contenttools.adapters.epub.ifsta.lists import OrderedList
+from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
+
+from nti.contenttools.adapters.epub.ifsta.media import Image
+from nti.contenttools.adapters.epub.ifsta.media import Figure
+
+from nti.contenttools.adapters.epub.ifsta.table import Table
+from nti.contenttools.adapters.epub.ifsta.link import Hyperlink
+
 from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
 
 from nti.contenttools.adapters.epub.ifsta.run import Run
+from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
 from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
 
-from nti.contenttools.adapters.epub.ifsta.link import Hyperlink
+from nti.contenttools.types import TextNode
 
 
 @interface.implementer(IChildProcessor)
@@ -215,5 +225,75 @@ class _HeadingSevenChildProcessor(object):
 
     def process(self, child, node, element, epub=None):
         result = Paragraph.process(child, (u'Heading7',), epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _DivChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = process_div_elements(child, node, epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _OrderedListChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = OrderedList.process(child, epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _UnorderedListChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = UnorderedList.process(child, epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _TableChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Table.process(child, epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _ImageChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Image.process(child, epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _FigureChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Figure.process(child, epub=epub)
+        node.add_child(result)
+        return result
+
+@interface.implementer(IChildProcessor)
+class _NewlineChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = TextNode(u'\\\\\n')
         node.add_child(result)
         return result
