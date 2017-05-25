@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: finder.py 113572 2017-05-25 09:09:52Z egawati.panjei $
+.. $Id$
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
@@ -190,4 +190,5 @@ def search_and_update_figure_caption_reflowable(root, captions, figures):
                 logger.warn('CAPTION NOT FOUND >> %s', old_cap)
     if hasattr(root, u'children'):
         for node in root:
-            search_and_update_figure_caption_reflowable(node, captions, figures)
+            search_and_update_figure_caption_reflowable(
+                node, captions, figures)
