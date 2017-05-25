@@ -27,12 +27,14 @@ from nti.contenttools.adapters.epub.ifsta.finder import process_paragraph_captio
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_figure_caption
 from nti.contenttools.adapters.epub.ifsta.finder import remove_paragraph_caption_from_epub_body
 
+from nti.contenttools.adapters.epub.ifsta.finder import update_caption_list
 from nti.contenttools.adapters.epub.ifsta.finder import search_sidebar_terms
-from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_glossary_entries
+from nti.contenttools.adapters.epub.ifsta.finder import add_icon_to_sidebar_info
 from nti.contenttools.adapters.epub.ifsta.finder import search_sidebar_head_and_body
 from nti.contenttools.adapters.epub.ifsta.finder import process_sidebar_head_and_body
-from nti.contenttools.adapters.epub.ifsta.finder import update_caption_list
+from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_glossary_entries
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_figure_caption_reflowable
+
 
 def adapt(fragment, epub=None):
     body = fragment.find('body')
