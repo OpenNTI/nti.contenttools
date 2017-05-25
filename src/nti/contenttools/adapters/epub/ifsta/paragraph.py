@@ -28,7 +28,7 @@ from nti.contenttools.types.interfaces import ITextNode
 class Paragraph(types.Paragraph):
 
     bullet_list = (u'Bullet ParaOverride-1', u'Bullet')
-    bold_italic_text = ('C-Head ParaOverride-1',)
+    bold_italic_text = ('C-Head ParaOverride-1', 'C-Head')
     sidebar_list = (u'Case-History ParaOverride-1',)
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD')
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
@@ -62,7 +62,7 @@ class Paragraph(types.Paragraph):
                         sidebar_class.title = u'Case History'
                     sidebar_class.children = me.children
                     me = sidebar_class
-                elif attrib['class'] == u'C-Head ParaOverride-1':
+                elif any(s in attrib['class'] for s in cls.bold_italic_text):
                     el_main = Paragraph()
                     el = Run()
                     el.styles = ['bold', 'italic']
