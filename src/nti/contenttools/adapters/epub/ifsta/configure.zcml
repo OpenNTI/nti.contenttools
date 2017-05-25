@@ -28,4 +28,12 @@
 	<utility factory=".processors._HeadingSixChildProcessor" name="h6" />
 	<utility factory=".processors._HeadingSevenChildProcessor" name="h7" />
 
+	<utility factory=".processors._DivChildProcessor" name="div" />
+	<utility factory=".processors._OrderedListChildProcessor" name="ol" />
+	<utility factory=".processors._UnorderedListChildProcessor" name="ul" />
+	<utility factory=".processors._TableChildProcessor" name="table" />
+	<utility factory=".processors._ImageChildProcessor" name="img" />
+	<utility factory=".processors._FigureChildProcessor" name="figure" />
+	<utility factory=".processors._NewlineChildProcessor" name="br" />
+
 </configure>

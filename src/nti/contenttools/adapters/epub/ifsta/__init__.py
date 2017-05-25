@@ -92,36 +92,10 @@ def check_element_text(node, element):
 
 
 def check_child(node, element, epub=None):
-    # XXX: Avoid circular imports
-    from nti.contenttools.adapters.epub.ifsta.lists import OrderedList
-    from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
-
-    from nti.contenttools.adapters.epub.ifsta.media import Image
-    from nti.contenttools.adapters.epub.ifsta.media import Figure
-
-    from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
-
-    from nti.contenttools.adapters.epub.ifsta.table import Table
-    from nti.contenttools.adapters.epub.ifsta.link import Hyperlink
-
     for child in element:
         processor = component.queryUtility(IChildProcessor, name=child.tag)
         if processor is not None:
             processor.process(child, node, element, epub=epub)
-        elif child.tag == 'div':
-            node.add_child(process_div_elements(child, node, epub=epub))
-        elif child.tag == 'ol':
-            node.add_child(OrderedList.process(child, epub=epub))
-        elif child.tag == 'ul':
-            node.add_child(UnorderedList.process(child, epub=epub))
-        elif child.tag == 'table':
-            node.add_child(Table.process(child, epub=epub))
-        elif child.tag == 'img':
-            node.add_child(Image.process(child, epub=epub))
-        elif child.tag == 'figure':
-            node.add_child(Figure.process(child, epub=epub))
-        elif child.tag == 'br':
-            node.add_child(TextNode(u'\\\\\n'))
         elif not isinstance(child, HtmlComment):
             logger.warn('Unhandled %s child: %s.', element, child)
     return node
