@@ -85,15 +85,17 @@ class EPUBReader(object):
             result.append(itemref.attrib['idref'])
         return result
 
-    def __init__(self, source, epub):
+    def __init__(self, source):
         self.zipfile = ZipFile(source)
-        epub.zipfile = self.zipfile
         self.metadata = {}
         self.manifest = {}
         self.spine = []
         self.audio_list = []
         self.image_list = []
         self.video_list = []
+
+    def __call__(self,epub):
+        epub.zipfile = self.zipfile
 
         container = etree_fromstring(
             self.zipfile.read(u'META-INF/container.xml'))
