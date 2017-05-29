@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import re
+
 import os
 from six import StringIO
 
@@ -50,6 +52,8 @@ class Image(types.Image):
         figures_without_caption = (u'Icon',)
         to_ignore = (u'Divider_Page', u'Warning', u'Caution')
 
+        fname, _ = os.path.splitext(filename)
+
         if any(fig in filename for fig in figures_without_caption):
             figure = Figure()
             title, _ = os.path.splitext(filename)
@@ -61,7 +65,7 @@ class Image(types.Image):
             return figure
         elif any(fig in filename for fig in to_ignore):
             return types.Run()
-        elif u'-' in filename:
+        elif u'-' in filename and not re.search('[a-zA-Z]', fname):
             figure = Figure()
             figure.centered = False
             title, _ = os.path.splitext(filename)
@@ -72,7 +76,7 @@ class Image(types.Image):
             epub.figures.append(figure)
             epub.figure_labels[figure.caption] = figure.label
             return figure
-        elif u'_' in filename:
+        elif u'_' in filename or (u'-' in filename and re.search('[a-zA-Z]', fname)):
             me.inline_image = True
             img_node = Run()
             img_node.add(me)
