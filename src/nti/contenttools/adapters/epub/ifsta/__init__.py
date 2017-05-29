@@ -30,6 +30,7 @@ from nti.contenttools.adapters.epub.ifsta.finder import remove_paragraph_caption
 from nti.contenttools.adapters.epub.ifsta.finder import update_caption_list
 from nti.contenttools.adapters.epub.ifsta.finder import search_sidebar_terms
 from nti.contenttools.adapters.epub.ifsta.finder import add_icon_to_sidebar_info
+from nti.contenttools.adapters.epub.ifsta.finder import search_paragraph_section
 from nti.contenttools.adapters.epub.ifsta.finder import search_sidebar_head_and_body
 from nti.contenttools.adapters.epub.ifsta.finder import process_sidebar_head_and_body
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_glossary_entries
@@ -42,6 +43,8 @@ def adapt(fragment, epub=None):
     # The next line only work for IFSTA fixed (to reduce the amount of
     # unnessary text)
     epub_body.children.pop(0)
+
+    search_paragraph_section(epub_body, epub.section_list)
 
     if epub.epub_type == 'ifsta':
         # ifsta epub has what is called sidebar info
