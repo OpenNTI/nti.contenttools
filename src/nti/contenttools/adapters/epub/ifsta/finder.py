@@ -141,9 +141,6 @@ def search_sidebar_terms(root, sidebars, sidebar_nodes):
                 term = base[0:str_pos].strip()
                 sidebars[term] = base
             sidebar_nodes.append(root)
-            parent = root.__parent__
-            parent.children.remove(root)
-
     elif hasattr(root, u'children'):
         for node in root:
             search_sidebar_terms(node, sidebars, sidebar_nodes)
