@@ -69,7 +69,7 @@ def adapt(fragment, epub=None):
         captions = update_caption_list(epub.caption_list)
 
         search_and_update_figure_caption_reflowable(
-            epub_body, captions, epub.figure_node)
+            epub_body, captions, epub.figure_node, epub.figure_ref)
 
     return epub_body
 

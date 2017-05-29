@@ -19,6 +19,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
+from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 
 def search_sidebar_info(root, nodes):
     if ISidebar.providedBy(root):
@@ -170,7 +171,7 @@ def update_caption_list(captions):
     return new_captions
 
 
-def search_and_update_figure_caption_reflowable(root, captions, figures):
+def search_and_update_figure_caption_reflowable(root, captions, figures, figure_ref):
     if IFigure.providedBy(root):
         if root.data_type == u'ifsta-numbering-fig':
             old_cap = root.caption
@@ -181,11 +182,12 @@ def search_and_update_figure_caption_reflowable(root, captions, figures):
                 new_cap = new_cap.replace(token, u'')
                 root.caption = new_cap.rstrip()
                 figures.append(root)
-                #parent = root.__parent__
-                #parent.children.remove(root)
+                label = get_variant_field_string_value(root.label)
+                ref = u'\\ntiidref{%s}' %label
+                figure_ref[token.rstrip()] = ref
             else:
                 logger.warn('CAPTION NOT FOUND >> %s', old_cap)
     if hasattr(root, u'children'):
         for node in root:
             search_and_update_figure_caption_reflowable(
-                node, captions, figures)
+                node, captions, figures, figure_ref)

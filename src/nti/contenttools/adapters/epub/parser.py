@@ -16,6 +16,8 @@ import codecs
 
 import simplejson as json
 
+from collections import OrderedDict
+
 from nti.contenttools.adapters.epub.reader import EPUBReader
 
 from nti.contenttools.adapters.epub.ifsta import adapt as adapt_ifsta
@@ -54,6 +56,7 @@ class EPUBParser(object):
         
         self.figures = []
         self.figure_node = []
+        self.figure_ref = {}
 
         self.sidebar_term_nodes = []
         
@@ -100,8 +103,10 @@ class EPUBParser(object):
             if IEPUBBody.providedBy(epub_chapter):
                 context = DefaultRendererContext(name="LaTeX")
                 render_node(context, epub_chapter)
+                content = context.read()
+                content = self.update_image_ref(content)
                 if self.reading_def_dir:
-                    self.write_to_file(context.read(),
+                    self.write_to_file(content,
                                        self.reading_def_dir,
                                        tex_filename)
                     if self.epub_type == u'ifsta':
@@ -109,7 +114,7 @@ class EPUBParser(object):
                                                         self.glossary_terms,
                                                         self.glossary_labels)
                 else:
-                    self.write_to_file(context.read(),
+                    self.write_to_file(content,
                                        self.output_directory,
                                        tex_filename)
         self.create_main_latex()
@@ -197,6 +202,16 @@ class EPUBParser(object):
         filepath = u'%s/%s' % (folder, filename)
         with codecs.open(filepath, 'w', 'utf-8') as fp:
             fp.write(content)
+
+    def update_image_ref(self, content):
+        figure_ref = OrderedDict(sorted(self.figure_ref.items(), 
+                                        key=lambda t: t[1], 
+                                        reverse=False))
+        figure_ref = list(figure_ref.items())
+        logger.info(figure_ref)
+        for ref in figure_ref:
+            content = content.replace(ref[0], ref[1])
+        return content
 
 
 def get_packages():
