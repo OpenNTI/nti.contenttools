@@ -61,7 +61,6 @@ class EPUBParser(object):
         self.sidebar_term_nodes = []
         
         self.section_list = []
-        self.subsection_list = []
         self.glossary_labels = []
 
         self.epub_reader = EPUBReader(input_file)
@@ -134,12 +133,7 @@ class EPUBParser(object):
                 self.output_directory,
                 'SidebarTerms.tex')
 
-        section_labels = generate_sectioning_list(self.section_list,
-                                                  u'section')
-        subsection_labels = generate_sectioning_list(self.subsection_list,
-                                                     u'subsection')
-        section_labels = section_labels + subsection_labels
-        content = u''.join(section_labels)
+        content = u''.join(self.section_list)
         self.write_to_file(content,
                            self.output_directory,
                            'section_list.txt')
@@ -208,7 +202,6 @@ class EPUBParser(object):
                                         key=lambda t: t[1], 
                                         reverse=False))
         figure_ref = list(figure_ref.items())
-        logger.info(figure_ref)
         for ref in figure_ref:
             content = content.replace(ref[0], ref[1])
         return content
@@ -259,16 +252,6 @@ def generate_main_tex_content(metadata, included_tex_list):
     package = get_packages()
     latex = get_included_tex(included_tex_list)
     return DOC_STRING % (package, title, author, latex)
-
-
-def generate_sectioning_list(labels, section_type):
-    rendered_labels = []
-    for label in labels:
-        label = create_label(section_type, label)
-        label = label.replace(u'\\label', u'\\ref')
-        label = u'%s\\\\\n' % (label)
-        rendered_labels.append(label)
-    return rendered_labels
 
 
 def generate_glossary_term_from_sidebar(epub_body, glossary_terms, glossary_labels):

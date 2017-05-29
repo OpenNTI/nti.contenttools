@@ -22,6 +22,8 @@ from nti.contenttools.types.interfaces import IParagraph
 from nti.contenttools.types.interfaces import IGlossaryEntry
 
 
+from nti.contenttools.renderers.LaTeX.utils import create_label
+
 def search_sidebar_info(root, nodes):
     if ISidebar.providedBy(root):
         if root.type == u"sidebar_term":
@@ -192,3 +194,22 @@ def search_and_update_figure_caption_reflowable(root, captions, figures, figure_
         for node in root:
             search_and_update_figure_caption_reflowable(
                 node, captions, figures, figure_ref)
+
+def search_paragraph_section(root, sections):
+    if IParagraph.providedBy(root):
+        if 'Section' in root.styles:
+            ref = get_section_label_ref(root.label, 'section')
+            sections.append(ref)
+        elif 'Subsection' in root.styles:
+            ref = get_section_label_ref(root.label, 'subsection')
+            sections.append(ref)
+    if hasattr(root, u'children'):
+        for node in root:
+            search_paragraph_section(node, sections)
+
+def get_section_label_ref (label, section_type):
+    label = create_label(section_type, label)
+    ref = label.replace(u'\\label', u'\\ref')
+    ref = u'%s\\\\\n' % (ref)
+    return ref
+

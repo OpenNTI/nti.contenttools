@@ -75,13 +75,9 @@ class Paragraph(types.Paragraph):
                 elif any(s in attrib['class'] for s in cls.section_list):
                     me.styles.append('Section')
                     add_sectioning_label(me)
-                    if epub:
-                        epub.section_list.append(me.label)
                 elif any(s in attrib['class'] for s in cls.subsection_list):
                     me.styles.append('Subsection')
                     add_sectioning_label(me)
-                    if epub:
-                        epub.subsection_list.append(me.label)
                 elif any(s in attrib['class'] for s in cls.bullet_list):
                     new_item = Item()
                     bullet_class = UnorderedList()
