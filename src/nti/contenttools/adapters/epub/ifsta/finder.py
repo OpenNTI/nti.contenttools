@@ -9,17 +9,18 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from nti.contenttools.renderers.LaTeX.base import render_output
+from nti.contenttools.renderers.LaTeX.base import render_children_output
+
+from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
+from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
+
 from nti.contenttools.types.interfaces import IFigure
 from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
 from nti.contenttools.types.interfaces import IGlossaryEntry
 
-from nti.contenttools.renderers.LaTeX.base import render_output
-from nti.contenttools.renderers.LaTeX.base import render_children_output
-from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
-
-from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 
 def search_sidebar_info(root, nodes):
     if ISidebar.providedBy(root):
@@ -183,7 +184,7 @@ def search_and_update_figure_caption_reflowable(root, captions, figures, figure_
                 root.caption = new_cap.rstrip()
                 figures.append(root)
                 label = get_variant_field_string_value(root.label)
-                ref = u'\\ntiidref{%s}' %label
+                ref = u'\\ntiidref{%s}' % label
                 figure_ref[token.rstrip()] = ref
             else:
                 logger.warn('CAPTION NOT FOUND >> %s', old_cap)
