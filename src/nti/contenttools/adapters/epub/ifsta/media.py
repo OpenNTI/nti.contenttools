@@ -16,6 +16,8 @@ from PIL import Image as PILImage
 
 from nti.contenttools import types
 
+from nti.contenttools.adapters.epub.ifsta import check_element_tail
+
 from nti.contenttools.adapters.epub.ifsta.run import Run
 from nti.contenttools.adapters.epub.ifsta.run import process_div_elements
 
@@ -72,9 +74,14 @@ class Image(types.Image):
             return figure
         elif u'_' in filename:
             me.inline_image = True
-            return me
+            img_node = Run()
+            img_node.add(me)
+            img_node = check_element_tail(img_node, element)
+            return img_node
         else:
-            return types.Run()
+            img_node = Run()
+            img_node = check_element_tail(img_node, element)
+            return img_node
 
 
 def save_image(image_data, filepath, epub):
