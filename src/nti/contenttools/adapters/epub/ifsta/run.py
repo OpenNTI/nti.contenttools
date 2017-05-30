@@ -153,6 +153,7 @@ def process_span_elements(element, epub=None):
                 el = Run()
                 el_text = Run()
                 check_element_text(el_text, element)
+                check_child(el_text, element, epub)
                 if 'fontStyle' in epub.css_dict[span_class]:
                     style = epub.css_dict[span_class]['fontStyle']
                     if style == 'italic':
