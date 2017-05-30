@@ -50,7 +50,7 @@ class TestParagraphAdapter(ContentToolsTestCase):
         node = Paragraph.process(element)
         output = render_output(node)
         assert_that(output,
-                    is_(u'Organizations that specialize in the development of standards and codes often create them. In order to be enforceable by law, the AHJ must adopt stan-dards and codes. \\\\ \n\n'))
+                    is_(u'Organizations that specialize in the development of standards and codes often create them. In order to be enforceable by law, the AHJ must adopt stan-dards and codes. \n\n'))
 
     def test_h1(self):
         script = u'<div><h1>This is heading 1</h1></div>'
