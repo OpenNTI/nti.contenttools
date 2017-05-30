@@ -17,6 +17,7 @@ from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.renderers.LaTeX.base import render_environment
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
+from nti.contenttools.renderers.LaTeX.utils import create_label
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
@@ -32,8 +33,11 @@ from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 
 
 def render_sidebar(context, node):
+    title = label = u''
+
     # this is useful for glossary term
     # (for example glossary term in IFSTA epub)
+
     if node.type == u"sidebar_term":
         search_run_node_and_remove_styles(node)
         base = render_children_output(node)
@@ -43,16 +47,17 @@ def render_sidebar(context, node):
             if node.title is None:
                 node.title = term
             if node.label is None:
-                node.label = u'sidebar_term:%s' % term.replace(u" ", u"_")
+                #node.label = u'sidebar_term:%s' % term.replace(u" ", u"_")
+                label = create_label('sidebar_term', term.replace(u'textbf', u'').replace(u'textit', u''))
+                node.label = label
         node.base = base
     else:
         base = render_children_output(node)
 
-    title = label = u''
     if node.title:
         title = get_variant_field_string_value(node.title)
         title = title.rstrip()
-    if node.label:
+    if node.label and not node.type == u"sidebar_term":
         label = get_variant_field_string_value(node.label)
         if label:
             label = u'\\label{%s}' % (label)
