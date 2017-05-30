@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import re
+
 from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
@@ -140,7 +142,10 @@ def search_sidebar_terms(root, sidebars, sidebar_nodes):
             if str_pos > -1:
                 term = base[0:str_pos].strip()
                 sidebars[term] = base
-                label = create_label('sidebar_term', term.replace(u'textbf', u'').replace(u'textit', u''))
+                term = re.sub(r'[{}]', '', term)
+                term = term.strip()
+                label = create_label('sidebar_term', 
+                                     term.replace(u'textbf', u'').replace(u'textit', u''))
                 root.label = label
             sidebar_nodes.append(root)
     elif hasattr(root, u'children'):
