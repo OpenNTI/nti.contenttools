@@ -126,7 +126,7 @@ def check_paragraph_bullet(el):
 
 def process_span_elements(element, epub=None):
     #note: glossary_span_class_lists may vary from chapter to chapter
-    glossary_span_class_lists = (u'span_CharOverride_19', )
+    glossary_span_class_lists = (u'span_CharOverride_19', u'span_CharOverride_25', )
     attrib = element.attrib
     span_class = attrib['class'] if u'class' in attrib else u''
     span_class = u'span_%s' % span_class.replace('-', '_')
