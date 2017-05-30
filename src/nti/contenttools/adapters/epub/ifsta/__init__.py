@@ -117,6 +117,6 @@ def check_element_tail(node, element):
         if element.tail.isspace():
             pass
         else:
-            new_el_tail = element.tail.rstrip() + u' '
+            new_el_tail = element.tail
             node.add_child(TextNode(new_el_tail))
     return node
