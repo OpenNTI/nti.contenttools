@@ -112,7 +112,6 @@ def update_node_under_table_div_class(root):
             node.children = root.children
             node.add(TextNode(u'\n'))
             parent.children.insert(idx, node)
-            logger.info(parent.children[0].children)
     if hasattr(root, 'children'):
         for child in root:
             update_node_under_table_div_class(child)
@@ -126,6 +125,7 @@ def check_paragraph_bullet(el):
 
 
 def process_span_elements(element, epub=None):
+    #note: glossary_span_class_lists may vary from chapter to chapter
     glossary_span_class_lists = (u'span_CharOverride_19', )
     attrib = element.attrib
     span_class = attrib['class'] if u'class' in attrib else u''
@@ -138,7 +138,6 @@ def process_span_elements(element, epub=None):
         el = Run.process(element, epub=epub)
         el.styles = ['bold']
     else:
-        el = Run.process(element, epub=epub)
         if epub is not None and span_class in epub.css_dict:
             if      epub.epub_type == 'ifsta_rf' \
                 and span_class in glossary_span_class_lists:
@@ -151,14 +150,21 @@ def process_span_elements(element, epub=None):
                 el.add(glossary)
                 check_element_tail(el, element)
             else:
+                el = Run()
+                el_text = Run()
+                check_element_text(el_text, element)
                 if 'fontStyle' in epub.css_dict[span_class]:
                     style = epub.css_dict[span_class]['fontStyle']
                     if style == 'italic':
-                        el.styles.append(style)
+                        el_text.styles.append(style)
                 if 'fontWeight' in epub.css_dict[span_class]:
                     weight = epub.css_dict[span_class]['fontWeight']
                     if weight == 'bold':
-                        el.styles.append(weight)
+                        el_text.styles.append(weight)
+                el.add(el_text)
+                check_element_tail(el, element)
+        else:
+            el = Run.process(element, epub=epub)
 
     if epub is not None and epub.epub_type == u'ifsta':
         check_span_child(el)
