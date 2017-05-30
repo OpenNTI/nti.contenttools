@@ -27,6 +27,7 @@ from nti.contenttools.types import TextNode
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
 
+from nti.contenttools.renderers.LaTeX.base import render_output
 
 class Run(types.Run):
 
@@ -149,6 +150,7 @@ def process_span_elements(element, epub=None):
                 glossary.term = t_el
                 el.add(glossary)
                 check_element_tail(el, element)
+                logger.info(render_output(glossary))
             else:
                 el = Run()
                 el_text = Run()
