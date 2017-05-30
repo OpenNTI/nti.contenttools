@@ -150,7 +150,7 @@ def process_span_elements(element, epub=None):
                 glossary.term = t_el
                 el.add(glossary)
                 check_element_tail(el, element)
-                logger.info(render_output(glossary))
+                #logger.info(render_output(glossary))
             else:
                 el = Run()
                 el_text = Run()
