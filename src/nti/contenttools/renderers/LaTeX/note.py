@@ -52,8 +52,9 @@ def render_sidebar(context, node):
                 node.label = label
             else:
                 label = get_variant_field_string_value(node.label)
-                label = u'\\label{%s}' % (label)
-
+                if u'\\label' not in label:
+                    label = u'\\label{%s}' % (label)
+                    node.label = label
         node.base = base
     else:
         base = render_children_output(node)
