@@ -27,7 +27,6 @@ from nti.contenttools.types import TextNode
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
 
-from nti.contenttools.renderers.LaTeX.base import render_output
 
 class Run(types.Run):
 
@@ -75,7 +74,7 @@ def examine_div_element_for_sidebar(el, caption, body_text):
 
 
 def process_div_elements(element, parent, epub=None):
-    #note: table_div_classes may vary from chapter to chapter
+    # note: table_div_classes may vary from chapter to chapter
     table_div_classes = (u'_idGenObjectStyleOverride-9', )
 
     el = Run.process(element, epub=epub)
@@ -103,6 +102,7 @@ def process_div_elements(element, parent, epub=None):
 
     return el
 
+
 def update_node_under_table_div_class(root):
     if IParagraph.providedBy(root):
         if hasattr(root, '__parent__'):
@@ -117,6 +117,7 @@ def update_node_under_table_div_class(root):
         for child in root:
             update_node_under_table_div_class(child)
 
+
 def check_paragraph_bullet(el):
     for child in el.children:
         if isinstance(child, types.Run):
@@ -126,8 +127,9 @@ def check_paragraph_bullet(el):
 
 
 def process_span_elements(element, epub=None):
-    #note: glossary_span_class_lists may vary from chapter to chapter
-    glossary_span_class_lists = (u'span_CharOverride_19', u'span_CharOverride_25', )
+    # note: glossary_span_class_lists may vary from chapter to chapter
+    glossary_span_class_lists = (
+        u'span_CharOverride_19', u'span_CharOverride_25', )
     attrib = element.attrib
     span_class = attrib['class'] if u'class' in attrib else u''
     span_class = u'span_%s' % span_class.replace('-', '_')
@@ -150,7 +152,7 @@ def process_span_elements(element, epub=None):
                 glossary.term = t_el
                 el.add(glossary)
                 check_element_tail(el, element)
-                #logger.info(render_output(glossary))
+                # logger.info(render_output(glossary))
             else:
                 el = Run()
                 el_text = Run()
@@ -178,5 +180,4 @@ def check_span_child(span_node):
     for child in span_node:
         if ITextNode.providedBy(child):
             if child.endswith('-'):
-                logger.info(child)
                 child = child[:-1]

@@ -28,7 +28,7 @@ from nti.contenttools.types.interfaces import ITextNode
 class Paragraph(types.Paragraph):
 
     bullet_list = (u'Bullet ParaOverride-1', u'Bullet')
-    bold_italic_text = ('C-Head ParaOverride-1','C-Head')
+    bold_italic_text = ('C-Head ParaOverride-1', 'C-Head')
     sidebar_list = (u'Case-History ParaOverride-1',)
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD')
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
@@ -100,11 +100,9 @@ class Paragraph(types.Paragraph):
                         token = get_caption_token(me.children[1]).rstrip()
                         me.children = me.children[2:]
                         epub.captions[token] = me
-
                     if epub is not None and epub.epub_type == u'ifsta_rf':
                         epub.caption_list.append(me)
                         me = Run()
-                        
                 elif any(s in attrib['class'] for s in definition_list):
                     sidebar = Sidebar()
                     sidebar.type = u"sidebar_term"
@@ -115,7 +113,6 @@ class Paragraph(types.Paragraph):
                     me = el
                 elif any(s in attrib['class'] for s in cls.paragraph_list):
                     pass
-                    #me.add_child(types.TextNode("\\\\\n"))
             else:
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)

@@ -34,10 +34,8 @@ from nti.contenttools.types.interfaces import IOpenstaxExampleNote
 
 def render_sidebar(context, node):
     title = label = u''
-
     # this is useful for glossary term
     # (for example glossary term in IFSTA epub)
-
     if node.type == u"sidebar_term":
         search_run_node_and_remove_styles(node)
         base = render_children_output(node)
@@ -48,7 +46,8 @@ def render_sidebar(context, node):
                 node.title = term
             if node.label is None:
                 #node.label = u'sidebar_term:%s' % term.replace(u" ", u"_")
-                label = create_label('sidebar_term', term.replace(u'textbf', u'').replace(u'textit', u''))
+                label = create_label('sidebar_term',
+                                     term.replace(u'textbf', u'').replace(u'textit', u''))
                 node.label = label
             else:
                 label = get_variant_field_string_value(node.label)
@@ -132,7 +131,6 @@ def render_openstax_note(context, node):
         title = get_variant_field_string_value(node.title).rstrip()
         context.write(title)
     context.write(u'}\n')
-
     if node.label:
         label = get_variant_field_string_value(node.label).rstrip()
         if label:
