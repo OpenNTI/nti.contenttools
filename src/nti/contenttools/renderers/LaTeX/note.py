@@ -50,6 +50,10 @@ def render_sidebar(context, node):
                 #node.label = u'sidebar_term:%s' % term.replace(u" ", u"_")
                 label = create_label('sidebar_term', term.replace(u'textbf', u'').replace(u'textit', u''))
                 node.label = label
+            else:
+                label = get_variant_field_string_value(node.label)
+                label = u'\\label{%s}' % (label)
+
         node.base = base
     else:
         base = render_children_output(node)
