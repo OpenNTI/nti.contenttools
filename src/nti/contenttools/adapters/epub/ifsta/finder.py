@@ -11,6 +11,8 @@ logger = __import__('logging').getLogger(__name__)
 
 import re
 
+import copy
+
 from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
@@ -136,7 +138,7 @@ def process_sidebar_head_and_body(nodes):
 def search_sidebar_terms(root, sidebars, sidebar_nodes):
     if ISidebar.providedBy(root):
         if root.type == u"sidebar_term":
-            node = root
+            node = copy.deepcopy(root)
             search_run_node_and_remove_styles(node)
             base = render_children_output(node)
             str_pos = base.find('-')
@@ -156,7 +158,7 @@ def search_sidebar_terms(root, sidebars, sidebar_nodes):
 
 def search_and_update_glossary_entries(root, sidebars):
     if IGlossaryEntry.providedBy(root):
-        node = root.term
+        node = copy.deepcopy(root.term)
         search_run_node_and_remove_styles(node)
         term = render_output(node).strip()
         term_lower = term.lower()
