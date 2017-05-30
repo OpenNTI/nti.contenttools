@@ -22,7 +22,10 @@ from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
 
 from nti.contenttools.adapters.epub.ifsta.note import Sidebar
 
+from nti.contenttools.types import TextNode
+
 from nti.contenttools.types.interfaces import ITextNode
+from nti.contenttools.types.interfaces import IParagraph
 
 
 class Run(types.Run):
@@ -71,6 +74,9 @@ def examine_div_element_for_sidebar(el, caption, body_text):
 
 
 def process_div_elements(element, parent, epub=None):
+    #note: table_div_classes may vary from chapter to chapter
+    table_div_classes = (u'_idGenObjectStyleOverride-9', )
+
     el = Run.process(element, epub=epub)
 
     if epub is not None and epub.epub_type == 'ifsta':
@@ -86,8 +92,30 @@ def process_div_elements(element, parent, epub=None):
             new_el.children = body_text.children
             el = new_el
 
+    attrib = element.attrib
+    div_class = attrib['class'] if u'class' in attrib else u''
+
+    if div_class in table_div_classes:
+        # need to clean up paragraph element that located under this particular div
+        # therefore when the node is rendered it won't have extra \\
+        update_node_under_table_div_class(el)
+
     return el
 
+def update_node_under_table_div_class(root):
+    if IParagraph.providedBy(root):
+        if hasattr(root, '__parent__'):
+            parent = root.__parent__
+            idx = parent.children.index(root)
+            parent.remove(root)
+            node = Run()
+            node.children = root.children
+            node.add(TextNode(u'\n'))
+            parent.children.insert(idx, node)
+            logger.info(parent.children[0].children)
+    if hasattr(root, 'children'):
+        for child in root:
+            update_node_under_table_div_class(child)
 
 def check_paragraph_bullet(el):
     for child in el.children:

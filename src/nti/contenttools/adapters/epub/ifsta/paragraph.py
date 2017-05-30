@@ -114,7 +114,8 @@ class Paragraph(types.Paragraph):
                     el.add_child(types.TextNode("\n"))
                     me = el
                 elif any(s in attrib['class'] for s in cls.paragraph_list):
-                    me.add_child(types.TextNode("\\\\\n"))
+                    pass
+                    #me.add_child(types.TextNode("\\\\\n"))
             else:
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)

@@ -216,6 +216,5 @@ def process_sidebar_figure_info_rf(sfnodes):
         if i < len(sfnodes) - 1:
             if IFigure.providedBy(node) and ISidebar.providedBy(sfnodes[i + 1]):
                 sfnodes[i+1].children.insert(0, node)
-                logger.info('HERE')
                 parent = node.__parent__
                 parent.remove(node)
