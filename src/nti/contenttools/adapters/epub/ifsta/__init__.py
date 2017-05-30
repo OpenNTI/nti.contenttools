@@ -37,6 +37,7 @@ from nti.contenttools.adapters.epub.ifsta.finder import process_sidebar_figure_i
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_glossary_entries
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_figure_caption_reflowable
 
+
 def adapt(fragment, epub=None):
     body = fragment.find('body')
     epub_body = EPUBBody.process(body, epub)
@@ -77,7 +78,7 @@ def adapt(fragment, epub=None):
         sfnodes = []
         sfnodes = search_sidebar_info(epub_body, sfnodes)
         process_sidebar_figure_info_rf(sfnodes)
-        
+
     return epub_body
 
 
@@ -114,9 +115,7 @@ def check_child(node, element, epub=None):
 
 def check_element_tail(node, element):
     if element.tail:
-        if element.tail.isspace():
-            pass
-        else:
+        if not element.tail.isspace():
             new_el_tail = element.tail
             node.add_child(TextNode(new_el_tail))
     return node

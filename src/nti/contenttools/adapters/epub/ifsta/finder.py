@@ -26,6 +26,7 @@ from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
 from nti.contenttools.types.interfaces import IGlossaryEntry
 
+
 def search_sidebar_info(root, nodes):
     if ISidebar.providedBy(root):
         if root.type == u"sidebar_term":
@@ -147,7 +148,7 @@ def search_sidebar_terms(root, sidebars, sidebar_nodes):
                 sidebars[term] = base
                 term = re.sub(r'[{}]', '', term)
                 term = term.strip()
-                label = create_label('sidebar_term', 
+                label = create_label('sidebar_term',
                                      term.replace(u'textbf', u'').replace(u'textit', u''))
                 root.label = label
             sidebar_nodes.append(root)
@@ -164,7 +165,7 @@ def search_and_update_glossary_entries(root, sidebars):
         term_lower = term.lower()
         term_capital = term.title()
         terms = (term, term_lower, term_capital,)
-        #logger.info(sidebars.keys())
+        # logger.info(sidebars.keys())
         for word in terms:
             if word in sidebars.keys():
                 root.definition = sidebars[word]
@@ -201,6 +202,7 @@ def search_and_update_figure_caption_reflowable(root, captions, figures, figure_
             search_and_update_figure_caption_reflowable(
                 node, captions, figures, figure_ref)
 
+
 def search_paragraph_section(root, sections):
     if IParagraph.providedBy(root):
         if 'Section' in root.styles:
@@ -213,16 +215,18 @@ def search_paragraph_section(root, sections):
         for node in root:
             search_paragraph_section(node, sections)
 
+
 def get_section_label_ref(label, section_type):
     label = create_label(section_type, label)
     ref = label.replace(u'\\label', u'\\ref')
     ref = u'%s\\\\\n' % (ref)
     return ref
 
+
 def process_sidebar_figure_info_rf(sfnodes):
     for i, node in enumerate(sfnodes):
         if i < len(sfnodes) - 1:
             if IFigure.providedBy(node) and ISidebar.providedBy(sfnodes[i + 1]):
-                sfnodes[i+1].children.insert(0, node)
+                sfnodes[i + 1].children.insert(0, node)
                 parent = node.__parent__
                 parent.remove(node)
