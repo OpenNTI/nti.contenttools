@@ -30,9 +30,7 @@ def search_sidebar_info(root, nodes):
             pass
         else:
             nodes.append(root)
-    if ITextNode.providedBy(root):
-        pass
-    elif root.children is not None:
+    elif hasattr(root, u'children'):
         for child in root.children:
             if IFigure.providedBy(child):
                 if child.floating == True and child.icon == True:
@@ -207,9 +205,17 @@ def search_paragraph_section(root, sections):
         for node in root:
             search_paragraph_section(node, sections)
 
-def get_section_label_ref (label, section_type):
+def get_section_label_ref(label, section_type):
     label = create_label(section_type, label)
     ref = label.replace(u'\\label', u'\\ref')
     ref = u'%s\\\\\n' % (ref)
     return ref
 
+def process_sidebar_figure_info_rf(sfnodes):
+    for i, node in enumerate(sfnodes):
+        if i < len(sfnodes) - 1:
+            if IFigure.providedBy(node) and ISidebar.providedBy(sfnodes[i + 1]):
+                sfnodes[i+1].children.insert(0, node)
+                logger.info('HERE')
+                parent = node.__parent__
+                parent.remove(node)
