@@ -136,8 +136,9 @@ def process_sidebar_head_and_body(nodes):
 def search_sidebar_terms(root, sidebars, sidebar_nodes):
     if ISidebar.providedBy(root):
         if root.type == u"sidebar_term":
-            search_run_node_and_remove_styles(root)
-            base = render_children_output(root)
+            node = root
+            search_run_node_and_remove_styles(node)
+            base = render_children_output(node)
             str_pos = base.find('-')
             if str_pos > -1:
                 term = base[0:str_pos].strip()
@@ -149,25 +150,25 @@ def search_sidebar_terms(root, sidebars, sidebar_nodes):
                 root.label = label
             sidebar_nodes.append(root)
     elif hasattr(root, u'children'):
-        for node in root:
-            search_sidebar_terms(node, sidebars, sidebar_nodes)
+        for child in root:
+            search_sidebar_terms(child, sidebars, sidebar_nodes)
 
 
 def search_and_update_glossary_entries(root, sidebars):
     if IGlossaryEntry.providedBy(root):
-        search_run_node_and_remove_styles(root.term)
-        term = render_output(root.term).strip()
+        node = root.term
+        search_run_node_and_remove_styles(node)
+        term = render_output(node).strip()
         term_lower = term.lower()
         term_capital = term.title()
         terms = (term, term_lower, term_capital,)
+        #logger.info(sidebars.keys())
         for word in terms:
             if word in sidebars.keys():
-                logger.info(term)
-                logger.info(word)
                 root.definition = sidebars[word]
     elif hasattr(root, u'children'):
-        for node in root:
-            search_and_update_glossary_entries(node, sidebars)
+        for child in root:
+            search_and_update_glossary_entries(child, sidebars)
 
 
 def update_caption_list(captions):
