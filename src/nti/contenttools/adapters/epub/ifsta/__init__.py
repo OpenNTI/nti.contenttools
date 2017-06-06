@@ -15,7 +15,7 @@ from zope import component
 
 from nti.contenttools import types
 
-from nti.contenttools._compat import unicode_
+from nti.contenttools._compat import text_
 
 from nti.contenttools.adapters.epub.ifsta.interfaces import IChildProcessor
 
@@ -40,6 +40,7 @@ from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_figure
 from nti.contenttools.adapters.epub.ifsta.finder import search_table
 from nti.contenttools.adapters.epub.ifsta.finder import cleanup_table_element
 
+
 def adapt(fragment, epub=None):
     body = fragment.find('body')
     epub_body = EPUBBody.process(body, epub)
@@ -50,7 +51,7 @@ def adapt(fragment, epub=None):
         # The next line only work for IFSTA fixed (to reduce the amount of
         # unnessary text)
         epub_body.children.pop(0)
-        
+
         # ifsta epub has what is called sidebar info
         # each sidebar info has icon,
         # unfortunately on the xhmtl, it is separated in different div tag
@@ -82,7 +83,7 @@ def adapt(fragment, epub=None):
         sfnodes = search_sidebar_info(epub_body, sfnodes)
         process_sidebar_figure_info_rf(sfnodes)
 
-    ##we can use the following lines if the epub has <table> element
+    # we can use the following lines if the epub has <table> element
     tables = []
     search_table(epub_body, tables)
     cleanup_table_element(tables)
@@ -107,7 +108,7 @@ def check_element_text(node, element):
             if len(element.text) == 1:
                 node.add_child(TextNode(u' '))
         else:
-            node.add_child(TextNode(unicode_(element.text)))
+            node.add_child(TextNode(text_(element.text)))
     return node
 
 

@@ -31,6 +31,7 @@ from nti.contenttools.types.interfaces import IGlossaryEntry
 from nti.contenttools.types import Run
 from nti.contenttools.types import TextNode
 
+
 def search_sidebar_info(root, nodes):
     if ISidebar.providedBy(root):
         if root.type == u"sidebar_term":
@@ -235,6 +236,7 @@ def process_sidebar_figure_info_rf(sfnodes):
                 parent = node.__parent__
                 parent.remove(node)
 
+
 def search_table(root, tables):
     if ITable.providedBy(root):
         tables.append(root)
@@ -242,13 +244,15 @@ def search_table(root, tables):
         for node in root:
             search_table(node, tables)
 
+
 def cleanup_table_element(tables):
     for node in tables:
         search_and_update_table_element(node)
 
+
 def search_and_update_table_element(root):
     if IParagraph.providedBy(root):
-        el  = Run()
+        el = Run()
         el.children = root.children
         el.add(TextNode(u' '))
         parent = root.__parent__
@@ -257,8 +261,7 @@ def search_and_update_table_element(root):
                 parent.remove(child)
                 parent.children.insert(i, el)
     if ICell.providedBy(root):
-        root.children.insert(0,TextNode(u'\n\n'))
+        root.children.insert(0, TextNode(u'\n\n'))
     if hasattr(root, u'children'):
         for node in root:
             search_and_update_table_element(node)
-
