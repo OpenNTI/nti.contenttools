@@ -51,7 +51,7 @@ class Paragraph(types.Paragraph):
                          u'Caution-Warning-Text',
                          u'sidebars-body-text ParaOverride-1',
                          u'sidebars-body-text',)
-        definition_list = (u'definition',)
+        definition_list = (u'definition', 'GlossaryTerm')
 
         if u'class' in attrib:
             if attrib['class'] != u"ParaOverride-1":
