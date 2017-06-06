@@ -20,12 +20,12 @@ from nti.contenttools.renderers.LaTeX.utils import create_label
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
+from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IFigure
 from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
 from nti.contenttools.types.interfaces import IGlossaryEntry
-
 
 def search_sidebar_info(root, nodes):
     if ISidebar.providedBy(root):
@@ -169,6 +169,7 @@ def search_and_update_glossary_entries(root, sidebars):
         for word in terms:
             if word in sidebars.keys():
                 root.definition = sidebars[word]
+                logger.info(word)
     elif hasattr(root, u'children'):
         for child in root:
             search_and_update_glossary_entries(child, sidebars)
@@ -230,3 +231,10 @@ def process_sidebar_figure_info_rf(sfnodes):
                 sfnodes[i + 1].children.insert(0, node)
                 parent = node.__parent__
                 parent.remove(node)
+
+def search_table(root, tables):
+    if ITable.providedBy(root):
+        tables.append(root)
+    if hasattr(root, u'children'):
+        for node in root:
+            search_table(node, tables)

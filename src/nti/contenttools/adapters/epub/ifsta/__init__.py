@@ -37,17 +37,19 @@ from nti.contenttools.adapters.epub.ifsta.finder import process_sidebar_figure_i
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_glossary_entries
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_figure_caption_reflowable
 
+from nti.contenttools.adapters.epub.ifsta.finder import search_table
 
 def adapt(fragment, epub=None):
     body = fragment.find('body')
     epub_body = EPUBBody.process(body, epub)
-    # The next line only work for IFSTA fixed (to reduce the amount of
-    # unnessary text)
-    epub_body.children.pop(0)
 
     search_paragraph_section(epub_body, epub.section_list)
 
     if epub.epub_type == 'ifsta':
+        # The next line only work for IFSTA fixed (to reduce the amount of
+        # unnessary text)
+        epub_body.children.pop(0)
+        
         # ifsta epub has what is called sidebar info
         # each sidebar info has icon,
         # unfortunately on the xhmtl, it is separated in different div tag
@@ -78,6 +80,9 @@ def adapt(fragment, epub=None):
         sfnodes = []
         sfnodes = search_sidebar_info(epub_body, sfnodes)
         process_sidebar_figure_info_rf(sfnodes)
+
+    tables = []
+    search_table(epub_body, tables)
 
     return epub_body
 
@@ -110,6 +115,9 @@ def check_child(node, element, epub=None):
             processor.process(child, node, element, epub=epub)
         elif not isinstance(child, HtmlComment):
             logger.warn('Unhandled %s child: %s.', element, child)
+        if child.tag == u'table':
+            logger.info('TABLE')
+            logger.info(node.children)
     return node
 
 

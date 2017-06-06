@@ -18,14 +18,15 @@ from nti.contenttools.adapters.epub.ifsta.run import Run
 from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
 
+from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 
 class Table(types.Table):
 
     @classmethod
     def process(cls, element, epub=None):
         me = cls()
-        if 'id' in element.attrib:
-            me.label = element.attrib['id']
+        #if 'id' in element.attrib:
+        #    me.label = get_variant_field_string_value(element.attrib['id'])
 
         me = check_element_text(me, element)
 
