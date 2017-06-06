@@ -38,6 +38,7 @@ from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_glossa
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_figure_caption_reflowable
 
 from nti.contenttools.adapters.epub.ifsta.finder import search_table
+from nti.contenttools.adapters.epub.ifsta.finder import cleanup_table_element
 
 def adapt(fragment, epub=None):
     body = fragment.find('body')
@@ -83,6 +84,7 @@ def adapt(fragment, epub=None):
 
     tables = []
     search_table(epub_body, tables)
+    cleanup_table_element(tables)
 
     return epub_body
 
