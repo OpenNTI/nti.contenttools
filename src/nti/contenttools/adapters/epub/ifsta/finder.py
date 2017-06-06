@@ -169,7 +169,6 @@ def search_and_update_glossary_entries(root, sidebars):
         term_lower = term.lower()
         term_capital = term.title()
         terms = (term, term_lower, term_capital,)
-        # logger.info(sidebars.keys())
         for word in terms:
             if word in sidebars.keys():
                 root.definition = sidebars[word]
