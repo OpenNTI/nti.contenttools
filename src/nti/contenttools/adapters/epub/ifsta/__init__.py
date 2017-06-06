@@ -82,6 +82,7 @@ def adapt(fragment, epub=None):
         sfnodes = search_sidebar_info(epub_body, sfnodes)
         process_sidebar_figure_info_rf(sfnodes)
 
+    ##we can use the following lines if the epub has <table> element
     tables = []
     search_table(epub_body, tables)
     cleanup_table_element(tables)
