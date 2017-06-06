@@ -20,12 +20,16 @@ from nti.contenttools.renderers.LaTeX.utils import create_label
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
+from nti.contenttools.types.interfaces import ICell
 from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IFigure
 from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
 from nti.contenttools.types.interfaces import IGlossaryEntry
+
+from nti.contenttools.types import Run
+from nti.contenttools.types import TextNode
 
 def search_sidebar_info(root, nodes):
     if ISidebar.providedBy(root):
@@ -238,3 +242,24 @@ def search_table(root, tables):
     if hasattr(root, u'children'):
         for node in root:
             search_table(node, tables)
+
+def cleanup_table_element(tables):
+    for node in tables:
+        search_and_update_table_element(node)
+
+def search_and_update_table_element(root):
+    if IParagraph.providedBy(root):
+        el  = Run()
+        el.children = root.children
+        el.add(TextNode(u' '))
+        parent = root.__parent__
+        for i, child in enumerate(parent):
+            if child == root:
+                parent.remove(child)
+                parent.children.insert(i, el)
+    if ICell.providedBy(root):
+        root.children.insert(0,TextNode(u'\n\n'))
+    if hasattr(root, u'children'):
+        for node in root:
+            search_and_update_table_element(node)
+
