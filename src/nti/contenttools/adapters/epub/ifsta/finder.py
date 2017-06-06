@@ -21,6 +21,7 @@ from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_valu
 from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
 from nti.contenttools.types.interfaces import ICell
+from nti.contenttools.types.interfaces import IImage
 from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IFigure
 from nti.contenttools.types.interfaces import ISidebar
@@ -262,6 +263,15 @@ def search_and_update_table_element(root):
                 parent.children.insert(i, el)
     if ICell.providedBy(root):
         root.children.insert(0, TextNode(u'\n\n'))
+    if IImage.providedBy(root):
+        el = Run()
+        parent = root.__parent__
+        for i, child in enumerate(parent):
+            if child == root:
+                el.add(root)
+                parent.remove(child)
+                el.add(TextNode(u'\n\\newline\n'))
+                parent.children.insert(i, el)
     if hasattr(root, u'children'):
         for node in root:
             search_and_update_table_element(node)
