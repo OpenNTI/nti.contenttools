@@ -127,12 +127,15 @@ def check_paragraph_bullet(el):
 
 
 def process_span_elements(element, epub=None):
-    # note: glossary_span_class_lists may vary from chapter to chapter
-    glossary_span_class_lists = (
-        u'span_CharOverride_19', u'span_CharOverride_25', )
+    font_style = u''
+    font_weight = u''
+    color = u''
+    font_family = u''
+
     attrib = element.attrib
     span_class = attrib['class'] if u'class' in attrib else u''
     span_class = u'span_%s' % span_class.replace('-', '_')
+
     if 'bullet' in span_class:
         el = Run()
         check_element_tail(el, element)
@@ -142,8 +145,23 @@ def process_span_elements(element, epub=None):
         el.styles = ['bold']
     else:
         if epub is not None and span_class in epub.css_dict:
-            if      epub.epub_type == 'ifsta_rf' \
-                and span_class in glossary_span_class_lists:
+            if 'fontStyle' in epub.css_dict[span_class]:
+                font_style = epub.css_dict[span_class]['fontStyle']
+
+            if 'fontWeight' in epub.css_dict[span_class]:
+                font_weight = epub.css_dict[span_class]['fontWeight']
+            
+            if 'color' in epub.css_dict[span_class]:
+                color = epub.css_dict[span_class]['color']
+
+            if 'fontFamily' in epub.css_dict[span_class]:
+                font_family = epub.css_dict[span_class]['fontFamily']
+
+            if epub.epub_type == 'ifsta_rf' \
+                and font_style == u'normal' \
+                and font_weight == u'bold' \
+                and color == '#c8161d' \
+                and u'Utopia Std' in font_family :
                 el = Run()
                 t_el = Run()
                 check_element_text(t_el, element)
@@ -152,20 +170,18 @@ def process_span_elements(element, epub=None):
                 glossary.term = t_el
                 el.add(glossary)
                 check_element_tail(el, element)
-                # logger.info(render_output(glossary))
             else:
                 el = Run()
                 el_text = Run()
                 check_element_text(el_text, element)
                 check_child(el_text, element, epub)
-                if 'fontStyle' in epub.css_dict[span_class]:
-                    style = epub.css_dict[span_class]['fontStyle']
-                    if style == 'italic':
-                        el_text.styles.append(style)
-                if 'fontWeight' in epub.css_dict[span_class]:
-                    weight = epub.css_dict[span_class]['fontWeight']
-                    if weight == 'bold':
-                        el_text.styles.append(weight)
+                
+                if font_style == 'italic':
+                    el_text.styles.append(font_style)
+                
+                if font_weight == 'bold':
+                    el_text.styles.append(font_weight)
+                
                 el.add(el_text)
                 check_element_tail(el, element)
         else:
