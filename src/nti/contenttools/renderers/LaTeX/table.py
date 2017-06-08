@@ -84,9 +84,8 @@ def process_table_html(context, node, string_col):
             if u'\\label{' in label:
                 context.write(label)
             else:
-                context.write(u'\\label{')
+                label = create_label('table', label)
                 context.write(label)
-                context.write(u'}')
             context.write(u'\n')
         else:
             if caption:

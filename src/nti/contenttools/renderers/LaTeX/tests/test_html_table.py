@@ -47,7 +47,7 @@ class TestHTMLTable(ContentToolsTestCase):
         node.label = "label_table"
         output = render_output(node)
         assert_that(output,
-                    is_(u'\n\\begin{table}\n\\caption{Caption for table}\n\\label{label_table}\n\\begin{tabular}{}\n\n\\end{tabular}\n\\end{table}\n'))
+                    is_(u'\n\\begin{table}\n\\caption{Caption for table}\n\\label{table:label_table}\n\\begin{tabular}{}\n\n\\end{tabular}\n\\end{table}\n'))
 
     def test_html_table_row(self):
         node = Row()
