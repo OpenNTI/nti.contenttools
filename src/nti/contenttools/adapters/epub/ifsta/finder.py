@@ -249,6 +249,7 @@ def search_table(root, tables):
 def cleanup_table_element(tables):
     for node in tables:
         search_and_update_table_element(node)
+        node.border = True
 
 
 def search_and_update_table_element(root):
