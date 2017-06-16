@@ -255,15 +255,6 @@ def cleanup_table_element(tables):
 
 
 def search_and_update_table_element(root):
-    if IParagraph.providedBy(root):
-        el = Run()
-        el.children = root.children
-        el.add(TextNode(u' '))
-        parent = root.__parent__
-        for i, child in enumerate(parent):
-            if child == root:
-                parent.remove(child)
-                parent.children.insert(i, el)
     if ICell.providedBy(root):
         root.children.insert(0, TextNode(u'\n\n'))
     if IImage.providedBy(root):
@@ -278,17 +269,3 @@ def search_and_update_table_element(root):
     if hasattr(root, u'children'):
         for node in root:
             search_and_update_table_element(node)
-
-def search_and_update_tr_element(root):
-    if IRow.providedBy(root):
-        el = Run()
-        el.children = root.children
-        parent = root.__parent__
-        for i, child in enumerate(parent):
-            if child == root:
-                parent.remove(child)
-                parent.children.insert(i, el)
-    if hasattr(root, u'children'):
-        for node in root:
-            search_and_update_table_element(node)
-
