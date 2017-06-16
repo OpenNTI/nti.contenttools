@@ -30,6 +30,7 @@ from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
 
 from nti.contenttools.types import TextNode
 
+from nti.contenttools.adapters.epub.ifsta import check_element_tail
 
 @interface.implementer(IChildProcessor)
 class _ParagraphChildProcessor(object):
@@ -294,6 +295,7 @@ class _NewlineChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = TextNode(u'\\\\\n')
+        result = TextNode(u'\\newline\n')
         node.add_child(result)
+        node.add_child(TextNode(child.tail))
         return result
