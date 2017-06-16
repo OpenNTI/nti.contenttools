@@ -10,7 +10,6 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 import re
-
 import copy
 
 from nti.contenttools.renderers.LaTeX.base import render_output
@@ -20,11 +19,9 @@ from nti.contenttools.renderers.LaTeX.utils import create_label
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
-from nti.contenttools.types.interfaces import IRow
 from nti.contenttools.types.interfaces import ICell
 from nti.contenttools.types.interfaces import IImage
 from nti.contenttools.types.interfaces import ITable
-from nti.contenttools.types.interfaces import INewline
 from nti.contenttools.types.interfaces import IFigure
 from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import ITextNode
@@ -249,7 +246,7 @@ def search_table(root, tables):
 
 
 def cleanup_table_element(tables):
-    for node in tables:
+    for node in tables or ():
         search_and_update_table_element(node)
         node.border = True
 

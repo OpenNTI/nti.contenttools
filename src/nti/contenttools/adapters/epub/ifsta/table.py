@@ -19,6 +19,7 @@ from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
 from nti.contenttools.adapters.epub.ifsta import check_element_tail
 
+
 class Table(types.Table):
 
     @classmethod
@@ -158,6 +159,7 @@ class Cell(types.Cell):
         me = check_element_tail(me, element)
         update_cell_elements(me)
         return me
+
 
 def update_cell_elements(cell):
     num = len(cell.children) - 1

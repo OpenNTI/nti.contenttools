@@ -30,7 +30,6 @@ from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
 
 from nti.contenttools.types import TextNode
 
-from nti.contenttools.adapters.epub.ifsta import check_element_tail
 
 @interface.implementer(IChildProcessor)
 class _ParagraphChildProcessor(object):
@@ -229,6 +228,7 @@ class _HeadingSevenChildProcessor(object):
         node.add_child(result)
         return result
 
+
 @interface.implementer(IChildProcessor)
 class _DivChildProcessor(object):
 
@@ -238,6 +238,7 @@ class _DivChildProcessor(object):
         result = process_div_elements(child, node, epub=epub)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _OrderedListChildProcessor(object):
@@ -249,6 +250,7 @@ class _OrderedListChildProcessor(object):
         node.add_child(result)
         return result
 
+
 @interface.implementer(IChildProcessor)
 class _UnorderedListChildProcessor(object):
 
@@ -258,6 +260,7 @@ class _UnorderedListChildProcessor(object):
         result = UnorderedList.process(child, epub=epub)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _TableChildProcessor(object):
@@ -269,6 +272,7 @@ class _TableChildProcessor(object):
         node.add_child(result)
         return result
 
+
 @interface.implementer(IChildProcessor)
 class _ImageChildProcessor(object):
 
@@ -279,6 +283,7 @@ class _ImageChildProcessor(object):
         node.add_child(result)
         return result
 
+
 @interface.implementer(IChildProcessor)
 class _FigureChildProcessor(object):
 
@@ -288,6 +293,7 @@ class _FigureChildProcessor(object):
         result = Figure.process(child, epub=epub)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _NewlineChildProcessor(object):
