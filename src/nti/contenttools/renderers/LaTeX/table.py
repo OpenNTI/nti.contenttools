@@ -103,17 +103,19 @@ def process_table_html(context, node, string_col):
 
 
 def render_html_table(context, node):
-    set_number_of_table_col(node)
+    if not node.number_of_col_body:
+        set_number_of_table_col(node)
     number_of_col_header = node.number_of_col_header
     number_of_col_body = node.number_of_col_body
     border = node.border
     string_col = u''
-    if number_of_col_header == 0 and number_of_col_body > 0:
-        string_col = get_string_col(number_of_col_body, border)
-    elif number_of_col_body == number_of_col_header:
+    if number_of_col_header > number_of_col_body:
         string_col = get_string_col(number_of_col_header, border)
     else:
         string_col = get_string_col(number_of_col_body, border)
+    logger.info("TABLE")
+    logger.info(number_of_col_header)
+    logger.info(number_of_col_body)
     return process_table_html(context, node, string_col)
 
 
