@@ -34,6 +34,14 @@ class TestParagraphAdapter(ContentToolsTestCase):
         assert_that(output,
                     is_(u'This is the first paragraph\n\n'))
 
+    def test_simple_paragraph(self):
+        script = u'<div><p class="Table-Title">Cryogenic <br />Containers</p></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\textbf{Cryogenic \\newline Containers}\n\n'))
+
     def test_simple_paragraph_2(self):
         script = u'<p>This is the first paragraph</p><p>This is the second paragraph</p>'
 

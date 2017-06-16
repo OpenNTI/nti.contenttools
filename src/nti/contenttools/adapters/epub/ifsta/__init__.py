@@ -119,9 +119,6 @@ def check_child(node, element, epub=None):
             processor.process(child, node, element, epub=epub)
         elif not isinstance(child, HtmlComment):
             logger.warn('Unhandled %s child: %s.', element, child)
-        if child.tag == u'table':
-            logger.info('TABLE')
-            logger.info(node.children)
     return node
 
 
