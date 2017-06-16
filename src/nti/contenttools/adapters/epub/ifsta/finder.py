@@ -258,15 +258,12 @@ def search_and_update_table_element(root):
     if IParagraph.providedBy(root):
         el = Run()
         el.children = root.children
-        el.add(TextNode(u' '))
         parent = root.__parent__
         for i, child in enumerate(parent):
             if child == root:
                 parent.remove(child)
                 parent.children.insert(i, el)
-        if 'Section' in root.styles:
-            logger.info('TROUBLE')
-            logger.info(el.children)
+
     if ICell.providedBy(root):
         root.children.insert(0, TextNode(u'\n\n'))
     if IImage.providedBy(root):
