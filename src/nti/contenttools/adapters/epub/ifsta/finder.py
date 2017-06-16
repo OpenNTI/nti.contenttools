@@ -281,17 +281,3 @@ def search_and_update_table_element(root):
     if hasattr(root, u'children'):
         for node in root:
             search_and_update_table_element(node)
-
-def search_and_update_tr_element(root):
-    if IRow.providedBy(root):
-        el = Run()
-        el.children = root.children
-        parent = root.__parent__
-        for i, child in enumerate(parent):
-            if child == root:
-                parent.remove(child)
-                parent.children.insert(i, el)
-    if hasattr(root, u'children'):
-        for node in root:
-            search_and_update_table_element(node)
-
