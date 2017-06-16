@@ -162,10 +162,11 @@ class Cell(types.Cell):
 
 
 def update_cell_elements(cell):
-    num = len(cell.children) - 1
-    for i, child in enumerate(cell):
-        if i > 0 and i < num:
-            child.add(types.TextNode(u'\n'))
-            child.add(types.TextNode(u'\\newline'))
-            child.add(types.TextNode(u'\n'))
+    num = len(cell.children)
+    if num > 1:
+        for i, child in enumerate(cell):
+            if i < num - 1 :
+                child.add(types.TextNode(u'\n'))
+                child.add(types.TextNode(u'\\newline'))
+                child.add(types.TextNode(u'\n'))
     return cell
