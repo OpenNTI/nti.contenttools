@@ -17,7 +17,7 @@ from nti.contenttools.adapters.epub.ifsta.run import Run
 
 from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
-
+from nti.contenttools.adapters.epub.ifsta import check_element_tail
 
 class Table(types.Table):
 
@@ -155,4 +155,5 @@ class Cell(types.Cell):
 
         me = check_element_text(me, element)
         me = check_child(me, element, epub)
+        me = check_element_tail(me, element)
         return me
