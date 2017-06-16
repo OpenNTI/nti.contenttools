@@ -72,15 +72,13 @@ class Paragraph(types.Paragraph):
                     el_main.add_child(el)
                     el_main.add_child(types.TextNode("\\\\\n"))
                     me = el_main
-                elif u'Table-Title' in attrib['class']:
+                elif attrib['class'] == u'Table-Title':
+                    el_main = Paragraph()
                     el = Run()
                     el.styles = ['bold']
                     el.children = me.children
-                    me = el
-                elif u'Table-Text' in attrib['class']:
-                    el = Run()
-                    el.children = me.children
-                    me = el
+                    el_main.add_child(el)
+                    me = el_main
                 elif any(s in attrib['class'] for s in cls.section_list):
                     me.styles.append('Section')
                     add_sectioning_label(me)
