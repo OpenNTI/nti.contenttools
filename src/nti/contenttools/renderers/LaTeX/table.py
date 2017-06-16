@@ -113,9 +113,6 @@ def render_html_table(context, node):
         string_col = get_string_col(number_of_col_header, border)
     else:
         string_col = get_string_col(number_of_col_body, border)
-    logger.info("TABLE")
-    logger.info(number_of_col_header)
-    logger.info(number_of_col_body)
     return process_table_html(context, node, string_col)
 
 
