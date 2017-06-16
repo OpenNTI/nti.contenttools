@@ -27,8 +27,10 @@ from nti.contenttools.adapters.epub.ifsta.finder import process_paragraph_captio
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_figure_caption
 from nti.contenttools.adapters.epub.ifsta.finder import remove_paragraph_caption_from_epub_body
 
+from nti.contenttools.adapters.epub.ifsta.finder import search_table
 from nti.contenttools.adapters.epub.ifsta.finder import update_caption_list
 from nti.contenttools.adapters.epub.ifsta.finder import search_sidebar_terms
+from nti.contenttools.adapters.epub.ifsta.finder import cleanup_table_element
 from nti.contenttools.adapters.epub.ifsta.finder import add_icon_to_sidebar_info
 from nti.contenttools.adapters.epub.ifsta.finder import search_paragraph_section
 from nti.contenttools.adapters.epub.ifsta.finder import search_sidebar_head_and_body
@@ -36,9 +38,6 @@ from nti.contenttools.adapters.epub.ifsta.finder import process_sidebar_head_and
 from nti.contenttools.adapters.epub.ifsta.finder import process_sidebar_figure_info_rf
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_glossary_entries
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_figure_caption_reflowable
-
-from nti.contenttools.adapters.epub.ifsta.finder import search_table
-from nti.contenttools.adapters.epub.ifsta.finder import cleanup_table_element
 
 
 def adapt(fragment, epub=None):
@@ -87,7 +86,6 @@ def adapt(fragment, epub=None):
         sfnodes = []
         sfnodes = search_sidebar_info(epub_body, sfnodes)
         process_sidebar_figure_info_rf(sfnodes)
-
 
     return epub_body
 
