@@ -156,4 +156,14 @@ class Cell(types.Cell):
         me = check_element_text(me, element)
         me = check_child(me, element, epub)
         me = check_element_tail(me, element)
+        update_cell_elements(me)
         return me
+
+def update_cell_elements(cell):
+    num = len(cell.children) - 1
+    for i, child in enumerate(cell):
+        if i > 0 and i < num:
+            child.add(types.TextNode(u'\n'))
+            child.add(types.TextNode(u'\\newline'))
+            child.add(types.TextNode(u'\n'))
+    return cell
