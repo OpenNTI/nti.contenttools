@@ -55,6 +55,7 @@ class Image(types.Image):
         fname, _ = os.path.splitext(filename)
 
         if any(fig in filename for fig in figures_without_caption):
+            fnode = Run()
             figure = Figure()
             title, _ = os.path.splitext(filename)
             figure.centered = False
@@ -62,7 +63,9 @@ class Image(types.Image):
             figure.icon = True
             me.inline_image = True
             figure.add(me)
-            return figure
+            fnode.add(figure)
+            fnode = check_element_tail(fnode, element)
+            return fnode
         elif any(fig in filename for fig in to_ignore):
             return types.Run()
         elif u'-' in filename and not re.search('[a-zA-Z]', fname):
