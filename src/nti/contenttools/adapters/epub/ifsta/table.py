@@ -24,24 +24,15 @@ class Table(types.Table):
     @classmethod
     def process(cls, element, epub=None):
         me = cls()
-        # if 'id' in element.attrib:
-        #    me.label = get_variant_field_string_value(element.attrib['id'])
-
+        me.border = True
         me = check_element_text(me, element)
-
-        if u'border' in element.attrib.keys():
-            me.border = element.attrib[u'border']
-
         me.number_of_col_body = 0
 
         for child in element:
             if child.tag == 'colgroup':
                 pass
             elif child.tag == 'tbody':
-                if me.border:
-                    me.add_child(TBody.process(child, True, epub))
-                else:
-                    me.add_child(TBody.process(child, False, epub))
+                me.add_child(TBody.process(child, me.border, epub))
             elif child.tag == 'tr':
                 row = Row.process(child, me.border)
                 me.add_child(row)

@@ -20,6 +20,7 @@ from nti.contenttools.renderers.LaTeX.utils import create_label
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
+from nti.contenttools.types.interfaces import IRow
 from nti.contenttools.types.interfaces import ICell
 from nti.contenttools.types.interfaces import IImage
 from nti.contenttools.types.interfaces import ITable
@@ -276,3 +277,17 @@ def search_and_update_table_element(root):
     if hasattr(root, u'children'):
         for node in root:
             search_and_update_table_element(node)
+
+def search_and_update_tr_element(root):
+    if IRow.providedBy(root):
+        el = Run()
+        el.children = root.children
+        parent = root.__parent__
+        for i, child in enumerate(parent):
+            if child == root:
+                parent.remove(child)
+                parent.children.insert(i, el)
+    if hasattr(root, u'children'):
+        for node in root:
+            search_and_update_table_element(node)
+
