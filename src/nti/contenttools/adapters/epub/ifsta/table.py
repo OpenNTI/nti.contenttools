@@ -13,13 +13,11 @@ from lxml.html import HtmlComment
 
 from nti.contenttools import types
 
-from nti.contenttools.types import TextNode
-
 from nti.contenttools.adapters.epub.ifsta.run import Run
 
 from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
-from nti.contenttools.adapters.epub.ifsta import check_element_tail
+
 
 class Table(types.Table):
 
@@ -157,16 +155,4 @@ class Cell(types.Cell):
 
         me = check_element_text(me, element)
         me = check_child(me, element, epub)
-        me = check_element_tail(me, element)
-
-        update_tcell_element(me)
         return me
-
-def update_tcell_element(cell):
-    num = len(cell.children) - 1
-    for i, child in enumerate(cell):
-        if i < num:
-            child.add(TextNode(u'\n'))
-            child.add(TextNode(u'\\newline'))
-            child.add(TextNode(u'\n'))
-    return cell
