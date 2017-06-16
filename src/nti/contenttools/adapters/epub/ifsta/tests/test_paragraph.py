@@ -40,7 +40,7 @@ class TestParagraphAdapter(ContentToolsTestCase):
         node = Run.process(element)
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\textbf{Cryogenic \\newline Containers}\n\n'))
+                    is_(u'\\textbf{Cryogenic \\newline Containers}'))
 
     def test_simple_paragraph_2(self):
         script = u'<p>This is the first paragraph</p><p>This is the second paragraph</p>'
