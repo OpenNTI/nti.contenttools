@@ -39,7 +39,7 @@ class TestTable(ContentToolsTestCase):
         node = Run.process(element)
         output = render_output(node)
         assert_that(output,
-                    is_(u'\n\\begin{table}\n\\begin{tabular}{ l  l  l }\nA & B & C\\\\\n1 & 2 & 3\\\\\n\n\\end{tabular}\n\\end{table}\n'))
+                    is_(u'\n\\begin{table}\n\\begin{tabular}{|l|l|l|}\nA & B & C\\\\ \\hline\n1 & 2 & 3\\\\ \\hline\n\n\\end{tabular}\n\\end{table}\n'))
 
     def test_table_2(self):
         script = u'<div><table>\
@@ -63,4 +63,4 @@ class TestTable(ContentToolsTestCase):
         node = Run.process(element)
         output = render_output(node)
         assert_that(output,
-                    is_(u'\n\\begin{table}\n\\begin{tabular}{ l  l  l }\nFirstname & Lastname & Age\\\\\nJill & Smith & 50\\\\\nEve & Jackson & 94\\\\\n\n\\end{tabular}\n\\end{table}\n'))
+                    is_(u'\n\\begin{table}\n\\begin{tabular}{|l|l|l|}\nFirstname & Lastname & Age\\\\ \\hline\nJill & Smith & 50\\\\ \\hline\nEve & Jackson & 94\\\\ \\hline\n\n\\end{tabular}\n\\end{table}\n'))
