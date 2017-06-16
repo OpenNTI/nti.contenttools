@@ -64,7 +64,7 @@ class Paragraph(types.Paragraph):
                         sidebar_class.title = u'Case History'
                     sidebar_class.children = me.children
                     me = sidebar_class
-                elif attrib['class'] == u'C-Head ParaOverride-1':
+                elif u'C-Head' in attrib['class']:
                     el_main = Paragraph()
                     el = Run()
                     el.styles = ['bold', 'italic']
