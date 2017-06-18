@@ -31,7 +31,7 @@ def table_renderer(self):
     else:
         logger.warn('Unhandled alignment type : %s', self.alignment)
 
-    for _ in xrange(len(self.grid)-1):
+    for _ in range(len(self.grid)-1):
         colspec = colspec + alignment
         if 'insideV' in self.borders.keys() and self.borders['insideV']['val'] not in ['nil', 'none']:
             colspec = colspec + u'|'

@@ -318,7 +318,7 @@ def _process_fragment( fragment, epub ):
 
     # Consolidate multi-line chapter or section titles
     new_el = []
-    for i in xrange(len(el)):
+    for i in range(len(el)):
         if (i+1 < len(el)) and type(el[i]) == type(el[i+1]):
             if type(el[i]) == Chapter or type(el[i]) == Section:
                 el[i].add_child( types.TextNode(': ') )
@@ -356,10 +356,10 @@ def _get_title( head ):
 def _consolidate_lists( list = [] ):
     def pull_up_children( element ):
         if isinstance(element, types.List):
-            for i in xrange(len(element.children)):
+            for i in range(len(element.children)):
                 if isinstance(element.children[i], types.List) and element.level == element.children[i].level:
                     child = element.children[i]
-                    for j in xrange(len(child.children)):
+                    for j in range(len(child.children)):
                         element.children.insert(i+j, child.children[j])
                     element.children.remove(child)
 

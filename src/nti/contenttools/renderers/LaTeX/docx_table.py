@@ -42,7 +42,7 @@ def get_colspec(node):
         colspec = u'|'
 
     alignment = get_alignment(node)
-    for _ in xrange(len(node.grid) - 1):
+    for _ in range(len(node.grid) - 1):
         colspec = colspec + alignment
         if      'insideV' in node.borders \
             and node.borders['insideV']['val'] not in ['nil', 'none']:
