@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import copy
+
 from lxml.html import HtmlComment
 
 from nti.contenttools import types
@@ -19,6 +21,7 @@ from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
 from nti.contenttools.adapters.epub.ifsta import check_element_tail
 
+from nti.contenttools.adapters.epub.ifsta.finder import search_thead_element
 
 class Table(types.Table):
 
@@ -40,7 +43,14 @@ class Table(types.Table):
                 if row.number_of_col > me.number_of_col_body:
                     me.number_of_col_body = row.number_of_col
             elif child.tag == 'thead':
-                me.add_child(THead.process(child, me.border, epub))
+                thead = THead.process(child, me.border, epub)
+                me.add_child(thead)
+                cap = copy.deepcopy(thead)
+                caps = []
+                search_thead_element(cap, caps)
+                node_caption = Run()
+                node_caption.children = caps
+                me.caption = node_caption
             elif child.tag == 'tfoot':
                 me.add_child(TFoot.process(child, epub))
             elif child.tag == 'caption':
