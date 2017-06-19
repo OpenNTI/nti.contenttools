@@ -173,7 +173,6 @@ def search_and_update_glossary_entries(root, sidebars):
         for word in terms:
             if word in sidebars.keys():
                 root.definition = sidebars[word]
-                logger.info(word)
     elif hasattr(root, u'children'):
         for child in root:
             search_and_update_glossary_entries(child, sidebars)
@@ -201,7 +200,6 @@ def search_and_update_figure_caption_reflowable(root, captions, figures, figure_
                 ref = u'\\ntiidref{%s}' % label
                 figure_ref[token.rstrip()] = ref
             else:
-                logger.info(root.label)
                 figures.append(root)
                 logger.warn('CAPTION NOT FOUND >> %s', old_cap)
     if hasattr(root, u'children'):
@@ -278,6 +276,7 @@ def search_and_update_table_element(root):
         for node in root:
             search_and_update_table_element(node)
 
+
 def search_thead_element(root, cells):
     if ICell.providedBy(root):
         el = Run()
@@ -286,4 +285,3 @@ def search_thead_element(root, cells):
     elif hasattr(root, u'children'):
         for node in root:
             search_thead_element(node, cells)
-
