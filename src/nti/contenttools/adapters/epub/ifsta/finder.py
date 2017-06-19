@@ -275,3 +275,13 @@ def search_and_update_table_element(root):
     if hasattr(root, u'children'):
         for node in root:
             search_and_update_table_element(node)
+
+def search_thead_element(root, cells):
+    if ICell.providedBy(root):
+        el = Run()
+        el.children = root.children
+        cells.append(el)
+    elif hasattr(root, u'children'):
+        for node in root:
+            search_thead_element(node, cells)
+
