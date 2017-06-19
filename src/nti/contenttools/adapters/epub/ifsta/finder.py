@@ -201,6 +201,8 @@ def search_and_update_figure_caption_reflowable(root, captions, figures, figure_
                 ref = u'\\ntiidref{%s}' % label
                 figure_ref[token.rstrip()] = ref
             else:
+                logger.info(root.label)
+                figures.append(root)
                 logger.warn('CAPTION NOT FOUND >> %s', old_cap)
     if hasattr(root, u'children'):
         for node in root:
