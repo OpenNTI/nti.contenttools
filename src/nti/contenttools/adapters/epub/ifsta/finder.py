@@ -192,8 +192,8 @@ def search_and_update_figure_caption_reflowable(root, captions, figures, figure_
             caps = [cap for cap in captions if old_cap in cap]
             if caps:
                 new_cap = caps[0]
-                token = u'Figure %s ' % (old_cap)
-                new_cap = new_cap.replace(token, u'')
+                token = u'Figure %s' % (old_cap)
+                new_cap = new_cap.replace(token.rstrip(), u'')
                 root.caption = new_cap.rstrip()
                 figures.append(root)
                 label = get_variant_field_string_value(root.label)
