@@ -63,13 +63,13 @@ class EPUBParser(object):
         self.section_list = []
         self.glossary_labels = []
 
+        self.chapter_num = chapter_num
+
         self.epub_reader = EPUBReader(input_file)
         self.epub_reader(self)
         main_title = rename_filename(self.epub_reader.title)
         self.book_title = main_title
         self.tex_main_file = u'MAIN_%s.tex' % main_title
-
-        self.chapter_num = chapter_num
 
         if epub_type in EPUB_COURSE_TYPE:
             data = (output_directory, self.book_title)
