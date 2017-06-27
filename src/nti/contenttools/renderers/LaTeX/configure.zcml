@@ -72,30 +72,37 @@
 			 for="nti.contenttools.types.interfaces.IDD"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".lists.DTRenderer"
 			 for="nti.contenttools.types.interfaces.IDT"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".lists.ItemRenderer"
 			 for="nti.contenttools.types.interfaces.IItem"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".lists.ListRenderer"
 			 for="nti.contenttools.types.interfaces.IList"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".lists.UnorderedListRenderer"
 			 for="nti.contenttools.types.interfaces.IUnorderedList"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".lists.OrderedListRenderer"
 			 for="nti.contenttools.types.interfaces.IOrderedList"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".lists.ItemWithDescriptionRenderer"
 			 for="nti.contenttools.types.interfaces.IItemWithDesc"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".lists.DescriptionListRenderer"
 			 for="nti.contenttools.types.interfaces.IDescriptionList"
 			 provides="..interfaces.IRenderer"
@@ -106,22 +113,27 @@
 			 for="nti.contenttools.types.interfaces.ITable"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".table.HTMLTableRowRenderer"
 			 for="nti.contenttools.types.interfaces.IRow"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".table.HTMLTableCellRenderer"
 			 for="nti.contenttools.types.interfaces.ICell"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".table.HMTLTBodyRenderer"
 			 for="nti.contenttools.types.interfaces.ITBody"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".table.HMTLTFooterRenderer"
 			 for="nti.contenttools.types.interfaces.ITFoot"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".table.HMTLTHeaderRenderer"
 			 for="nti.contenttools.types.interfaces.ITHead"
 			 provides="..interfaces.IRenderer"
@@ -132,86 +144,107 @@
 			 for="nti.contenttools.types.interfaces.IMath"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MRowRenderer"
 			 for="nti.contenttools.types.interfaces.IMRow"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MFencedRenderer"
 			 for="nti.contenttools.types.interfaces.IMFenced"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MathRunRenderer"
 			 for="nti.contenttools.types.interfaces.IMathRun"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MTableRenderer"
 			 for="nti.contenttools.types.interfaces.IMTable"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MtrRenderer"
 			 for="nti.contenttools.types.interfaces.IMtr"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MtdRenderer"
 			 for="nti.contenttools.types.interfaces.IMtd"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MFracRenderer"
 			 for="nti.contenttools.types.interfaces.IMFrac"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MSubRenderer"
 			 for="nti.contenttools.types.interfaces.IMSub"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MSupRenderer"
 			 for="nti.contenttools.types.interfaces.IMSup"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MSubSupRenderer"
 			 for="nti.contenttools.types.interfaces.IMSubSup"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MSqrtRenderer"
 			 for="nti.contenttools.types.interfaces.IMsqrt"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MRootRenderer"
 			 for="nti.contenttools.types.interfaces.IMRoot"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MUnderRenderer"
 			 for="nti.contenttools.types.interfaces.IMUnder"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MUnderoverRenderer"
 			 for="nti.contenttools.types.interfaces.IMUnderover"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MOverRenderer"
 			 for="nti.contenttools.types.interfaces.IMOver"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MMultiscriptsRenderer"
 			 for="nti.contenttools.types.interfaces.IMMultiscripts"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MprescriptsRenderer"
 			 for="nti.contenttools.types.interfaces.IMMprescripts"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MNoneRenderer"
 			 for="nti.contenttools.types.interfaces.IMNone"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MTextRenderer"
 			 for="nti.contenttools.types.interfaces.IMText"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MencloseRenderer"
 			 for="nti.contenttools.types.interfaces.IMMenclose"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".math.MLabeledTrRenderer"
 			 for="nti.contenttools.types.interfaces.IMLabeledTr"
 			 provides="..interfaces.IRenderer"
@@ -222,26 +255,32 @@
 			 for="nti.contenttools.types.interfaces.INote"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".note.NoteInteractiveRenderer"
 			 for="nti.contenttools.types.interfaces.INoteInteractive"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".note.OpenstaxNoteRenderer"
 			 for="nti.contenttools.types.interfaces.IOpenstaxNote"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".note.OpenstaxNoteBodyRenderer"
 			 for="nti.contenttools.types.interfaces.IOpenstaxNoteBody"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".note.OpenstaxExampleNoteRenderer"
 			 for="nti.contenttools.types.interfaces.IOpenstaxExampleNote"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".note.SidebarRenderer"
 			 for="nti.contenttools.types.interfaces.ISidebar"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".note.BlockQuoteRenderer"
 			 for="nti.contenttools.types.interfaces.IBlockQuote"
 			 provides="..interfaces.IRenderer"
@@ -252,10 +291,12 @@
 			 for="nti.contenttools.types.interfaces.IFootnote"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".footnote.FootnoteTextRenderer"
 			 for="nti.contenttools.types.interfaces.IFootnoteText"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
 	<adapter factory=".footnote.FootnoteMarkRenderer"
 			 for="nti.contenttools.types.interfaces.IFootnoteMark"
 			 provides="..interfaces.IRenderer"
@@ -272,14 +313,17 @@
 		 for="nti.contenttools.types.interfaces.IImage"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />	
+
 	<adapter factory=".media.FigureRenderer"
 		 for="nti.contenttools.types.interfaces.IFigure"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".media.DocxImageRenderer"
 		 for="nti.contenttools.types.interfaces.IDocxImage"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".media.EquationImageRenderer"
 		 for="nti.contenttools.types.interfaces.IEquationImage"
 		 provides="..interfaces.IRenderer"
@@ -290,126 +334,157 @@
 		 for="nti.contenttools.types.interfaces.IOMath"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathParaRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathPara"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathRunRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathRun"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathFracRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathFrac"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathDenominatorRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathDenominator"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />	
+
 	<adapter factory=".omath.OMathNumeratorRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathNumerator"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathRadicalRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathRadical"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathBaseRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathBase"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathDegreeRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathDegree"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathSuperscriptRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathSuperscript"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathSubscriptRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathSubscript"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathSubRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathSub"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathSupRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathSup"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathSubSupRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathSubSup"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />	
+
 	<adapter factory=".omath.OMathNaryRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathNary"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" /> 
+
 	<adapter factory=".omath.OMathNaryPrRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathNaryPr"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathDelimiterRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathDelimiter"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathDPrRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathDPr"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathMatrixRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathMatrix"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathMrRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathMr"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathEqArrRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathEqArr"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathFuncRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathFunc"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathFNameRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathFName"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathLimRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathLim"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathLimLowRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathLimLow"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathLimUppRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathLimUpp"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathBarRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathBar"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathAccRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathAcc"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathSPreRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathSPre"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathBoxRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathBox"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathGroupChrRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathGroupChr"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".omath.OMathBorderBoxRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathBorderBox"
 		 provides="..interfaces.IRenderer"
@@ -420,10 +495,12 @@
 		 for="nti.contenttools.types.interfaces.ICode"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".code.CodeLineRenderer"
 		 for="nti.contenttools.types.interfaces.ICodeLine"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".code.VerbatimRenderer"
 		 for="nti.contenttools.types.interfaces.IVerbatim"
 		 provides="..interfaces.IRenderer"
@@ -440,6 +517,7 @@
 		 for="nti.contenttools.types.interfaces.IAlternateContent"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".alternate_content.TextBoxContentRenderer"
 		 for="nti.contenttools.types.interfaces.ITextBoxContent"
 		 provides="..interfaces.IRenderer"
@@ -456,14 +534,17 @@
 		 for="nti.contenttools.types.interfaces.IChapterExercise"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".chapter_assessment.ExerciseSectionRenderer"
 		 for="nti.contenttools.types.interfaces.IExerciseSection"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".chapter_assessment.ExerciseElementRenderer"
 		 for="nti.contenttools.types.interfaces.IExerciseElement"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".chapter_assessment.ProblemRenderer"
 		 for="nti.contenttools.types.interfaces.IProblem"
 		 provides="..interfaces.IRenderer"
@@ -480,12 +561,15 @@
 		 for="nti.contenttools.types.interfaces.IDocxTable"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".docx_table.DocxTRowRenderer"
 		 for="nti.contenttools.types.interfaces.IDocxTRow"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 	<adapter factory=".docx_table.DocxTCellRenderer"
 		 for="nti.contenttools.types.interfaces.IDocxTCell"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 </configure>

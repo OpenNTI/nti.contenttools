@@ -65,7 +65,6 @@ class TestDocument(ContentToolsTestCase):
         assert_that(output,
                     is_(u'\\documentclass{book}\n\\usepackage{graphicx}\n\\begin{document}\n\n\\end{document}\n'))
 
-    
     def test_chapter_counter(self):
         node = ChapterCounter()
         output = render_output(node)

@@ -85,7 +85,8 @@ def main():
 
     # create a txt file to store information about image's name and location
     # used in nticard
-    epub = EPUBParser(inputfile, args.output, args.type, args.cssjson, args.chapternum)
+    epub = EPUBParser(inputfile, args.output, args.type,
+                      args.cssjson, args.chapternum)
     epub.nticard_images_filename = os.path.join(args.output,
                                                 'nticard_images.txt')
     epub.process_fragment()

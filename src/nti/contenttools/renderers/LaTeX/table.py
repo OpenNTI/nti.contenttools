@@ -12,6 +12,8 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
+from nti.contenttools._compat import text_
+
 from nti.contenttools.renderers.interfaces import IRenderer
 
 from nti.contenttools.renderers.LaTeX.base import render_output
@@ -28,7 +30,6 @@ from nti.contenttools.types.interfaces import ITHead
 from nti.contenttools.types.interfaces import ITFoot
 from nti.contenttools.types.interfaces import ITable
 
-from nti.contenttools._compat import text_
 
 def set_number_of_table_col(node):
     header_index = find_table_child(ITHead, node)
@@ -94,7 +95,7 @@ def process_table_html(context, node, string_col):
                 label = create_label('table', caption)
                 context.write(label)
                 context.write(u'\n')
-        
+
         if label:
             node.label = text_(label)
 
@@ -142,11 +143,10 @@ def render_html_table_cell(context, node):
     if result.isspace() or result is None or result == u'':
         result = u' ~ '
     elif node.colspan > 1:
-        result = get_multicolumn(
-            node.colspan,
-            node.border,
-            node.is_first_cell_in_the_row,
-            result)
+        result = get_multicolumn(node.colspan,
+                                 node.border,
+                                 node.is_first_cell_in_the_row,
+                                 result)
     context.write(result)
     return node
 

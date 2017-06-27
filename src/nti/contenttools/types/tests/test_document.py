@@ -45,7 +45,7 @@ class TestDocument(ContentToolsTestCase):
         node = Body()
         assert_that(node, validly_provides(IBody))
         assert_that(node, verifiably_provides(IBody))
-        
+
     def test_epub_body(self):
         node = EPUBBody()
         assert_that(node, validly_provides(IEPUBBody))

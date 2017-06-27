@@ -20,7 +20,7 @@ from nti.contenttools._compat import text_
 from nti.contenttools.adapters.epub.ifsta.interfaces import IChildProcessor
 
 from nti.contenttools.types import TextNode
-from nti.contenttools.types import ChapterCounter 
+from nti.contenttools.types import ChapterCounter
 
 from nti.contenttools.adapters.epub.ifsta.finder import search_sidebar_info
 from nti.contenttools.adapters.epub.ifsta.finder import remove_extra_figure_icon
@@ -97,7 +97,7 @@ class EPUBBody(types.EPUBBody):
     def process(cls, element, epub=None):
         me = cls()
         if epub:
-            if epub.chapter_num :
+            if epub.chapter_num:
                 counter = ChapterCounter()
                 counter.counter_number = text_(epub.chapter_num)
                 me.add_child(counter)

@@ -55,6 +55,7 @@ class Body(DocumentStructureNode):
 class EPUBBody(DocumentStructureNode):
     createFieldProperties(IEPUBBody)
 
+
 @interface.implementer(IChapterCounter)
 class ChapterCounter(DocumentStructureNode):
     createFieldProperties(IChapterCounter)

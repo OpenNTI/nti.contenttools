@@ -19,6 +19,9 @@ from nti.contenttools.renderers.LaTeX.utils import create_label
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
+from nti.contenttools.types import Run
+from nti.contenttools.types import TextNode
+
 from nti.contenttools.types.interfaces import ICell
 from nti.contenttools.types.interfaces import IImage
 from nti.contenttools.types.interfaces import ITable
@@ -27,9 +30,6 @@ from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
 from nti.contenttools.types.interfaces import IGlossaryEntry
-
-from nti.contenttools.types import Run
-from nti.contenttools.types import TextNode
 
 
 def search_sidebar_info(root, nodes):
