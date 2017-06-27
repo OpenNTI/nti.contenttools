@@ -20,6 +20,7 @@ from nti.contentfragments.latex import PlainTextToLatexFragmentConverter
 from nti.contenttools.types.document import Body
 from nti.contenttools.types.document import Document
 from nti.contenttools.types.document import EPUBBody
+from nti.contenttools.types.document import ChapterCounter
 
 from nti.contenttools.types.lists import DD
 from nti.contenttools.types.lists import DT
