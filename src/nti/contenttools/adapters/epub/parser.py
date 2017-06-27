@@ -32,6 +32,7 @@ from nti.contenttools.renderers.LaTeX.utils import create_label
 from nti.contenttools.util.string_replacer import rename_filename
 
 from nti.contenttools.types.interfaces import ISidebar
+from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IEPUBBody
 
 EPUB_COURSE_TYPE = (u'ifsta', u'ifsta_rf')
@@ -62,6 +63,8 @@ class EPUBParser(object):
         
         self.section_list = []
         self.glossary_labels = []
+
+        self.tables = []
 
         self.chapter_num = chapter_num
 
@@ -118,10 +121,12 @@ class EPUBParser(object):
                     self.write_to_file(content,
                                        self.output_directory,
                                        tex_filename)
+            self.tables = search_tables(epub_chapter, self.tables)
+
         self.create_main_latex()
         logger.info(epub_reader.spine)
-        if self.reading_def_dir:
-            self.process_support_files()
+        
+        self.process_support_files()
 
     def process_support_files(self):
         if self.epub_type == 'ifsta_rf':
@@ -156,6 +161,11 @@ class EPUBParser(object):
                                    indent='\t')
         self.write_to_file(
             figure_labels, self.output_directory, 'figure_labels.json')
+
+        tables = u'\n'.join(self.tables)
+        self.write_to_file(tables,
+                           self.output_directory,
+                           'tables.txt')
 
 
     def generate_figure_tex(self):
@@ -272,3 +282,11 @@ def search_sidebar_term(root, sidebars, labels):
         for node in root:
             search_sidebar_term(node, sidebars, labels)
     return sidebars
+
+def search_tables(root, tables):
+    if ITable.providedBy(root):
+        tables.append(root.label)
+    elif hasattr(root, u'children'):
+        for node in root:
+            search_tables(node, tables)
+    return tables
