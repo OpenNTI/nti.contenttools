@@ -19,6 +19,11 @@
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
 
+	<adapter factory=".document.ChapterCounterRenderer"
+			 for="nti.contenttools.types.interfaces.IChapterCounter"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
+
 	<!-- Paragraph -->
 	<adapter factory=".paragraph.ParagraphRenderer"
 			 for="nti.contenttools.types.interfaces.IParagraph"

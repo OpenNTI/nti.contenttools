@@ -110,3 +110,8 @@ class BodyRenderer(RendererMixin):
 @component.adapter(IEPUBBody)
 class EPUBBodyRenderer(RendererMixin):
     func = staticmethod(render_epub_body)
+
+
+@component.adapter(IChapterCounter)
+class ChapterCounterRenderer(RendererMixin):
+    func = staticmethod(render_chapter_counter)
