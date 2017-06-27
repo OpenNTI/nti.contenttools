@@ -138,6 +138,11 @@ class IChapter(IDocumentStructureNode):
         set label
         """
 
+class IChapterCounter(IDocumentStructureNode):
+    counter_number = Variant((Int(title="Counter Number"),
+                              ValidTextLine(title="Counter Number")),
+                             required=True,
+                             default=1)
 
 class ISection(IDocumentStructureNode):
 

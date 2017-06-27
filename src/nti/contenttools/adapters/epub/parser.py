@@ -69,6 +69,8 @@ class EPUBParser(object):
         self.book_title = main_title
         self.tex_main_file = u'MAIN_%s.tex' % main_title
 
+        self.chapter_num = chapter_num
+
         if epub_type in EPUB_COURSE_TYPE:
             data = (output_directory, self.book_title)
             reading_def_dir = u'%s/Definitions/Readings/%s' % data

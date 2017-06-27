@@ -19,6 +19,7 @@ from nti.contenttools.renderers.LaTeX.base import render_children
 from nti.contenttools.types.interfaces import IBody
 from nti.contenttools.types.interfaces import IDocument
 from nti.contenttools.types.interfaces import IEPUBBody
+from nti.contenttools.types.interfaces import IChapterCounter
 
 
 def document_class(docclass, options=u''):
