@@ -28,6 +28,7 @@ from nti.contenttools.types.interfaces import ITHead
 from nti.contenttools.types.interfaces import ITFoot
 from nti.contenttools.types.interfaces import ITable
 
+from nti.contenttools._compat import text_
 
 def set_number_of_table_col(node):
     header_index = find_table_child(ITHead, node)
@@ -67,6 +68,7 @@ def get_string_col(number_of_col, border):
 
 def process_table_html(context, node, string_col):
     caption = u''
+    label = u''
     if node.type_ == u'simplelist':
         context.write(u'\n')
         render_children(context, node)
@@ -92,6 +94,9 @@ def process_table_html(context, node, string_col):
                 label = create_label('table', caption)
                 context.write(label)
                 context.write(u'\n')
+        
+        if label:
+            node.label = text_(label)
 
         context.write(u'\\begin{tabular}{')
         context.write(string_col)
