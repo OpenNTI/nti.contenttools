@@ -20,10 +20,12 @@ from nti.testing.matchers import verifiably_provides
 from nti.contenttools.types.interfaces import IBody
 from nti.contenttools.types.interfaces import IDocument
 from nti.contenttools.types.interfaces import IEPUBBody
+from nti.contenttools.types.interfaces import IChapterCounter
 
 from nti.contenttools.types.document import Body
 from nti.contenttools.types.document import Document
 from nti.contenttools.types.document import EPUBBody
+from nti.contenttools.types.document import ChapterCounter
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -48,3 +50,9 @@ class TestDocument(ContentToolsTestCase):
         node = EPUBBody()
         assert_that(node, validly_provides(IEPUBBody))
         assert_that(node, verifiably_provides(IEPUBBody))
+
+    def test_chapter_counter(self):
+        node = ChapterCounter()
+        assert_that(node, validly_provides(IChapterCounter))
+        assert_that(node, verifiably_provides(IChapterCounter))
+        assert_that(node, has_property('counter_number', is_(1)))

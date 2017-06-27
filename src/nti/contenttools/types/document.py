@@ -14,6 +14,7 @@ from zope import interface
 from nti.contenttools.types.interfaces import IBody
 from nti.contenttools.types.interfaces import IDocument
 from nti.contenttools.types.interfaces import IEPUBBody
+from nti.contenttools.types.interfaces import IChapterCounter
 
 from nti.contenttools.types.node import DocumentStructureNode
 
@@ -53,3 +54,7 @@ class Body(DocumentStructureNode):
 @interface.implementer(IEPUBBody)
 class EPUBBody(DocumentStructureNode):
     createFieldProperties(IEPUBBody)
+
+@interface.implementer(IChapterCounter)
+class ChapterCounter(DocumentStructureNode):
+    createFieldProperties(IChapterCounter)
