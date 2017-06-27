@@ -17,8 +17,6 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.types.document import Body
 from nti.contenttools.types.document import Document
 from nti.contenttools.types.document import EPUBBody
-from nti.contenttools.types.document import ChapterCounter
-
 from nti.contenttools.types.sectioning import Section
 
 from nti.contenttools.tests import ContentToolsTestCase
@@ -65,8 +63,4 @@ class TestDocument(ContentToolsTestCase):
         assert_that(output,
                     is_(u'\\documentclass{book}\n\\usepackage{graphicx}\n\\begin{document}\n\n\\end{document}\n'))
 
-    def test_chapter_counter(self):
-        node = ChapterCounter()
-        output = render_output(node)
-        assert_that(output,
-                    is_(u''))
+    

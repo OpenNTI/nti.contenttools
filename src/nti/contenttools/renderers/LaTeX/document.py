@@ -83,7 +83,6 @@ def render_chapter_counter(context, node):
     context.write(u'.\\arabic{table}}\n')
     return node
 
-
 @interface.implementer(IRenderer)
 class RendererMixin(object):
 
@@ -111,8 +110,3 @@ class BodyRenderer(RendererMixin):
 @component.adapter(IEPUBBody)
 class EPUBBodyRenderer(RendererMixin):
     func = staticmethod(render_epub_body)
-
-
-@component.adapter(IChapterCounter)
-class ChapterCounterRenderer(RendererMixin):
-    func = staticmethod(render_chapter_counter)
