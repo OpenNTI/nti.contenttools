@@ -68,6 +68,21 @@ def render_epub_body(context, body):
     render_children(context, body)
     return body
 
+def render_chapter_counter(context, node):
+    context.write(u'\\setcounter{figure}{0}\n')
+    context.write(u'\\setcounter{table}{0}\n')
+    context.write(u'\\setcounter{chapter}{')
+    context.write(node.counter_number)
+    context.write(u'}\n')
+    context.write(u'\\setcounter{section}{0}\n\n')
+    context.write(u'\\renewcommand*{\\thefigure}{')
+    context.write(node.counter_number)
+    context.write(u'.\\arabic{figure}}\n')
+    context.write(u'\\renewcommand*{\\thetable}{')
+    context.write(node.counter_number)
+    context.write(u'.\\arabic{table}}\n')
+    return node
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -96,3 +111,8 @@ class BodyRenderer(RendererMixin):
 @component.adapter(IEPUBBody)
 class EPUBBodyRenderer(RendererMixin):
     func = staticmethod(render_epub_body)
+
+
+@component.adapter(IChapterCounter)
+class ChapterCounterRenderer(RendererMixin):
+    func = staticmethod(render_chapter_counter)
