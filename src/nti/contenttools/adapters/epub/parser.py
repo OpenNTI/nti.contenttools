@@ -129,45 +129,49 @@ class EPUBParser(object):
         self.process_support_files()
 
     def process_support_files(self):
+        support_dir = u'%s/SupportFiles' % self.output_directory
+        if not os.path.exists(support_dir):
+            os.makedirs(support_dir)
+
         if self.epub_type == 'ifsta_rf':
             content_fig = self.generate_figure_tex()
             self.write_to_file(content_fig,
-                self.output_directory,
-                'Figures.tex')
+                               support_dir,
+                               'Figures.tex')
 
             content_sidebar_term = self.generate_sidebar_terms_nodes()
             self.write_to_file(content_sidebar_term,
-                self.output_directory,
-                'SidebarTerms.tex')
+                               support_dir,
+                               'SidebarTerms.tex')
 
         content = u''.join(self.section_list)
         self.write_to_file(content,
-                           self.output_directory,
+                           support_dir,
                            'section_list.txt')
 
         glossaries = json.dumps(self.glossary_terms,
                                 sort_keys=True,
                                 indent='\t')
-        self.write_to_file(glossaries, self.output_directory, 'glossary.json')
+        self.write_to_file(glossaries, support_dir, 'glossary.json')
 
         glossary_labels = list(sorted(self.glossary_labels))
         glossary_labels_content = u''.join(glossary_labels)
         self.write_to_file(glossary_labels_content,
-                           self.output_directory,
+                           support_dir,
                            'glossary_label.txt')
 
         figure_labels = json.dumps(self.figure_labels,
                                    sort_keys=True,
                                    indent='\t')
         self.write_to_file(
-            figure_labels, self.output_directory, 'figure_labels.json')
+            figure_labels, support_dir, 'figure_labels.json')
 
         tables = u'\n'.join(self.tables)
         self.write_to_file(tables.replace(u'\\label', u'\\ref'),
-                           self.output_directory,
+                           support_dir,
                            'table_toc.tex')
         self.write_to_file(tables.replace(u'\\label', u'\\ntiidref'),
-                           self.output_directory,
+                           support_dir,
                            'table_refs.tex')
 
 
