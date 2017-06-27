@@ -99,7 +99,7 @@ class EPUBBody(types.EPUBBody):
         if epub:
             if epub.chapter_num :
                 counter = ChapterCounter()
-                counter.chapter_number = epub.chapter_num
+                counter.counter_number = text_(epub.chapter_num)
                 me.add_child(counter)
         me = check_element_text(me, element)
         me = check_child(me, element, epub)
