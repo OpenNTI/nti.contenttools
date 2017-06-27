@@ -39,7 +39,7 @@ EPUB_COURSE_TYPE = (u'ifsta', u'ifsta_rf')
 
 class EPUBParser(object):
 
-    def __init__(self, input_file, output_directory, epub_type, css_json=None):
+    def __init__(self, input_file, output_directory, epub_type, css_json=None, chapter_num=None):
         self.image_list = []
         self.latex_filenames = []
         self.content_folder = []  # will be use to retrieve images or pdf
