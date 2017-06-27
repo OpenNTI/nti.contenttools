@@ -163,9 +163,12 @@ class EPUBParser(object):
             figure_labels, self.output_directory, 'figure_labels.json')
 
         tables = u'\n'.join(self.tables)
-        self.write_to_file(tables,
+        self.write_to_file(tables.replace(u'\\label', u'\\ref'),
                            self.output_directory,
-                           'tables.txt')
+                           'table_toc.tex')
+        self.write_to_file(tables.replace(u'\\label', u'\\ntiidref'),
+                           self.output_directory,
+                           'table_refs.tex')
 
 
     def generate_figure_tex(self):
