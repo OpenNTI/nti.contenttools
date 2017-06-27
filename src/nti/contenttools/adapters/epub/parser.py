@@ -27,8 +27,6 @@ from nti.contenttools.renderers.model import DefaultRendererContext
 from nti.contenttools.renderers.LaTeX.base import render_node
 from nti.contenttools.renderers.LaTeX.base import render_output
 
-from nti.contenttools.renderers.LaTeX.utils import create_label
-
 from nti.contenttools.util.string_replacer import rename_filename
 
 from nti.contenttools.types.interfaces import ISidebar
@@ -54,13 +52,13 @@ class EPUBParser(object):
         self.caption_list = []
         self.figure_labels = {}
         self.glossary_terms = {}
-        
+
         self.figures = []
         self.figure_node = []
         self.figure_ref = {}
 
         self.sidebar_term_nodes = []
-        
+
         self.section_list = []
         self.glossary_labels = []
 
@@ -115,8 +113,8 @@ class EPUBParser(object):
                                        tex_filename)
                     if self.epub_type == u'ifsta':
                         generate_glossary_term_from_sidebar(epub_chapter,
-                                                        self.glossary_terms,
-                                                        self.glossary_labels)
+                                                            self.glossary_terms,
+                                                            self.glossary_labels)
                 else:
                     self.write_to_file(content,
                                        self.output_directory,
@@ -125,7 +123,7 @@ class EPUBParser(object):
 
         self.create_main_latex()
         logger.info(epub_reader.spine)
-        
+
         self.process_support_files()
 
     def process_support_files(self):
@@ -174,7 +172,6 @@ class EPUBParser(object):
                            support_dir,
                            'table_refs.tex')
 
-
     def generate_figure_tex(self):
         figures = []
         for fig in self.figure_node:
@@ -217,8 +214,8 @@ class EPUBParser(object):
             fp.write(content)
 
     def update_image_ref(self, content):
-        figure_ref = OrderedDict(sorted(self.figure_ref.items(), 
-                                        key=lambda t: t[1], 
+        figure_ref = OrderedDict(sorted(self.figure_ref.items(),
+                                        key=lambda t: t[1],
                                         reverse=False))
         figure_ref = list(figure_ref.items())
         for ref in figure_ref:
@@ -289,6 +286,7 @@ def search_sidebar_term(root, sidebars, labels):
         for node in root:
             search_sidebar_term(node, sidebars, labels)
     return sidebars
+
 
 def search_tables(root, tables):
     if ITable.providedBy(root):

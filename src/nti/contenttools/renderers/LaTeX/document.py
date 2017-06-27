@@ -68,6 +68,7 @@ def render_epub_body(context, body):
     render_children(context, body)
     return body
 
+
 def render_chapter_counter(context, node):
     context.write(u'\\setcounter{figure}{0}\n')
     context.write(u'\\setcounter{table}{0}\n')
@@ -82,6 +83,7 @@ def render_chapter_counter(context, node):
     context.write(node.counter_number)
     context.write(u'.\\arabic{table}}\n')
     return node
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):

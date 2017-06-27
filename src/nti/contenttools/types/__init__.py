@@ -212,6 +212,7 @@ class NaqSymmathPart(DocumentStructureNode):
         self.label = u''
         self.solution = u''
 
+
 class NaqSymmathPartSolution(DocumentStructureNode):
     pass
 

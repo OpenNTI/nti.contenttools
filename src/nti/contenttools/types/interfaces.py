@@ -5,7 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from docutils.nodes import definition
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -32,8 +31,8 @@ class _INode(IContained):
 
 class INode(_INode):
 
-    children = IndexedIterable(Object(_INode, title='the node'),
-                               title='List of nodes',
+    children = IndexedIterable(Object(_INode, title=u'the node'),
+                               title=u'List of nodes',
                                required=False,
                                min_length=0)
 
@@ -52,14 +51,15 @@ class INode(_INode):
         Return an iterator object.
         """
 
+
 class ITextNode(INode, IPlainTextContentFragment):
     pass
 
 
 class IDocumentStructureNode(INode):
 
-    styles = IndexedIterable(ValidTextLine(title='the style'),
-                             title='List of styles',
+    styles = IndexedIterable(ValidTextLine(title=u'the style'),
+                             title=u'List of styles',
                              required=False,
                              min_length=0)
 
@@ -78,26 +78,26 @@ class IDocumentStructureNode(INode):
 
 class IRunNode(IDocumentStructureNode):
 
-    element_type = ValidTextLine(title="Element type",
+    element_type = ValidTextLine(title=u"Element type",
                                  required=False)
 
 
 class IDocument(IDocumentStructureNode):
 
-    doc_type = ValidTextLine(title="Document type",
+    doc_type = ValidTextLine(title=u"Document type",
                              required=True,
                              default=u'book')
 
-    title = ValidTextLine(title="Document title",
+    title = ValidTextLine(title=u"Document title",
                           required=True,
                           default=u'')
 
-    author = ValidTextLine(title="Document author",
+    author = ValidTextLine(title=u"Document author",
                            required=False,
                            default=u'')
 
-    packages = ListOrTuple(ValidTextLine(title='the package'),
-                           title='List of packages',
+    packages = ListOrTuple(ValidTextLine(title=u'the package'),
+                           title=u'List of packages',
                            required=False,
                            min_length=0)
 
@@ -116,16 +116,16 @@ class IEPUBBody(IDocumentStructureNode):
 
 class IChapter(IDocumentStructureNode):
 
-    suppressed = Bool(title="Suppressed",
+    suppressed = Bool(title=u"Suppressed",
                       default=False)
 
-    title = ValidTextLine(title="Chapter Title",
+    title = ValidTextLine(title=u"Chapter Title",
                           required=True,
                           default=u'')
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
     def set_title(title):
@@ -138,43 +138,45 @@ class IChapter(IDocumentStructureNode):
         set label
         """
 
+
 class IChapterCounter(IDocumentStructureNode):
-    counter_number = Variant((Int(title="Counter Number"),
-                              ValidTextLine(title="Counter Number")),
+    counter_number = Variant((Int(title=u"Counter Number"),
+                              ValidTextLine(title=u"Counter Number")),
                              required=True,
                              default=1)
 
+
 class ISection(IDocumentStructureNode):
 
-    suppressed = Bool(title="Suppressed",
+    suppressed = Bool(title=u"Suppressed",
                       default=False,
                       required=False)
 
-    title = ValidTextLine(title="Section Title",
+    title = ValidTextLine(title=u"Section Title",
                           required=True,
                           default=u'')
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
-    data_depth = Int(title="Data depth",
+    data_depth = Int(title=u"Data depth",
                      required=False)
 
-    section_type = ValidTextLine(title="Section type",
+    section_type = ValidTextLine(title=u"Section type",
                                  required=False)
 
 
 class ISubSection(ISection):
 
-    title = ValidTextLine(title="Section Title",
+    title = ValidTextLine(title=u"Section Title",
                           required=True,
                           default=u'')
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
 
@@ -199,11 +201,11 @@ class ISubSubSubSubSection(ISection):
 class IParagraph(IDocumentStructureNode):
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
-    element_type = ValidTextLine(title="Element Type",
+    element_type = ValidTextLine(title=u"Element Type",
                                  required=False)
 
 
@@ -223,10 +225,10 @@ class IHyperlink(IDocumentStructureNode):
 
     target = Variant((Object(IDocumentStructureNode),
                       ValidTextLine()),
-                     title="Hyperlink Target",
+                     title=u"Hyperlink Target",
                      required=False)
 
-    type = ValidTextLine(title="Hyperlink Type ",
+    type = ValidTextLine(title=u"Hyperlink Type ",
                          required=True,
                          default=u'Normal')
 
@@ -239,7 +241,7 @@ class IIframe(IDocumentStructureNode):
 
 class ILabel(IDocumentStructureNode):
 
-    name = ValidTextLine(title="Label Name",
+    name = ValidTextLine(title=u"Label Name",
                          required=True,
                          default=u'')
 
@@ -248,55 +250,56 @@ class ISidebar(IDocumentStructureNode):
 
     title = Variant((Object(IDocumentStructureNode),
                      ValidTextLine()),
-                    title="Title",
+                    title=u"Title",
                     required=False)
 
     label = Variant((Object(IDocumentStructureNode),
                      ValidTextLine()),
-                    title="Label",
+                    title=u"Label",
                     required=False)
 
-    type = ValidTextLine(title="Sidebar Type",
-                         required=False)
-    
-    base = ValidTextLine(title="The Base",
+    type = ValidTextLine(title=u"Sidebar Type",
                          required=False)
 
+    base = ValidTextLine(title=u"The Base",
+                         required=False)
+
+
 class IBlockQuote(IDocumentStructureNode):
-    source = ValidTextLine(title="Block Quote Source",
+    source = ValidTextLine(title=u"Block Quote Source",
                            required=True,
                            default=u'')
 
 
 class IImage(IDocumentStructureNode):
 
-    path = ValidTextLine(title="Image Path",
+    path = ValidTextLine(title=u"Image Path",
                          required=True,
                          default=u'')
 
     caption = Variant((Object(IDocumentStructureNode),
-                       ValidTextLine()), title="Image Caption",
+                       ValidTextLine()), title=u"Image Caption",
                       required=True,
                       default=u'')
 
-    width = Int(title="Image Width",
+    width = Int(title=u"Image Width",
                 required=True,
                 default=0)
 
-    height = Int(title="Image Height",
+    height = Int(title=u"Image Height",
                  required=True,
                  default=0)
 
-    equation_image = Bool(title="Equation Image Type",
+    equation_image = Bool(title=u"Equation Image Type",
                           required=False)
 
-    inline_image = Bool(title="Inline Image Type",
+    inline_image = Bool(title=u"Inline Image Type",
                         required=False)
 
-    predefined_image_path = Bool(title="Predifined Image Path",
+    predefined_image_path = Bool(title=u"Predifined Image Path",
                                  required=False)
 
-    annotation = Bool(title="Image Annotation",
+    annotation = Bool(title=u"Image Annotation",
                       required=True,
                       default=True)
 
@@ -309,42 +312,42 @@ class IDocxImage(IImage):
 
 class IVideo(IDocumentStructureNode):
 
-    path = ValidTextLine(title="Video Path",
+    path = ValidTextLine(title=u"Video Path",
                          required=True,
                          default=u'')
 
-    thumbnail = ValidTextLine(title="Video Thumbnail",
+    thumbnail = ValidTextLine(title=u"Video Thumbnail",
                               required=True,
                               default=u'')
 
-    caption = ValidTextLine(title="Video",
+    caption = ValidTextLine(title=u"Video",
                             required=True,
                             default=u'')
 
-    width = Int(title="Video Width",
+    width = Int(title=u"Video Width",
                 required=True,
                 default=0)
 
-    height = Int(title="Video Height",
+    height = Int(title=u"Video Height",
                  required=True,
                  default=0)
 
 
 class IList(IDocumentStructureNode):
 
-    level = ValidTextLine(title="Level",
+    level = ValidTextLine(title=u"Level",
                           required=True,
                           default=u'')
 
-    group = ValidTextLine(title="Group",
+    group = ValidTextLine(title=u"Group",
                           required=True,
                           default=u'')
 
-    start = Int(title="List Start Number",
+    start = Int(title=u"List Start Number",
                 required=True,
                 default=1)
 
-    format = ValidTextLine(title="Format",
+    format = ValidTextLine(title=u"Format",
                            required=True,
                            default=u'')
 
@@ -381,10 +384,10 @@ class IItemWithDesc(IItem):
 
 class IDT(IDocumentStructureNode):
 
-    desc = Object(IDocumentStructureNode, title="Description",
+    desc = Object(IDocumentStructureNode, title=u"Description",
                   required=False)
 
-    type = ValidTextLine(title="Description Type",
+    type = ValidTextLine(title=u"Description Type",
                          required=False)
 
     def set_description(desc):
@@ -406,30 +409,30 @@ class IDD(IDocumentStructureNode):
 
 class ITable(IDocumentStructureNode):
 
-    number_of_col_header = Int(title="Number of Column Header",
+    number_of_col_header = Int(title=u"Number of Column Header",
                                required=True,
                                default=0)
 
-    number_of_col_body = Int(title="Number of Column Body",
+    number_of_col_body = Int(title=u"Number of Column Body",
                              required=True,
                              default=0)
-    caption = Variant((Object(IDocumentStructureNode, title="Table Caption"),
-                       ValidTextLine(title="Table Caption")),
+    caption = Variant((Object(IDocumentStructureNode, title=u"Table Caption"),
+                       ValidTextLine(title=u"Table Caption")),
                       required=False)
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
-    border = Bool(title="TableBorder",
+    border = Bool(title=u"TableBorder",
                   default=False,
                   required=True)
 
-    type = ValidTextLine(title="Table Type",
+    type = ValidTextLine(title=u"Table Type",
                          required=False)
 
-    alignment = ValidTextLine(title="Table Alignment",
+    alignment = ValidTextLine(title=u"Table Alignment",
                               required=True,
                               default=u'left')
 
@@ -471,15 +474,15 @@ class ITable(IDocumentStructureNode):
 
 class IRow(IDocumentStructureNode):
 
-    number_of_col = Int(title="Number of Column",
+    number_of_col = Int(title=u"Number of Column",
                         required=True,
                         default=0)
 
-    border = Bool(title="Border",
+    border = Bool(title=u"Border",
                   required=True,
                   default=False)
 
-    type = ValidTextLine(title="Row Type",
+    type = ValidTextLine(title=u"Row Type",
                          required=False)
 
     def set_number_of_col(number_of_col):
@@ -500,15 +503,15 @@ class IRow(IDocumentStructureNode):
 
 class ICell (IDocumentStructureNode):
 
-    border = Bool(title="Border",
+    border = Bool(title=u"Border",
                   required=True,
                   default=False)
 
-    is_first_cell_in_the_row = Bool(title="Check if it is the first cell on the row",
+    is_first_cell_in_the_row = Bool(title=u"Check if it is the first cell on the row",
                                     required=True,
                                     default=False)
 
-    colspan = Int(title="Column Span",
+    colspan = Int(title=u"Column Span",
                   required=True,
                   default=1)
 
@@ -520,11 +523,11 @@ class ICell (IDocumentStructureNode):
 
 class ITBody(IDocumentStructureNode):
 
-    number_of_col = Int(title="Number of Column",
+    number_of_col = Int(title=u"Number of Column",
                         required=True,
                         default=0)
 
-    border = Bool(title="Table Body Border",
+    border = Bool(title=u"Table Body Border",
                   required=True,
                   default=False)
 
@@ -541,11 +544,11 @@ class ITBody(IDocumentStructureNode):
 
 class ITHead(IDocumentStructureNode):
 
-    number_of_col = Int(title="Number of Table Header Column",
+    number_of_col = Int(title=u"Number of Table Header Column",
                         required=True,
                         default=0)
 
-    border = Bool(title="Table Header Border",
+    border = Bool(title=u"Table Header Border",
                   required=True,
                   default=False)
 
@@ -562,7 +565,7 @@ class ITHead(IDocumentStructureNode):
 
 class ITFoot(IDocumentStructureNode):
 
-    number_of_col = Int(title="Number of Table Footer Column",
+    number_of_col = Int(title=u"Number of Table Footer Column",
                         required=True,
                         default=0)
 
@@ -574,7 +577,7 @@ class ITFoot(IDocumentStructureNode):
 
 class IMath(IDocumentStructureNode):
 
-    equation_type = ValidTextLine(title="Equation Type",
+    equation_type = ValidTextLine(title=u"Equation Type",
                                   required=False)
 
 
@@ -612,7 +615,7 @@ class IMathRun(IDocumentStructureNode):
         if <mi> then element_type = 'identifier'
     """
 
-    element_type = ValidTextLine(title="Element Type",
+    element_type = ValidTextLine(title=u"Element Type",
                                  required=False)
 
 
@@ -621,40 +624,40 @@ class IMFenced(IDocumentStructureNode):
     Node for MathML element <mfenced>
     """
 
-    opener = ValidTextLine(title="Open mfence",
+    opener = ValidTextLine(title=u"Open mfence",
                            required=True,
                            default=u'')
 
-    close = ValidTextLine(title="Close mfence",
+    close = ValidTextLine(title=u"Close mfence",
                           required=True,
                           default=u'')
 
-    separators = ValidTextLine(title="Separator",
+    separators = ValidTextLine(title=u"Separator",
                                required=True,
                                default=u'')
 
 
 class IMSpace(IDocumentStructureNode):
 
-    width = Int(title="Width",
+    width = Int(title=u"Width",
                 required=True,
                 default=0)
 
-    height = Int(title="Height",
+    height = Int(title=u"Height",
                  required=True,
                  default=0)
 
 
 class IMTable(IDocumentStructureNode):
 
-    number_of_col = Int(title="Number of column",
+    number_of_col = Int(title=u"Number of column",
                         required=True,
                         default=0)
-    frame = ValidTextLine(title="Frame",
+    frame = ValidTextLine(title=u"Frame",
                           required=False)
-    rowlines = ValidTextLine(title="Rowlines",
+    rowlines = ValidTextLine(title=u"Rowlines",
                              required=False)
-    align = ValidTextLine(title="Align",
+    align = ValidTextLine(title=u"Align",
                           required=True,
                           default=u'')
 
@@ -672,12 +675,12 @@ class IMLabeledTr(IDocumentStructureNode):
 
 class IMtr(IDocumentStructureNode):
 
-    number_of_col = Int(title="Number of column",
+    number_of_col = Int(title=u"Number of column",
                         required=True,
                         default=0)
-    column_align = ValidTextLine(title="Column Align",
+    column_align = ValidTextLine(title=u"Column Align",
                                  required=False)
-    row_align = ValidTextLine(title="Row Align",
+    row_align = ValidTextLine(title=u"Row Align",
                               required=False)
 
     def set_number_of_col(number_of_col):
@@ -732,26 +735,26 @@ class IMOver(IDocumentStructureNode):
 
 class IMMenclose(IDocumentStructureNode):
 
-    notation = Variant((ListOrTuple(title="Notation"),
-                        ValidTextLine(title="Notation")),
+    notation = Variant((ListOrTuple(title=u"Notation"),
+                        ValidTextLine(title=u"Notation")),
                        required=False)
 
 
 class IMMprescripts(IDocumentStructureNode):
 
-    sub = Object(IDocumentStructureNode, title="subscript",
+    sub = Object(IDocumentStructureNode, title=u"subscript",
                  required=False)
 
-    sup = Object(IDocumentStructureNode, title="superscript",
+    sup = Object(IDocumentStructureNode, title=u"superscript",
                  required=False)
 
 
 class IMMultiscripts(IDocumentStructureNode):
 
-    base = ListOrTuple(title="Multiscripts base",
+    base = ListOrTuple(title=u"Multiscripts base",
                        required=False)
 
-    prescripts = Object(IDocumentStructureNode, title="prescript",
+    prescripts = Object(IDocumentStructureNode, title=u"prescript",
                         required=False)
 
 
@@ -781,7 +784,7 @@ class IOMathRun(IDocumentStructureNode):
 
 class IOMathFrac(IDocumentStructureNode):
 
-    frac_type = ValidTextLine(title="Fraction Type",
+    frac_type = ValidTextLine(title=u"Fraction Type",
                               required=False)
 
     def set_frac_type(frac_type):
@@ -860,10 +863,10 @@ class IOMathNaryPr(IDocumentStructureNode):
     """
     Node for ooxml element <m:naryPr>
     """
-    chrVal = ValidTextLine(title="chrValue",
+    chrVal = ValidTextLine(title=u"chrValue",
                            required=False)
 
-    limLocVal = ValidTextLine(title="lim location value",
+    limLocVal = ValidTextLine(title=u"lim location value",
                               required=False)
 
     def set_chr_val(chrVal):
@@ -887,10 +890,10 @@ class IOMathDPr(IDocumentStructureNode):
     """
     Node for ooxml element <m:dPr>
     """
-    begChr = ValidTextLine(title="Beginning Char",
+    begChr = ValidTextLine(title=u"Beginning Char",
                            required=False)
 
-    endChr = ValidTextLine(title="End Char",
+    endChr = ValidTextLine(title=u"End Char",
                            required=False)
 
     def set_beg_char(begChr):
@@ -920,7 +923,7 @@ class IOMathBar(IDocumentStructureNode):
     """
     Node for ooxml element <m:bar>
     """
-    pos = ValidTextLine(title="Position",
+    pos = ValidTextLine(title=u"Position",
                         required=False)
 
     def set_bar_pos(pos):
@@ -933,7 +936,7 @@ class IOMathAcc(IDocumentStructureNode):
     """
     Node for ooxml element  <m:acc>
     """
-    accChr = ValidTextLine(title="accChr",
+    accChr = ValidTextLine(title=u"accChr",
                            required=False)
 
     def set_acc_chr(accChr):
@@ -980,19 +983,19 @@ class IOMathMatrix(IDocumentStructureNode):
     """
     Node for ooxml element <m:m>
     """
-    begChr = ValidTextLine(title="Beginning Char",
+    begChr = ValidTextLine(title=u"Beginning Char",
                            required=False)
 
-    endChr = ValidTextLine(title="End Char",
+    endChr = ValidTextLine(title=u"End Char",
                            required=False)
 
-    number_of_col = Variant((Int(title="Number of Column"),
-                             ValidTextLine(title="Number of Column")),
+    number_of_col = Variant((Int(title=u"Number of Column"),
+                             ValidTextLine(title=u"Number of Column")),
                             required=True,
-                            default='0')
+                            default=u'0')
 
-    number_of_row = Variant((Int(title="Number of Row"),
-                             ValidTextLine(title="Number of Row")),
+    number_of_row = Variant((Int(title=u"Number of Row"),
+                             ValidTextLine(title=u"Number of Row")),
                             required=True,
                             default=0)
 
@@ -1045,12 +1048,12 @@ class IOMathEqArr(IDocumentStructureNode):
     """
     Node for ooxml element <m:eqArr>
     """
-    rowSpace = Int(title="Row Space",
+    rowSpace = Int(title=u"Row Space",
                    required=True,
                    default=1)
-    begBorder = ValidTextLine(title="Beginning Char",
+    begBorder = ValidTextLine(title=u"Beginning Char",
                               required=False)
-    endBorder = ValidTextLine(title="End Char",
+    endBorder = ValidTextLine(title=u"End Char",
                               required=False)
 
     def set_row_space(rowSpace):
@@ -1076,13 +1079,13 @@ class IOMathGroupChr(IDocumentStructureNode):
     Node for ooxml element <m:groupChr>
     """
 
-    pos = ValidTextLine(title="Position",
+    pos = ValidTextLine(title=u"Position",
                         required=False)
 
-    groupChr = ValidTextLine(title="group Chr",
+    groupChr = ValidTextLine(title=u"group Chr",
                              required=False)
 
-    vertJc = ValidTextLine(title="Vertical Jc",
+    vertJc = ValidTextLine(title=u"Vertical Jc",
                            required=False)
 
     def set_groupChr(groupChr):
@@ -1148,27 +1151,27 @@ class INoteInteractive(IDocumentStructureNode):
     Node for note interactive
     """
 
-    image_path = ValidTextLine(title="Image path",
+    image_path = ValidTextLine(title=u"Image path",
                                required=True,
                                default=u'')
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
-    link = ValidTextLine(title="Link",
+    link = ValidTextLine(title=u"Link",
                          required=False)
 
-    caption = ValidTextLine(title="Caption",
+    caption = ValidTextLine(title=u"Caption",
                             required=True,
                             default=u'')
 
-    notes = ValidTextLine(title="Notes",
+    notes = ValidTextLine(title=u"Notes",
                           required=True,
                           default=u'')
 
-    complete_image_path = ValidTextLine(title="Complete image path",
+    complete_image_path = ValidTextLine(title=u"Complete image path",
                                         required=True,
                                         default=u'')
 
@@ -1203,11 +1206,11 @@ class INoteInteractiveImage(IDocumentStructureNode):
     Node for interactive image
     """
 
-    path = ValidTextLine(title="path",
+    path = ValidTextLine(title=u"path",
                          required=True,
                          default=u'')
 
-    caption = ValidTextLine(title="Caption",
+    caption = ValidTextLine(title=u"Caption",
                             required=True,
                             default=u'')
 
@@ -1218,35 +1221,35 @@ class IFigure(IDocumentStructureNode):
     """
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
     caption = Variant((Object(IDocumentStructureNode),
-                       ValidTextLine()), title="Figure Caption",
+                       ValidTextLine()), title=u"Figure Caption",
                       required=False)
 
-    image_id = ValidTextLine(title="Image id",
+    image_id = ValidTextLine(title=u"Image id",
                              required=False)
 
     image_alt = Variant((Object(IDocumentStructureNode),
-                         ValidTextLine()), title="Image Alt",
+                         ValidTextLine()), title=u"Image Alt",
                         required=True,
                         default=u'')
 
-    data_type = ValidTextLine(title="Data type",
+    data_type = ValidTextLine(title=u"Data type",
                               required=False)
 
     title = Variant((Object(IDocumentStructureNode),
-                     ValidTextLine()), title="Figure Title",
+                     ValidTextLine()), title=u"Figure Title",
                     required=True,
                     default=u'')
-    centered = Bool(title="Figured Centered",
+    centered = Bool(title=u"Figured Centered",
                     default=True)
-    floating = Bool(title="Floating Figure",
+    floating = Bool(title=u"Floating Figure",
                     default=False)
-    icon = Bool(title="Figure as an icon",
-                    default=False)
+    icon = Bool(title=u"Figure as an icon",
+                default=False)
 
     def set_caption(caption):
         """
@@ -1263,13 +1266,13 @@ class IGlossary(IDocumentStructureNode):
     """
     Node for glossary
     """
-    title = ValidTextLine(title="Title",
+    title = ValidTextLine(title=u"Title",
                           required=False)
 
-    filename = ValidTextLine(title="Filename",
+    filename = ValidTextLine(title=u"Filename",
                              required=False)
 
-    glossary_dict = Dict(title="Glossarry dict",
+    glossary_dict = Dict(title=u"Glossarry dict",
                          required=False)
 
     def set_title(title):
@@ -1305,7 +1308,7 @@ class IGlossaryDT(IDocumentStructureNode):
     Node for glossary row
     """
 
-    desc = ValidTextLine(title="Description",
+    desc = ValidTextLine(title=u"Description",
                          required=False)
 
     def set_description(desc):
@@ -1324,22 +1327,23 @@ class IGlossaryTerm(IDocumentStructureNode):
     """
     Node for glossary term
     """
-    
+
+
 class IGlossaryEntry(IDocumentStructureNode):
     """
     Node for glossary entry (better one)
     """
     term = Variant((Object(IDocumentStructureNode),
-                    ValidTextLine()), 
-                   title="Glossary Term",
+                    ValidTextLine()),
+                   title=u"Glossary Term",
                    required=True,
                    default=u'')
-    
+
     definition = Variant((Object(IDocumentStructureNode),
-                          ValidTextLine()), 
-                         title="Glossary Definition",
+                          ValidTextLine()),
+                         title=u"Glossary Definition",
                          required=True,
-                         default=u'') 
+                         default=u'')
 
 
 class ISolution (IDocumentStructureNode):
@@ -1348,15 +1352,15 @@ class ISolution (IDocumentStructureNode):
     This is mostly used when parsing openstax epub to latex.
     """
 
-    solution = ValidTextLine(title="Solution",
+    solution = ValidTextLine(title=u"Solution",
                              required=False)
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
-    problem_type = ValidTextLine(title="Problem Type",
+    problem_type = ValidTextLine(title=u"Problem Type",
                                  required=False)
 
     def set_solution(solution):
@@ -1383,21 +1387,21 @@ class IProblem(IDocumentStructureNode):
 
     question = Variant((Object(IDocumentStructureNode),
                         ListOrTuple()),
-                       title="Question",
+                       title=u"Question",
                        required=False)
 
     solution = Variant((Object(IDocumentStructureNode),
                         ListOrTuple(),
                         ValidTextLine()),
-                       title="Solution",
+                       title=u"Solution",
                        required=False)
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
-    problem_type = ValidTextLine(title="Problem Type",
+    problem_type = ValidTextLine(title=u"Problem Type",
                                  required=False)
 
     def set_question(question):
@@ -1430,13 +1434,13 @@ class IExercise(IDocumentStructureNode):
     problem = Variant((Object(IDocumentStructureNode),
                        ListOrTuple(),
                        ValidTextLine()),
-                      title="Problem",
+                      title=u"Problem",
                       required=False)
 
     solution = Variant((Object(IDocumentStructureNode),
                         ListOrTuple(),
                         ValidTextLine()),
-                       title="Solution",
+                       title=u"Solution",
                        required=False)
 
     def set_problem(problem):
@@ -1518,17 +1522,17 @@ class IProblemExercise(IDocumentStructureNode):
     Node for exercise problem
     This is mostly used when parsing openstax epub to latex.
     """
-    problem_type = ValidTextLine(title="Problem type",
+    problem_type = ValidTextLine(title=u"Problem type",
                                  required=False)
 
     title = Variant((Object(IDocumentStructureNode,
-                            title="Title"),
-                     ValidTextLine(title="Title")),
+                            title=u"Title"),
+                     ValidTextLine(title=u"Title")),
                     required=False)
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
 
@@ -1537,10 +1541,10 @@ class IExerciseCheck(IDocumentStructureNode):
     Node for exercise check
     This is mostly used when parsing openstax epub to latex.
     """
-    title = ValidTextLine(title="Title",
+    title = ValidTextLine(title=u"Title",
                           required=False)
 
-    solution = Object(ISolution, title="Solution",
+    solution = Object(ISolution, title=u"Solution",
                       required=False)
 
     def set_title(title):
@@ -1560,16 +1564,16 @@ class IEndOfChapterSolution(IDocumentStructureNode):
     This is mostly used when parsing openstax epub to latex.
     """
 
-    title = ValidTextLine(title="Title",
+    title = ValidTextLine(title=u"Title",
                           required=False)
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
     body = Object(IDocumentStructureNode,
-                  title="Chapter Solution Body",
+                  title=u"Chapter Solution Body",
                   required=False)
 
 
@@ -1585,17 +1589,17 @@ class IOpenstaxNote(IDocumentStructureNode):
     This is mostly used when parsing openstax epub to latex.
     """
     title = Variant((Object(IDocumentStructureNode,
-                            title="Title"),
-                     ValidTextLine(title="Title")),
+                            title=u"Title"),
+                     ValidTextLine(title=u"Title")),
                     required=False)
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
     body = Object(IDocumentStructureNode,
-                  title="Openstax Note Body",
+                  title=u"Openstax Note Body",
                   required=False)
 
 
@@ -1611,17 +1615,17 @@ class IEquationImage(IDocumentStructureNode):
     """
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
     text = Variant((Object(IDocumentStructureNode),
                     ValidTextLine()),
-                   title="Label",
+                   title=u"Label",
                    required=False)
 
     image = Object(IDocumentStructureNode,
-                   title="Image",
+                   title=u"Image",
                    required=False)
 
 
@@ -1641,10 +1645,10 @@ class ICNXContent(IDocumentStructureNode):
     """
     Node for CNX Content
     """
-    modules = ListOrTuple(title="Modules",
+    modules = ListOrTuple(title=u"Modules",
                           required=False)
 
-    subcollections = ListOrTuple(title="Sub Collection",
+    subcollections = ListOrTuple(title=u"Sub Collection",
                                  required=False)
 
 
@@ -1652,10 +1656,10 @@ class ICNXCollection(IDocumentStructureNode):
     """
     Node for cnx collection
     """
-    metadata = Dict(title="Metadata",
+    metadata = Dict(title=u"Metadata",
                     required=False)
 
-    content = Object(ICNXContent, title="Content",
+    content = Object(ICNXContent, title=u"Content",
                      required=False)
 
 
@@ -1663,10 +1667,10 @@ class ICNXSubcollection(IDocumentStructureNode):
     """
     Node for cnx sub collection
     """
-    title = ValidTextLine(title="Title",
+    title = ValidTextLine(title=u"Title",
                           required=False)
 
-    content = Object(ICNXContent, title="Content",
+    content = Object(ICNXContent, title=u"Content",
                      required=False)
 
 
@@ -1674,10 +1678,10 @@ class ICNXModule(IDocumentStructureNode):
     """
     Node for cnx module
     """
-    document = ValidTextLine(title="Document",
+    document = ValidTextLine(title=u"Document",
                              required=False)
 
-    title = ValidTextLine(title="Title",
+    title = ValidTextLine(title=u"Title",
                           required=False)
 
 
@@ -1699,13 +1703,13 @@ class ICNXProblemSolution(IDocumentStructureNode):
     """
 
     title = Variant((Object(INode,
-                            title="Title"),
-                     ValidTextLine(title="Label")),
+                            title=u"Title"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
 
@@ -1714,11 +1718,11 @@ class IGlossaryDefinition(IDocumentStructureNode):
     Node for glossary definition
     """
     term = Object(IDocumentStructureNode,
-                  title="Term",
+                  title=u"Term",
                   required=False)
 
     meaning = Object(IDocumentStructureNode,
-                     title="Meaning",
+                     title=u"Meaning",
                      required=False)
 
 
@@ -1728,17 +1732,17 @@ class IFootnoteText(IDocumentStructureNode):
     """
 
     text = Variant((Object(IDocumentStructureNode,
-                           title="Text"),
-                    ValidTextLine(title="Text")),
+                           title=u"Text"),
+                    ValidTextLine(title=u"Text")),
                    required=False)
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
     num = Variant((ValidTextLine(), Int()),
-                  title="Num",
+                  title=u"Num",
                   required=False)
 
 
@@ -1748,12 +1752,12 @@ class IFootnoteMark(IDocumentStructureNode):
     """
 
     text = Variant((Object(IDocumentStructureNode,
-                           title="Text"),
-                    ValidTextLine(title="Text")),
+                           title=u"Text"),
+                    ValidTextLine(title=u"Text")),
                    required=False)
 
     num = Variant((ValidTextLine(), Int()),
-                  title="Num",
+                  title=u"Num",
                   required=False)
 
 
@@ -1762,13 +1766,13 @@ class IFootnote(IDocumentStructureNode):
     Node for footnote
     """
     text = Variant((Object(IDocumentStructureNode,
-                           title="Text"),
-                    ValidTextLine(title="Text")),
+                           title=u"Text"),
+                    ValidTextLine(title=u"Text")),
                    required=False)
 
     label = Variant((Object(IDocumentStructureNode,
-                            title="Label"),
-                     ValidTextLine(title="Label")),
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
                     required=False)
 
 
@@ -1782,13 +1786,13 @@ class IDocxTable(IDocumentStructureNode):
     """
     Node for Docx Table
     """
-    borders = Dict(title="Table Border",
+    borders = Dict(title=u"Table Border",
                    required=False)
 
-    grid = Int(title="Table Grid",
+    grid = Int(title=u"Table Grid",
                required=False)
 
-    alignment = ValidTextLine(title="Alignment",
+    alignment = ValidTextLine(title=u"Alignment",
                               required=False)
 
 
@@ -1802,6 +1806,6 @@ class IDocxTCell(IDocumentStructureNode):
     """
     Node for Docx Table Cell
     """
-    grid_span = Int(title="Grid Span",
-                    required= True,
-                    default = 0)
+    grid_span = Int(title=u"Grid Span",
+                    required=True,
+                    default=0)
