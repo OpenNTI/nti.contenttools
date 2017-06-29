@@ -177,6 +177,8 @@ def render_figure(context, node):
 
     if node.centered:
         context.write(u'\n\\end{center}\n\\end{figure}\n')
+    elif node.floating and node.icon:
+        context.write(u'\\end{figure}\n')
     else:
         context.write(u'\n\\end{figure}\n\\\\\n')
     return node
