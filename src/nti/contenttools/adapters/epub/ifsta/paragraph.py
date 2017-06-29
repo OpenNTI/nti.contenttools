@@ -24,6 +24,7 @@ from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
 
 from nti.contenttools.types.interfaces import ITextNode
 
+from nti.contenttools.adapters.epub.ifsta.finder import update_sidebar_body_bullet
 
 class Paragraph(types.Paragraph):
 
@@ -102,6 +103,7 @@ class Paragraph(types.Paragraph):
                         me = el
                 elif any(s in attrib['class'] for s in sidebars_body):
                     me.element_type = u"sidebars-body"
+                    update_sidebar_body_bullet(me)
                     me.add_child(types.TextNode("\\\\\n"))
                 elif attrib['class'] in captions:
                     me.element_type = u'caption'
