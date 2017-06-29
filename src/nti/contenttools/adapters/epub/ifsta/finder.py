@@ -132,13 +132,16 @@ def search_sidebar_head_and_body(root, nodes):
 
 
 def process_sidebar_head_and_body(nodes):
+    sidebars = []
     for child in nodes:
         if ISidebar.providedBy(child):
             sidebar = child
+            sidebars.append(sidebar)
         else:
             parent = child.__parent__
             parent.children.remove(child)
             sidebar.add(child)
+    return sidebars
 
 
 def search_sidebar_terms(root, sidebars, sidebar_nodes):
@@ -285,3 +288,13 @@ def search_thead_element(root, cells):
     elif hasattr(root, u'children'):
         for node in root:
             search_thead_element(node, cells)
+
+def search_figure_icon_on_sidebar_title(tnode, figs):
+    if IFigure.providedBy(tnode):
+        figs.append(tnode)
+        parent = tnode.__parent__
+        parent.remove(tnode)
+    elif hasattr(tnode, u'children'):
+        for child in tnode:
+            search_figure_icon_on_sidebar_title(child, figs)
+    return figs

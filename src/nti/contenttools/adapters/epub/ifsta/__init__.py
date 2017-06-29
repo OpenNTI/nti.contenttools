@@ -37,6 +37,7 @@ from nti.contenttools.adapters.epub.ifsta.finder import search_paragraph_section
 from nti.contenttools.adapters.epub.ifsta.finder import search_sidebar_head_and_body
 from nti.contenttools.adapters.epub.ifsta.finder import process_sidebar_head_and_body
 from nti.contenttools.adapters.epub.ifsta.finder import process_sidebar_figure_info_rf
+from nti.contenttools.adapters.epub.ifsta.finder import search_figure_icon_on_sidebar_title
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_glossary_entries
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_figure_caption_reflowable
 
@@ -77,7 +78,14 @@ def adapt(fragment, epub=None):
 
         snodes = []
         search_sidebar_head_and_body(epub_body, snodes)
-        process_sidebar_head_and_body(snodes)
+        sidebar_list = process_sidebar_head_and_body(snodes)
+
+        for sbar in sidebar_list:
+            figs = []
+            search_figure_icon_on_sidebar_title(sbar.title, figs)
+            if figs:
+                logger.info(figs)
+                sbar.children.insert(0,figs[0])
 
         captions = update_caption_list(epub.caption_list)
 
