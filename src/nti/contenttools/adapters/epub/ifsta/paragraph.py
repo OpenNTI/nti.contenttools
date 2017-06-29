@@ -15,16 +15,17 @@ from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
 from nti.contenttools.adapters.epub.ifsta import check_element_tail
 
-from nti.contenttools.adapters.epub.ifsta.run import Run
+from nti.contenttools.adapters.epub.ifsta.lists import Item
+from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
 
 from nti.contenttools.adapters.epub.ifsta.note import Sidebar
 
-from nti.contenttools.adapters.epub.ifsta.lists import Item
-from nti.contenttools.adapters.epub.ifsta.lists import UnorderedList
+from nti.contenttools.adapters.epub.ifsta.run import Run
 
 from nti.contenttools.types.interfaces import ITextNode
 
 from nti.contenttools.adapters.epub.ifsta.finder import update_sidebar_body_bullet
+
 
 class Paragraph(types.Paragraph):
 

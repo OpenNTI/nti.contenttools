@@ -12,12 +12,12 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
+from nti.contenttools.renderers.interfaces import IRenderer
+
 from nti.contenttools.renderers.LaTeX.base import render_node
 from nti.contenttools.renderers.LaTeX.base import render_children
 
 from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
-
-from nti.contenttools.renderers.interfaces import IRenderer
 
 from nti.contenttools.types.interfaces import IRow
 from nti.contenttools.types.interfaces import ICell
