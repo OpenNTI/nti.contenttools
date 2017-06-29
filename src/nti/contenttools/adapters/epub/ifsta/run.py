@@ -152,18 +152,18 @@ def process_span_elements(element, epub=None):
 
             if 'fontWeight' in epub.css_dict[span_class]:
                 font_weight = epub.css_dict[span_class]['fontWeight']
-            
+
             if 'color' in epub.css_dict[span_class]:
                 color = epub.css_dict[span_class]['color']
 
             if 'fontFamily' in epub.css_dict[span_class]:
                 font_family = epub.css_dict[span_class]['fontFamily']
 
-            if epub.epub_type == 'ifsta_rf' \
+            if      epub.epub_type == 'ifsta_rf' \
                 and font_style == u'normal' \
                 and font_weight == u'bold' \
                 and color in term_colors \
-                and u'Utopia Std' in font_family :
+                and u'Utopia Std' in font_family:
                 el = Run()
                 t_el = Run()
                 check_element_text(t_el, element)
@@ -177,13 +177,13 @@ def process_span_elements(element, epub=None):
                 el_text = Run()
                 check_element_text(el_text, element)
                 check_child(el_text, element, epub)
-                
+
                 if font_style == 'italic':
                     el_text.styles.append(font_style)
-                
+
                 if font_weight == 'bold':
                     el_text.styles.append(font_weight)
-                
+
                 el.add(el_text)
                 check_element_tail(el, element)
         else:

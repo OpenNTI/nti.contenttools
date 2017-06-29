@@ -24,7 +24,6 @@ from nti.contenttools.types import Item
 from nti.contenttools.types import TextNode
 from nti.contenttools.types import UnorderedList
 
-
 from nti.contenttools.types.interfaces import ICell
 from nti.contenttools.types.interfaces import IImage
 from nti.contenttools.types.interfaces import ITable
@@ -293,6 +292,7 @@ def search_thead_element(root, cells):
         for node in root:
             search_thead_element(node, cells)
 
+
 def search_figure_icon_on_sidebar_title(tnode, figs):
     if IFigure.providedBy(tnode):
         figs.append(tnode)
@@ -302,6 +302,7 @@ def search_figure_icon_on_sidebar_title(tnode, figs):
         for child in tnode:
             search_figure_icon_on_sidebar_title(child, figs)
     return figs
+
 
 def update_sidebar_body_bullet(node):
     if IRunNode.providedBy(node) and node.element_type == 'bullet':

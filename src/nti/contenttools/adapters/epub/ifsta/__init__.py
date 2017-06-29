@@ -84,14 +84,14 @@ def adapt(fragment, epub=None):
             figs = []
             search_figure_icon_on_sidebar_title(sbar.title, figs)
             if figs:
-                sbar.children.insert(0,figs[0])
+                sbar.children.insert(0, figs[0])
 
         captions = update_caption_list(epub.caption_list)
 
         search_and_update_figure_caption_reflowable(
             epub_body, captions, epub.figure_node, epub.figure_ref)
 
-        #just in case figure icon is located outside sidebar node
+        # just in case figure icon is located outside sidebar node
         sfnodes = []
         sfnodes = search_sidebar_info(epub_body, sfnodes)
         process_sidebar_figure_info_rf(sfnodes)
