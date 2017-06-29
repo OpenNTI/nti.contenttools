@@ -20,12 +20,16 @@ from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_valu
 from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_styles
 
 from nti.contenttools.types import Run
+from nti.contenttools.types import Item
 from nti.contenttools.types import TextNode
+from nti.contenttools.types import UnorderedList
+
 
 from nti.contenttools.types.interfaces import ICell
 from nti.contenttools.types.interfaces import IImage
 from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IFigure
+from nti.contenttools.types.interfaces import IRunNode
 from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
@@ -298,3 +302,17 @@ def search_figure_icon_on_sidebar_title(tnode, figs):
         for child in tnode:
             search_figure_icon_on_sidebar_title(child, figs)
     return figs
+
+def update_sidebar_body_bullet(node):
+    if IRunNode.providedBy(node) and node.element_type == 'bullet':
+        bullet_class = UnorderedList()
+        new_item = Item()
+        new_item.children = node.children
+        bullet_class.children = [new_item]
+        parent = node.__parent__
+        idx = parent.children.index(node)
+        parent.remove(node)
+        parent.children.insert(idx, bullet_class)
+    elif hasattr(node, 'children'):
+        for child in node:
+            update_sidebar_body_bullet(child)
