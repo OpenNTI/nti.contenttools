@@ -270,7 +270,7 @@ class _TableChildProcessor(object):
     def process(self, child, node, element, epub=None):
         result = Table.process(child, epub=epub)
         node.add_child(result)
-        node.add_child(TextNode(u'\\'))
+        node.add_child(TextNode(u'\\\\'))
         node.add_child(TextNode(u'\n'))
         return result
 
