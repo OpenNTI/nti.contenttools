@@ -132,6 +132,8 @@ def process_span_elements(element, epub=None):
     color = u''
     font_family = u''
 
+    term_colors = [u'#c00000', u'#c8161d']
+
     attrib = element.attrib
     span_class = attrib['class'] if u'class' in attrib else u''
     span_class = u'span_%s' % span_class.replace('-', '_')
@@ -160,7 +162,7 @@ def process_span_elements(element, epub=None):
             if epub.epub_type == 'ifsta_rf' \
                 and font_style == u'normal' \
                 and font_weight == u'bold' \
-                and color == '#c8161d' \
+                and color in term_colors \
                 and u'Utopia Std' in font_family :
                 el = Run()
                 t_el = Run()
