@@ -290,7 +290,8 @@ def search_sidebar_term(root, sidebars, labels):
 
 def search_tables(root, tables):
     if ITable.providedBy(root):
-        tables.append(root.label)
+        if root.label:
+            tables.append(root.label)
     elif hasattr(root, u'children'):
         for node in root:
             search_tables(node, tables)
