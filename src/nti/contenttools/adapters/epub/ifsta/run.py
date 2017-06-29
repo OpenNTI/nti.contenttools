@@ -132,7 +132,7 @@ def process_span_elements(element, epub=None):
     color = u''
     font_family = u''
 
-    term_colors = [u'#c00000', u'#c8161d']
+    term_colors = [u'#c00000', u'#c8161d', '#bf2026']
 
     attrib = element.attrib
     span_class = attrib['class'] if u'class' in attrib else u''
