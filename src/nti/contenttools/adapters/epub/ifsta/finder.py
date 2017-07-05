@@ -221,7 +221,7 @@ def search_paragraph_section(root, sections, chapter=None):
             if IDocumentStructureNode.providedBy(root.label):
                 root.label.add(TextNode(chapter))
             elif isinstance(root.label, (str, unicode)):
-                root.label = u'%s%s' %(root.label, chapter)
+                root.label = u'%s%s' % (root.label, chapter)
         if 'Section' in root.styles:
             ref = get_section_label_ref(root.label, 'section')
             sections.append(ref)
