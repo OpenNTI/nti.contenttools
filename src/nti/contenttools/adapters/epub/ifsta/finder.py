@@ -33,6 +33,7 @@ from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
 from nti.contenttools.types.interfaces import IGlossaryEntry
+from nti.contenttools.types.interfaces import IDocumentStructureNode
 
 
 def search_sidebar_info(root, nodes):
@@ -214,8 +215,13 @@ def search_and_update_figure_caption_reflowable(root, captions, figures, figure_
                 node, captions, figures, figure_ref)
 
 
-def search_paragraph_section(root, sections):
+def search_paragraph_section(root, sections, chapter=None):
     if IParagraph.providedBy(root):
+        if chapter and root.label:
+            if IDocumentStructureNode.providedBy(root.label):
+                root.label.add(TextNode(chapter))
+            elif isinstance(root.label, (str, unicode)):
+                root.label = u'%s%s' %(root.label, chapter)
         if 'Section' in root.styles:
             ref = get_section_label_ref(root.label, 'section')
             sections.append(ref)
@@ -224,7 +230,7 @@ def search_paragraph_section(root, sections):
             sections.append(ref)
     if hasattr(root, u'children'):
         for node in root:
-            search_paragraph_section(node, sections)
+            search_paragraph_section(node, sections, chapter)
 
 
 def get_section_label_ref(label, section_type):
