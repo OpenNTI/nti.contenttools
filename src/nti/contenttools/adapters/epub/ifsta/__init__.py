@@ -51,7 +51,9 @@ def adapt(fragment, epub=None):
     search_table(epub_body, tables)
     cleanup_table_element(tables)
 
-    search_paragraph_section(epub_body, epub.section_list)
+    logger.info("CHAPTER NUM")
+    logger.info(epub.chapter_num)
+    search_paragraph_section(epub_body, epub.section_list, epub.chapter_num)
 
     if epub.epub_type == 'ifsta':
         # The next line only work for IFSTA fixed (to reduce the amount of
