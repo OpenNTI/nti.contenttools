@@ -9,8 +9,6 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-import copy
-
 from nti.contenttools import types
 
 from nti.contenttools.adapters.epub.ifsta import check_child
@@ -87,12 +85,10 @@ class Paragraph(types.Paragraph):
                     me = el
                 elif any(s in attrib['class'] for s in cls.section_list):
                     me.styles.append('Section')
-                    label = copy.deepcopy(me)
-                    add_sectioning_label(label)
+                    add_sectioning_label(me)
                 elif any(s in attrib['class'] for s in cls.subsection_list):
                     me.styles.append('Subsection')
-                    label = copy.deepcopy(me)
-                    add_sectioning_label(label)
+                    add_sectioning_label(me)
                 elif any(s in attrib['class'] for s in cls.bullet_list):
                     new_item = Item()
                     bullet_class = UnorderedList()
