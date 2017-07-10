@@ -125,9 +125,7 @@ def search_sidebar_head_and_body(root, nodes):
     if ISidebar.providedBy(root):
         if root.type == u'sidebar-head':
             nodes.append(root)
-    if ITextNode.providedBy(root):
-        pass
-    elif root.children is not None:
+    elif hasattr(root, u'children'):
         for child in root.children:
             if IParagraph.providedBy(child):
                 if child.element_type == u"sidebars-body":
@@ -145,13 +143,17 @@ def process_sidebar_head_and_body(nodes):
             sidebars.append(sidebar)
         else:
             parent = child.__parent__
-            parent.children.remove(child)
             if sidebar:
+                parent.children.remove(child)
                 sidebar.add(child)
             else:
                 sidebar = Sidebar()
-                sidebar.add(child)
-
+                for i, node in enumerate(parent):
+                    if child == node:
+                        parent.remove(child)
+                        sidebar.add(child)
+                        parent.children.insert(i, sidebar)
+                sidebars.append(sidebar)
     return sidebars
 
 
