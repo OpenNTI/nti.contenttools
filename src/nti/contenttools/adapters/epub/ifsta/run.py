@@ -131,6 +131,7 @@ def process_span_elements(element, epub=None):
     font_weight = u''
     color = u''
     font_family = u''
+    vertical_align = u''
 
     term_colors = [u'#c00000', u'#c8161d', '#bf2026']
 
@@ -159,6 +160,9 @@ def process_span_elements(element, epub=None):
             if 'fontFamily' in epub.css_dict[span_class]:
                 font_family = epub.css_dict[span_class]['fontFamily']
 
+            if 'verticalAlign' in epub.css_dict[span_class]:
+                vertical_align = epub.css_dict[span_class]['verticalAlign']
+
             if      epub.epub_type == 'ifsta_rf' \
                 and font_style == u'normal' \
                 and font_weight == u'bold' \
@@ -183,6 +187,11 @@ def process_span_elements(element, epub=None):
 
                 if font_weight == 'bold':
                     el_text.styles.append(font_weight)
+
+                if vertical_align == 'super':
+                    el_text.styles.append('superscript')
+                elif vertical_align == 'sub':
+                    el_text.styles.append('subscript')
 
                 el.add(el_text)
                 check_element_tail(el, element)
