@@ -21,6 +21,7 @@ from nti.contenttools.renderers.LaTeX.utils import search_run_node_and_remove_st
 
 from nti.contenttools.types import Run
 from nti.contenttools.types import Item
+from nti.contenttools.types import Sidebar
 from nti.contenttools.types import TextNode
 from nti.contenttools.types import UnorderedList
 
@@ -137,6 +138,7 @@ def search_sidebar_head_and_body(root, nodes):
 
 def process_sidebar_head_and_body(nodes):
     sidebars = []
+    sidebar = None
     for child in nodes:
         if ISidebar.providedBy(child):
             sidebar = child
@@ -144,7 +146,12 @@ def process_sidebar_head_and_body(nodes):
         else:
             parent = child.__parent__
             parent.children.remove(child)
-            sidebar.add(child)
+            if sidebar:
+                sidebar.add(child)
+            else:
+                sidebar = Sidebar()
+                sidebar.add(child)
+
     return sidebars
 
 
