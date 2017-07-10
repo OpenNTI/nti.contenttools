@@ -31,7 +31,6 @@ from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IFigure
 from nti.contenttools.types.interfaces import IRunNode
 from nti.contenttools.types.interfaces import ISidebar
-from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
 from nti.contenttools.types.interfaces import IGlossaryEntry
 from nti.contenttools.types.interfaces import IDocumentStructureNode
