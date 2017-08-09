@@ -12,8 +12,8 @@ logger = __import__('logging').getLogger(__name__)
 from nti.contenttools import types
 
 from nti.contenttools.adapters.epub.ifsta import check_child
-from nti.contenttools.adapters.epub.ifsta import check_element_text
 from nti.contenttools.adapters.epub.ifsta import check_element_tail
+from nti.contenttools.adapters.epub.ifsta import check_element_text
 
 
 class Sidebar(types.Sidebar):

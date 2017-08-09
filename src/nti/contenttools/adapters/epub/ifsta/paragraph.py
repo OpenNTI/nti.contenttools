@@ -57,18 +57,18 @@ class Paragraph(types.Paragraph):
                          u'sidebars-body-text',)
         definition_list = (u'definition', 'GlossaryTerm')
 
-        if u'class' in attrib:
-            if attrib['class'] != u"ParaOverride-1":
+        if 'class' in attrib:
+            if attrib['class'] != "ParaOverride-1":
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)
                 me = check_element_tail(me, element)
                 if any(s in attrib['class'] for s in cls.sidebar_list):
                     sidebar_class = Sidebar()
-                    if u'Case-History' in element.attrib['class']:
+                    if 'Case-History' in element.attrib['class']:
                         sidebar_class.title = u'Case History'
                     sidebar_class.children = me.children
                     me = sidebar_class
-                elif u'C-Head' in attrib['class']:
+                elif 'C-Head' in attrib['class']:
                     el_main = Paragraph()
                     el = Run()
                     el.styles = ['bold', 'italic']
@@ -76,12 +76,12 @@ class Paragraph(types.Paragraph):
                     el_main.add_child(el)
                     el_main.add_child(types.TextNode("\\\\\n"))
                     me = el_main
-                elif u'Table-Title' in attrib['class']:
+                elif 'Table-Title' in attrib['class']:
                     el = Run()
                     el.styles = ['bold']
                     el.children = me.children
                     me = el
-                elif u'Table-Text' in attrib['class']:
+                elif 'Table-Text' in attrib['class']:
                     el = Run()
                     el.children = me.children
                     me = el
@@ -127,16 +127,16 @@ class Paragraph(types.Paragraph):
                     el.add_child(sidebar)
                     el.add_child(types.TextNode("\n"))
                     me = el
-                #elif u'Sub1' in attrib['class']:
-                #    el = types.BlockQuote()
-                #    el.children = me.children
-                #    me = el
-                #elif u'Sub2' in attrib['class']:
-                #    el = types.BlockQuote()
-                #    el_2 = types.BlockQuote()
-                #    el_2.children = me.children
-                #    el.add_child(el_2)
-                #    me = el
+#                 elif u'Sub1' in attrib['class']:
+#                     el = types.BlockQuote()
+#                     el.children = me.children
+#                     me = el
+#                 elif u'Sub2' in attrib['class']:
+#                     el = types.BlockQuote()
+#                     el_2 = types.BlockQuote()
+#                     el_2.children = me.children
+#                     el.add_child(el_2)
+#                     me = el
                 elif any(s in attrib['class'] for s in cls.paragraph_list):
                     pass
             else:

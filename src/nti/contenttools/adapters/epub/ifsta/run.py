@@ -50,9 +50,9 @@ class Run(types.Run):
 def examine_div_element_for_sidebar(el, caption, body_text):
     for child in el.children:
         if isinstance(child, types.Paragraph):
-            if child.element_type == u'sidebars-heads':
+            if child.element_type == 'sidebars-heads':
                 caption.add_child(child)
-            elif child.element_type == u'sidebars-body':
+            elif child.element_type == 'sidebars-body':
                 check_list = check_paragraph_bullet(child)
                 if check_list:
                     bullet_class = UnorderedList()
@@ -62,7 +62,7 @@ def examine_div_element_for_sidebar(el, caption, body_text):
                     body_text.add_child(bullet_class)
                 else:
                     body_text.add_child(child)
-            elif child.element_type == u'caption':
+            elif child.element_type == 'caption':
                 pass
             else:
                 body_text.add_child(child)
@@ -93,7 +93,7 @@ def process_div_elements(element, parent, epub=None):
             el = new_el
 
     attrib = element.attrib
-    div_class = attrib['class'] if u'class' in attrib else u''
+    div_class = attrib['class'] if 'class' in attrib else u''
 
     if div_class in table_div_classes:
         # need to clean up paragraph element that located under this particular div
@@ -136,7 +136,7 @@ def process_span_elements(element, epub=None):
     term_colors = [u'#c00000', u'#c8161d', '#bf2026']
 
     attrib = element.attrib
-    span_class = attrib['class'] if u'class' in attrib else u''
+    span_class = attrib['class'] if 'class' in attrib else u''
     span_class = u'span_%s' % span_class.replace('-', '_')
 
     if 'bullet' in span_class:
@@ -198,7 +198,7 @@ def process_span_elements(element, epub=None):
         else:
             el = Run.process(element, epub=epub)
 
-    if epub is not None and epub.epub_type == u'ifsta':
+    if epub is not None and epub.epub_type == 'ifsta':
         check_span_child(el)
     return el
 
