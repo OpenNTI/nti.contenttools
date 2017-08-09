@@ -127,6 +127,16 @@ class Paragraph(types.Paragraph):
                     el.add_child(sidebar)
                     el.add_child(types.TextNode("\n"))
                     me = el
+                #elif u'Sub1' in attrib['class']:
+                #    el = types.BlockQuote()
+                #    el.children = me.children
+                #    me = el
+                #elif u'Sub2' in attrib['class']:
+                #    el = types.BlockQuote()
+                #    el_2 = types.BlockQuote()
+                #    el_2.children = me.children
+                #    el.add_child(el_2)
+                #    me = el
                 elif any(s in attrib['class'] for s in cls.paragraph_list):
                     pass
             else:
