@@ -30,7 +30,7 @@ class Image(types.Image):
     def process(cls, element, inline_image=False, epub=None):
         me = cls()
         path = element.attrib['src']
-        if u'../' in path:
+        if '../' in path:
             path = path.replace('../', '')
         _, filename = os.path.split(path)
         me.predefined_image_path = True
@@ -79,7 +79,7 @@ class Image(types.Image):
             epub.figures.append(figure)
             epub.figure_labels[figure.caption] = figure.label
             return figure
-        elif u'_' in filename or (u'-' in filename and re.search('[a-zA-Z]', fname)):
+        elif '_' in filename or ('-' in filename and re.search(r'[a-zA-Z]', fname)):
             me.inline_image = True
             img_node = Run()
             img_node.add(me)
@@ -87,7 +87,7 @@ class Image(types.Image):
             return img_node
         else:
             img_node = Run()
-            if re.search('[a-zA-Z]', fname):
+            if re.search(r'[a-zA-Z]', fname):
                 me.inline_image = True
                 img_node.add(me)
             img_node = check_element_tail(img_node, element)
@@ -108,23 +108,23 @@ class Figure(types.Figure):
     @classmethod
     def process(cls, element, epub=None):
         me = cls()
-        if u'id' in element.attrib:
-            me.label = element.attrib[u'id']
+        if 'id' in element.attrib:
+            me.label = element.attrib['id']
         for child in element:
             if child.tag == u'figcaption':
                 me.caption = Run.process(child, epub=epub)
             elif child.tag == u'span':
-                if u'data-type' in child.attrib:
-                    me.data_type = child.attrib[u'data-type']
-                if u'id' in child.attrib:
-                    me.image_id = child.attrib[u'id']
-                if u'data-alt' in child.attrib:
-                    me.image_alt = types.TextNode(child.attrib[u'data-alt'])
+                if 'data-type' in child.attrib:
+                    me.data_type = child.attrib['data-type']
+                if 'id' in child.attrib:
+                    me.image_id = child.attrib['id']
+                if 'data-alt' in child.attrib:
+                    me.image_alt = types.TextNode(child.attrib['data-alt'])
                 img = get_figure_image(child, epub)
                 me.add_child(img)
-            elif child.tag == u'figure':
+            elif child.tag == 'figure':
                 me.add_child(Figure.process(child, epub))
-            elif child.tag == u'div':
+            elif child.tag == 'div':
                 me.add_child(process_div_elements(child, me, epub=epub))
             else:
                 logger.warn('Unhandled figure child %s', child.tag)
@@ -133,5 +133,5 @@ class Figure(types.Figure):
 
 def get_figure_image(element, epub=None):
     for child in element:
-        if child.tag == u'img':
+        if child.tag == 'img':
             return Image.process(child, epub=epub)

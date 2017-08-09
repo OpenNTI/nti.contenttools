@@ -40,8 +40,8 @@ class EPUBReader(object):
     def _extract_manifest(cls, manifest):
         result = {}
         for item in manifest:
-            if hasattr(item, 'tag') \
-                    and item.tag == '{http://www.idpf.org/2007/opf}item':
+            if      hasattr(item, 'tag') \
+                and item.tag == '{http://www.idpf.org/2007/opf}item':
                 result[item.attrib['id']] = {
                     'href': item.attrib['href'],
                     'media-type': item.attrib['media-type']
@@ -75,7 +75,7 @@ class EPUBReader(object):
             elif element.tag == '{http://www.idpf.org/2007/opf}meta':
                 result['meta'] = element.text
             else:
-                print('Unknown element: %s' % element.tag)
+                logger.warn('Unknown element: %s', element.tag)
         return result
 
     @classmethod
@@ -98,7 +98,7 @@ class EPUBReader(object):
         epub.zipfile = self.zipfile
 
         container = etree_fromstring(
-            self.zipfile.read(u'META-INF/container.xml'))
+            self.zipfile.read('META-INF/container.xml'))
         rootfile = etree_fromstring(
             self.zipfile.read(self._get_rootfile(container)))
         self.content_path = os.path.dirname(self._get_rootfile(container))
@@ -115,7 +115,7 @@ class EPUBReader(object):
             elif element.tag == '{http://www.idpf.org/2007/opf}guide':
                 pass
             else:
-                print('Unknown element: %s' % element.tag)
+                logger.warn('Unknown element: %s', element.tag)
 
         self.title = u''
         if 'title' in self.metadata.keys():

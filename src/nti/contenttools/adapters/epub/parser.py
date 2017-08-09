@@ -262,8 +262,8 @@ DOC_STRING = u'\\documentclass{book}\n%s%s%s\\begin{document}\n%s\\end{document}
 def generate_main_tex_content(metadata, included_tex_list):
     title = author = u''
     if 'title' in metadata:
-        title = u'\\title{%s}\n' % metadata[u'title']
-    if u'creator' in metadata.keys():
+        title = u'\\title{%s}\n' % metadata['title']
+    if 'creator' in metadata:
         author = u'\\author{%s}\n' % metadata['creator']
     package = get_packages()
     latex = get_included_tex(included_tex_list)
@@ -276,13 +276,13 @@ def generate_glossary_term_from_sidebar(epub_body, glossary_terms, glossary_labe
 
 def search_sidebar_term(root, sidebars, labels):
     if ISidebar.providedBy(root):
-        if root.type == u"sidebar_term":
+        if root.type == "sidebar_term":
             sidebars[root.title] = root.base
             if root.label:
                 label = root.label.replace('\\label', '\\ref')
                 label = u'%s\\\\\n' % (label)
                 labels.append(label)
-    elif hasattr(root, u'children'):
+    elif hasattr(root, 'children'):
         for node in root:
             search_sidebar_term(node, sidebars, labels)
     return sidebars
@@ -292,7 +292,7 @@ def search_tables(root, tables):
     if ITable.providedBy(root):
         if root.label:
             tables.append(root.label)
-    elif hasattr(root, u'children'):
+    elif hasattr(root, 'children'):
         for node in root:
             search_tables(node, tables)
     return tables
