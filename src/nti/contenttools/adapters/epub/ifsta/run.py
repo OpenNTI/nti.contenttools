@@ -143,6 +143,8 @@ def process_span_elements(element, epub=None):
         el = Run()
         check_element_tail(el, element)
         el.element_type = 'bullet'
+    elif 'Key_Term_in_Body' in span_class:
+        el = create_glossary_entry(element)
     elif 'NOTE' in span_class:
         el = Run.process(element, epub=epub)
         el.styles = ['bold']
@@ -168,14 +170,7 @@ def process_span_elements(element, epub=None):
                 and font_weight == u'bold' \
                 and color in term_colors \
                 and u'Utopia Std' in font_family:
-                el = Run()
-                t_el = Run()
-                check_element_text(t_el, element)
-                t_el.styles.append('bold')
-                glossary = GlossaryEntry()
-                glossary.term = t_el
-                el.add(glossary)
-                check_element_tail(el, element)
+                el = create_glossary_entry(element)
             else:
                 el = Run()
                 el_text = Run()
@@ -202,6 +197,16 @@ def process_span_elements(element, epub=None):
         check_span_child(el)
     return el
 
+def create_glossary_entry(element):
+    el = Run()
+    t_el = Run()
+    check_element_text(t_el, element)
+    t_el.styles.append('bold')
+    glossary = GlossaryEntry()
+    glossary.term = t_el
+    el.add(glossary)
+    check_element_tail(el, element)
+    return el
 
 def check_span_child(span_node):
     for child in span_node:
