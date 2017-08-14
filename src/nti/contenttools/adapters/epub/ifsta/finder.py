@@ -156,7 +156,7 @@ def process_sidebar_head_and_body(nodes):
     return sidebars
 
 
-def search_sidebar_terms(root, sidebars, sidebar_nodes):
+def search_sidebar_terms(root, sidebars, sidebar_nodes, chapter_num=None):
     if ISidebar.providedBy(root):
         if root.type == u"sidebar_term":
             node = copy.deepcopy(root)
@@ -168,13 +168,15 @@ def search_sidebar_terms(root, sidebars, sidebar_nodes):
                 sidebars[term] = base
                 term = re.sub(r'[{}]', '', term)
                 term = term.strip()
+                if chapter_num:
+                    term = '%s_%s' %(term, chapter_num)
                 label = create_label('sidebar_term',
                                      term.replace(u'textbf', u'').replace(u'textit', u''))
                 root.label = label
             sidebar_nodes.append(root)
     elif hasattr(root, u'children'):
         for child in root:
-            search_sidebar_terms(child, sidebars, sidebar_nodes)
+            search_sidebar_terms(child, sidebars, sidebar_nodes, chapter_num)
 
 
 def search_and_update_glossary_entries(root, sidebars):
