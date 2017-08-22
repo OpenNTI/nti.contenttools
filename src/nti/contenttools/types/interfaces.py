@@ -1831,6 +1831,10 @@ class INaqSymmathPart(IDocumentStructureNode):
                             title=u"Label"),
                      ValidTextLine(title=u"Label")),
                     required=False)
+    explanation = Variant((Object(IDocumentStructureNode,
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
+                    required=False)
 
 class INaqSymmathPartSolution(IDocumentStructureNode):
     """

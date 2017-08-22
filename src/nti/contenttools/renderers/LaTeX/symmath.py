@@ -48,13 +48,19 @@ def render_naqsymmathpart(context, node):
 		else:
 			context.write(node.solution)
 		context.write('\n')
-	context.write("\\end{naqsymmathpart}\n")
+	if node.explanation:
+		if IDocumentStructureNode.providedBy(node.explanation):
+			render_node(context, node.explanation)
+		else:
+			context.write(node.explanation)
+		context.write('\n')
+	context.write("\n\\end{naqsymmathpart}\n")
 	return node
 
 def render_naqsymmathpartsolution(context, node):
 	context.write("\\begin{naqsolutions}\n")
 	render_children(context, node)
-	context.write("\\end{naqsolutions}\n")
+	context.write("\n\\end{naqsolutions}\n")
 	return node
 
 def render_naqsymmathpartsolutionvalue(context, node):
@@ -70,7 +76,7 @@ def render_naqsymmathpartsolutionvalue(context, node):
 def render_naqsymmathpartsolutionexplanation(context, node):
 	context.write("\\begin{naqsolexplanation}\n")
 	render_children(context, node)
-	context.write("\\end{naqsolexplanation}\n")
+	context.write("\n\\end{naqsolexplanation}\n")
 	return node
 
 @interface.implementer(IRenderer)
