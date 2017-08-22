@@ -125,7 +125,7 @@ class _DivChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, html=None):
-        result = Run.process(child, [], html=html)
+        result = Run.process(child, html=html)
         node.add_child(result)
         return result
 
@@ -135,7 +135,7 @@ class _SpanChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, hmtl=None):
-        result = Run.process(child, [], html=html)
+        result = Run.process(child, html=html)
         node.add_child(result)
         return result
 

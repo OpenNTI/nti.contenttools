@@ -32,3 +32,12 @@ class TestParagraphAdapter(ContentToolsTestCase):
 
         assert_that(output,
                     is_(u'This is the first paragraph\n\n'))
+
+    def test_paragraph(self):
+        script = u'<div><p>This is the second paragraph</p></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+
+        assert_that(output,
+                    is_(u'This is the second paragraph\n\n'))

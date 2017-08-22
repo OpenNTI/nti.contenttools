@@ -32,6 +32,8 @@ def check_element_text(node, element):
 def check_child(node, element, html=None):
     for child in element:
         processor = component.queryUtility(IChildProcessor, name=child.tag)
+        print(child.tag)
+        print(child.attrib)
         if processor is not None:
             processor.process(child, node, element, html)
         elif not isinstance(child, HtmlComment):
