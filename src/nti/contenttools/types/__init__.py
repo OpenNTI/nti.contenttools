@@ -177,9 +177,11 @@ from nti.contenttools.types.link import Hyperlink
 from nti.contenttools.types.alternate_content import AlternateContent
 from nti.contenttools.types.alternate_content import TextBoxContent
 
+from nti.contenttools.types.symmath import NaqSymmath
 from nti.contenttools.types.symmath import NaqSymmathPart
 from nti.contenttools.types.symmath import NaqSymmathPartSolution
 from nti.contenttools.types.symmath import NaqSymmathPartSolutionValue
+from nti.contenttools.types.symmath import NaqSymmathPartSolutionExplanation
 
 class Newline(DocumentStructureNode):
     pass
