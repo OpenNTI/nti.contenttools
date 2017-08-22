@@ -1,0 +1,27 @@
+<!-- -*- mode: nxml -*- -->
+<configure	xmlns="http://namespaces.zope.org/zope"
+			xmlns:i18n="http://namespaces.zope.org/i18n"
+			xmlns:zcml="http://namespaces.zope.org/zcml">
+
+	<include package="zope.component" file="meta.zcml" />
+	<include package="zope.component" />
+	
+	<!-- Utilities -->
+	<utility factory=".processors._BoldChildProcessor" name="b" />
+	<utility factory=".processors._ItalicChildProcessor" name="i" />
+	<utility factory=".processors._StrikeChildProcessor" name="s" />
+	<utility factory=".processors._UnderlineChildProcessor" name="u" />
+	<utility factory=".processors._StrongChildProcessor" name="strong" />
+
+	<utility factory=".processors._EmphasisChildProcessor" name="em" />
+	<utility factory=".processors._SubscriptChildProcessor" name="sub" />
+	<utility factory=".processors._SuperscriptChildProcessor" name="sup" />
+
+	<utility factory=".processors._SpanChildProcessor" name="span" />
+	<utility factory=".processors._ParagraphChildProcessor" name="p" />
+
+	<utility factory=".processors._DivChildProcessor" name="div" />
+	<utility factory=".processors._ImageChildProcessor" name="img" />
+	<utility factory=".processors._NewlineChildProcessor" name="br" />
+
+</configure>
