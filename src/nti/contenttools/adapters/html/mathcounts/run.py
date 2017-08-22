@@ -18,12 +18,6 @@ from nti.contenttools.adapters.html.mathcounts import check_element_tail
 
 from nti.contenttools import types
 
-def adapt(fragment):
-    body = fragment.find('body')
-    html_body = HTMLBody.process(body)
-    return html_body
-
-
 class HTMLBody(types.Body):
     @classmethod
     def process(cls,element):

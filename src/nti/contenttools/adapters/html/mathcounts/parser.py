@@ -11,9 +11,14 @@ logger = __import__('logging').getLogger(__name__)
 
 from lxml import html
 
-from nti.contenttools.html_parser.adapters import adapt
+from nti.contenttools.adapters.html.mathcounts.run import HTMLBody
 
 from nti.contenttools.renderers.LaTeX.base import render_output
+
+def adapt(fragment):
+    body = fragment.find('body')
+    html_body = HTMLBody.process(body)
+    return html_body
 
 class MathcountsHTMLParser(object):
 
