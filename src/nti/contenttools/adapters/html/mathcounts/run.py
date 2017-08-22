@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: run.py 119034 2017-08-09 13:43:34Z carlos.sanchez $
+.. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -16,16 +16,16 @@ from nti.contenttools.adapters.html.mathcounts import check_child
 from nti.contenttools.adapters.html.mathcounts import check_element_text
 from nti.contenttools.adapters.html.mathcounts import check_element_tail
 
-from nti.contenttools import types
 
 class HTMLBody(types.Body):
+
     @classmethod
-    def process(cls,element):
+    def process(cls, element):
         me = cls()
         me = check_element_text(me, element)
         me = check_child(me, element, html)
         me = check_element_tail(me, element)
-        return me    
+        return me
 
 
 class Run(types.Run):

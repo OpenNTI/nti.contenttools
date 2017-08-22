@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: __init__.py 110899 2017-04-18 12:35:19Z carlos.sanchez $
+.. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -18,6 +18,7 @@ from nti.contenttools._compat import text_
 from nti.contenttools.types import TextNode
 
 from nti.contenttools.adapters.html.mathcounts.interfaces import IChildProcessor
+
 
 def check_element_text(node, element):
     if element.text:

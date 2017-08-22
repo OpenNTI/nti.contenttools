@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -22,6 +22,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestParagraphAdapter(ContentToolsTestCase):
 
     def test_simple_paragraph(self):
@@ -31,7 +32,7 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
 
         assert_that(output,
-                    is_(u'This is the first paragraph\n\n'))
+                    is_('This is the first paragraph\n\n'))
 
     def test_paragraph(self):
         script = u'<div><p>This is the second paragraph</p></div>'
@@ -40,8 +41,7 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
 
         assert_that(output,
-                    is_(u'This is the second paragraph\n\n'))
-
+                    is_('This is the second paragraph\n\n'))
 
     def test_symmath_paragraph(self):
         script = u'<div><p class="Normal ParaOverride-4"><span class="CharOverride-5">1.  </span><span class="CharOverride-6">In a standard deck of 52 playing cards, the red number cards greater than 6 are the 7, 8, 9 and 10 in the suits of diamonds and hearts. That’s a total of 8 cards. The percent probability that Perta randomly selects one of these 8 cards, then, is 8/52 </span><span class="CharOverride-7">≈</span><span class="CharOverride-6"> </span><span class="CharOverride-5">15.38</span><span class="CharOverride-6">%.</span></p></div>'
