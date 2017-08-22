@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: processors.py 116254 2017-06-29 13:38:07Z carlos.sanchez $
+.. $Id$
 """
 
 from __future__ import print_function, absolute_import, division
@@ -129,6 +129,7 @@ class _DivChildProcessor(object):
         node.add_child(result)
         return result
 
+
 @interface.implementer(IChildProcessor)
 class _SpanChildProcessor(object):
 
@@ -138,6 +139,7 @@ class _SpanChildProcessor(object):
         result = Run.process(child, html=html)
         node.add_child(result)
         return result
+
 
 @interface.implementer(IChildProcessor)
 class _NewlineChildProcessor(object):
