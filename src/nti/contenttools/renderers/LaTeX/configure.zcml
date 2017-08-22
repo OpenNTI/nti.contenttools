@@ -597,4 +597,5 @@
 		 for="nti.contenttools.types.interfaces.INaqSymmathPartSolutionExplanation"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
 </configure>

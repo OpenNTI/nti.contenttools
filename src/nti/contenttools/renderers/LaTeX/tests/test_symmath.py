@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -22,15 +22,16 @@ from nti.contenttools.types.symmath import NaqSymmathPartSolutionExplanation
 
 from nti.contenttools.types import TextNode
 
-from nti.contenttools.types.run import Run
-
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestNaqSymmath(ContentToolsTestCase):
+
     def test_simple_naqsymmath(self):
         node = NaqSymmath()
         output = render_output(node)
-        assert_that(output, is_('\\begin{naquestion}[individual=true]\n\n\\end{naquestion}\n'))
+        assert_that(output,
+                    is_(u'\\begin{naquestion}[individual=true]\n\n\\end{naquestion}\n'))
 
     def test_naqsymmath(self):
         naqsymmath = NaqSymmath()
@@ -46,13 +47,14 @@ class TestNaqSymmath(ContentToolsTestCase):
         node.explanation = explanation
         naqsymmath.add(node)
         output = render_output(naqsymmath)
-        assert_that(output, is_('\\begin{naquestion}[individual=true]\n\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n\n\n\\end{naqsymmathpart}\n\n\\end{naquestion}\n'))
-
+        assert_that(output,
+                    is_(u'\\begin{naquestion}[individual=true]\n\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n\n\n\\end{naqsymmathpart}\n\n\\end{naquestion}\n'))
 
     def test_simple_naqsymmathpart(self):
         node = NaqSymmathPart()
         output = render_output(node)
-        assert_that(output, is_('\\begin{naqsymmathpart}\n\n\\end{naqsymmathpart}\n'))
+        assert_that(output,
+                    is_(u'\\begin{naqsymmathpart}\n\n\\end{naqsymmathpart}\n'))
 
     def test_naqsymmathpart(self):
         node = NaqSymmathPart()
@@ -66,7 +68,8 @@ class TestNaqSymmath(ContentToolsTestCase):
         explanation.add(child)
         node.explanation = explanation
         output = render_output(node)
-        assert_that(output, is_('\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n\n\n\\end{naqsymmathpart}\n'))
+        assert_that(output,
+                    is_(u'\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n\n\n\\end{naqsymmathpart}\n'))
 
     def test_naqsymmathpart_with_solution_only(self):
         node = NaqSymmathPart()
@@ -77,12 +80,14 @@ class TestNaqSymmath(ContentToolsTestCase):
         node.solution = solution
 
         output = render_output(node)
-        assert_that(output, is_('\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\n\\end{naqsymmathpart}\n'))
+        assert_that(output,
+                    is_(u'\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\n\\end{naqsymmathpart}\n'))
 
     def test_simple_naqsymmathpartsolution(self):
         node = NaqSymmathPartSolution()
         output = render_output(node)
-        assert_that(output, is_('\\begin{naqsolutions}\n\n\\end{naqsolutions}\n'))
+        assert_that(output,
+                    is_(u'\\begin{naqsolutions}\n\n\\end{naqsolutions}\n'))
 
     def test_naqsymmathpartsolution(self):
         node = NaqSymmathPartSolution()
@@ -90,27 +95,30 @@ class TestNaqSymmath(ContentToolsTestCase):
         child.value = TextNode(u'Solution A')
         node.add(child)
         output = render_output(node)
-        assert_that(output, is_('\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n'))
+        assert_that(output,
+                    is_(u'\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n'))
 
     def test_simple_naqsymmathpartsolutionvalue(self):
         node = NaqSymmathPartSolutionValue()
         output = render_output(node)
-        assert_that(output, is_('\\naqsolution[1] '))
+        assert_that(output, is_(u'\\naqsolution[1] '))
 
     def test_naqsymmathpartsolutionvalue(self):
         node = NaqSymmathPartSolutionValue()
         node.value = TextNode(u'Solution A')
         output = render_output(node)
-        assert_that(output, is_('\\naqsolution[1] Solution A\n'))
+        assert_that(output, is_(u'\\naqsolution[1] Solution A\n'))
 
     def test_simple_naqsymmathpartsolutionexplanation(self):
         node = NaqSymmathPartSolutionExplanation()
         output = render_output(node)
-        assert_that(output, is_('\\begin{naqsolexplanation}\n\n\\end{naqsolexplanation}\n'))
+        assert_that(output,
+                    is_(u'\\begin{naqsolexplanation}\n\n\\end{naqsolexplanation}\n'))
 
     def test_naqsymmathpartsolutionexplanation(self):
         node = NaqSymmathPartSolutionExplanation()
         child = TextNode(u'This is symmath explanation')
         node.add(child)
         output = render_output(node)
-        assert_that(output, is_('\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n'))
+        assert_that(output,
+                    is_(u'\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n'))

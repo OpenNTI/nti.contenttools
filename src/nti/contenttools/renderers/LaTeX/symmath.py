@@ -1,15 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: symmath.py 107525 2017-02-27 09:43:34Z egawati.panjei $
+.. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
-
-import six
 
 from zope import component
 from zope import interface
@@ -27,58 +25,64 @@ from nti.contenttools.types.interfaces import INaqSymmathPartSolution
 from nti.contenttools.types.interfaces import INaqSymmathPartSolutionValue
 from nti.contenttools.types.interfaces import INaqSymmathPartSolutionExplanation
 
+
 def render_naqsymmath(context, node):
-	context.write("\\begin{naquestion}[individual=true]\n")
-	if node.label:
-		render_node(context, node.label)
-	render_children(context, node)
-	context.write("\n\\end{naquestion}\n")
-	return node
+    context.write(u"\\begin{naquestion}[individual=true]\n")
+    if node.label:
+        render_node(context, node.label)
+    render_children(context, node)
+    context.write(u"\n\\end{naquestion}\n")
+    return node
+
 
 def render_naqsymmathpart(context, node):
-	context.write("\\begin{naqsymmathpart}\n")
-	if node.text:
-		if IDocumentStructureNode.providedBy(node.text):
-			render_node(context, node.text)
-		else:
-			context.write(node.text)
-		context.write('\n')
-	if node.solution:
-		if IDocumentStructureNode.providedBy(node.solution):
-			render_node(context, node.solution)
-		else:
-			context.write(node.solution)
-		context.write('\n')
-	if node.explanation:
-		if IDocumentStructureNode.providedBy(node.explanation):
-			render_node(context, node.explanation)
-		else:
-			context.write(node.explanation)
-		context.write('\n')
-	context.write("\n\\end{naqsymmathpart}\n")
-	return node
+    context.write(u"\\begin{naqsymmathpart}\n")
+    if node.text:
+        if IDocumentStructureNode.providedBy(node.text):
+            render_node(context, node.text)
+        else:
+            context.write(node.text)
+        context.write(u'\n')
+    if node.solution:
+        if IDocumentStructureNode.providedBy(node.solution):
+            render_node(context, node.solution)
+        else:
+            context.write(node.solution)
+        context.write(u'\n')
+    if node.explanation:
+        if IDocumentStructureNode.providedBy(node.explanation):
+            render_node(context, node.explanation)
+        else:
+            context.write(node.explanation)
+        context.write(u'\n')
+    context.write(u"\n\\end{naqsymmathpart}\n")
+    return node
+
 
 def render_naqsymmathpartsolution(context, node):
-	context.write("\\begin{naqsolutions}\n")
-	render_children(context, node)
-	context.write("\n\\end{naqsolutions}\n")
-	return node
+    context.write(u"\\begin{naqsolutions}\n")
+    render_children(context, node)
+    context.write(u"\n\\end{naqsolutions}\n")
+    return node
+
 
 def render_naqsymmathpartsolutionvalue(context, node):
-	context.write("\\naqsolution[1] ")
-	if node.value:
-		if IDocumentStructureNode.providedBy(node.value):
-			render_node(context, node.value)
-		else:
-			context.write(node.value)
-		context.write('\n')
-	return node
+    context.write(u"\\naqsolution[1] ")
+    if node.value:
+        if IDocumentStructureNode.providedBy(node.value):
+            render_node(context, node.value)
+        else:
+            context.write(node.value)
+        context.write(u'\n')
+    return node
+
 
 def render_naqsymmathpartsolutionexplanation(context, node):
-	context.write("\\begin{naqsolexplanation}\n")
-	render_children(context, node)
-	context.write("\n\\end{naqsolexplanation}\n")
-	return node
+    context.write(u"\\begin{naqsolexplanation}\n")
+    render_children(context, node)
+    context.write(u"\n\\end{naqsolexplanation}\n")
+    return node
+
 
 @interface.implementer(IRenderer)
 class RendererMixin(object):
@@ -98,17 +102,21 @@ class RendererMixin(object):
 class NaqSymmathRenderer(RendererMixin):
     func = staticmethod(render_naqsymmath)
 
+
 @component.adapter(INaqSymmathPart)
 class NaqSymmathPartRenderer(RendererMixin):
     func = staticmethod(render_naqsymmathpart)
+
 
 @component.adapter(INaqSymmathPartSolution)
 class NaqSymmathPartSolutionRenderer(RendererMixin):
     func = staticmethod(render_naqsymmathpartsolution)
 
+
 @component.adapter(INaqSymmathPartSolutionValue)
 class NaqSymmathPartSolutionValueRenderer(RendererMixin):
     func = staticmethod(render_naqsymmathpartsolutionvalue)
+
 
 @component.adapter(INaqSymmathPartSolutionExplanation)
 class NaqSymmathPartSolutionExplanationRenderer(RendererMixin):
