@@ -30,7 +30,24 @@ class TestNaqSymmath(ContentToolsTestCase):
     def test_simple_naqsymmath(self):
         node = NaqSymmath()
         output = render_output(node)
-        assert_that(output, is_('\\begin{naquestion}[individual=true]\n\\end{naquestion}\n'))
+        assert_that(output, is_('\\begin{naquestion}[individual=true]\n\n\\end{naquestion}\n'))
+
+    def test_naqsymmath(self):
+        naqsymmath = NaqSymmath()
+        node = NaqSymmathPart()
+        solution = NaqSymmathPartSolution()
+        solution_value = NaqSymmathPartSolutionValue()
+        solution_value.value = TextNode(u'Solution A')
+        solution.add(solution_value)
+        node.solution = solution
+        explanation = NaqSymmathPartSolutionExplanation()
+        child = TextNode(u'This is symmath explanation')
+        explanation.add(child)
+        node.explanation = explanation
+        naqsymmath.add(node)
+        output = render_output(naqsymmath)
+        assert_that(output, is_('\\begin{naquestion}[individual=true]\n\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n\n\n\\end{naqsymmathpart}\n\n\\end{naquestion}\n'))
+
 
     def test_simple_naqsymmathpart(self):
         node = NaqSymmathPart()
