@@ -21,19 +21,22 @@ class Paragraph(types.Paragraph):
 
 	@classmethod
 	def process(cls, element, styles=(), html=None):
+		me = cls()
 		attrib = element.attrib
-		node = cls()
-		node = check_element_text(node, element)
-		node = check_child(node, element, html)
-		node = check_element_tail(node, element)
+		me.styles.extend(styles)
+		me = check_element_text(me, element)
+		me = check_child(me, element, html)
+		me = check_element_tail(me, element)
 
 		if 'class' in attrib:
+			print('Sa')
 			if 'Normal' in attrib['class']:
-				node = create_symmath_node(node)
+				me = create_symmath_me(me)
+				print('S')
 
-		return node
+		return me
 
-def create_symmath_node(node):
+def create_symmath_me(node):
 	"""
 	This function basically creates {naqsymmathpart} env with empty solution and explanation
 	"""

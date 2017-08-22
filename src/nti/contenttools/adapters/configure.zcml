@@ -9,5 +9,6 @@
 	<include package="zope.security" />
 		
 	<include package=".epub" />
+	<include package=".html" />
 	
 </configure>
