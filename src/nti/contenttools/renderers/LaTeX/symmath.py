@@ -31,7 +31,8 @@ def render_naqsymmath(context, node):
 	context.write("\\begin{naquestion}[individual=true]\n")
 	if node.label:
 		render_node(context, node.label)
-	context.write("\\end{naquestion}\n")
+	render_children(context, node)
+	context.write("\n\\end{naquestion}\n")
 	return node
 
 def render_naqsymmathpart(context, node):
