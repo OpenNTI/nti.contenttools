@@ -1810,6 +1810,15 @@ class IDocxTCell(IDocumentStructureNode):
                     required=True,
                     default=0)
 
+class INaqSymmath(IDocumentStructureNode):
+    """
+    Node for NaqSymmathPart 
+    """
+    label = Variant((Object(IDocumentStructureNode,
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
+                    required=False)
+
 class INaqSymmathPart(IDocumentStructureNode):
     """
     Node for NaqSymmathPart 
@@ -1818,12 +1827,6 @@ class INaqSymmathPart(IDocumentStructureNode):
                            title=u"Text"),
                     ValidTextLine(title=u"Text")),
                    required=False)
-
-    label = Variant((Object(IDocumentStructureNode,
-                            title=u"Label"),
-                     ValidTextLine(title=u"Label")),
-                    required=False)
-
     solution = Variant((Object(IDocumentStructureNode,
                             title=u"Label"),
                      ValidTextLine(title=u"Label")),
@@ -1848,5 +1851,8 @@ class INaqSymmathPartSolutionValue(IDocumentStructureNode):
                      ValidTextLine(title=u"Label")),
                     required=False)
 
-
+class INaqSymmathPartSolutionExplanation(IDocumentStructureNode):
+    """
+    Node for NaqSymmathPartSolutionExplanation
+    """
 
