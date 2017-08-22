@@ -572,4 +572,29 @@
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
 
+	<!-- Symmath -->
+	<adapter factory=".symmath.NaqSymmathRenderer"
+		 for="nti.contenttools.types.interfaces.INaqSymmath"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+
+	<adapter factory=".symmath.NaqSymmathPartRenderer"
+		 for="nti.contenttools.types.interfaces.INaqSymmathPart"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+
+	<adapter factory=".symmath.NaqSymmathPartSolutionRenderer"
+		 for="nti.contenttools.types.interfaces.INaqSymmathPartSolution"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+
+	<adapter factory=".symmath.NaqSymmathPartSolutionValueRenderer"
+		 for="nti.contenttools.types.interfaces.INaqSymmathPartSolutionValue"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+
+	<adapter factory=".symmath.NaqSymmathPartSolutionExplanationRenderer"
+		 for="nti.contenttools.types.interfaces.INaqSymmathPartSolutionExplanation"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 </configure>
