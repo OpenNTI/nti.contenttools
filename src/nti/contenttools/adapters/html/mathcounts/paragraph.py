@@ -29,14 +29,11 @@ class Paragraph(types.Paragraph):
 		me = check_element_tail(me, element)
 
 		if 'class' in attrib:
-			print('Sa')
 			if 'Normal' in attrib['class']:
-				me = create_symmath_me(me)
-				print('S')
-
+				me = create_symmath_node(me)
 		return me
 
-def create_symmath_me(node):
+def create_symmath_node(node):
 	"""
 	This function basically creates {naqsymmathpart} env with empty solution and explanation
 	"""
