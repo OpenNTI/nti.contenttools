@@ -177,6 +177,9 @@ from nti.contenttools.types.link import Hyperlink
 from nti.contenttools.types.alternate_content import AlternateContent
 from nti.contenttools.types.alternate_content import TextBoxContent
 
+from nti.contenttools.types.symmath import NaqSymmathPart
+from nti.contenttools.types.symmath import NaqSymmathPartSolution
+from nti.contenttools.types.symmath import NaqSymmathPartSolutionValue
 
 class Newline(DocumentStructureNode):
     pass
@@ -203,22 +206,3 @@ class OpenstaxTitle(DocumentStructureNode):
 
 class PreTag(DocumentStructureNode):
     pass
-
-
-class NaqSymmathPart(DocumentStructureNode):
-
-    def __init__(self):
-        self.text = u''
-        self.label = u''
-        self.solution = u''
-
-
-class NaqSymmathPartSolution(DocumentStructureNode):
-    pass
-
-
-class NaqSymmathPartSolutionValue(DocumentStructureNode):
-
-    def __init__(self):
-        self.option = u''
-        self.value = u''
