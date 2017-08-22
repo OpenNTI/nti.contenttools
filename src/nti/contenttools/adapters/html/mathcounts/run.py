@@ -20,7 +20,7 @@ from nti.contenttools.adapters.html.mathcounts import check_element_tail
 class HTMLBody(types.Body):
 
     @classmethod
-    def process(cls, element):
+    def process(cls, element, html=None):
         me = cls()
         me = check_element_text(me, element)
         me = check_child(me, element, html)
