@@ -1809,3 +1809,44 @@ class IDocxTCell(IDocumentStructureNode):
     grid_span = Int(title=u"Grid Span",
                     required=True,
                     default=0)
+
+class INaqSymmathPart(IDocumentStructureNode):
+    """
+    Node for NaqSymmathPart 
+    """
+    text = Variant((Object(IDocumentStructureNode,
+                           title=u"Text"),
+                    ValidTextLine(title=u"Text")),
+                   required=False)
+
+    label = Variant((Object(IDocumentStructureNode,
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
+                    required=False)
+
+    solution = Variant((Object(IDocumentStructureNode,
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
+                    required=False)
+
+class INaqSymmathPartSolution(IDocumentStructureNode):
+    """
+    Node for NaqSymmathPartSolution
+    """
+
+class INaqSymmathPartSolutionValue(IDocumentStructureNode):
+    """
+    Node for NaqSymmathPartSolutionValue 
+    """
+    option = Variant((Object(IDocumentStructureNode,
+                           title=u"Text"),
+                    ValidTextLine(title=u"Text")),
+                   required=False)
+
+    value = Variant((Object(IDocumentStructureNode,
+                            title=u"Label"),
+                     ValidTextLine(title=u"Label")),
+                    required=False)
+
+
+
