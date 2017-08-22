@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -183,6 +183,7 @@ from nti.contenttools.types.symmath import NaqSymmathPartSolution
 from nti.contenttools.types.symmath import NaqSymmathPartSolutionValue
 from nti.contenttools.types.symmath import NaqSymmathPartSolutionExplanation
 
+
 class Newline(DocumentStructureNode):
     pass
 
@@ -193,7 +194,7 @@ class Iframe(DocumentStructureNode):
 
 class Label(DocumentStructureNode):
 
-    def __init__(self, name=''):
+    def __init__(self, name=u''):
         super(Label, self).__init__()
         self.name = name
 

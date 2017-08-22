@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -26,13 +26,17 @@ from nti.contenttools.types.symmath import NaqSymmathPartSolutionExplanation
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestNaqSymmath(ContentToolsTestCase):
+
     def test_naqsymmath(self):
         node = NaqSymmath()
         assert_that(node, validly_provides(INaqSymmath))
         assert_that(node, verifiably_provides(INaqSymmath))
 
+
 class TestNaqSymmathPart(ContentToolsTestCase):
+
     def test_naqsymmathpart(self):
         node = NaqSymmathPart()
         assert_that(node, validly_provides(INaqSymmathPart))
@@ -40,19 +44,24 @@ class TestNaqSymmathPart(ContentToolsTestCase):
 
 
 class TestNaqSymmathPartSolution(ContentToolsTestCase):
+
     def test_naqsymmathpartsolution(self):
         node = NaqSymmathPartSolution()
         assert_that(node, validly_provides(INaqSymmathPartSolution))
         assert_that(node, verifiably_provides(INaqSymmathPartSolution))
 
+
 class TestNaqSymmathPartSolutionValue(ContentToolsTestCase):
+
     def test_naqsymmathpartsolutionvalue(self):
         node = NaqSymmathPartSolutionValue()
         assert_that(node, validly_provides(INaqSymmathPartSolutionValue))
         assert_that(node, verifiably_provides(INaqSymmathPartSolutionValue))
 
+
 class TestNaqSymmathPartSolutionExplanation(ContentToolsTestCase):
     def test_naqsymmathpartsolutionexplanation(self):
         node = NaqSymmathPartSolutionExplanation()
         assert_that(node, validly_provides(INaqSymmathPartSolutionExplanation))
-        assert_that(node, verifiably_provides(INaqSymmathPartSolutionExplanation))
+        assert_that(node,
+                    verifiably_provides(INaqSymmathPartSolutionExplanation))

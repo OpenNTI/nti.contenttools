@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id: symmath.py 106646 2017-02-15 19:47:11Z carlos.sanchez $
+.. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -26,17 +26,21 @@ from nti.schema.fieldproperty import createFieldProperties
 class NaqSymmath(DocumentStructureNode):
     createFieldProperties(INaqSymmath)
 
+
 @interface.implementer(INaqSymmathPart)
 class NaqSymmathPart(DocumentStructureNode):
     createFieldProperties(INaqSymmathPart)
+
 
 @interface.implementer(INaqSymmathPartSolution)
 class NaqSymmathPartSolution(DocumentStructureNode):
     createFieldProperties(INaqSymmathPartSolution)
 
+
 @interface.implementer(INaqSymmathPartSolutionValue)
 class NaqSymmathPartSolutionValue(DocumentStructureNode):
     createFieldProperties(INaqSymmathPartSolutionValue)
+
 
 @interface.implementer(INaqSymmathPartSolutionExplanation)
 class NaqSymmathPartSolutionExplanation(DocumentStructureNode):
