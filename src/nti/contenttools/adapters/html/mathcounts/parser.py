@@ -13,8 +13,9 @@ from lxml import html
 
 from nti.contenttools.adapters.html.mathcounts.run import HTMLBody
 
-from nti.contenttools.renderers.LaTeX.base import base_renderer
+from nti.contenttools.renderers.LaTeX.base import render_node
 
+from nti.contenttools.renderers.model import DefaultRendererContext
 
 def adapt(fragment):
     body = fragment.find('body')
@@ -24,11 +25,13 @@ def adapt(fragment):
 
 class MathcountsHTMLParser(object):
 
-    def __init__(self, script):
+    def __init__(self, script, output_dir, ):
         self.script = script
 
     def process(self):
         element = html.fromstring(self.script)
-        nodes = adapt(element)
-        tex = base_renderer(nodes)
-        return tex
+        node = adapt(element)
+        context = DefaultRendererContext(name="LaTeX")
+        render_node(context, node)
+        content = context.read()
+        
