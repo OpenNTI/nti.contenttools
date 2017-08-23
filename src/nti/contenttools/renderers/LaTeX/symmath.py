@@ -29,7 +29,10 @@ from nti.contenttools.types.interfaces import INaqSymmathPartSolutionExplanation
 def render_naqsymmath(context, node):
     context.write(u"\\begin{naquestion}[individual=true]\n")
     if node.label:
-        render_node(context, node.label)
+        if IDocumentStructureNode.providedBy(node.label):
+            render_node(context, node.label)
+        else:
+            context.write(node.label)
     render_children(context, node)
     context.write(u"\n\\end{naquestion}\n")
     return node
