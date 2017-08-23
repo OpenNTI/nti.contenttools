@@ -36,7 +36,7 @@ def check_child(node, element, html=None):
         if processor is not None:
             processor.process(child, node, element, html)
         elif not isinstance(child, HtmlComment):
-            logger.warn('Unhandled %s child: %s.', element, child)
+            logger.warn('Unhandled %s.', child)
     return node
 
 
