@@ -31,9 +31,11 @@ class Paragraph(types.Paragraph):
 
         if 'class' in attrib:
             if 'Normal' in attrib['class']:
-                html.naq_counter = html.naq_counter + 1
-                label = u'%s_%s' % (html.labelling, html.naq_counter)
-                label = create_label('naqsymmath', label)
+                label = None
+                if html:
+                    html.naq_counter = html.naq_counter + 1
+                    label = u'%s_%s' % (html.labelling, html.naq_counter)
+                    label = create_label('naqsymmath', label)
                 me = create_symmath_node(me, label)
         return me
 
