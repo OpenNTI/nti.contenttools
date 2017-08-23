@@ -57,6 +57,6 @@ class MathcountsHTMLParser(object):
             self.tex_filename = '%s.tex' % self.tex_filename
 
     def write_to_file(self):
-        filepath = u'%s/%s' % (self.output_dir, self.tex_filename)
+        filepath = '%s/%s' % (self.output_dir, self.tex_filename)
         with codecs.open(filepath, 'w', 'utf-8') as fp:
             fp.write(self.context.read())
