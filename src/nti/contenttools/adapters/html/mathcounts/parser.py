@@ -25,7 +25,7 @@ def adapt(fragment, html):
 
 class MathcountsHTMLParser(object):
 
-    def __init__(self, script, output_dir):
+    def __init__(self, script, output_dir, source_filename=None):
         self.script = script
         self.output_dir = output_dir
 
