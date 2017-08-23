@@ -21,6 +21,7 @@ from nti.contenttools.renderers.model import DefaultRendererContext
 
 from nti.contenttools.util.string_replacer import rename_filename
 
+
 def adapt(fragment, html):
     body = fragment.find('body')
     html_body = HTMLBody.process(body, html)
@@ -41,7 +42,7 @@ class MathcountsHTMLParser(object):
         node = adapt(element, self)
         context = DefaultRendererContext(name="LaTeX")
         render_node(context, node)
-        content = context.read()
+        _ = context.read()
 
     def cleanup_filename(self):
         self.tex_filename = rename_filename(self.tex_filename)
@@ -49,4 +50,4 @@ class MathcountsHTMLParser(object):
             self.labelling = basename(self.tex_filename)
         else:
             self.labelling = self.tex_filename
-            self.tex_filename = '%s.tex' %self.tex_filename
+            self.tex_filename = '%s.tex' % self.tex_filename
