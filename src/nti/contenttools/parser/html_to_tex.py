@@ -83,7 +83,7 @@ def main():
 
     if script:
         if args.type == 'mathcounts':
-            tex = MathcountsHTMLParser(script)
+            parser = MathcountsHTMLParser(script, args,output)
 
     setup_context()
 

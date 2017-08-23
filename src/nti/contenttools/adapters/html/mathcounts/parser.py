@@ -17,20 +17,21 @@ from nti.contenttools.renderers.LaTeX.base import render_node
 
 from nti.contenttools.renderers.model import DefaultRendererContext
 
-def adapt(fragment):
+def adapt(fragment, html):
     body = fragment.find('body')
-    html_body = HTMLBody.process(body)
+    html_body = HTMLBody.process(body, html)
     return html_body
 
 
 class MathcountsHTMLParser(object):
 
-    def __init__(self, script, output_dir, ):
+    def __init__(self, script, output_dir):
         self.script = script
+        self.output_dir = output_dir
 
     def process(self):
         element = html.fromstring(self.script)
-        node = adapt(element)
+        node = adapt(element, self)
         context = DefaultRendererContext(name="LaTeX")
         render_node(context, node)
         content = context.read()
