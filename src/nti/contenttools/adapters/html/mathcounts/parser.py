@@ -11,11 +11,15 @@ logger = __import__('logging').getLogger(__name__)
 
 from lxml import html
 
+from os.path import basename
+
 from nti.contenttools.adapters.html.mathcounts.run import HTMLBody
 
 from nti.contenttools.renderers.LaTeX.base import render_node
 
 from nti.contenttools.renderers.model import DefaultRendererContext
+
+from nti.contenttools.util.string_replacer import rename_filename
 
 def adapt(fragment, html):
     body = fragment.find('body')
@@ -32,8 +36,17 @@ class MathcountsHTMLParser(object):
         self.tex_filename = tex_filename
 
     def process(self):
+        self.cleanup_filename()
         element = html.fromstring(self.script)
         node = adapt(element, self)
         context = DefaultRendererContext(name="LaTeX")
         render_node(context, node)
         content = context.read()
+
+    def cleanup_filename(self):
+        self.tex_filename = rename_filename(self.tex_filename)
+        if '.tex' in self.tex_filename:
+            self.labelling = basename(self.tex_filename)
+        else:
+            self.labelling = self.tex_filename
+            self.tex_filename = '%s.tex' %self.tex_filename
