@@ -84,13 +84,13 @@ def main():
     if not os.path.exists(args.output):
         os.mkdir(args.output)
 
+    setup_context()
+
     if script:
         if args.type == 'mathcounts':
             parser = MathcountsHTMLParser(script, args.output, args.tfilename)
             parser.process()
             parser.write_to_file()
-
-    setup_context()
 
 
 if __name__ == '__main__':  # pragma: no cover
