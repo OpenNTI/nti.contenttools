@@ -4,7 +4,7 @@
 .. $Id: html_to_latex.py 116015 2017-06-27 14:24:02Z carlos.sanchez $
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -86,7 +86,7 @@ def main():
 
     if script:
         if args.type == 'mathcounts':
-            parser = MathcountsHTMLParser(script, args.output, args.filename)
+            MathcountsHTMLParser(script, args.output, args.filename)
 
     setup_context()
 
