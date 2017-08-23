@@ -25,9 +25,11 @@ def adapt(fragment, html):
 
 class MathcountsHTMLParser(object):
 
-    def __init__(self, script, output_dir, source_filename=None):
+    def __init__(self, script, output_dir, tex_filename=None):
         self.script = script
         self.output_dir = output_dir
+        self.naq_counter = 0
+        self.tex_filename = tex_filename
 
     def process(self):
         element = html.fromstring(self.script)
@@ -35,4 +37,3 @@ class MathcountsHTMLParser(object):
         context = DefaultRendererContext(name="LaTeX")
         render_node(context, node)
         content = context.read()
-        

@@ -36,6 +36,9 @@ def parse_args():
     arg_parser.add_argument('-t', '--type',
                             default='generic',
                             help="The html type. The default is: %s" % 'generic')
+    arg_parser.add_argument('-tf', '--tfilename',
+                            default='generic',
+                            help="The generated tex filename. The default is: %s" % 'generic')
     return arg_parser.parse_args()
 
 
@@ -83,7 +86,7 @@ def main():
 
     if script:
         if args.type == 'mathcounts':
-            parser = MathcountsHTMLParser(script, args.output, args.inputfile)
+            parser = MathcountsHTMLParser(script, args.output, args.filename)
 
     setup_context()
 
