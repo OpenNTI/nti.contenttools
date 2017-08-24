@@ -47,9 +47,10 @@ def render_image(context, node, command):
         new_path = 'images/%s' % (node.path)
     context.write(u'\\')
     context.write(command)
-    context.write(u'[')
-    context.write(params)
-    context.write(u']')
+    if not node.inline_image:
+        context.write(u'[')
+        context.write(params)
+        context.write(u']')
     context.write(u'{')
     context.write(new_path)
     context.write(u'}')
