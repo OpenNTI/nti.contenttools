@@ -33,6 +33,7 @@ def render_naqsymmath(context, node):
             render_node(context, node.label)
         else:
             context.write(node.label)
+        context.write(u"\n")
     render_children(context, node)
     context.write(u"\n\\end{naquestion}\n")
     return node
