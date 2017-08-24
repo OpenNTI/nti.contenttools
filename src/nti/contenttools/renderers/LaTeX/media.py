@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -44,7 +44,7 @@ def render_image(context, node, command):
     if node.predefined_image_path:
         new_path = node.path
     else:
-        new_path = 'images/%s' % (node.path)
+        new_path = u'images/%s' % (node.path)
     context.write(u'\\')
     context.write(command)
     if not node.inline_image:
@@ -82,7 +82,7 @@ def set_image_params_and_command(node, command):
                 height = int(float(MAX_WIDTH / node.width) * node.height)
             width = MAX_WIDTH
 
-    params = 'width=%spx,height=%spx' % (width, height)
+    params = u'width=%spx,height=%spx' % (width, height)
 
     # Output 'small' images as ordinary graphics instead of some fancy type
     threshold = 30
@@ -216,7 +216,7 @@ class ImageRenderer(object):
     def __init__(self, node):
         self.node = node
 
-    def render(self, context, node=None, *args, **kwargs):
+    def render(self, context, node=None, *unused_args, **unused_kwargs):
         node = self.node if node is None else node
         if node.annotation:
             return render_image_annotation(context, node)

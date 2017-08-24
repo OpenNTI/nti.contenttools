@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -30,8 +30,8 @@ class TestMedia(ContentToolsTestCase):
     def test_empty_image(self):
         node = Image()
         output = render_output(node)
-        assert_that(
-            output, is_(u'\\includegraphics[width=0px,height=0px]{images/}'))
+        assert_that(output, 
+                    is_('\\includegraphics[width=0px,height=0px]{images/}'))
 
     def test_annotation_image(self):
         node = Image()
@@ -40,9 +40,8 @@ class TestMedia(ContentToolsTestCase):
         node.predefined_image_path = True
         node.path = u'images/foo.png'
         output = render_output(node)
-        assert_that(
-            output,
-            is_('\\ntiincludeannotationgraphics[width=500px,height=450px]{images/foo.png}'))
+        assert_that(output,
+                    is_('\\ntiincludeannotationgraphics[width=500px,height=450px]{images/foo.png}'))
 
     def test_noannotation_image(self):
         node = Image()
@@ -52,9 +51,8 @@ class TestMedia(ContentToolsTestCase):
         node.predefined_image_path = True
         node.path = u'images/foo.png'
         output = render_output(node)
-        assert_that(
-            output,
-            is_(u'\\ntiincludenoannotationgraphics[width=500px,height=450px]{images/foo.png}'))
+        assert_that(output,
+                    is_('\\ntiincludenoannotationgraphics[width=500px,height=450px]{images/foo.png}'))
 
     def test_inline_image(self):
         node = Image()
@@ -64,9 +62,8 @@ class TestMedia(ContentToolsTestCase):
         node.predefined_image_path = True
         node.path = u'images/foo.png'
         output = render_output(node)
-        assert_that(
-            output,
-            is_(u'\\includegraphics{images/foo.png}'))
+        assert_that(output,
+                    is_('\\includegraphics{images/foo.png}'))
 
     def test_equation_image(self):
         node = Image()
@@ -76,32 +73,28 @@ class TestMedia(ContentToolsTestCase):
         node.predefined_image_path = True
         node.path = u'images/foo.png'
         output = render_output(node)
-        assert_that(
-            output,
-            is_(u'\\includegraphics[width=30px,height=40px]{images/foo.png}'))
+        assert_that(output,
+                    is_('\\includegraphics[width=30px,height=40px]{images/foo.png}'))
 
     def test_simple_figure(self):
         figure = Figure()
         output = render_output(figure)
-        assert_that(
-            output,
-            is_(u'\\begin{figure}\n\\begin{center}\n\n\n\\end{center}\n\\end{figure}\n'))
+        assert_that(output,
+                    is_('\\begin{figure}\n\\begin{center}\n\n\n\\end{center}\n\\end{figure}\n'))
 
     def test_figure_with_title(self):
         figure = Figure()
         figure.title = TextNode(u'This is a figure title')
         output = render_output(figure)
-        assert_that(
-            output,
-            is_(u'\\begin{figure}\n\\begin{center}\n\\textbf{This is a figure title}\\\\\n\n\n\\end{center}\n\\end{figure}\n'))
+        assert_that(output,
+                    is_('\\begin{figure}\n\\begin{center}\n\\textbf{This is a figure title}\\\\\n\n\n\\end{center}\n\\end{figure}\n'))
 
     def test_figure_with_caption(self):
         figure = Figure()
         figure.caption = u'This is figure caption'
         output = render_output(figure)
-        assert_that(
-            output,
-            is_(u'\\begin{figure}\n\\begin{center}\n\n\\caption{This is figure caption}\n\n\\end{center}\n\\end{figure}\n'))
+        assert_that(output,
+                    is_('\\begin{figure}\n\\begin{center}\n\n\\caption{This is figure caption}\n\n\\end{center}\n\\end{figure}\n'))
 
     def test_figure_with_label(self):
         figure = Figure()
@@ -109,9 +102,8 @@ class TestMedia(ContentToolsTestCase):
         child = TextNode(u'fig_label')
         figure.label.add(child)
         output = render_output(figure)
-        assert_that(
-            output,
-            is_(u'\\begin{figure}\n\\begin{center}\n\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
+        assert_that(output,
+                    is_('\\begin{figure}\n\\begin{center}\n\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
 
     def test_figure_with_image(self):
         figure = Figure()
@@ -122,9 +114,8 @@ class TestMedia(ContentToolsTestCase):
         img.path = u'images/foo.png'
         figure.add(img)
         output = render_output(figure)
-        assert_that(
-            output,
-            is_(u'\\begin{figure}\n\\begin{center}\n\\ntiincludeannotationgraphics[width=500px,height=450px]{images/foo.png}\n\n\\end{center}\n\\end{figure}\n'))
+        assert_that(output,
+                    is_('\\begin{figure}\n\\begin{center}\n\\ntiincludeannotationgraphics[width=500px,height=450px]{images/foo.png}\n\n\\end{center}\n\\end{figure}\n'))
 
     def test_figure(self):
         figure = Figure()
@@ -138,9 +129,8 @@ class TestMedia(ContentToolsTestCase):
         img.path = u'images/foo.png'
         figure.add(img)
         output = render_output(figure)
-        assert_that(
-            output,
-            is_(u'\\begin{figure}\n\\begin{center}\n\\textbf{fig title}\\\\\n\\ntiincludeannotationgraphics[width=70px,height=90px]{images/foo.png}\n\\caption{fig caption}\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
+        assert_that(output,
+                    is_('\\begin{figure}\n\\begin{center}\n\\textbf{fig title}\\\\\n\\ntiincludeannotationgraphics[width=70px,height=90px]{images/foo.png}\n\\caption{fig caption}\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
 
     def test_docx_image(self):
         node = DocxImage()
@@ -149,9 +139,8 @@ class TestMedia(ContentToolsTestCase):
         node.predefined_image_path = True
         node.path = u'images/foo.png'
         output = render_output(node)
-        assert_that(
-            output,
-            is_('\\ntiincludeannotationgraphics[width=500px,height=450px]{images/foo.png}'))
+        assert_that(output,
+                    is_('\\ntiincludeannotationgraphics[width=500px,height=450px]{images/foo.png}'))
 
     def test_equation_image_centered(self):
         main_node = EquationImage()
@@ -163,6 +152,5 @@ class TestMedia(ContentToolsTestCase):
         node.path = u'images/foo.png'
         main_node.image = node
         output = render_output(main_node)
-        assert_that(
-            output,
-            is_(u'\n\\begin{center}\n\\includegraphics[width=30px,height=40px]{images/foo.png} \\hspace{20 mm} \n\\end{center}\n'))
+        assert_that(output,
+                    is_('\n\\begin{center}\n\\includegraphics[width=30px,height=40px]{images/foo.png} \\hspace{20 mm} \n\\end{center}\n'))

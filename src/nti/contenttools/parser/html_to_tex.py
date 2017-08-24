@@ -88,7 +88,8 @@ def main():
 
     if script:
         if 'mathcounts' in args.type:
-            parser = MathcountsHTMLParser(script, args.output, args.tfilename, args.type)
+            parser = MathcountsHTMLParser(script, args.output, 
+                                          args.tfilename, args.type)
             parser.process()
             parser.write_to_file()
 

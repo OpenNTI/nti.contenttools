@@ -39,7 +39,6 @@ class TestParagraphAdapter(ContentToolsTestCase):
         element = html.fromstring(script)
         node = Run.process(element)
         output = render_output(node)
-
         assert_that(output,
                     is_('This is the second paragraph\n\n'))
 
@@ -48,6 +47,5 @@ class TestParagraphAdapter(ContentToolsTestCase):
         element = html.fromstring(script)
         node = Run.process(element)
         output = render_output(node)
-
         assert_that(output,
                     is_("1. In a standard deck of 52 playing cards, the red number cards greater than 6 are the 7, 8, 9 and 10 in the suits of diamonds and hearts. That's a total of 8 cards. The percent probability that Perta randomly selects one of these 8 cards, then, is 8/52 $\\approx$ 15.38\\%.\n\n"))

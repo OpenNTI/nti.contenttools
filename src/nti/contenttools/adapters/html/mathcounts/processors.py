@@ -154,6 +154,7 @@ class _NewlineChildProcessor(object):
         node.add_child(TextNode(child.tail))
         return result
 
+
 @interface.implementer(IChildProcessor)
 class _ImageChildProcessor(object):
 

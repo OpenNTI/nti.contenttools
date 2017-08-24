@@ -31,7 +31,7 @@ class TestNaqSymmath(ContentToolsTestCase):
         node = NaqSymmath()
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{naquestion}[individual=true]\n\\end{naquestion}\n\n'))
+                    is_('\\begin{naquestion}[individual=true]\n\\end{naquestion}\n\n'))
 
     def test_naqsymmath(self):
         naqsymmath = NaqSymmath()
@@ -54,7 +54,7 @@ class TestNaqSymmath(ContentToolsTestCase):
         node = NaqSymmathPart()
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{naqsymmathpart}\n\\end{naqsymmathpart}\n'))
+                    is_('\\begin{naqsymmathpart}\n\\end{naqsymmathpart}\n'))
 
     def test_naqsymmathpart(self):
         node = NaqSymmathPart()
@@ -69,7 +69,7 @@ class TestNaqSymmath(ContentToolsTestCase):
         node.explanation = explanation
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n\n\\end{naqsymmathpart}\n'))
+                    is_('\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n\n\\end{naqsymmathpart}\n'))
 
     def test_naqsymmathpart_with_solution_only(self):
         node = NaqSymmathPart()
@@ -81,13 +81,13 @@ class TestNaqSymmath(ContentToolsTestCase):
 
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\end{naqsymmathpart}\n'))
+                    is_('\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\end{naqsymmathpart}\n'))
 
     def test_simple_naqsymmathpartsolution(self):
         node = NaqSymmathPartSolution()
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{naqsolutions}\n\n\\end{naqsolutions}\n'))
+                    is_('\\begin{naqsolutions}\n\n\\end{naqsolutions}\n'))
 
     def test_naqsymmathpartsolution(self):
         node = NaqSymmathPartSolution()
@@ -96,24 +96,24 @@ class TestNaqSymmath(ContentToolsTestCase):
         node.add(child)
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n'))
+                    is_('\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n'))
 
     def test_simple_naqsymmathpartsolutionvalue(self):
         node = NaqSymmathPartSolutionValue()
         output = render_output(node)
-        assert_that(output, is_(u'\\naqsolution[1] '))
+        assert_that(output, is_('\\naqsolution[1] '))
 
     def test_naqsymmathpartsolutionvalue(self):
         node = NaqSymmathPartSolutionValue()
         node.value = TextNode(u'Solution A')
         output = render_output(node)
-        assert_that(output, is_(u'\\naqsolution[1] Solution A\n'))
+        assert_that(output, is_('\\naqsolution[1] Solution A\n'))
 
     def test_simple_naqsymmathpartsolutionexplanation(self):
         node = NaqSymmathPartSolutionExplanation()
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{naqsolexplanation}\n\n\\end{naqsolexplanation}\n'))
+                    is_('\\begin{naqsolexplanation}\n\n\\end{naqsolexplanation}\n'))
 
     def test_naqsymmathpartsolutionexplanation(self):
         node = NaqSymmathPartSolutionExplanation()
@@ -121,4 +121,4 @@ class TestNaqSymmath(ContentToolsTestCase):
         node.add(child)
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n'))
+                    is_('\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n'))
