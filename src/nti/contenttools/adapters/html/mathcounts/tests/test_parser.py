@@ -23,8 +23,9 @@ class TestMathcountsHTMLParser(ContentToolsTestCase):
 
     def test_symmath(self):
         script = u'<html><body><div><p class="Normal ParaOverride-4"><span class="CharOverride-5">1.  </span><span class="CharOverride-6">In a standard deck of 52 playing cards, the red number cards greater than 6 are the 7, 8, 9 and 10 in the suits of diamonds and hearts. That’s a total of 8 cards. The percent probability that Perta randomly selects one of these 8 cards, then, is 8/52 </span><span class="CharOverride-7">≈</span><span class="CharOverride-6"> </span><span class="CharOverride-5">15.38</span><span class="CharOverride-6">%.</span></p></div></body></html>'
-        _ = html.fromstring(script)
-        parser = MathcountsHTMLParser(script, 'output_dir', 'test.tex', 'mathcounts_question')
+        html.fromstring(script)
+        parser = MathcountsHTMLParser(script, 'output_dir', 
+                                      'test.tex', 'mathcounts_question')
         parser.process()
         assert_that(parser.context.read(),
                     is_("\\begin{document}\n\\begin{naquestion}[individual=true]\n\\label{naqsymmath:test_1}\n\\begin{naqsymmathpart}\n1. In a standard deck of 52 playing cards, the red number cards greater than 6 are the 7, 8, 9 and 10 in the suits of diamonds and hearts. That's a total of 8 cards. The percent probability that Perta randomly selects one of these 8 cards, then, is 8/52 $\\approx$ 15.38\\%.\n\n\n\\begin{naqsolutions}\n\\naqsolution[1] \n\\end{naqsolutions}\n\n\\begin{naqsolexplanation}\n\n\\end{naqsolexplanation}\n\n\\end{naqsymmathpart}\n\\end{naquestion}\n\n\n\\end{document}\n"))
