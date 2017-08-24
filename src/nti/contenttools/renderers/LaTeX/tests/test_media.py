@@ -66,7 +66,7 @@ class TestMedia(ContentToolsTestCase):
         output = render_output(node)
         assert_that(
             output,
-            is_(u'\\includegraphics[width=30px,height=40px]{images/foo.png}'))
+            is_(u'\\includegraphics{images/foo.png}'))
 
     def test_equation_image(self):
         node = Image()
