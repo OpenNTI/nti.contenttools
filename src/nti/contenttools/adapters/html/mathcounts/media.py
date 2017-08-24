@@ -47,11 +47,11 @@ class Image(types.Image):
         		img_filename = src[img_idx_last:]
         		
         		filepath = u'Images/%s/%s' %(html.labelling, img_filename)
-        		filepath = u'%s/%s' % (html.output_dir, filepath)
+        		img_path = u'%s/%s' % (html.output_dir, filepath)
 
         		img_source = src[img_idx_start:]
 
-        		shutil.copy(img_source,filepath)
+        		shutil.copy(img_source,img_path)
         	
         	me.predefined_image_path = True
         	me.path = filepath
