@@ -31,7 +31,7 @@ class TestNaqSymmath(ContentToolsTestCase):
         node = NaqSymmath()
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{naquestion}[individual=true]\n\n\\end{naquestion}\n'))
+                    is_(u'\\begin{naquestion}[individual=true]\n\\end{naquestion}\n\n'))
 
     def test_naqsymmath(self):
         naqsymmath = NaqSymmath()
@@ -48,13 +48,13 @@ class TestNaqSymmath(ContentToolsTestCase):
         naqsymmath.add(node)
         output = render_output(naqsymmath)
         assert_that(output,
-                    is_(u'\\begin{naquestion}[individual=true]\n\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n\n\n\\end{naqsymmathpart}\n\n\\end{naquestion}\n'))
+                    is_('\\begin{naquestion}[individual=true]\n\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n\n\\end{naqsymmathpart}\n\\end{naquestion}\n\n'))
 
     def test_simple_naqsymmathpart(self):
         node = NaqSymmathPart()
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{naqsymmathpart}\n\n\\end{naqsymmathpart}\n'))
+                    is_(u'\\begin{naqsymmathpart}\n\\end{naqsymmathpart}\n'))
 
     def test_naqsymmathpart(self):
         node = NaqSymmathPart()
@@ -69,7 +69,7 @@ class TestNaqSymmath(ContentToolsTestCase):
         node.explanation = explanation
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n\n\n\\end{naqsymmathpart}\n'))
+                    is_(u'\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\begin{naqsolexplanation}\nThis is symmath explanation\n\\end{naqsolexplanation}\n\n\\end{naqsymmathpart}\n'))
 
     def test_naqsymmathpart_with_solution_only(self):
         node = NaqSymmathPart()
@@ -81,7 +81,7 @@ class TestNaqSymmath(ContentToolsTestCase):
 
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\n\\end{naqsymmathpart}\n'))
+                    is_(u'\\begin{naqsymmathpart}\n\\begin{naqsolutions}\n\\naqsolution[1] Solution A\n\n\\end{naqsolutions}\n\n\\end{naqsymmathpart}\n'))
 
     def test_simple_naqsymmathpartsolution(self):
         node = NaqSymmathPartSolution()

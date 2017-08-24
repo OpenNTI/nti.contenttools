@@ -35,7 +35,7 @@ def render_naqsymmath(context, node):
             context.write(node.label)
         context.write(u"\n")
     render_children(context, node)
-    context.write(u"\n\\end{naquestion}\n")
+    context.write(u"\\end{naquestion}\n\n")
     return node
 
 
@@ -59,7 +59,7 @@ def render_naqsymmathpart(context, node):
         else:
             context.write(node.explanation)
         context.write(u'\n')
-    context.write(u"\n\\end{naqsymmathpart}\n")
+    context.write(u"\\end{naqsymmathpart}\n")
     return node
 
 
