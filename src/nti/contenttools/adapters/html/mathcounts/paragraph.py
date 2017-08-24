@@ -29,8 +29,8 @@ class Paragraph(types.Paragraph):
         me = check_child(me, element, html)
         me = check_element_tail(me, element)
 
-        if 'class' in attrib:
-            if 'Normal' in attrib['class']:
+        if 'class' in attrib and html:
+            if 'Normal' in attrib['class'] and 'solution' not in html.mathcounts_type:
                 label = None
                 if html:
                     html.naq_counter = html.naq_counter + 1

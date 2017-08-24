@@ -34,12 +34,13 @@ def adapt(fragment, html):
 
 class MathcountsHTMLParser(object):
 
-    def __init__(self, script, output_dir, tex_filename):
+    def __init__(self, script, output_dir, tex_filename, mathcounts_type):
         self.script = script
         self.output_dir = output_dir
         self.naq_counter = 0
         self.image_counter = 0
         self.tex_filename = tex_filename
+        self.mathcounts_type = mathcounts_type
 
     def process(self):
         self.cleanup_filename()
