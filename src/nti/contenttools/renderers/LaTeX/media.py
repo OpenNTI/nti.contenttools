@@ -130,9 +130,10 @@ def render_docx_image(context, node):
     params, command = set_image_params_and_command(node, command)
     context.write(u'\\')
     context.write(command)
-    context.write(u'[')
-    context.write(params)
-    context.write(u']')
+    if not node.inline_image:
+        context.write(u'[')
+        context.write(params)
+        context.write(u']')
     context.write(u'{')
     context.write(node.path)
     context.write(u'}')
