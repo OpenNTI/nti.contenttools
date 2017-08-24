@@ -13,6 +13,8 @@ from zope import interface
 
 from nti.contenttools.adapters.html.mathcounts.interfaces import IChildProcessor
 
+from nti.contenttools.adapters.html.mathcounts.media import Image
+
 from nti.contenttools.adapters.html.mathcounts.paragraph import Paragraph
 
 from nti.contenttools.adapters.html.mathcounts.run import Run
@@ -150,4 +152,14 @@ class _NewlineChildProcessor(object):
         result = TextNode(u'\\newline\n')
         node.add_child(result)
         node.add_child(TextNode(child.tail))
+        return result
+
+@interface.implementer(IChildProcessor)
+class _ImageChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, html=None):
+        result = Image.process(child, html=html)
+        node.add_child(result)
         return result

@@ -38,6 +38,7 @@ class MathcountsHTMLParser(object):
         self.script = script
         self.output_dir = output_dir
         self.naq_counter = 0
+        self.image_counter = 0
         self.tex_filename = tex_filename
 
     def process(self):

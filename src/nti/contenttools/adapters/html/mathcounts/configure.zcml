@@ -23,4 +23,6 @@
 	<utility factory=".processors._DivChildProcessor" name="div" />
 	<utility factory=".processors._NewlineChildProcessor" name="br" />
 
+	<utility factory=".processors._ImageChildProcessor" name="img" />
+
 </configure>
