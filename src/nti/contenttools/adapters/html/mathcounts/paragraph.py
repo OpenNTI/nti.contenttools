@@ -50,7 +50,8 @@ def create_symmath_node(node, label=None):
     naqsymmathpart = types.NaqSymmathPart()
     naqsymmathpart.text = node
     naqsymmathpart.solution = types.NaqSymmathPartSolution()
-    naqsymmathpart.solution.value = types.NaqSymmathPartSolutionValue()
+    solutionvalue = types.NaqSymmathPartSolutionValue()
+    naqsymmathpart.solution.add(solutionvalue)
     naqsymmathpart.explanation = types.NaqSymmathPartSolutionExplanation()
     naqsymmath.add(naqsymmathpart)
     return naqsymmath
