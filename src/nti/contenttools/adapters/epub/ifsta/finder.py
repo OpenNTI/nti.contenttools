@@ -156,8 +156,11 @@ def process_sidebar_head_and_body(nodes):
     return sidebars
 
 
-def search_sidebar_terms(root, sidebars, sidebar_nodes, chapter_num=None, sidebar_term_sections=None):
-    if ISidebar.providedBy(root):
+def search_sidebar_terms(root, sidebars, sidebar_nodes, chapter_num=None, glossary_entry_sections=None):
+    if IParagraph.providedBy(root):
+        if any(style in root.styles for style in ('Section', 'Subsection',)):
+            glossary_entry_sections.append(root)
+    elif ISidebar.providedBy(root):
         if root.type == u"sidebar_term":
             node = copy.deepcopy(root)
             search_run_node_and_remove_styles(node)
@@ -175,26 +178,14 @@ def search_sidebar_terms(root, sidebars, sidebar_nodes, chapter_num=None, sideba
                                      term.replace(u'textbf', u'').replace(u'textit', u''))
                 root.label = label
             sidebar_nodes.append(root)
-
-            ### find the section/subsection where the sidebar term is located
-            parent = root.__parent__
-            search_sidebar_term_section(root, sidebar_term_sections, parent)
+            glossary_entry_sections.append(root)
             
-            ### we don't want to include the sidebar term in the generated tex
+            ###we don't want to include the sidebar term in the generated tex
             rparent = root.__parent__
             rparent.remove(root)
-
     elif hasattr(root, u'children'):
         for child in root:
-            search_sidebar_terms(child, sidebars, sidebar_nodes, chapter_num, sidebar_term_sections)
-
-def search_sidebar_term_section(sidebar_term, sidebar_term_sections, parent):
-    if IParagraph.providedBy(parent):
-        if any(style in parent.styles for style in ('Section', 'Subsection',)):
-            sidebar_term_sections[sidebar_term.title] = parent.label
-    elif hasattr(parent, '__parent__'):
-        parent = parent.__parent__
-        search_sidebar_term_section(sidebar_term, sidebar_term_sections, parent)
+            search_sidebar_terms(child, sidebars, sidebar_nodes, chapter_num, glossary_entry_sections)
 
 def search_and_update_glossary_entries(root, sidebars):
     if IGlossaryEntry.providedBy(root):
@@ -248,20 +239,21 @@ def search_paragraph_section(root, sections, chapter=None):
             if IDocumentStructureNode.providedBy(root.label):
                 root.label.add(TextNode(chapter))
             elif isinstance(root.label, (str, unicode)):
-                root.label = u'%s%s' % (root.label, chapter)
+                root.label = u'%s%s' % (label, chapter)
         if 'Section' in root.styles:
-            ref = get_section_label_ref(root.label, 'section')
+            ref = get_section_label_ref(root, 'section')
             sections.append(ref)
         elif 'Subsection' in root.styles:
-            ref = get_section_label_ref(root.label, 'subsection')
+            ref = get_section_label_ref(root, 'subsection')
             sections.append(ref)
     if hasattr(root, u'children'):
         for node in root:
             search_paragraph_section(node, sections, chapter)
 
 
-def get_section_label_ref(label, section_type):
-    label = create_label(section_type, label)
+def get_section_label_ref(root, section_type):
+    label = create_label(section_type, root.label)
+    root.label = label
     ref = label.replace(u'\\label', u'\\ref')
     ref = u'%s\\\\\n' % (ref)
     return ref
