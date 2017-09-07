@@ -75,7 +75,7 @@ def adapt(fragment, epub=None):
         remove_paragraph_caption_from_epub_body(epub_body)
     else:
         sidebars = {}
-        search_sidebar_terms(epub_body, sidebars, epub.sidebar_term_nodes, epub.chapter_num)
+        search_sidebar_terms(epub_body, sidebars, epub.sidebar_term_nodes, epub.chapter_num, epub.glossary_entry_sections)
         search_and_update_glossary_entries(epub_body, sidebars)
 
         snodes = []

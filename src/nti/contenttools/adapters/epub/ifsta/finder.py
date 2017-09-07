@@ -156,28 +156,45 @@ def process_sidebar_head_and_body(nodes):
     return sidebars
 
 
-def search_sidebar_terms(root, sidebars, sidebar_nodes, chapter_num=None):
+def search_sidebar_terms(root, sidebars, sidebar_nodes, chapter_num=None, sidebar_term_sections=None):
     if ISidebar.providedBy(root):
         if root.type == u"sidebar_term":
             node = copy.deepcopy(root)
             search_run_node_and_remove_styles(node)
             base = render_children_output(node)
-            str_pos = base.find('-')
+            str_pos = base.find('---')
             if str_pos > -1:
                 term = base[0:str_pos].strip()
                 sidebars[term] = base
                 term = re.sub(r'[{}]', '', term)
                 term = term.strip()
+                root.title = term
                 if chapter_num:
                     term = '%s_%s' %(term, chapter_num)
                 label = create_label('sidebar_term',
                                      term.replace(u'textbf', u'').replace(u'textit', u''))
                 root.label = label
             sidebar_nodes.append(root)
+
+            ### find the section/subsection where the sidebar term is located
+            parent = root.__parent__
+            search_sidebar_term_section(root, sidebar_term_sections, parent)
+            
+            ### we don't want to include the sidebar term in the generated tex
+            rparent = root.__parent__
+            rparent.remove(root)
+
     elif hasattr(root, u'children'):
         for child in root:
-            search_sidebar_terms(child, sidebars, sidebar_nodes, chapter_num)
+            search_sidebar_terms(child, sidebars, sidebar_nodes, chapter_num, sidebar_term_sections)
 
+def search_sidebar_term_section(sidebar_term, sidebar_term_sections, parent):
+    if IParagraph.providedBy(parent):
+        if any(style in parent.styles for style in ('Section', 'Subsection',)):
+            sidebar_term_sections[sidebar_term.title] = parent.label
+    elif hasattr(parent, '__parent__'):
+        parent = parent.__parent__
+        search_sidebar_term_section(sidebar_term, sidebar_term_sections, parent)
 
 def search_and_update_glossary_entries(root, sidebars):
     if IGlossaryEntry.providedBy(root):
