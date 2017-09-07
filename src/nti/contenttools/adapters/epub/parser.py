@@ -328,4 +328,4 @@ def process_key_terms_section(lnodes):
         term_link = u'%s{%s}\\\\\n' %(key_terms_toc[key], key)
         key_terms.append(term_link)
 
-    return u'\n'.join(key_terms)
+    return u''.join(key_terms)
