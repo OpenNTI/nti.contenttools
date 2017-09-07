@@ -61,6 +61,7 @@ class EPUBParser(object):
 
         self.section_list = []
         self.glossary_labels = []
+        self.glossary_entry_sections = {}
 
         self.tables = []
 
