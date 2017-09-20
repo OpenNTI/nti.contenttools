@@ -325,7 +325,7 @@ def process_key_terms_section(lnodes):
 
     key_terms = []
     for key in sorted(key_terms_toc):
-        term_link = u'%s{%s}\\\\\n' %(key_terms_toc[key], key)
+        term_link = u'%s<%s>\\\\\n' %(key_terms_toc[key], key)
         key_terms.append(term_link)
 
     return u''.join(key_terms)
