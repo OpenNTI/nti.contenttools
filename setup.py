@@ -58,7 +58,6 @@ setup(
     install_requires=[
         'setuptools',
         'lxml',
-        'nltk',
         'nti.contentfragments',
         'nti.schema',
         'Pillow',
@@ -70,7 +69,6 @@ setup(
         'zope.location',
         'zope.security',
         'zope.traversing',
-        'zopyx.txng3.ext',
     ],
     extras_require={
         'test': TESTS_REQUIRE,
