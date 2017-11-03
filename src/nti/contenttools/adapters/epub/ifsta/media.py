@@ -55,7 +55,6 @@ class Image(types.Image):
         fname, _ = os.path.splitext(filename)
 
         if any(fig in filename for fig in figures_without_caption):
-            print(filename)
             fnode = Run()
             figure = Figure()
             title, _ = os.path.splitext(filename)
