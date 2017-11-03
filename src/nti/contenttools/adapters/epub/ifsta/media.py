@@ -49,12 +49,13 @@ class Image(types.Image):
             logger.warn('COULD NOT FIND Image : %s', image_path)
             return types.Run()
 
-        figures_without_caption = (u'Icon',)
+        figures_without_caption = (u'Icon', )
         to_ignore = (u'Divider_Page', u'Warning', u'Caution')
 
         fname, _ = os.path.splitext(filename)
 
         if any(fig in filename for fig in figures_without_caption):
+            print(filename)
             fnode = Run()
             figure = Figure()
             title, _ = os.path.splitext(filename)
