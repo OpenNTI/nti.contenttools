@@ -133,7 +133,8 @@ def process_span_elements(element, epub=None):
     font_family = u''
     vertical_align = u''
 
-    term_colors = [u'#c00000', u'#c8161d', '#bf2026']
+    term_colors = (u'#c00000', u'#c8161d', u'#bf2026', u'#802023',)
+    font_terms = (u'Utopia Std', u'Minion Pro')
 
     attrib = element.attrib
     span_class = attrib['class'] if 'class' in attrib else u''
@@ -161,7 +162,8 @@ def process_span_elements(element, epub=None):
 
             if 'fontFamily' in epub.css_dict[span_class]:
                 font_family = epub.css_dict[span_class]['fontFamily']
-
+                font_family = font_family.replace('"','')
+                
             if 'verticalAlign' in epub.css_dict[span_class]:
                 vertical_align = epub.css_dict[span_class]['verticalAlign']
 
@@ -169,7 +171,7 @@ def process_span_elements(element, epub=None):
                 and font_style == u'normal' \
                 and font_weight == u'bold' \
                 and color in term_colors \
-                and u'Utopia Std' in font_family:
+                and font_family in font_terms:
                 el = create_glossary_entry(element)
             else:
                 el = Run()
