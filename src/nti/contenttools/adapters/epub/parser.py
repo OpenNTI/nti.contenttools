@@ -154,6 +154,10 @@ class EPUBParser(object):
         #remove unnecessary \newline
         content = content.replace('\\newline None', '')
 
+        #add css-class to sidebar
+        content = content.replace('\\begin{sidebar}{CAUTION}', '\\begin{sidebar}[css-class=caution]{CAUTION}')
+        content = content.replace('\\begin{sidebar}{WARNING}', '\\begin{sidebar}[css-class=warning]{WARNING}')
+
         return content
 
     def process_support_files(self):
