@@ -245,7 +245,9 @@ def search_paragraph_section(root, sections, chapter=None):
             sections.append(ref)
         elif 'Subsection' in root.styles:
             ref = get_section_label_ref(root, 'subsection')
+            sections.append(u'\\begin{quote}\n')
             sections.append(ref)
+            sections.append(u'\\end{quote}\n')
     if hasattr(root, u'children'):
         for node in root:
             search_paragraph_section(node, sections, chapter)
