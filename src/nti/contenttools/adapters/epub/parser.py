@@ -12,6 +12,8 @@ logger = __import__('logging').getLogger(__name__)
 
 import os
 
+import re
+
 import codecs
 
 import simplejson as json
@@ -109,6 +111,7 @@ class EPUBParser(object):
                 render_node(context, epub_chapter)
                 content = context.read()
                 content = self.update_image_ref(content)
+                content = self.cleanup_tex(content)
                 if self.reading_def_dir:
                     self.write_to_file(content,
                                        self.reading_def_dir,
@@ -127,6 +130,27 @@ class EPUBParser(object):
         logger.info(epub_reader.spine)
 
         self.process_support_files()
+
+    def cleanup_tex(self, content):
+        #cleanup page number
+        content = re.sub('(, p\.).[0-9]*[0-9]', '', content)
+
+        #consolidate list
+        content = content.replace('\n\\end{itemize}\n\\begin{itemize}\n', '')
+
+        #cleanup caption
+        content = content.replace('\\caption{\\textbf{} ', '\\caption{')
+        content = content.replace('\\caption{\\textbf{ }', '\\caption{')
+
+        #remove extra newlines
+        content = content.replace('\n\n\\end{itemize}', '\n\\end{itemize}')
+        content = content.replace('\n\n\n\n', '\n\n')
+        content = content.replace('\n\n\n', '\n\n')
+
+        #replace with subsubsection (works for book 1, 2 and 3)
+        content = content.replace('\\textit{\\textbf{', '\\subsubsection{\\textit{')
+
+        return content
 
     def process_support_files(self):
         support_dir = u'%s/SupportFiles' % self.output_directory

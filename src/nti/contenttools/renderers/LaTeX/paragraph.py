@@ -29,7 +29,10 @@ def _label_command(context, node, command):
     render_command(context, command, node)
     if node.label:  # check for label
         context.write(u'\n')
-        context.write(create_label(command, node.label))
+        if u'\\label{' in node.label:
+            context.write(node.label)
+        else:
+            context.write(create_label(command, node.label))
     return node
 
 
