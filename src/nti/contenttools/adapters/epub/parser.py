@@ -151,11 +151,14 @@ class EPUBParser(object):
                                   u'\\subsubsection{\\textit{')
 
         #remove unnecessary \newline
-        content = content.replace('\\newline None', '')
+        content = content.replace(u'\\newline None', u'')
 
         #add css-class to sidebar
-        content = content.replace('\\begin{sidebar}{CAUTION}', '\\begin{sidebar}[css-class=caution]{CAUTION}')
-        content = content.replace('\\begin{sidebar}{WARNING}', '\\begin{sidebar}[css-class=warning]{WARNING}')
+        content = content.replace(u'\\begin{sidebar}{CAUTION}', 
+                                  u'\\begin{sidebar}[css-class=caution]{CAUTION}')
+
+        content = content.replace(u'\\begin{sidebar}{WARNING}',
+                                  u'\\begin{sidebar}[css-class=warning]{WARNING}')
 
         return content
 
