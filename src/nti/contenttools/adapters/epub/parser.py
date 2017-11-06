@@ -137,6 +137,7 @@ class EPUBParser(object):
 
         #consolidate list
         content = content.replace('\n\\end{itemize}\n\\begin{itemize}\n', '')
+        content = content.replace('\n\\end{itemize}\n\\\\\\begin{itemize}\n', '')
 
         #cleanup caption
         content = content.replace('\\caption{\\textbf{} ', '\\caption{')
@@ -149,6 +150,9 @@ class EPUBParser(object):
 
         #replace with subsubsection (works for book 1, 2 and 3)
         content = content.replace('\\textit{\\textbf{', '\\subsubsection{\\textit{')
+
+        #remove unnecessary \newline
+        content = content.replace('\\newline None', '')
 
         return content
 
