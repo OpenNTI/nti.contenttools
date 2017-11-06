@@ -147,6 +147,9 @@ class EPUBParser(object):
         content = content.replace('\n\n\n\n', '\n\n')
         content = content.replace('\n\n\n', '\n\n')
 
+        #replace with subsubsection (works for book 1, 2 and 3)
+        content = content.replace('\\textit{\\textbf{', '\\subsubsection{\\textit{')
+
         return content
 
     def process_support_files(self):
