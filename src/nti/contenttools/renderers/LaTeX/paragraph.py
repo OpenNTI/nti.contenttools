@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from zope import component
 from zope import interface
@@ -24,6 +23,8 @@ from nti.contenttools.renderers.model import DefaultRendererContext
 
 from nti.contenttools.types.interfaces import IParagraph
 
+logger = __import__('logging').getLogger(__name__)
+
 
 def _label_command(context, node, command):
     render_command(context, command, node)
@@ -37,43 +38,43 @@ def _label_command(context, node, command):
 
 
 def _chapter(context, node):
-    return _label_command(context, node, 'chapter')
+    return _label_command(context, node, u'chapter')
 
 
 def _section(context, node):
-    return _label_command(context, node, 'section')
+    return _label_command(context, node, u'section')
 
 
 def _subsection(context, node):
-    return _label_command(context, node, 'subsection')
+    return _label_command(context, node, u'subsection')
 
 
 def _subsubsection(context, node):
-    return render_command(context, 'subsubsection', node)
+    return render_command(context, u'subsubsection', node)
 
 
 def _paragraph(context, node):
-    return render_command(context, 'paragraph', node)
+    return render_command(context, u'paragraph', node)
 
 
 def _subparagraph(context, node):
-    return render_command(context, 'subparagraph', node)
+    return render_command(context, u'subparagraph', node)
 
 
 def _subsubparagraph(context, node):
-    return render_command(context, 'subsubparagraph', node)
+    return render_command(context, u'subsubparagraph', node)
 
 
 def _abstract(context, node):
-    return render_command(context, 'abstract', node)
+    return render_command(context, u'abstract', node)
 
 
 def _author(context, node):
-    return render_command(context, 'author', node)
+    return render_command(context, u'author', node)
 
 
 def _footnotetext(context, node):
-    return render_command(context, 'footnotetext', node)
+    return render_command(context, u'footnotetext', node)
 
 
 STYLES = {
