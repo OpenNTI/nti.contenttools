@@ -4,16 +4,12 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
-
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 import os
-
 import re
-
 import codecs
 
 import simplejson as json
@@ -37,6 +33,8 @@ from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IEPUBBody
 
 EPUB_COURSE_TYPE = (u'ifsta', u'ifsta_rf')
+
+logger = __import__('logging').getLogger(__name__)
 
 
 class EPUBParser(object):
@@ -99,15 +97,15 @@ class EPUBParser(object):
             if self.epub_type == 'ifsta' or self.epub_type == 'ifsta_rf':
                 epub_chapter = adapt_ifsta(fragment, self)
             else:
-                pass
                 # TODO: create generic adapter
                 # epub_chapter = adapt(fragment)
+                pass
             tex_filename = u'%s.tex' % rename_filename(item)
             self.latex_filenames.append(tex_filename)
             logger.info("Processing ...")
             logger.info(tex_filename)
             if IEPUBBody.providedBy(epub_chapter):
-                context = DefaultRendererContext(name="LaTeX")
+                context = DefaultRendererContext(name=u"LaTeX")
                 render_node(context, epub_chapter)
                 content = context.read()
                 content = self.update_image_ref(content)
@@ -132,23 +130,24 @@ class EPUBParser(object):
         self.process_support_files()
 
     def cleanup_tex(self, content):
-        #cleanup page number
-        content = re.sub('(, p\.).[0-9]*[0-9]', '', content)
+        # cleanup page number
+        content = re.sub(r'(, p\.).[0-9]*[0-9]', u'', content)
 
-        #consolidate list
-        content = content.replace('\n\\end{itemize}\n\\begin{itemize}\n', '')
+        # consolidate list
+        content = content.replace(u'\n\\end{itemize}\n\\begin{itemize}\n', u'')
 
-        #cleanup caption
-        content = content.replace('\\caption{\\textbf{} ', '\\caption{')
-        content = content.replace('\\caption{\\textbf{ }', '\\caption{')
+        # cleanup caption
+        content = content.replace(u'\\caption{\\textbf{} ', u'\\caption{')
+        content = content.replace(u'\\caption{\\textbf{ }', u'\\caption{')
 
-        #remove extra newlines
-        content = content.replace('\n\n\\end{itemize}', '\n\\end{itemize}')
-        content = content.replace('\n\n\n\n', '\n\n')
-        content = content.replace('\n\n\n', '\n\n')
+        # remove extra newlines
+        content = content.replace(u'\n\n\\end{itemize}', u'\n\\end{itemize}')
+        content = content.replace(u'\n\n\n\n', u'\n\n')
+        content = content.replace(u'\n\n\n', u'\n\n')
 
-        #replace with subsubsection (works for book 1, 2 and 3)
-        content = content.replace('\\textit{\\textbf{', '\\subsubsection{\\textit{')
+        # replace with subsubsection (works for book 1, 2 and 3)
+        content = content.replace(u'\\textit{\\textbf{', 
+                                  u'\\subsubsection{\\textit{')
 
         return content
 
@@ -187,8 +186,8 @@ class EPUBParser(object):
         figure_labels = json.dumps(self.figure_labels,
                                    sort_keys=True,
                                    indent='\t')
-        self.write_to_file(
-            figure_labels, support_dir, 'figure_labels.json')
+        self.write_to_file(figure_labels, support_dir,
+                           'figure_labels.json')
 
         tables = u'\n'.join(self.tables)
         self.write_to_file(tables.replace(u'\\label', u'\\ref'),
@@ -214,7 +213,7 @@ class EPUBParser(object):
             sidebars.append(render_output(sidebar))
             self.glossary_terms[sidebar.title] = sidebar.base
             if sidebar.label:
-                label = sidebar.label.replace('\\label', '\\ref')
+                label = sidebar.label.replace(u'\\label', u'\\ref')
                 label = u'%s\\\\\n' % (label)
                 self.glossary_labels.append(label)
         content = u'\n'.join(sidebars)
@@ -253,18 +252,19 @@ class EPUBParser(object):
 
 
 def get_packages():
-    LATEX_PACKAGES = (u'graphix',
-                      u'hyperref',
-                      u'ulem',
-                      u'Tabbing',
-                      u'textgreek',
-                      u'amsmath',
-                      u'nticourse',
-                      u'ntilatexmacros',
-                      u'ntiassessment',
-                      u'ntislidedeck',
-                      u'ntiglossary',
-                      )
+    LATEX_PACKAGES = (
+        u'graphix',
+        u'hyperref',
+        u'ulem',
+        u'Tabbing',
+        u'textgreek',
+        u'amsmath',
+        u'nticourse',
+        u'ntilatexmacros',
+        u'ntiassessment',
+        u'ntislidedeck',
+        u'ntiglossary',
+    )
     package_list = []
     package_list_append = package_list.append
     for package in LATEX_PACKAGES:
@@ -308,7 +308,7 @@ def search_sidebar_term(root, sidebars, labels):
         if root.type == "sidebar_term":
             sidebars[root.title] = root.base
             if root.label:
-                label = root.label.replace('\\label', '\\ref')
+                label = root.label.replace(u'\\label', u'\\ref')
                 label = u'%s\\\\\n' % (label)
                 labels.append(label)
     elif hasattr(root, 'children'):
@@ -326,12 +326,13 @@ def search_tables(root, tables):
             search_tables(node, tables)
     return tables
 
+
 def process_key_terms_section(lnodes):
     key_terms_section = {}
-    ##just in case there is sidebar found before section/subsection is defined in the epub
-    label = 'temp'
+    # just in case there is sidebar found before section/subsection 
+    # is defined in the epub
+    label = u'temp'
     key_terms_section[label] = []
-    
     for i, node in enumerate(lnodes):
         if i < len(lnodes) - 1:
             if IParagraph.providedBy(node) and ISidebar.providedBy(lnodes[i + 1]):
@@ -349,7 +350,7 @@ def process_key_terms_section(lnodes):
 
     key_terms = []
     for key in sorted(key_terms_toc):
-        term_link = u'%s<%s>\\\\\n' %(key_terms_toc[key], key)
+        term_link = u'%s<%s>\\\\\n' % (key_terms_toc[key], key)
         key_terms.append(term_link)
 
     return u''.join(key_terms)
