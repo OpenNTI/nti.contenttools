@@ -50,11 +50,13 @@ class Paragraph(types.Paragraph):
         sidebars_heads = (u'Caution-Warning-Heads ParaOverride-1',
                           u'Caution-Warning-Heads',
                           u'sidebars-heads ParaOverride-1',
-                          u'sidebars-heads',)
+                          u'sidebars-heads',
+                          u'sidebar---header',)
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
                          u'Caution-Warning-Text',
                          u'sidebars-body-text ParaOverride-1',
-                         u'sidebars-body-text',)
+                         u'sidebars-body-text',
+                         u'sidebars-block-body-text')
         definition_list = (u'definition', 'GlossaryTerm')
 
         if 'class' in attrib:

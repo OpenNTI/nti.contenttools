@@ -134,7 +134,7 @@ def process_span_elements(element, epub=None):
     vertical_align = u''
 
     term_colors = (u'#c00000', u'#c8161d', u'#bf2026', u'#802023',)
-    font_terms = (u'Utopia Std', u'Minion Pro')
+    font_terms = (u'Utopia Std', u'Minion Pro', u'Helvetica LT Std',)
 
     attrib = element.attrib
     span_class = attrib['class'] if 'class' in attrib else u''
