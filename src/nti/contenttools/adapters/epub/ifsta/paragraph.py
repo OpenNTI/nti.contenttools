@@ -64,7 +64,7 @@ class Paragraph(types.Paragraph):
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)
                 me = check_element_tail(me, element)
-                if any(s in attrib['class'] for s in cls.sidebar_list):
+                if any(s.lower() in attrib['class'].lower() for s in cls.sidebar_list):
                     sidebar_class = Sidebar()
                     if 'Case-History' in element.attrib['class']:
                         sidebar_class.title = u'Case History'
@@ -87,28 +87,28 @@ class Paragraph(types.Paragraph):
                     el = Run()
                     el.children = me.children
                     me = el
-                elif any(s in attrib['class'] for s in cls.section_list):
+                elif any(s.lower() in attrib['class'].lower() for s in cls.section_list):
                     me.styles.append('Section')
                     label = copy.deepcopy(me)
                     add_sectioning_label(me, label)
-                elif any(s in attrib['class'] for s in cls.subsection_list):
+                elif any(s.lower() in attrib['class'].lower() for s in cls.subsection_list):
                     me.styles.append('Subsection')
                     label = copy.deepcopy(me)
                     add_sectioning_label(me, label)
-                elif any(s in attrib['class'] for s in cls.bullet_list):
+                elif any(s.lower() in attrib['class'].lower() for s in cls.bullet_list):
                     new_item = Item()
                     bullet_class = UnorderedList()
                     new_item.children = me.children
                     bullet_class.children = [new_item]
                     me = bullet_class
-                elif any(s in attrib['class'] for s in sidebars_heads):
+                elif any(s.lower() in attrib['class'].lower() for s in sidebars_heads):
                     me.element_type = u'sidebars-heads'
                     if epub.epub_type == u'ifsta_rf':
                         el = Sidebar()
                         el.type = u'sidebar-head'
                         el.title = me
                         me = el
-                elif any(s in attrib['class'] for s in sidebars_body):
+                elif any(s.lower() in attrib['class'].lower() for s in sidebars_body):
                     me.element_type = u"sidebars-body"
                     update_sidebar_body_bullet(me)
                     me.add_child(types.TextNode("\\\\\n"))
@@ -121,7 +121,7 @@ class Paragraph(types.Paragraph):
                     if epub is not None and epub.epub_type == u'ifsta_rf':
                         epub.caption_list.append(me)
                         me = Run()
-                elif any(s in attrib['class'] for s in definition_list):
+                elif any(s.lower() in attrib['class'].lower() for s in definition_list):
                     sidebar = Sidebar()
                     sidebar.type = u"sidebar_term"
                     sidebar.children = me.children
@@ -139,7 +139,7 @@ class Paragraph(types.Paragraph):
 #                     el_2.children = me.children
 #                     el.add_child(el_2)
 #                     me = el
-                elif any(s in attrib['class'] for s in cls.paragraph_list):
+                elif any(s.lower() in attrib['class'].lower() for s in cls.paragraph_list):
                     pass
             else:
                 me = check_element_text(me, element)
