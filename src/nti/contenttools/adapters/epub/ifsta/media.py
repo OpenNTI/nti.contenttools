@@ -87,7 +87,7 @@ class Image(types.Image):
             return img_node
         else:
             img_node = Run()
-            if re.search(r'[a-zA-Z]', fname):
+            if re.search(r'[a-zA-Z]', fname) or fname.isdigit():
                 me.inline_image = True
                 img_node.add(me)
             img_node = check_element_tail(img_node, element)
