@@ -8,9 +8,12 @@ import argparse
 
 
 def parse_args():
-    arg_parser = argparse.ArgumentParser(description="Update image size in figure environment such that it will always be clickable")
+    arg_parser = argparse.ArgumentParser(description="Update image in figure environment")
     arg_parser.add_argument('inputfile',
                             help="Input File")
+    arg_parser.add_argument('-ct', '--cleanup_type',
+                            default='subsubsection',
+                            help="Content to cleanup %s" % 'subsubsection')
     return arg_parser.parse_args()
 
 
@@ -39,8 +42,8 @@ def update_image_with_aspect_ratio(text, ratio):
 			new_width_number = ratio * int(width_number)
 			new_width_number = int(new_width_number)
 		else:
-			new_height_number = ratio * int(height_number)
-			new_width_number = ratio * int(width_number)
+			new_height_number = int(ratio * int(height_number))
+			new_width_number = int(ratio * int(width_number))
 
 		new_substr = substr.replace(width_number, str(new_width_number))
 		new_substr = new_substr.replace(height_number, str(new_height_number))
@@ -49,6 +52,15 @@ def update_image_with_aspect_ratio(text, ratio):
 
 	return text
 
+def cleanup_subsubsection(text):
+	regex = re.compile(r'\\subsubsection\{.*\}\\\\')
+	result = regex.findall(text)
+	result_set = set(result)
+	result = sorted(result_set)
+	for substr in result:
+		new_substr = substr.replace(u'\\\\', u'')
+		text = text.replace(substr, new_substr)
+	return text
 
 def main():
     # Parse command line args
@@ -59,15 +71,19 @@ def main():
     if not os.path.exists(inputfile):
         print('The source file, %s, does not exist.', inputfile)
         exit()
-    
+   
     with codecs.open(inputfile, 'r', 'utf-8') as fp:
     	try:
     		text = fp.read()
     	finally:
     		fp.close()
 
-	ratio = 0.9
-	text = update_image_with_aspect_ratio(text, ratio):
+	cleanup_type = os.path.expanduser(args.cleanup_type)
+	if cleanup_type == u'image':
+		ratio = 0.95
+		text = update_image_with_aspect_ratio(text, ratio)
+	elif cleanup_type == u'subsubsection':
+		text = cleanup_subsubsection(text)
 
 	with codecs.open(inputfile, 'w','utf-8') as fp:
 	 	fp.write(text)
