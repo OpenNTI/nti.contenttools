@@ -13,7 +13,7 @@ def parse_args():
                             help="Input File")
     arg_parser.add_argument('-ct', '--cleanup_type',
                             default='subsubsection',
-                            help="The output directory. The default is: %s" % 'subsubsection')
+                            help="Content to cleanup %s" % 'subsubsection')
     return arg_parser.parse_args()
 
 
