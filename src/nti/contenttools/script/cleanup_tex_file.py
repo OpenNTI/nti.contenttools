@@ -8,7 +8,7 @@ import argparse
 
 
 def parse_args():
-    arg_parser = argparse.ArgumentParser(description="Update image in figure environment")
+    arg_parser = argparse.ArgumentParser(description="Update text files")
     arg_parser.add_argument('inputfile',
                             help="Input File")
     arg_parser.add_argument('-ct', '--cleanup_type',
@@ -17,13 +17,27 @@ def parse_args():
     return arg_parser.parse_args()
 
 
-def update_image_with_aspect_ratio(text, ratio):
-	regex = re.compile(r'ntiincludeannotationgraphics\[width=.[\d]*px,height=.[\d]*px\]')
+def set_image_to_default_size(text, wsize, hsize):
+	regex = re.compile(r'ntiincludeannotationgraphics\[width=.[\d]*.\.?.[\d]?px,height=.[\d]*.\.?.[\d]?px\]')
 	result = regex.findall(text)
+	print('Found ntiincludeannotationgraphics')
+	print(len(result))
 	result_set = set(result)
 	result = sorted(result_set)
 	for substr in result:
 		regex2 = re.compile(r'width=.[\d]*px|height=.[\d]*px')
+		subresult = regex2.findall(substr)
+		new_substr = u'ntiincludeannotationgraphics[width=%spx, height=%spx]' %(wsize, hsize)
+		text = text.replace(substr, new_substr)
+	return text
+
+def update_image_with_aspect_ratio(text, ratio):
+	regex = re.compile(r'ntiincludeannotationgraphics\[width=.[\d]*.\.?.[\d]?px,height=.[\d]*.\.?.[\d]?px\]')
+	result = regex.findall(text)
+	result_set = set(result)
+	result = sorted(result_set)
+	for substr in result:
+		regex2 = re.compile(r'width=.[\d]*.\.?.[\d]?px,height=.[\d]*.\.?.[\d]?px')
 		subresult = regex2.findall(substr)
 		
 		width = subresult[0]
@@ -84,6 +98,10 @@ def main():
 		text = update_image_with_aspect_ratio(text, ratio)
 	elif cleanup_type == u'subsubsection':
 		text = cleanup_subsubsection(text)
+	elif cleanup_type == u'default_image':
+		wsize = 400
+		hsize = 400
+		text = set_image_to_default_size(text, wsize, hsize)
 
 	with codecs.open(inputfile, 'w','utf-8') as fp:
 	 	fp.write(text)
