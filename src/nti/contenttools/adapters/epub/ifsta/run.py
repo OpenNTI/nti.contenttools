@@ -133,23 +133,25 @@ def process_span_elements(element, epub=None):
     font_family = u''
     vertical_align = u''
 
+    term_class = (u'Key_Term_in_Body', u'Key-Term-in-text')
+
     term_colors = (u'#c00000', u'#c8161d', u'#bf2026', u'#802023', u'#812023')
     font_terms = (u'Utopia Std', u'Minion Pro', u'Helvetica LT Std',)
 
     attrib = element.attrib
     span_class = attrib['class'] if 'class' in attrib else u''
-    span_class = u'span_%s' % span_class.replace('-', '_')
 
     if 'bullet' in span_class:
         el = Run()
         check_element_tail(el, element)
         el.element_type = 'bullet'
-    elif 'Key_Term_in_Body' in span_class:
+    elif any(s.lower() in span_class.lower() for s in term_class):
         el = create_glossary_entry(element)
     elif 'NOTE' in span_class:
         el = Run.process(element, epub=epub)
         el.styles = ['bold']
     else:
+        span_class = u'span_%s' % span_class.replace('-', '_')
         if epub is not None and span_class in epub.css_dict:
             if 'fontStyle' in epub.css_dict[span_class]:
                 font_style = epub.css_dict[span_class]['fontStyle']
