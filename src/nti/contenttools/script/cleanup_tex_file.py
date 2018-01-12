@@ -17,6 +17,16 @@ def parse_args():
     return arg_parser.parse_args()
 
 
+def change_figure_to_ntiimagecollection_env(text):
+	regex = re.compile(r'\\begin\{figure\}\[\].*?\\end\{figure\}', re.DOTALL)
+	result = regex.findall(text)
+	for pattern in result:
+		new_pattern = pattern.replace(u'{figure}', u'{ntiimagecollection}')
+		new_pattern = new_pattern.replace(u'[]', u'<>')
+		new_pattern = new_pattern.replace(u'\\caption', u'\\ntidescription')
+		text = text.replace(pattern, new_pattern)
+	return text
+
 def set_image_to_default_size(text, wsize, hsize):
 	regex = re.compile(r'ntiincludeannotationgraphics\[width=.[\d]*.\.?.[\d]?px,height=.[\d]*.\.?.[\d]?px\]')
 	result = regex.findall(text)
@@ -102,6 +112,8 @@ def main():
 		wsize = 400
 		hsize = 400
 		text = set_image_to_default_size(text, wsize, hsize)
+	elif cleanup_type == u'figure':
+		text = change_figure_to_ntiimagecollection_env(text)
 
 	with codecs.open(inputfile, 'w','utf-8') as fp:
 	 	fp.write(text)
