@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 from hamcrest import is_
@@ -22,7 +22,6 @@ class TestDocxToLatex(ContentToolsTestCase):
 	pass
 
 def factory(base_name):
-	test_name = 'test_'+base_name
 	def test(self):
 		testdir = os.path.dirname(__file__)
 		docx_sample_dir = os.path.join(testdir, 'docx_sample')
@@ -44,7 +43,8 @@ def factory(base_name):
 		with open(testfile, 'r') as testfile:
 			assertion_file = testfile.read()
 		assert_that(docxFile.render(), assertion_file)
-	return test_name, test
+	test.__name__ = 'test_'+base_name
+	return test
 
 _INPUTS = ['equation_sample',
 		   'image_sample',
@@ -56,8 +56,8 @@ _INPUTS = ['equation_sample',
 		   'table_sample']
 def build_tests(inputs):
 	for testinput in inputs:
-		name, test = factory(testinput)
-		setattr(TestDocxToLatex, name, test)
+		test = factory(testinput)
+		setattr(TestDocxToLatex, test.__name__, test)
 build_tests(_INPUTS)
 
 
