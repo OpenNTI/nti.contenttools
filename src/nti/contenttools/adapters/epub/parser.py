@@ -25,6 +25,8 @@ from nti.contenttools.renderers.model import DefaultRendererContext
 from nti.contenttools.renderers.LaTeX.base import render_node
 from nti.contenttools.renderers.LaTeX.base import render_output
 
+from nti.contenttools.script.cleanup_tex_file import cleanup_subsubsection
+
 from nti.contenttools.util.string_replacer import rename_filename
 
 from nti.contenttools.types.interfaces import IParagraph
@@ -149,6 +151,9 @@ class EPUBParser(object):
         # replace with subsubsection (works for book 1, 2 and 3)
         content = content.replace(u'\\textit{\\textbf{', 
                                   u'\\subsubsection{\\textit{')
+
+        # cleanup extra line after subsubsection
+        content = cleanup_subsubsection(content)
 
         #remove unnecessary \newline
         content = content.replace(u'\\newline None', u'')
