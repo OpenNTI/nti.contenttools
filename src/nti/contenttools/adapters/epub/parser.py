@@ -165,6 +165,10 @@ class EPUBParser(object):
         content = content.replace(u'\\begin{sidebar}{WARNING}',
                                   u'\\begin{sidebar}[css-class=warning]{WARNING}')
 
+        content = content.replace(u'\\begin{sidebar}{WARNING!}',
+                                  u'\\begin{sidebar}[css-class=warning]{WARNING!}')
+
+        content = content.replace(u"``", u"''")
         return content
 
     def process_support_files(self):
