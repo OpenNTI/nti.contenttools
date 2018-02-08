@@ -152,10 +152,11 @@ class EPUBParser(object):
         content = content.replace(u'\\textit{\\textbf{', 
                                   u'\\subsubsection{\\textit{')
 
-        # cleanup extra line after subsubsection
+        # cleanup extra newline after subsubsection
         content = cleanup_subsubsection(content)
 
-        # cleanup extra line before subsubsection
+        # cleanup extra newline before subsection and subsubsection
+        content = content.replace(u'\\\\\n\n\\subsection{', u'\n\n\\subsection{')
         content = content.replace(u'\\\\\n\n\\subsubsection{', u'\n\n\\subsubsection{')
 
         #remove unnecessary \newline
