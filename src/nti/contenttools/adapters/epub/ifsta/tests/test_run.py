@@ -105,3 +105,13 @@ class TestRunAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\textit{Figure 13.10 }Steel with enough ductility will deform instead of breaching, as shown in this drum that contained a polymerization reaction. \\textbf{Courtesy of Barry Lindley.}'))
+
+    def test_span_oblique_2(self):
+        script = u'<div><span class="CharOverride-10">Figure 12.38</span> Technical decon is impractical at incidents where a large number of people must be decontaminated. <span class="CharOverride-12">Courtesy of David Lewis.</span></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.epub_type = 'ifsta_rf'
+        node = Run.process(element, epub=epub) 
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\textbf{Figure 12.38} Technical decon is impractical at incidents where a large number of people must be decontaminated. \\textit{Courtesy of David Lewis.}'))
