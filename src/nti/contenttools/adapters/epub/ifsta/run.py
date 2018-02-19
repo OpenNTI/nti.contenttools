@@ -181,8 +181,8 @@ def process_span_elements(element, epub=None):
                 check_element_text(el_text, element)
                 check_child(el_text, element, epub)
 
-                if font_style == 'italic':
-                    el_text.styles.append(font_style)
+                if font_style == 'italic' or font_style == 'oblique':
+                    el_text.styles.append('italic')
 
                 if font_weight == 'bold':
                     el_text.styles.append(font_weight)
