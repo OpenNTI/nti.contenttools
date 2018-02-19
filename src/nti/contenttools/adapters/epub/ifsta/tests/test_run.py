@@ -20,6 +20,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+from nti.contenttools.adapters.epub.ifsta.tests import create_epub_object
 
 class TestRunAdapter(ContentToolsTestCase):
 
@@ -94,3 +95,13 @@ class TestRunAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'test paragraph under div element\n\n'))
+
+    def test_span_oblique(self):
+        script = u'<div id="_idContainer043" class="Basic-Text-Frame"><span class="CharOverride-12">Figure 13.10 </span>Steel with enough ductility will deform instead of breaching, as shown in this drum that contained a polymerization reaction. <span class="CharOverride-13">Courtesy of Barry Lindley.</span></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.epub_type = 'ifsta_rf'
+        node = Run.process(element, epub=epub) 
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\textit{Figure 13.10 }Steel with enough ductility will deform instead of breaching, as shown in this drum that contained a polymerization reaction. \\textbf{Courtesy of Barry Lindley.}'))
