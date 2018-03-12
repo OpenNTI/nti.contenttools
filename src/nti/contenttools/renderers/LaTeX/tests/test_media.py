@@ -132,6 +132,22 @@ class TestMedia(ContentToolsTestCase):
         assert_that(output,
                     is_('\\begin{figure}\n\\begin{center}\n\\textbf{fig title}\\\\\n\\ntiincludeannotationgraphics[width=70px,height=90px]{images/foo.png}\n\\caption{fig caption}\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
 
+    def test_figure_with_presentation_pref(self):
+        figure = Figure()
+        figure.title = u'fig title'
+        figure.caption = u'fig caption'
+        figure.label = u'fig_label'
+        figure.presentation_pref = u'card'
+        img = Image()
+        img.width = 70
+        img.height = 90
+        img.predefined_image_path = True
+        img.path = u'images/foo.png'
+        figure.add(img)
+        output = render_output(figure)
+        assert_that(output,
+                    is_('\\begin{figure}\n\\begin{center}\n\\ntipresentationpref{card}\n\\textbf{fig title}\\\\\n\\ntiincludeannotationgraphics[width=70px,height=90px]{images/foo.png}\n\\caption{fig caption}\n\\label{fig_label}\n\\end{center}\n\\end{figure}\n'))
+
     def test_docx_image(self):
         node = DocxImage()
         node.width = 500

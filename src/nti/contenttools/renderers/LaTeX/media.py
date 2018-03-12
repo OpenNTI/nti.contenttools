@@ -163,6 +163,10 @@ def render_figure(context, node):
             context.write(u'\\begin{figure}[h]\n')
         else:
             context.write(u'\\begin{figure}[]\n')
+
+    if node.presentation_pref == u'card':
+        context.write(u'\\ntipresentationpref{card}\n')
+
     if title:
         title = u'\\textbf{%s}\\\\\n' % (title)
         context.write(title)
