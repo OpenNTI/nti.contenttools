@@ -1250,6 +1250,8 @@ class IFigure(IDocumentStructureNode):
                     default=False)
     icon = Bool(title=u"Figure as an icon",
                 default=False)
+    presentation_pref = ValidTextLine(title=u"Figure Presentation Preference",
+                                      required=False)
 
     def set_caption(caption):
         """
