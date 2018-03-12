@@ -76,6 +76,7 @@ class Image(types.Image):
             figure.caption = u'%s' % (title.replace('-', '.'))
             figure.add(me)
             figure.data_type = u'ifsta-numbering-fig'
+            figure.presentation_pref = u'card'
             epub.figures.append(figure)
             epub.figure_labels[figure.caption] = figure.label
             return figure
