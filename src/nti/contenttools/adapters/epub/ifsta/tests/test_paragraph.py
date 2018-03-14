@@ -119,6 +119,9 @@ class TestParagraphAdapter(ContentToolsTestCase):
                     is_(u'\\subsubparagraph{This is heading 7}\n\n'))
 
     def test_sidebar_info(self):
+        """
+        This case is found in IFSTA Book 5 : Fire and Emergency Services Company Officer Fifth Edition
+        """
         script = """<div><p class="sidebars-body-text ParaOverride-11"><span class="CharOverride-12"><img class="_idGenObjectAttribute-2" src="image/Info_Icon.png" alt="" />Other Possible Duties</span></p></div>"""
         element = html.fromstring(script)
         epub = create_epub_object()
