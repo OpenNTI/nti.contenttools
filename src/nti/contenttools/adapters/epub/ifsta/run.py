@@ -146,7 +146,7 @@ def process_span_elements(element, epub=None):
         el_text  = Run()
         check_element_text(el_text, element)
         check_element_tail(el_text, element)
-        span_class = u'span_%s' % span_class.replace('-', '_')
+        span_class = u'span_%s' % span_class.replace('-', '_').replace('bullet ', '')
         if epub is not None and span_class in epub.css_dict:
             if 'fontStyle' in epub.css_dict[span_class]:
                 font_style = epub.css_dict[span_class]['fontStyle']
@@ -155,7 +155,7 @@ def process_span_elements(element, epub=None):
             if 'fontWeight' in epub.css_dict[span_class]:
                 font_weight = epub.css_dict[span_class]['fontWeight']
                 if font_weight == 'bold':
-                    el_text.styles.append(font_weight)
+                    el_text.styles.append('bold')
         el.add(el_text)
         el.element_type = 'bullet'
     elif any(s.lower() in span_class.lower() for s in term_class):
