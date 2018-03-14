@@ -138,6 +138,7 @@ class EPUBParser(object):
         # consolidate list
         content = content.replace(u'\n\\end{itemize}\n\\begin{itemize}\n', u'')
         content = content.replace(u'\n\\end{itemize}\n\\\\\\begin{itemize}\n', u'')
+        content = content.replace(u'\n\\end{itemize}\n\\\\ \n\n\\begin{itemize}\n', u'')
 
         # cleanup caption
         content = content.replace(u'\\caption{\\textbf{} ', u'\\caption{')
@@ -172,7 +173,19 @@ class EPUBParser(object):
         content = content.replace(u'\\begin{sidebar}{WARNING!}',
                                   u'\\begin{sidebar}[css-class=warning]{WARNING!}')
 
-        content = content.replace(u"``", u"''")
+        content = content.replace(u'\\\\ \n\n\\end{sidebar}', u'\n\\end{sidebar}')
+        content = content.replace(u'``', u'"')
+        content = content.replace(u"''", u'"')
+
+        content = content.replace(u"\\item *", u"\\item ")
+        content = content.replace(u"*", u"\\item ")
+
+        content = content.replace(u'\n\\end{sidebar}\n\\\\\n\n\\begin{sidebar}{Case History}', u'')
+
+        content = content.replace(u"\\textbf{ }", u" ")
+        content = content.replace(u"\\textit{ }", u" ")
+        content = content.replace(u"\\textbf{}", u"")
+        content = content.replace(u"\\textit{}", u"")
         return content
 
     def process_support_files(self):

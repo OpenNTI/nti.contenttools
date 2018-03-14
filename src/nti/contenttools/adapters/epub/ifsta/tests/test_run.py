@@ -115,3 +115,13 @@ class TestRunAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\textbf{Figure 12.38} Technical decon is impractical at incidents where a large number of people must be decontaminated. \\textit{Courtesy of David Lewis.}'))
+
+    def test_span_bullet(self):
+        script = u'<div>Test <span class="bullet CharOverride-3">Fire and Emergency Services Company Officer, 5th Edition</span></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.epub_type = 'ifsta_rf'
+        node = Run.process(element, epub=epub) 
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'Test \\textbf{Fire and Emergency Services Company Officer, 5th Edition}'))
