@@ -143,6 +143,7 @@ def process_span_elements(element, epub=None):
 
     if 'bullet' in span_class:
         el = Run()
+        check_element_text(el, element)
         check_element_tail(el, element)
         el.element_type = 'bullet'
     elif any(s.lower() in span_class.lower() for s in term_class):
