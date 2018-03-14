@@ -81,11 +81,11 @@ def adapt(fragment, epub=None):
         search_sidebar_head_and_body(epub_body, snodes)
         sidebar_list = process_sidebar_head_and_body(snodes)
 
-        for sbar in sidebar_list:
-            figs = []
-            search_figure_icon_on_sidebar_title(sbar.title, figs)
-            if figs:
-                sbar.children.insert(0, figs[0])
+        # for sbar in sidebar_list:
+        #     figs = []
+        #     search_figure_icon_on_sidebar_title(sbar.title, figs)
+        #     if figs:
+        #         sbar.children.insert(0, figs[0])
 
         captions = update_caption_list(epub.caption_list)
 

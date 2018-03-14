@@ -331,6 +331,14 @@ def search_figure_icon_on_sidebar_title(tnode, figs):
             search_figure_icon_on_sidebar_title(child, figs)
     return figs
 
+def search_figure_icon_on_sidebar_body(tnode, figs):
+    if IFigure.providedBy(tnode):
+        if tnode.icon:
+            figs.append(tnode)
+    elif hasattr(tnode, u'children'):
+        for child in tnode:
+            search_figure_icon_on_sidebar_body(child, figs)
+    return figs
 
 def update_sidebar_body_bullet(node):
     if IRunNode.providedBy(node) and node.element_type == 'bullet':

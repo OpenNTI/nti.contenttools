@@ -28,6 +28,7 @@ from nti.contenttools.types.interfaces import ITextNode
 
 from nti.contenttools.adapters.epub.ifsta.finder import update_sidebar_body_bullet
 
+from nti.contenttools.adapters.epub.ifsta.finder import search_figure_icon_on_sidebar_body
 
 class Paragraph(types.Paragraph):
 
@@ -109,9 +110,19 @@ class Paragraph(types.Paragraph):
                         el.title = me
                         me = el
                 elif any(s.lower() in attrib['class'].lower() for s in sidebars_body):
-                    me.element_type = u"sidebars-body"
-                    update_sidebar_body_bullet(me)
-                    me.add_child(types.TextNode("\\\\\n"))
+                    check_head = []
+                    search_figure_icon_on_sidebar_body(me, check_head)
+                    if check_head:
+                        me.element_type = u'sidebars-heads'
+                        if epub.epub_type == u'ifsta_rf':
+                            el = Sidebar()
+                            el.type = u'sidebar-head'
+                            el.title = me
+                            me = el
+                    else:
+                        me.element_type = u"sidebars-body"
+                        update_sidebar_body_bullet(me)
+                        me.add_child(types.TextNode("\\\\\n"))
                 elif attrib['class'] in captions:
                     me.element_type = u'caption'
                     if epub is not None and epub.epub_type == u'ifsta':

@@ -39,15 +39,16 @@ class Image(types.Image):
         if 'alt' in element.attrib.keys():
             me.caption = types.TextNode(element.attrib['alt'])
 
-        zipfile = epub.zipfile
-        image_path = os.path.join(epub.content_path, path)
-        if image_path in zipfile.namelist():
-            image_data = StringIO(zipfile.read(image_path))
-            save_image(image_data, me.path, epub)
-            me.width, me.height = PILImage.open(image_data).size
-        else:
-            logger.warn('COULD NOT FIND Image : %s', image_path)
-            return types.Run()
+        if epub.input_file:
+            zipfile = epub.zipfile
+            image_path = os.path.join(epub.content_path, path)
+            if image_path in zipfile.namelist():
+                image_data = StringIO(zipfile.read(image_path))
+                save_image(image_data, me.path, epub)
+                me.width, me.height = PILImage.open(image_data).size
+            else:
+                logger.warn('COULD NOT FIND Image : %s', image_path)
+                return types.Run()
 
         figures_without_caption = (u'Icon', )
         to_ignore = (u'Divider_Page', u'Warning', u'Caution')
