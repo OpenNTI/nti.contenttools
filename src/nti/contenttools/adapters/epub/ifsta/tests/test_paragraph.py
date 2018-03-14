@@ -22,6 +22,8 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.tests import ContentToolsTestCase
 
+from nti.contenttools.adapters.epub.ifsta.tests import create_epub_object
+
 
 class TestParagraphAdapter(ContentToolsTestCase):
 
@@ -115,3 +117,15 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\subsubparagraph{This is heading 7}\n\n'))
+
+    def test_sidebar_info(self):
+        script = """<div><p class="sidebars-body-text ParaOverride-11"><span class="CharOverride-12"><img class="_idGenObjectAttribute-2" src="image/Info_Icon.png" alt="" />Other Possible Duties</span></p></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.book_title = 'epub_test'
+        epub.epub_type = 'ifsta_rf'
+        epub.input_file = False
+        node = Run.process(element, epub=epub) 
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\n\\begin{sidebar}{\\textit{\\begin{figure}[h]\n\\includegraphics{Images/CourseAssets/epub_test/Info_Icon.png}\n\\end{figure}\nOther Possible Duties}}\n\n\\end{sidebar}\n\\\\\n'))
