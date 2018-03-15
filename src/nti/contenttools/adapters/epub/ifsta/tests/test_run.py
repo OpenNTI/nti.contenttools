@@ -125,3 +125,13 @@ class TestRunAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'Test \\textbf{Fire and Emergency Services Company Officer, 5th Edition}'))
+
+    def test_span_italic(self):
+        script = """<div><p class="Main ParaOverride-2"><span class="CharOverride-4">AAR. </span><span class="italic _idGenCharOverride-1">See</span><span class="CharOverride-4"> After Action Report (AAR); American Association of Railroads (AAR)</span></p></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.epub_type = 'ifsta_rf'
+        node = Run.process(element, epub=epub) 
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'AAR. \\textit{See} After Action Report (AAR); American Association of Railroads (AAR)\n\n'))

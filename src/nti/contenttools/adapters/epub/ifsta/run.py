@@ -209,6 +209,10 @@ def process_span_elements(element, epub=None):
                 check_element_tail(el, element)
         else:
             el = Run.process(element, epub=epub)
+            if 'italic' in span_class:
+                el.styles.append('italic')
+            if 'bold' in span_class:
+                el.styles.append('bold')
 
     if epub is not None and epub.epub_type == 'ifsta':
         check_span_child(el)
