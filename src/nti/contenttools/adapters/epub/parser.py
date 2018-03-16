@@ -179,6 +179,7 @@ class EPUBParser(object):
 
         content = content.replace(u"\\item *", u"\\item ")
         content = content.replace(u"*", u"\\item ")
+        content = content.replace(u"\\renewcommand\\item ", u"\\renewcommand*")
         content = content.replace(u'\\item --- ', u'\\\\ --- ')
 
         content = content.replace(u'\n\\end{sidebar}\n\\\\\n\n\\begin{sidebar}{Case History}', u'')
