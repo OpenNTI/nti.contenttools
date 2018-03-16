@@ -168,7 +168,7 @@ def search_sidebar_terms(root, sidebars, sidebar_nodes, chapter_num=None, glossa
             str_pos = base.find('---')
             if str_pos > -1:
                 term = base[0:str_pos].strip()
-                sidebars[term] = base
+                sidebars[term] = render_children_output(root)
                 term = re.sub(r'[{}]', '', term)
                 term = term.strip()
                 root.title = term
