@@ -122,7 +122,7 @@ class Paragraph(types.Paragraph):
                     else:
                         me.element_type = u"sidebars-body"
                         update_sidebar_body_bullet(me)
-                        me.add_child(types.TextNode("\\\\\n"))
+                        me.add_child(types.TextNode("\n"))
                 elif attrib['class'] in captions:
                     me.element_type = u'caption'
                     if epub is not None and epub.epub_type == u'ifsta':
