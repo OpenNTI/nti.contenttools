@@ -168,7 +168,7 @@ def search_sidebar_terms(root, sidebars, sidebar_nodes, chapter_num=None, glossa
             str_pos = base.find('---')
             if str_pos > -1:
                 term = base[0:str_pos].strip()
-                sidebars[term] = base
+                sidebars[term] = render_children_output(root)
                 term = re.sub(r'[{}]', '', term)
                 term = term.strip()
                 root.title = term
@@ -187,20 +187,30 @@ def search_sidebar_terms(root, sidebars, sidebar_nodes, chapter_num=None, glossa
         for child in root:
             search_sidebar_terms(child, sidebars, sidebar_nodes, chapter_num, glossary_entry_sections)
 
-def search_and_update_glossary_entries(root, sidebars):
+def search_and_update_glossary_entries(root, sidebars, term_defs):
     if IGlossaryEntry.providedBy(root):
         node = copy.deepcopy(root.term)
         search_run_node_and_remove_styles(node)
         term = render_output(node).strip()
         term_lower = term.lower()
         term_capital = term.title()
-        terms = (term, term_lower, term_capital,)
+        terms = (term, term_capital,)
         for word in terms:
             if word in sidebars.keys():
                 root.definition = sidebars[word]
+            
+        if not root.definition:
+            for key in term_defs.keys():
+                if key in term_lower:
+                    root.definition = term_defs[key]
+                elif term_lower in key:
+                    root.definition = term_defs[key]
+            if not root.definition:
+                logger.warning('Glossary definition is empty')
+                logger.warning('term')
     elif hasattr(root, u'children'):
         for child in root:
-            search_and_update_glossary_entries(child, sidebars)
+            search_and_update_glossary_entries(child, sidebars, term_defs)
 
 
 def update_caption_list(captions):
