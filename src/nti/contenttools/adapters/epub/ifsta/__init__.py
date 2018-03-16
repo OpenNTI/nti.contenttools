@@ -75,7 +75,8 @@ def adapt(fragment, epub=None):
     else:
         sidebars = {}
         search_sidebar_terms(epub_body, sidebars, epub.sidebar_term_nodes, epub.chapter_num, epub.glossary_entry_sections)
-        search_and_update_glossary_entries(epub_body, sidebars)
+        term_defs = dict((k.lower(), v) for k,v in sidebars.iteritems())
+        search_and_update_glossary_entries(epub_body, sidebars, term_defs)
 
         snodes = []
         search_sidebar_head_and_body(epub_body, snodes)
