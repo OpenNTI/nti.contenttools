@@ -137,6 +137,7 @@ class EPUBParser(object):
 
         # consolidate list
         content = content.replace(u'\n\\end{itemize}\n\\begin{itemize}\n', u'')
+        content = content.replace(u'\n\\end{itemize}\n\n\\begin{itemize}\n', u'')
         content = content.replace(u'\n\\end{itemize}\n\\\\\\begin{itemize}\n', u'')
         content = content.replace(u'\n\\end{itemize}\n\\\\ \n\n\\begin{itemize}\n', u'')
 
@@ -157,8 +158,9 @@ class EPUBParser(object):
         content = cleanup_subsubsection(content)
 
         # cleanup extra newline before subsection and subsubsection
-        content = content.replace(u'\\\\\n\n\\subsection{', u'\n\n\\subsection{')
-        content = content.replace(u'\\\\\n\n\\subsubsection{', u'\n\n\\subsubsection{')
+        content = content.replace(u'\\\\\n\n\n\\subsection{', u'\n\\subsection{')
+        content = content.replace(u'\\\\\n\n\\subsection{', u'\n\\subsection{')
+        content = content.replace(u'\\\\\n\n\\subsubsection{', u'\n\\subsubsection{')
 
         #remove unnecessary \newline
         content = content.replace(u'\\newline None', u'')
