@@ -176,6 +176,7 @@ class EPUBParser(object):
                                   u'\\begin{sidebar}[css-class=warning]{WARNING!}')
 
         content = content.replace(u'\\\\ \n\n\\end{sidebar}', u'\n\\end{sidebar}')
+        content = content.replace(u'\n\\end{sidebar}\n\\\\', u'\\end{sidebar}')
         content = content.replace(u'``', u'"')
         content = content.replace(u"''", u'"')
 
