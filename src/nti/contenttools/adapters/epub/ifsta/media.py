@@ -29,7 +29,11 @@ class Image(types.Image):
     @classmethod
     def process(cls, element, inline_image=False, epub=None):
         me = cls()
+        if not 'src' in element.attrib.keys():
+            logger.warning('<image> has no src')
+            return 
         path = element.attrib['src']
+
         if '../' in path:
             path = path.replace('../', '')
         _, filename = os.path.split(path)
