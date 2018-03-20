@@ -193,9 +193,9 @@ class EPUBParser(object):
         content = content.replace(u"\\textit{}", u"")
         content = content.replace(u"‘", u"'")
 
-        content = content.replace(u'\n\\end{itemize}\n\\begin{itemize}\n', u'')
-        content = content.replace(u'\n\\end{itemize}\n\n\\begin{itemize}\n', u'')
-        content = content.replace(u'\n\\end{itemize}\n\n\n\\begin{itemize}\n', u'')
+        content = content.replace(u'\n\\end{itemize}\n\\begin{itemize}\n', u'\n')
+        content = content.replace(u'\n\\end{itemize}\n\n\\begin{itemize}\n', u'\n')
+        content = content.replace(u'\n\\end{itemize}\n\n\n\\begin{itemize}\n', u'\n')
         return content
 
     def process_support_files(self):

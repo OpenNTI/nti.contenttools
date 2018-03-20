@@ -207,7 +207,7 @@ def search_and_update_glossary_entries(root, sidebars, term_defs):
                     root.definition = term_defs[key]
             if not root.definition:
                 logger.warning('Glossary definition is empty')
-                logger.warning('term')
+                logger.warning(term)
     elif hasattr(root, u'children'):
         for child in root:
             search_and_update_glossary_entries(child, sidebars, term_defs)
