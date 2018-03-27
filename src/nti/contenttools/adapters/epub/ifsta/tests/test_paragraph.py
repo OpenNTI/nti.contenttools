@@ -132,3 +132,18 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\n\\begin{sidebar}{\\textit{\\begin{figure}[h]\n\\includegraphics{Images/CourseAssets/epub_test/Info_Icon.png}\n\\end{figure}\nOther Possible Duties}}\n\n\\end{sidebar}\n\\\\\n'))
+
+    def test_sidebar_info_marked_as_body_text(self):
+        """
+        This case is found in IFSTA Book 5 : Fire and Emergency Services Company Officer Fifth Edition
+        """
+        script = """<div><p class="Body-Text"><span class="CharOverride-34"><img class="_idGenObjectAttribute-2" src="image/Info_Icon.png" alt="" />Elements of Flashover</span></p></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.book_title = 'epub_test'
+        epub.epub_type = 'ifsta_rf'
+        epub.input_file = False
+        node = Run.process(element, epub=epub) 
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\n\\begin{sidebar}{\\begin{figure}[h]\n\\includegraphics{Images/CourseAssets/epub_test/Info_Icon.png}\n\\end{figure}\nElements of Flashover}\n\n\\end{sidebar}\n\\\\\n'))
