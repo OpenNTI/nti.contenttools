@@ -151,7 +151,15 @@ class Paragraph(types.Paragraph):
 #                     el.add_child(el_2)
 #                     me = el
                 elif any(s.lower() in attrib['class'].lower() for s in cls.paragraph_list):
-                    pass
+                    check_head = []
+                    search_figure_icon_on_sidebar_body(me, check_head)
+                    if check_head:
+                        me.element_type = u'sidebars-heads'
+                        if epub.epub_type == u'ifsta_rf':
+                            el = Sidebar()
+                            el.type = u'sidebar-head'
+                            el.title = me
+                            me = el
             else:
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)
