@@ -135,7 +135,7 @@ def process_span_elements(element, epub=None):
 
     term_class = (u'Key_Term_in_Body', u'Key-Term-in-text')
 
-    term_colors = (u'#c00000', u'#c8161d', u'#bf2026', u'#802023', u'#812023', u'#a30022')
+    term_colors = (u'#c00000', u'#c8161d', u'#bf2026', u'#802023', u'#812023', u'#a30022', u'#ff0000')
     font_terms = (u'Utopia Std', u'Minion Pro', u'Helvetica LT Std',)
 
     attrib = element.attrib
