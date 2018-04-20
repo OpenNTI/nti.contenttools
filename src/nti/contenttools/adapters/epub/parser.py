@@ -384,11 +384,12 @@ def process_key_terms_section(lnodes):
         if i < len(lnodes) - 1:
             if IParagraph.providedBy(node) and ISidebar.providedBy(lnodes[i + 1]):
                 label = node.label
-                key_terms_section[label] = []
+                if label not in key_terms_section.keys():
+                    key_terms_section[label] = []
         if ISidebar.providedBy(node):
             if node.title:
                 key_terms_section[label].append(node.title)
-
+                
     key_terms_toc = {}
     for key in key_terms_section:
         value = key.replace(u'\\label', u'\\ntiidref')
