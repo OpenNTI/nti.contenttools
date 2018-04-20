@@ -183,11 +183,12 @@ def process_span_elements(element, epub=None):
                 vertical_align = epub.css_dict[span_class]['verticalAlign']
 
             if      epub.epub_type == 'ifsta_rf' \
-                and font_style == u'normal' \
+                and (font_style == u'normal' or font_style == u'italic')\
                 and font_weight == u'bold' \
                 and color in term_colors \
                 and font_family in font_terms:
-                el = create_glossary_entry(element)
+                fstyles = [font_style, font_weight]
+                el = create_glossary_entry(element, fstyles)
             else:
                 el = Run()
                 el_text = Run()
@@ -218,11 +219,11 @@ def process_span_elements(element, epub=None):
         check_span_child(el)
     return el
 
-def create_glossary_entry(element):
+def create_glossary_entry(element, fstyles=('bold')):
     el = Run()
     t_el = Run()
     check_element_text(t_el, element)
-    t_el.styles.append('bold')
+    t_el.styles = t_el.styles + fstyles 
     glossary = GlossaryEntry()
     glossary.term = t_el
     el.add(glossary)
