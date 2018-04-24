@@ -73,7 +73,7 @@ class Image(types.Image):
             return fnode
         elif any(fig in filename for fig in to_ignore):
             return types.Run()
-        elif u'-' in filename and filename[0].isdigit():
+        elif (u'-' in filename or u'.' in fname) and filename[0].isdigit():
             figure = Figure()
             figure.centered = False
             title, _ = os.path.splitext(filename)
