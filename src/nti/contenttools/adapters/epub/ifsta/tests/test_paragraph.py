@@ -147,3 +147,15 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\n\\begin{sidebar}{\\begin{figure}[h]\n\\includegraphics{Images/CourseAssets/epub_test/Info_Icon.png}\n\\end{figure}\nElements of Flashover}\n\n\\end{sidebar}\n\\\\\n'))
+
+    def test_sidebar_what_this_means_to_you(self):
+        script = """<div id="_idContainer112" class="Basic-Text-Frame"><p class="C-Head ParaOverride-5"><span class="CharOverride-900">Wh</span><span class="CharOverride-900">at This Means to You</span></p></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.book_title = 'epub_test'
+        epub.epub_type = 'ifsta_rf'
+        epub.input_file = False
+        node = Run.process(element, epub=epub) 
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\n\\begin{sidebar}{\\textit{What This Means to You}}\n\n\\end{sidebar}\n\\\\\n'))
