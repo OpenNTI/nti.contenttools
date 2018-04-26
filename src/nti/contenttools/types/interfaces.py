@@ -263,6 +263,9 @@ class ISidebar(IDocumentStructureNode):
 
     base = ValidTextLine(title=u"The Base",
                          required=False)
+    
+    options = ValidTextLine(title=u"Options",
+                         required=False)
 
 
 class IBlockQuote(IDocumentStructureNode):

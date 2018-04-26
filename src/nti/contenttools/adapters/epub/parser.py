@@ -174,6 +174,9 @@ class EPUBParser(object):
 
         content = content.replace(u'\\begin{sidebar}{WARNING!}',
                                   u'\\begin{sidebar}[css-class=warning]{WARNING!}')
+        
+        content = content.replace(u'\\begin{sidebar}[css-class=note]{NOTE:}\nNOTE:',
+                                  u'\\begin{sidebar}[css-class=note]{NOTE:}')
 
         content = content.replace(u'\\\\ \n\n\\end{sidebar}', u'\n\\end{sidebar}')
         content = content.replace(u'\n\\end{sidebar}\n\\\\', u'\\end{sidebar}')
@@ -196,6 +199,8 @@ class EPUBParser(object):
         content = content.replace(u'\n\\end{itemize}\n\\begin{itemize}\n', u'\n')
         content = content.replace(u'\n\\end{itemize}\n\n\\begin{itemize}\n', u'\n')
         content = content.replace(u'\n\\end{itemize}\n\n\n\\begin{itemize}\n', u'\n')
+
+        content = content.replace(u'\\ntiglossaryentry{ }{}', u'')
         return content
 
     def process_support_files(self):
