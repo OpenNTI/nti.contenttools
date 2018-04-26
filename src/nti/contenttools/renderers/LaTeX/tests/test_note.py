@@ -17,6 +17,7 @@ from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.types.note import Note
 from nti.contenttools.types.note import Sidebar
 from nti.contenttools.types.note import BlockQuote
+from nti.contenttools.types.note import CenterNode
 from nti.contenttools.types.note import OpenstaxNote
 from nti.contenttools.types.note import NoteInteractive
 from nti.contenttools.types.note import OpenstaxNoteBody
@@ -126,3 +127,12 @@ class TestNote(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output, 
                     is_(u'\\begin{quote}\nthis is blockquote\n\\end{quote}\n'))
+
+    def test_centernode(self):
+        node = CenterNode()
+        run = Run()
+        run.add(TextNode(u'this is Center Node'))
+        node.add(run)
+        output = render_output(node)
+        assert_that(output, 
+                    is_(u'\\begin{center}\nthis is Center Node\n\\end{center}\n'))
