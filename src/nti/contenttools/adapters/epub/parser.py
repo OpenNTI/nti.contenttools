@@ -201,6 +201,8 @@ class EPUBParser(object):
         content = content.replace(u'\n\\end{itemize}\n\n\n\\begin{itemize}\n', u'\n')
 
         content = content.replace(u'\\ntiglossaryentry{ }{}', u'')
+
+        content = content.replace(u'\\end{sidebar}\n\n\\begin{sidebar}{Case History}', u'\n')
         return content
 
     def process_support_files(self):
