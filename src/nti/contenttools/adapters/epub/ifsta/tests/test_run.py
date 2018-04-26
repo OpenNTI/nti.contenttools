@@ -135,3 +135,13 @@ class TestRunAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'AAR. \\textit{See} After Action Report (AAR); American Association of Railroads (AAR)\n\n'))
+
+    def test_span_note(self):
+        script = """<div><p class="Body-Text"><span class="NOTE _idGenCharOverride-2">NOTE:</span><span class="CharOverride-20"> </span>While fuel injectors do not have external moving parts, they are still a source of collected dirt and oil. This area should be checked and cleaned. </p></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.epub_type = 'ifsta_rf'
+        node = Run.process(element, epub=epub) 
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\n\\begin{sidebar}[css-class=note]{NOTE:}\nNOTE: While fuel injectors do not have external moving parts, they are still a source of collected dirt and oil. This area should be checked and cleaned. \n\\end{sidebar}\n\\\\\n'))
