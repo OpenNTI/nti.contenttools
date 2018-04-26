@@ -273,6 +273,11 @@ class IBlockQuote(IDocumentStructureNode):
                            required=True,
                            default=u'')
 
+class ICenterNode(IDocumentStructureNode):
+    """
+    Center env node
+    """
+
 
 class IImage(IDocumentStructureNode):
 

@@ -23,6 +23,8 @@ from nti.contenttools.types.interfaces import ISidebar
 
 from nti.contenttools.types.interfaces import IBlockQuote
 
+from nti.contenttools.types.interfaces import ICenterNode
+
 from nti.contenttools.types.node import DocumentStructureNode
 
 from nti.schema.fieldproperty import createFieldProperties
@@ -37,6 +39,10 @@ class Sidebar(DocumentStructureNode):
 class BlockQuote(DocumentStructureNode):
     createFieldProperties(IBlockQuote)
 
+
+@interface.implementer(ICenterNode)
+class CenterNode(DocumentStructureNode):
+    createFieldProperties(ICenterNode)
 
 @interface.implementer(INote)
 class Note(DocumentStructureNode):
