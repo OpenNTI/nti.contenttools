@@ -26,6 +26,8 @@ from nti.contenttools.types.interfaces import ISidebar
 
 from nti.contenttools.types.interfaces import IBlockQuote
 
+from nti.contenttools.types.interfaces import ICenterNode
+
 from nti.contenttools.types.note import Note
 from nti.contenttools.types.note import NoteInteractive
 from nti.contenttools.types.note import NoteInteractiveImage
@@ -37,6 +39,8 @@ from nti.contenttools.types.note import OpenstaxExampleNote
 from nti.contenttools.types.note import Sidebar
 
 from nti.contenttools.types.note import BlockQuote
+
+from nti.contenttools.types.note import CenterNode
 
 from nti.contenttools.tests import ContentToolsTestCase
 
@@ -97,3 +101,8 @@ class TestNote(ContentToolsTestCase):
         assert_that(node, validly_provides(IBlockQuote))
         assert_that(node, verifiably_provides(IBlockQuote))
         assert_that(node, has_property('source', is_(u'')))
+
+    def test_centernode(self):
+        node = CenterNode()
+        assert_that(node, validly_provides(ICenterNode))
+        assert_that(node, verifiably_provides(ICenterNode))

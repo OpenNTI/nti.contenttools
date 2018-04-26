@@ -26,6 +26,7 @@ from nti.contenttools.renderers.interfaces import IRenderer
 from nti.contenttools.types.interfaces import INote
 from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import IBlockQuote
+from nti.contenttools.types.interfaces import ICenterNode
 from nti.contenttools.types.interfaces import IOpenstaxNote
 from nti.contenttools.types.interfaces import INoteInteractive
 from nti.contenttools.types.interfaces import IOpenstaxNoteBody
@@ -100,6 +101,8 @@ def render_sidebar(context, node):
 def render_blockquote(context, node):
     return render_environment(context, u'quote', node)
 
+def render_centernode(context, node):
+    return render_environment(context, u'center', node)
 
 def render_note(context, node):
     base = render_children_output(node)
@@ -179,6 +182,11 @@ class SidebarRenderer(RendererMixin):
 @component.adapter(IBlockQuote)
 class BlockQuoteRenderer(RendererMixin):
     func = staticmethod(render_blockquote)
+
+
+@component.adapter(ICenterNode)
+class CenterNodeRenderer(RendererMixin):
+    func = staticmethod(render_centernode)
 
 
 @component.adapter(INote)

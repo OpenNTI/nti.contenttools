@@ -285,6 +285,11 @@
 			 for="nti.contenttools.types.interfaces.IBlockQuote"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
+
+	<adapter factory=".note.CenterNodeRenderer"
+			 for="nti.contenttools.types.interfaces.ICenterNode"
+			 provides="..interfaces.IRenderer"
+			 name="LaTeX" />
 	
 	<!-- Footnote -->
 	<adapter factory=".footnote.FootnoteRenderer"
