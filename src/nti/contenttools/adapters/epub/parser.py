@@ -177,6 +177,23 @@ class EPUBParser(object):
         
         content = content.replace(u'\\begin{sidebar}[css-class=note]{NOTE:}\nNOTE:',
                                   u'\\begin{sidebar}[css-class=note]{NOTE:}')
+        content = content.replace(u'\\begin{sidebar}[css-class=note]{NOTE:}\n\\textbf{NOTE:}',
+                                  u'\\begin{sidebar}[css-class=note]{NOTE:}')
+        content = content.replace(u'\\begin{sidebar}[css-class=note]{NOTE:}\n\\textbf{NOTE: }',
+                                  u'\\begin{sidebar}[css-class=note]{NOTE:}')
+
+        content = content.replace(u'\\begin{sidebar}[css-class=note]{CAUTION:}\n\\textbf{CAUTION:}',
+                                  u'\\begin{sidebar}[css-class=note]{CAUTION:}')
+        content = content.replace(u'\\begin{sidebar}[css-class=note]{CAUTION:}\n\\textbf{CAUTION: }',
+                                  u'\\begin{sidebar}[css-class=note]{CAUTION:}')
+
+        content = content.replace(u'\\begin{sidebar}[css-class=note]{WARNING:}\n\\textbf{WARNING:}',
+                                  u'\\begin{sidebar}[css-class=note]{WARNING:}')
+        content = content.replace(u'\\begin{sidebar}[css-class=note]{WARNING:}\n\\textbf{WARNING: }',
+                                  u'\\begin{sidebar}[css-class=note]{WARNING:}')
+        content = content.replace(u'\\begin{sidebar}[css-class=note]{WARNING:}\n\\textbf{WARNING!:}',
+                                  u'\\begin{sidebar}[css-class=note]{WARNING!:}')
+
 
         content = content.replace(u'\\\\ \n\n\\end{sidebar}', u'\n\\end{sidebar}')
         content = content.replace(u'\n\\end{sidebar}\n\\\\', u'\\end{sidebar}')
