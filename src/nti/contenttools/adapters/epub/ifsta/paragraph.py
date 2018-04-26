@@ -32,6 +32,9 @@ from nti.contenttools.adapters.epub.ifsta.finder import search_span_note
 from nti.contenttools.adapters.epub.ifsta.finder import update_sidebar_body_bullet
 from nti.contenttools.adapters.epub.ifsta.finder import search_figure_icon_on_sidebar_body
 
+from nti.contenttools.types.note import BlockQuote
+from nti.contenttools.types.note import CenterNode
+
 class Paragraph(types.Paragraph):
 
     sidebar_list = (u'Case-History ParaOverride-1', u'Case-History',)
@@ -161,6 +164,7 @@ class Paragraph(types.Paragraph):
                 #     me = el
                 elif any(s.lower() in attrib['class'].lower() for s in cls.paragraph_list):
                     check_head = []
+                    check_note = []
                     search_figure_icon_on_sidebar_body(me, check_head)
                     if check_head:
                         me.element_type = u'sidebars-heads'
@@ -170,7 +174,6 @@ class Paragraph(types.Paragraph):
                             el.title = me
                             me = el
                     else:
-                        check_note = []
                         check_note = search_span_note(me, check_note)
                         check_content = render_output(me)
                         if check_note or u'NOTE' in check_content or u'CAUTION' in check_content or u'WARNING' in check_content:
@@ -185,6 +188,23 @@ class Paragraph(types.Paragraph):
                                 el.title = u'WARNING:'
                             me = el
 
+                    ##Handle some text styling in SKILL SHEET
+                    if not check_head and not check_note:
+                        para_class = attrib['class'] if 'class' in attrib else u'' 
+                        para_class = u'p_%s' % para_class.replace('-', '_')
+                        para_class = para_class.replace(u'Basic_Paragraph ', u'')
+                        if epub is not None and para_class in epub.css_dict:
+                            if 'textAlign' in epub.css_dict[para_class]:
+                                if epub.css_dict[para_class]['textAlign'] == u'center':
+                                    el = CenterNode()
+                                    el.children = me.children
+                                    me = el
+                                elif epub.css_dict[para_class]['textAlign'] == u'left':
+                                    if 'textIndent' in epub.css_dict[para_class]:
+                                        if epub.css_dict[para_class]['textIndent'] == u'-45px':
+                                            el = BlockQuote()
+                                            el.children = me.children
+                                            me = el
             else:
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)
