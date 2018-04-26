@@ -13,6 +13,8 @@ import copy
 
 from nti.contenttools import types
 
+from nti.contenttools.renderers.LaTeX.base import render_output
+
 from nti.contenttools.adapters.epub.ifsta import check_child
 from nti.contenttools.adapters.epub.ifsta import check_element_text
 from nti.contenttools.adapters.epub.ifsta import check_element_tail
@@ -26,15 +28,14 @@ from nti.contenttools.adapters.epub.ifsta.run import Run
 
 from nti.contenttools.types.interfaces import ITextNode
 
+from nti.contenttools.adapters.epub.ifsta.finder import search_span_note
 from nti.contenttools.adapters.epub.ifsta.finder import update_sidebar_body_bullet
-
 from nti.contenttools.adapters.epub.ifsta.finder import search_figure_icon_on_sidebar_body
 
 class Paragraph(types.Paragraph):
 
     sidebar_list = (u'Case-History ParaOverride-1', u'Case-History',)
     bullet_list = (u'Bullet ParaOverride-1', u'Bullet')
-    bold_italic_text = ('C-Head ParaOverride-1', 'C-Head')
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD')
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride',)
@@ -71,14 +72,22 @@ class Paragraph(types.Paragraph):
                         sidebar_class.title = u'Case History'
                     sidebar_class.children = me.children
                     me = sidebar_class
-                elif 'C-Head' in attrib['class']:
+                elif 'c-head' in attrib['class'].lower():
                     el_main = Paragraph()
                     el = Run()
                     el.styles = ['bold', 'italic']
                     el.children = me.children
                     el_main.add_child(el)
-                    el_main.add_child(types.TextNode("\\\\\n"))
                     me = el_main
+                    check = render_output(me)
+                    if u'What This Means to You'.lower() in check.lower():
+                        el.styles = ['italic']    
+                        me.element_type = u'sidebars-heads'
+                        if epub.epub_type == u'ifsta_rf':
+                            el_sidebar = Sidebar()
+                            el_sidebar.type = u'sidebar-head'
+                            el_sidebar.title = me
+                            me = el_sidebar
                 elif 'Table-Title' in attrib['class']:
                     el = Run()
                     el.styles = ['bold']
@@ -140,16 +149,16 @@ class Paragraph(types.Paragraph):
                     el.add_child(sidebar)
                     el.add_child(types.TextNode("\n"))
                     me = el
-#                 elif u'Sub1' in attrib['class']:
-#                     el = types.BlockQuote()
-#                     el.children = me.children
-#                     me = el
-#                 elif u'Sub2' in attrib['class']:
-#                     el = types.BlockQuote()
-#                     el_2 = types.BlockQuote()
-#                     el_2.children = me.children
-#                     el.add_child(el_2)
-#                     me = el
+                # elif u'Sub1' in attrib['class']:
+                #     el = types.BlockQuote()
+                #     el.children = me.children
+                #     me = el
+                # elif u'Sub2' in attrib['class']:
+                #     el = types.BlockQuote()
+                #     el_2 = types.BlockQuote()
+                #     el_2.children = me.children
+                #     el.add_child(el_2)
+                #     me = el
                 elif any(s.lower() in attrib['class'].lower() for s in cls.paragraph_list):
                     check_head = []
                     search_figure_icon_on_sidebar_body(me, check_head)
@@ -160,6 +169,16 @@ class Paragraph(types.Paragraph):
                             el.type = u'sidebar-head'
                             el.title = me
                             me = el
+                    else:
+                        check_note = []
+                        check_note = search_span_note(me, check_note)
+                        if check_note:
+                            el = Sidebar()
+                            el.title = u'NOTE:'
+                            el.options = u'css-class=note'
+                            el.children = me.children
+                            me = el
+
             else:
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)

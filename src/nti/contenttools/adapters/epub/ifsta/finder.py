@@ -363,3 +363,12 @@ def update_sidebar_body_bullet(node):
     elif hasattr(node, 'children'):
         for child in node:
             update_sidebar_body_bullet(child)
+
+def search_span_note(node, notes):
+    if IRunNode.providedBy(node):
+        if node.element_type == 'span-note':
+            notes.append(node)
+    elif hasattr(node, u'children'):
+        for child in node:
+            search_span_note(child, notes)
+    return notes

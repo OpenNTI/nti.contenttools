@@ -69,6 +69,13 @@ def render_sidebar(context, node):
 
     context.write(u'\n\\begin{sidebar}')
 
+    if node.options:
+        options = get_variant_field_string_value(node.options)
+        options = options.rstrip()
+        context.write(u'[')
+        context.write(options)
+        context.write(u']')
+
     found_math_env = False
     if any(chars in title for chars in [u'\\(', u'\\[']):
         logger.warn("Math element found in sidebar's title. "
