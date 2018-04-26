@@ -27,6 +27,7 @@ from nti.contenttools.types import TextNode
 from nti.contenttools.types.interfaces import ITextNode
 from nti.contenttools.types.interfaces import IParagraph
 
+from nti.contenttools.renderers.LaTeX.base import render_output
 
 class Run(types.Run):
 
@@ -162,7 +163,7 @@ def process_span_elements(element, epub=None):
         el = create_glossary_entry(element)
     elif 'NOTE' in span_class:
         el = Run.process(element, epub=epub)
-        el.styles = ['bold']
+        el.element_type = 'span-note'
     else:
         span_class = u'span_%s' % span_class.replace('-', '_')
         if epub is not None and span_class in epub.css_dict:
@@ -223,10 +224,12 @@ def create_glossary_entry(element, fstyles=('bold')):
     el = Run()
     t_el = Run()
     check_element_text(t_el, element)
-    t_el.styles = t_el.styles + fstyles 
-    glossary = GlossaryEntry()
-    glossary.term = t_el
-    el.add(glossary)
+    check_term = render_output(t_el)
+    if not check_term.isspace():
+        t_el.styles = t_el.styles + fstyles 
+        glossary = GlossaryEntry()
+        glossary.term = t_el
+        el.add(glossary)
     check_element_tail(el, element)
     return el
 

@@ -28,8 +28,8 @@ from nti.contenttools.adapters.epub.ifsta.run import Run
 
 from nti.contenttools.types.interfaces import ITextNode
 
+from nti.contenttools.adapters.epub.ifsta.finder import search_span_note
 from nti.contenttools.adapters.epub.ifsta.finder import update_sidebar_body_bullet
-
 from nti.contenttools.adapters.epub.ifsta.finder import search_figure_icon_on_sidebar_body
 
 class Paragraph(types.Paragraph):
@@ -169,6 +169,16 @@ class Paragraph(types.Paragraph):
                             el.type = u'sidebar-head'
                             el.title = me
                             me = el
+                    else:
+                        check_note = []
+                        check_note = search_span_note(me, check_note)
+                        if check_note:
+                            el = Sidebar()
+                            el.title = u'NOTE:'
+                            el.options = u'css-class=note'
+                            el.children = me.children
+                            me = el
+
             else:
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)
