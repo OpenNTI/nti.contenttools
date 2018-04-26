@@ -159,3 +159,39 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\n\\begin{sidebar}{\\textit{What This Means to You}}\n\n\\end{sidebar}\n\\\\\n'))
+
+    def test_sidebar_note(self):
+        script = """<div><p class="Basic-Paragraph ParaOverride-26"><span class="CharOverride-52">NOTE: </span><span class="CharOverride-53">Some suggestions are an empty</span></p></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.book_title = 'epub_test'
+        epub.epub_type = 'ifsta_rf'
+        epub.input_file = False
+        node = Run.process(element, epub=epub) 
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\n\\begin{sidebar}[css-class=note]{NOTE:}\nNOTE: Some suggestions are an empty\n\\end{sidebar}\n\\\\\n'))
+
+    def test_sidebar_note_warning(self):
+        script = """<div><p class="Basic-Paragraph ParaOverride-26"><span class="CharOverride-52">WARNING: </span><span class="CharOverride-53">Some suggestions are an empty</span></p></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.book_title = 'epub_test'
+        epub.epub_type = 'ifsta_rf'
+        epub.input_file = False
+        node = Run.process(element, epub=epub) 
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\n\\begin{sidebar}[css-class=note]{WARNING:}\nWARNING: Some suggestions are an empty\n\\end{sidebar}\n\\\\\n'))
+
+    def test_sidebar_note_caution(self):
+        script = """<div><p class="Basic-Paragraph ParaOverride-26"><span class="CharOverride-52">CAUTION: </span><span class="CharOverride-53">Some suggestions are an empty</span></p></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.book_title = 'epub_test'
+        epub.epub_type = 'ifsta_rf'
+        epub.input_file = False
+        node = Run.process(element, epub=epub) 
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\n\\begin{sidebar}[css-class=note]{CAUTION:}\nCAUTION: Some suggestions are an empty\n\\end{sidebar}\n\\\\\n'))

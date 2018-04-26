@@ -172,11 +172,17 @@ class Paragraph(types.Paragraph):
                     else:
                         check_note = []
                         check_note = search_span_note(me, check_note)
-                        if check_note:
+                        check_content = render_output(me)
+                        if check_note or u'NOTE' in check_content or u'CAUTION' in check_content or u'WARNING' in check_content:
                             el = Sidebar()
-                            el.title = u'NOTE:'
                             el.options = u'css-class=note'
                             el.children = me.children
+                            if u'NOTE' in check_content:
+                                el.title = u'NOTE:'
+                            elif u'CAUTION' in check_content:
+                                el.title = u'CAUTION:'
+                            elif u'WARNING' in check_content:
+                                el.title = u'WARNING:'
                             me = el
 
             else:
