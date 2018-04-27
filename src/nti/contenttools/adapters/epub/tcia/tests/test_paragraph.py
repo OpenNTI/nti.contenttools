@@ -30,6 +30,21 @@ class TestParagraphAdapter(ContentToolsTestCase):
         element = html.fromstring(script)
         node = Paragraph.process(element)
         output = render_output(node)
-
         assert_that(output,
                     is_(u'This is the first paragraph\n\n'))
+
+    def test_chapter_paragraph(self):
+        script = u'<div><p class="CL-CHPTR-HEADS ParaOverride-11"><span class="CharOverride-15">QUALITY CONTROL AND PROFESSIONALISM</span></p></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\chapter{QUALITY CONTROL AND PROFESSIONALISM}\n\\label{chapter:QUALITY_CONTROL_AND_PROFESSIONALISM}\n\n'))
+
+    def test_section_paragraph(self):
+        script = u'<div><p class="CL-SUBHEADS ParaOverride-5">Learning objectives</p></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\section{Learning objectives}\n\\label{section:Learning_objectives}\n\n'))

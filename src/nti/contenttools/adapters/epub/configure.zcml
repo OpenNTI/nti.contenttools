@@ -9,5 +9,6 @@
 	<include package="zope.security" />
 		
 	<include package=".ifsta" />
+	<include package=".tcia" />
 	
 </configure>

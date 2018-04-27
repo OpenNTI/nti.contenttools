@@ -17,13 +17,31 @@ from nti.contenttools.adapters.epub.tcia import check_child
 from nti.contenttools.adapters.epub.tcia import check_element_text
 from nti.contenttools.adapters.epub.tcia import check_element_tail
 
-class Paragraph(types.Paragraph):
+from nti.contenttools.types import Chapter
+from nti.contenttools.types import Section
 
-    @classmethod
-    def process(cls, element, styles=(), epub=None):
-        me = cls()
-        me.styles.extend(styles)
-        me = check_element_text(me, element)
-        me = check_child(me, element, epub)
-        me = check_element_tail(me, element)
-        return me
+class Paragraph(types.Paragraph):
+	CHAPTER_DEF = ('CL-CHPTR-HEADS', )
+	SECTION_DEF = ('CL-SUBHEADS', )
+
+	@classmethod
+	def process(cls, element, styles=(), epub=None):
+	    me = cls()
+	    me = check_element_text(me, element)
+	    me = check_child(me, element, epub)
+	    me = check_element_tail(me, element)
+
+	    attrib = element.attrib
+	    if 'class' in attrib:
+	    	para_class = attrib['class'] if 'class' in attrib else u'' 
+	    	if any(s.lower() in para_class.lower() for s in cls.CHAPTER_DEF):
+	    		me.styles.append('Chapter')
+	    	elif any(s.lower() in para_class.lower() for s in cls.SECTION_DEF):
+	    		me.styles.append('Section')
+
+	    	if 'Chapter' in me.styles or 'Section' in me.styles:
+	    		label = types.Run()
+	    		label.children = me.children
+	    		me.label = label
+
+	    return me
