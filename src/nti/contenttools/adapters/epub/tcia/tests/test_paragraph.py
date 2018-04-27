@@ -48,3 +48,11 @@ class TestParagraphAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\section{Learning objectives}\n\\label{section:Learning_objectives}\n\n'))
+
+    def test_paragraph_list(self):
+        script = u'<div><p class="CL-BODY-TEXT ParaOverride-16">• Sets high expectations.</p></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\begin{itemize}\n\\item Sets high expectations. \n\n\\end{itemize}\n'))

@@ -11,6 +11,8 @@ logger = __import__('logging').getLogger(__name__)
 
 from nti.contenttools import types
 
+from nti.contenttools.renderers.LaTeX.base import render_output
+
 from nti.contenttools.adapters.epub.tcia import check_child
 from nti.contenttools.adapters.epub.tcia import check_element_text
 from nti.contenttools.adapters.epub.tcia import check_element_tail
@@ -51,7 +53,13 @@ class Paragraph(types.Paragraph):
 					                el = types.BlockQuote()
 					                el.children = me.children
 					                me = el
-
+                check_node = render_output(me)
+                if u'*' in check_node:
+					li = types.Item()
+					ul = types.UnorderedList()
+					li.add(types.TextNode(check_node.replace(u'*', u'').strip()))
+					ul.add(li)
+					me = ul
 	    return me
 
 def generate_label_from_node_children(base):
