@@ -18,6 +18,8 @@ from collections import OrderedDict
 
 from nti.contenttools.adapters.epub.reader import EPUBReader
 
+from nti.contenttools.adapters.epub.tcia import adapt as adapt_tcia
+
 from nti.contenttools.adapters.epub.ifsta import adapt as adapt_ifsta
 
 from nti.contenttools.renderers.model import DefaultRendererContext
@@ -34,7 +36,7 @@ from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IEPUBBody
 
-EPUB_COURSE_TYPE = (u'ifsta', u'ifsta_rf')
+EPUB_COURSE_TYPE = (u'ifsta', u'ifsta_rf', u'tcia')
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -98,6 +100,8 @@ class EPUBParser(object):
             self.current_dir = item
             if self.epub_type == 'ifsta' or self.epub_type == 'ifsta_rf':
                 epub_chapter = adapt_ifsta(fragment, self)
+            elif self.epub_type == 'tcia':
+                epub_chapter = adapt_tcia(fragment, self)
             else:
                 # TODO: create generic adapter
                 # epub_chapter = adapt(fragment)
