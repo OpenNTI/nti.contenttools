@@ -167,6 +167,7 @@ from nti.contenttools.types.text import TextNode
 
 from nti.contenttools.types.note import Sidebar
 from nti.contenttools.types.note import BlockQuote
+from nti.contenttools.types.note import CenterNode
 
 from nti.contenttools.types.code import Code
 from nti.contenttools.types.code import CodeLine
