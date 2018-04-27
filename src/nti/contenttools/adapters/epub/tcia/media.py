@@ -39,9 +39,13 @@ class Image(types.Image):
         _, filename = os.path.split(path)
         me.predefined_image_path = True
         me.path = u'Images/CourseAssets/%s/%s' % (epub.book_title, filename) 
+
+        if u'Thumbsup.jpg' in me.path or u'Thumbsdown.jpg' in me.path:
+            me.inline_image = True
         
         if 'alt' in element.attrib.keys():
-            me.caption = types.TextNode(element.attrib['alt'])
+            if element.attrib['alt']:
+                me.caption = types.TextNode(element.attrib['alt'])
 
         if epub.input_file:
             zipfile = epub.zipfile

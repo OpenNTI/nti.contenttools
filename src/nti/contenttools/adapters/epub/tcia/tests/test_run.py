@@ -95,3 +95,13 @@ class TestRunAdapter(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'test paragraph under div element\n\n'))
+
+    def test_span_bold_italic(self):
+        script = """<div><p class="CL-BODY-TEXT"><span class="CharOverride-34">Crew leaders only:</span></p></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.epub_type = 'tcia'
+        node = Run.process(element, epub=epub) 
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\textbf{\\textit{Crew leaders only:}}\n\n'))

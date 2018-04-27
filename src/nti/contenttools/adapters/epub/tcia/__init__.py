@@ -21,9 +21,12 @@ from nti.contenttools.adapters.epub.tcia.interfaces import IChildProcessor
 
 from nti.contenttools.types import TextNode
 
+from nti.contenttools.adapters.epub.tcia.finder import search_image_thubms_up_down
+
 def adapt(fragment, epub=None):
     body = fragment.find('body')
     epub_body = EPUBBody.process(body, epub)
+    search_image_thubms_up_down(epub_body)
     return epub_body
 
 
