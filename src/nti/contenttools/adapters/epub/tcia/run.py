@@ -40,4 +40,19 @@ def process_div_elements(element, parent, epub=None):
 
 def process_span_elements(element, epub=None):
     el = Run.process(element, epub=epub)
+    attrib = element.attrib
+    span_class = attrib['class'] if 'class' in attrib else u''
+    font_style = u''
+    font_weight = u''
+    if epub is not None:
+        span_class = u'span_%s' % span_class.replace('-', '_')
+        if span_class in epub.css_dict:
+            if 'fontStyle' in epub.css_dict[span_class]:
+                font_style = epub.css_dict[span_class]['fontStyle']
+                if font_style != u'normal':
+                    el.styles.append(font_style)
+            if 'fontWeight' in epub.css_dict[span_class]:
+                font_weight = epub.css_dict[span_class]['fontWeight']
+                if font_weight != u'normal':
+                    el.styles.append(font_weight)
     return el

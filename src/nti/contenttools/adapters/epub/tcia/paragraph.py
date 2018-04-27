@@ -23,6 +23,7 @@ from nti.contenttools.types import Section
 class Paragraph(types.Paragraph):
 	CHAPTER_DEF = ('CL-CHPTR-HEADS', )
 	SECTION_DEF = ('CL-SUBHEADS', )
+	CAPTION_DEF = ('CL-CAPTIONS', )
 
 	@classmethod
 	def process(cls, element, styles=(), epub=None):
