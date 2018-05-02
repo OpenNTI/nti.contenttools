@@ -138,13 +138,14 @@ class EPUBReader(object):
             elif item in ['htmltoc']:
                 pass
             else:
-                spine_dict.update({item: check_item})
-                docfragment = html.fromstring(
-                    self.zipfile.read(
-                        self.content_path +
-                        '/' +
-                        self.manifest[item]['href']))
-                docfrags.update({item: docfragment})
+                item_name = self.content_path + '/' + self.manifest[item]['href']
+                if item_name in self.zipfile.namelist():
+                    logger.info("FOUND")
+                    spine_dict.update({item: check_item})
+                    docfragment = html.fromstring(self.zipfile.read(item_name))
+                    docfrags.update({item: docfragment})
+                else:
+                    logger.warn("Spine item %s does not exist", item_name)
 
         self.document = types.Document()
         self.document.author = self.author
