@@ -96,39 +96,40 @@ class EPUBParser(object):
         docfrags = epub_reader.docfrags
         self.latex_filenames = []
         for item in epub_reader.spine:
-            fragment = docfrags[item]
-            self.current_dir = item
-            if self.epub_type == 'ifsta' or self.epub_type == 'ifsta_rf':
-                epub_chapter = adapt_ifsta(fragment, self)
-            elif self.epub_type == 'tcia':
-                epub_chapter = adapt_tcia(fragment, self)
-            else:
-                # TODO: create generic adapter
-                # epub_chapter = adapt(fragment)
-                pass
-            tex_filename = u'%s.tex' % rename_filename(item)
-            self.latex_filenames.append(tex_filename)
-            logger.info("Processing ...")
-            logger.info(tex_filename)
-            if IEPUBBody.providedBy(epub_chapter):
-                context = DefaultRendererContext(name=u"LaTeX")
-                render_node(context, epub_chapter)
-                content = context.read()
-                content = self.update_image_ref(content)
-                content = self.cleanup_tex(content)
-                if self.reading_def_dir:
-                    self.write_to_file(content,
-                                       self.reading_def_dir,
-                                       tex_filename)
-                    if self.epub_type == u'ifsta':
-                        generate_glossary_term_from_sidebar(epub_chapter,
-                                                            self.glossary_terms,
-                                                            self.glossary_labels)
+            if item in docfrags.keys():
+                fragment = docfrags[item]
+                self.current_dir = item
+                if self.epub_type == 'ifsta' or self.epub_type == 'ifsta_rf':
+                    epub_chapter = adapt_ifsta(fragment, self)
+                elif self.epub_type == 'tcia':
+                    epub_chapter = adapt_tcia(fragment, self)
                 else:
-                    self.write_to_file(content,
-                                       self.output_directory,
-                                       tex_filename)
-            self.tables = search_tables(epub_chapter, self.tables)
+                    # TODO: create generic adapter
+                    # epub_chapter = adapt(fragment)
+                    pass
+                tex_filename = u'%s.tex' % rename_filename(item)
+                self.latex_filenames.append(tex_filename)
+                logger.info("Processing ...")
+                logger.info(tex_filename)
+                if IEPUBBody.providedBy(epub_chapter):
+                    context = DefaultRendererContext(name=u"LaTeX")
+                    render_node(context, epub_chapter)
+                    content = context.read()
+                    content = self.update_image_ref(content)
+                    content = self.cleanup_tex(content)
+                    if self.reading_def_dir:
+                        self.write_to_file(content,
+                                           self.reading_def_dir,
+                                           tex_filename)
+                        if self.epub_type == u'ifsta':
+                            generate_glossary_term_from_sidebar(epub_chapter,
+                                                                self.glossary_terms,
+                                                                self.glossary_labels)
+                    else:
+                        self.write_to_file(content,
+                                           self.output_directory,
+                                           tex_filename)
+                self.tables = search_tables(epub_chapter, self.tables)
 
         self.create_main_latex()
         logger.info(epub_reader.spine)
