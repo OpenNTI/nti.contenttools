@@ -51,17 +51,25 @@ class Paragraph(types.Paragraph):
         if 'id' in attrib:
             me.label = attrib['id']
         me.styles.extend(styles)
-        captions = (u'Caption ParaOverride-1', u'Caption', )
+        captions = (u'Caption', u'Captions')
         sidebars_heads = (u'Caution-Warning-Heads ParaOverride-1',
                           u'Caution-Warning-Heads',
                           u'sidebars-heads ParaOverride-1',
                           u'sidebars-heads',
-                          u'sidebar---header',)
+                          u'sidebar---header',
+                          u'Safety-Alert-Box---Title',
+                          u'Information-Box---Title',
+                          u'WARNING---Title',
+                          u'CAUTION---Title')
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
                          u'Caution-Warning-Text',
                          u'sidebars-body-text ParaOverride-1',
                          u'sidebars-body-text',
-                         u'sidebars-block-body-text')
+                         u'sidebars-block-body-text',
+                         u'Safety-Alert-Box---Body-Text',
+                         u'Information-Box---Body-Text',
+                         u'CAUTION---Body-Text',
+                         u'WARNING---Body-Text')
         definition_list = (u'definition', 'GlossaryTerm')
 
         if 'class' in attrib:
