@@ -160,16 +160,6 @@ class Paragraph(types.Paragraph):
                     el.add_child(sidebar)
                     el.add_child(types.TextNode("\n"))
                     me = el
-                # elif u'Sub1' in attrib['class']:
-                #     el = types.BlockQuote()
-                #     el.children = me.children
-                #     me = el
-                # elif u'Sub2' in attrib['class']:
-                #     el = types.BlockQuote()
-                #     el_2 = types.BlockQuote()
-                #     el_2.children = me.children
-                #     el.add_child(el_2)
-                #     me = el
                 elif any(s.lower() in attrib['class'].lower() for s in cls.paragraph_list):
                     check_head = []
                     check_note = []
@@ -195,7 +185,6 @@ class Paragraph(types.Paragraph):
                             elif u'WARNING' in check_content:
                                 el.title = u'WARNING:'
                             me = el
-
                     ##Handle some text styling in SKILL SHEET
                     if not check_head and not check_note:
                         para_class = attrib['class'] if 'class' in attrib else u'' 
@@ -213,14 +202,25 @@ class Paragraph(types.Paragraph):
                                             el = BlockQuote()
                                             el.children = me.children
                                             me = el
+                elif epub.chapter_num:
+                    if u'Sub1' in attrib['class'] and epub.chapter_num == 'Index':
+                        el = types.BlockQuote()
+                        el.children = me.children
+                        me = el
+                    elif u'Sub2' in attrib['class'] and epub.chapter_num == 'Index':
+                        el = types.BlockQuote()
+                        el_2 = types.BlockQuote()
+                        el_2.children = me.children
+                        el.add_child(el_2)
+                        me = el
+                else:
+                    me = check_element_text(me, element)
+                    me = check_child(me, element, epub)
+                    me = check_element_tail(me, element)
             else:
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)
                 me = check_element_tail(me, element)
-        else:
-            me = check_element_text(me, element)
-            me = check_child(me, element, epub)
-            me = check_element_tail(me, element)
         return me
 
 
