@@ -214,18 +214,17 @@ class Paragraph(types.Paragraph):
                         el.add_child(el_2)
                         me = el
                 else:
-                    me = check_element_text(me, element)
-                    me = check_child(me, element, epub)
-                    me = check_element_tail(me, element)
+                    add_basic_paragraph_children(me, element, epub)
             else:
-                me = check_element_text(me, element)
-                me = check_child(me, element, epub)
-                me = check_element_tail(me, element)
+                add_basic_paragraph_children(me, element, epub)
         else:
-            me = check_element_text(me, element)
-            me = check_child(me, element, epub)
-            me = check_element_tail(me, element)
+            add_basic_paragraph_children(me, element, epub)
         return me
+
+def add_basic_paragraph_children(node, element, epub):
+    node = check_element_text(node, element)
+    node = check_child(node, element, epub)
+    node = check_element_tail(node, element)
 
 
 def add_sectioning_label(node, label):
