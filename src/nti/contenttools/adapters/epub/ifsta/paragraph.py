@@ -221,6 +221,10 @@ class Paragraph(types.Paragraph):
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)
                 me = check_element_tail(me, element)
+        else:
+            me = check_element_text(me, element)
+            me = check_child(me, element, epub)
+            me = check_element_tail(me, element)
         return me
 
 
