@@ -17,7 +17,7 @@ from nti.contenttools import types
 
 from nti.contenttools._compat import text_
 
-from nti.contenttools.adapters.epub.tcia.interfaces import IChildProcessor
+from nti.contenttools.adapters.epub.generic.interfaces import IChildProcessor
 
 from nti.contenttools.types import TextNode
 
