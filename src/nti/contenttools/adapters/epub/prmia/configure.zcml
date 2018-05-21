@@ -1,0 +1,17 @@
+<!-- -*- mode: nxml -*- -->
+<configure	xmlns="http://namespaces.zope.org/zope"
+			xmlns:i18n="http://namespaces.zope.org/i18n"
+			xmlns:zcml="http://namespaces.zope.org/zcml">
+
+	<include package="zope.component" file="meta.zcml" />
+	<include package="zope.component" />
+	
+	<!-- Utilities -->
+	<utility factory=".processors._SpanChildProcessor" name="span" />
+	<utility factory=".processors._ParagraphChildProcessor" name="p" />
+	<utility factory=".processors._DivChildProcessor" name="div" />
+	<utility factory=".processors._OrderedListChildProcessor" name="ol" />
+	<utility factory=".processors._UnorderedListChildProcessor" name="ul" />
+	<utility factory=".processors._ImageChildProcessor" name="img" />
+	<utility factory=".processors._FigureChildProcessor" name="figure" />
+</configure>

@@ -10,5 +10,6 @@
 		
 	<include package=".ifsta" />
 	<include package=".tcia" />
+	<include package=".generic" />
 	
 </configure>
