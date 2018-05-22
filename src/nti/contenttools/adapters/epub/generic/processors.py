@@ -22,6 +22,8 @@ from nti.contenttools.adapters.epub.generic.run import Run
 from nti.contenttools.adapters.epub.generic.run import process_div_elements
 from nti.contenttools.adapters.epub.generic.run import process_span_elements
 
+from nti.contenttools.adapters.epub.generic.paragraph import Paragraph
+
 from nti.contenttools.types import TextNode
 
 @interface.implementer(IChildProcessor)
