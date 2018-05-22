@@ -25,7 +25,4 @@ class Paragraph(types.Paragraph):
 	    me = check_element_text(me, element)
 	    me = check_child(me, element, epub)
 	    me = check_element_tail(me, element)
-
-	    attrib = element.attrib
-	    text_align = u''
 	    return me

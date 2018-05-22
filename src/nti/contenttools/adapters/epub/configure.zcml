@@ -11,5 +11,6 @@
 	<include package=".generic" />
 	<include package=".ifsta" />
 	<include package=".tcia" />
+	<include package=".prmia" />
 	
 </configure>
