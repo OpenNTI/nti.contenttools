@@ -11,7 +11,7 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from nti.contenttools.adapters.epub.generic.interfaces import IChildProcessor
+from nti.contenttools.adapters.epub.interfaces import IChildProcessor
 
 from nti.contenttools.adapters.epub.generic.lists import OrderedList
 from nti.contenttools.adapters.epub.generic.lists import UnorderedList
