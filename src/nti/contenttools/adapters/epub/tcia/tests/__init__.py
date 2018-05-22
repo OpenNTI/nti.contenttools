@@ -12,6 +12,11 @@ import codecs
 
 import simplejson as json
 
+from zope.component.hooks import clearSite
+
+from nti.contenttools.tests import ContentToolsTestCase
+
+from nti.contenttools.adapters.common import prepare_site
 
 class Object(object):
     css_dict = None
@@ -24,3 +29,12 @@ def create_epub_object():
     with codecs.open(css_file, 'r', 'utf-8') as fp:
         epub.css_dict = json.load(fp)
     return epub
+
+
+class TCIATestCase(ContentToolsTestCase):
+
+    def setUp(self):
+        prepare_site("tcia")
+
+    def tearDown(self):
+        clearSite()

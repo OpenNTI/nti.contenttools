@@ -20,10 +20,10 @@ from nti.contenttools.adapters.epub.tcia.paragraph import Paragraph
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
-from nti.contenttools.tests import ContentToolsTestCase
+from nti.contenttools.adapters.epub.tcia.tests import TCIATestCase
 
 
-class TestParagraphAdapter(ContentToolsTestCase):
+class TestParagraphAdapter(TCIATestCase):
 
     def test_simple_paragraph(self):
         script = u'<p>This is the first paragraph</p>'
