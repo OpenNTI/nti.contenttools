@@ -6,6 +6,12 @@
 	<include package="zope.component" file="meta.zcml" />
 	<include package="zope.component" />
 	
+	<include package="z3c.baseregistry" file="meta.zcml" />
+	<utility
+        component=".sites.IFSTA"
+        provides="zope.component.interfaces.IComponents"
+        name="ifsta" />
+
 	<!-- Utilities -->
 	<utility factory=".processors._BoldChildProcessor" name="b" />
 	<utility factory=".processors._ItalicChildProcessor" name="i" />
