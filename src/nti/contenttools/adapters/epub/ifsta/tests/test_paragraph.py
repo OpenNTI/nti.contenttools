@@ -20,12 +20,12 @@ from nti.contenttools.adapters.epub.ifsta.paragraph import Paragraph
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
-from nti.contenttools.tests import ContentToolsTestCase
+from nti.contenttools.adapters.epub.ifsta.tests import IFSTATestCase
 
 from nti.contenttools.adapters.epub.ifsta.tests import create_epub_object
 
 
-class TestParagraphAdapter(ContentToolsTestCase):
+class TestParagraphAdapter(IFSTATestCase):
 
     def test_simple_paragraph(self):
         script = u'<p>This is the first paragraph</p>'

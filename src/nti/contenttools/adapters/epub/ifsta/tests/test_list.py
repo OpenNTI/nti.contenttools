@@ -18,10 +18,9 @@ from nti.contenttools.adapters.epub.ifsta.run import Run
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
-from nti.contenttools.tests import ContentToolsTestCase
+from nti.contenttools.adapters.epub.ifsta.tests import IFSTATestCase
 
-
-class TestList(ContentToolsTestCase):
+class TestList(IFSTATestCase):
     def test_ordered_list(self):
         script = u'<div><ol><li>item 1</li><li>item 2</li></ol><div>'
         element = html.fromstring(script)
