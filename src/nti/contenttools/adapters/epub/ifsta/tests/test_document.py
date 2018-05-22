@@ -1,37 +1,38 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import, division
-__docformat__ = "restructuredtext en"
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
-# disable: accessing protected members, too many methods
-# pylint: disable=W0212,R0904
+# pylint: disable=protected-access,too-many-public-methods
 
 from hamcrest import is_
 from hamcrest import is_not
 from hamcrest import assert_that
 does_not = is_not
 
+from nti.testing.matchers import validly_provides
+from nti.testing.matchers import verifiably_provides
+
 from lxml import html
 
 from zope import component
 
-from nti.testing.matchers import validly_provides
-from nti.testing.matchers import verifiably_provides
+from nti.contenttools.adapters.epub.ifsta import EPUBBody
+
+from nti.contenttools.adapters.epub.ifsta.tests import IFSTATestCase
 
 from nti.contenttools.renderers.interfaces import IRenderer
+
+from nti.contenttools.renderers.LaTeX.base import render_output
+
 from nti.contenttools.renderers.model import DefaultRendererContext
 
 from nti.contenttools.types.interfaces import IEPUBBody
 
-from nti.contenttools.adapters.epub.ifsta import EPUBBody
 
-from nti.contenttools.renderers.LaTeX.base import render_output
-
-from nti.contenttools.tests import ContentToolsTestCase
-
-
-class TestDocumentAdapter(ContentToolsTestCase):
+class TestDocumentAdapter(IFSTATestCase):
 
     def test_simple_epub_body(self):
         script = u'<div><p>This is the first paragraph</p></div>'
@@ -45,7 +46,7 @@ class TestDocumentAdapter(ContentToolsTestCase):
         renderer = component.getAdapter(node,
                                         IRenderer,
                                         name=u'LaTeX')
-        context = DefaultRendererContext(name="LaTeX")
+        context = DefaultRendererContext(name=u"LaTeX")
         renderer.render(context, node)
 
         output = render_output(node)
