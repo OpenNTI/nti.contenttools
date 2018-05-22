@@ -13,33 +13,11 @@
 		name="tcia" />
 
     <registerIn registry=".sites.TCIA">
-		<utility factory=".processors._BoldChildProcessor" name="b" />
-		<utility factory=".processors._ItalicChildProcessor" name="i" />
-		<utility factory=".processors._StrikeChildProcessor" name="s" />
-		<utility factory=".processors._UnderlineChildProcessor" name="u" />
-		<utility factory=".processors._StrongChildProcessor" name="strong" />
-		
-		<utility factory=".processors._EmphasisChildProcessor" name="em" />
-		<utility factory=".processors._SubscriptChildProcessor" name="sub" />
-		<utility factory=".processors._SuperscriptChildProcessor" name="sup" />
-		
 		<utility factory=".processors._SpanChildProcessor" name="span" />
 		<utility factory=".processors._ParagraphChildProcessor" name="p" />
-		<utility factory=".processors._HyperlinkChildProcessor" name="a" />
-		<utility factory=".processors._HeadingOneChildProcessor" name="h1" />
-		<utility factory=".processors._HeadingTwoChildProcessor" name="h2" />
-		<utility factory=".processors._HeadingThreeChildProcessor" name="h3" />
-		<utility factory=".processors._HeadingFourChildProcessor" name="h4" />
-		<utility factory=".processors._HeadingFiveChildProcessor" name="h5" />
-		<utility factory=".processors._HeadingSixChildProcessor" name="h6" />
-		<utility factory=".processors._HeadingSevenChildProcessor" name="h7" />
-		
 		<utility factory=".processors._DivChildProcessor" name="div" />
-		<utility factory=".processors._OrderedListChildProcessor" name="ol" />
-		<utility factory=".processors._UnorderedListChildProcessor" name="ul" />
 		<utility factory=".processors._ImageChildProcessor" name="img" />
 		<utility factory=".processors._FigureChildProcessor" name="figure" />
-		<utility factory=".processors._NewlineChildProcessor" name="br" />
 	</registerIn>
 
 </configure>
