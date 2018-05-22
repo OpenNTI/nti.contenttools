@@ -18,11 +18,11 @@ from nti.contenttools.adapters.epub.ifsta.run import Run
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
-from nti.contenttools.tests import ContentToolsTestCase
+from nti.contenttools.adapters.epub.ifsta.tests import IFSTATestCase
 
 from nti.contenttools.adapters.epub.ifsta.tests import create_epub_object
 
-class TestRunAdapter(ContentToolsTestCase):
+class TestRunAdapter(IFSTATestCase):
 
     def test_b_element(self):
         script = u'<div><b>This is a bold text</b></div>'

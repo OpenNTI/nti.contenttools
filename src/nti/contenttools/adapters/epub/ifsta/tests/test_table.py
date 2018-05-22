@@ -18,10 +18,9 @@ from nti.contenttools.adapters.epub.ifsta.run import Run
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
-from nti.contenttools.tests import ContentToolsTestCase
+from nti.contenttools.adapters.epub.ifsta.tests import IFSTATestCase
 
-
-class TestTable(ContentToolsTestCase):
+class TestTable(IFSTATestCase):
 
     def test_table(self):
         script = u"""<div><table>
