@@ -86,4 +86,4 @@ class TestParagraphAdapter(ContentToolsTestCase):
 		node = Run.process(element)
 		output = render_output(node)
 		assert_that(output,
-		            is_(u'\subsubparagraph{Heading 6}\n\n'))
+		            is_(u'\subsubparagraph{Heading 7}\n\n'))
