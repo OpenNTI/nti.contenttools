@@ -4,17 +4,24 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 import os
 import six
 import logging
 import argparse
 
+from zope import component
+
+from zope.component.hooks import getSite
+from zope.component.hooks import setSite
+from zope.component.hooks import setHooks
+
 from zope.configuration import xmlconfig
+
+from zope.interface.interfaces import IComponents
 
 import nti.contenttools
 
@@ -23,6 +30,31 @@ from nti.contenttools.adapters.epub.parser import EPUBParser
 from nti.contenttools.util import string_replacer
 
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
+
+logger = __import__('logging').getLogger(__name__)
+
+
+class TrivialSite(object):
+
+    __name__ = ''
+    __parent__ = None
+
+    def __init__(self, sm):
+        self.sm = sm
+
+    def getSiteManager(self):
+        return self.sm
+
+
+def prepare_site(args):
+    if args.site:
+        name = args.site
+        site = getSite()
+        campus = component.getUtility(IComponents, name=name)
+        new_site = TrivialSite(campus)
+        new_site.__name__ = name
+        new_site.__parent__ = site
+        setSite(new_site)
 
 
 def parse_args():
@@ -42,6 +74,9 @@ def parse_args():
     arg_parser.add_argument('-ch', '--chapternum',
                             default=None,
                             help="The chapter number")
+    arg_parser.add_argument('-s', '--site',
+                            default='site',
+                            help="The base components")
     return arg_parser.parse_args()
 
 
@@ -82,6 +117,7 @@ def main():
     if not os.path.exists(args.output):
         os.mkdir(args.output)
 
+    setHooks()
     setup_context()
 
     # create a txt file to store information about image's name and location
