@@ -41,95 +41,6 @@ class _ParagraphChildProcessor(object):
         node.add_child(result)
         return result
 
-
-@interface.implementer(IChildProcessor)
-class _BoldChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Run.process(child, (u'bold',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _ItalicChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Run.process(child, (u'italic',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _UnderlineChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Run.process(child, (u'underline',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _StrongChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Run.process(child, (u'bold',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _StrikeChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Run.process(child, (u'strike',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _EmphasisChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Run.process(child, (u'italic',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _SubscriptChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Run.process(child, (u'sub',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _SuperscriptChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Run.process(child, (u'sup',), epub=epub)
-        node.add_child(result)
-        return result
-
-
 @interface.implementer(IChildProcessor)
 class _SpanChildProcessor(object):
 
@@ -139,95 +50,6 @@ class _SpanChildProcessor(object):
         result = process_span_elements(child, epub=epub)
         node.add_child(result)
         return result
-
-
-@interface.implementer(IChildProcessor)
-class _HyperlinkChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Hyperlink.process(child, epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _HeadingOneChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, (u'Heading1',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _HeadingTwoChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, (u'Heading2',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _HeadingThreeChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, (u'Heading3',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _HeadingFourChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, (u'Heading4',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _HeadingFiveChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, (u'Heading5',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _HeadingSixChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, (u'Heading6',), epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _HeadingSevenChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, (u'Heading7',), epub=epub)
-        node.add_child(result)
-        return result
-
 
 @interface.implementer(IChildProcessor)
 class _DivChildProcessor(object):
@@ -239,27 +61,6 @@ class _DivChildProcessor(object):
         node.add_child(result)
         return result
 
-
-@interface.implementer(IChildProcessor)
-class _OrderedListChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = OrderedList.process(child, epub=epub)
-        node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _UnorderedListChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = UnorderedList.process(child, epub=epub)
-        node.add_child(result)
-        return result
 
 @interface.implementer(IChildProcessor)
 class _ImageChildProcessor(object):
@@ -280,16 +81,4 @@ class _FigureChildProcessor(object):
     def process(self, child, node, element, epub=None):
         result = Figure.process(child, epub=epub)
         node.add_child(result)
-        return result
-
-
-@interface.implementer(IChildProcessor)
-class _NewlineChildProcessor(object):
-
-    __slots__ = ()
-
-    def process(self, child, node, element, epub=None):
-        result = TextNode(u'\\newline\n')
-        node.add_child(result)
-        node.add_child(TextNode(child.tail))
         return result
