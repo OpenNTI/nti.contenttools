@@ -8,8 +8,8 @@
 	<include package="zope.component" />
 	<include package="zope.security" />
 		
+	<include package=".generic" />
 	<include package=".ifsta" />
 	<include package=".tcia" />
-	<include package=".generic" />
 	
 </configure>
