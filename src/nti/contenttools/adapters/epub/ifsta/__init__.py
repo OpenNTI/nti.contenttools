@@ -41,6 +41,10 @@ from nti.contenttools.adapters.epub.ifsta.finder import search_figure_icon_on_si
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_glossary_entries
 from nti.contenttools.adapters.epub.ifsta.finder import search_and_update_figure_caption_reflowable
 
+from nti.contenttools.adapters.epub.generic import check_child
+from nti.contenttools.adapters.epub.generic import check_element_tail
+from nti.contenttools.adapters.epub.generic import check_element_text
+
 def adapt(fragment, epub=None):
     body = fragment.find('body')
     epub_body = EPUBBody.process(body, epub)
@@ -100,7 +104,6 @@ def adapt(fragment, epub=None):
 
     return epub_body
 
-
 class EPUBBody(types.EPUBBody):
 
     @classmethod
@@ -115,31 +118,3 @@ class EPUBBody(types.EPUBBody):
         me = check_child(me, element, epub)
         me = check_element_tail(me, element)
         return me
-
-
-def check_element_text(node, element):
-    if element.text:
-        if element.text.isspace():
-            if len(element.text) == 1:
-                node.add_child(TextNode(u' '))
-        else:
-            node.add_child(TextNode(text_(element.text)))
-    return node
-
-
-def check_child(node, element, epub=None):
-    for child in element:
-        processor = component.queryUtility(IChildProcessor, name=child.tag)
-        if processor is not None:
-            processor.process(child, node, element, epub=epub)
-        elif not isinstance(child, HtmlComment):
-            logger.warn('Unhandled %s child: %s.', element, child)
-    return node
-
-
-def check_element_tail(node, element):
-    if element.tail:
-        if not element.tail.isspace():
-            new_el_tail = element.tail
-            node.add_child(TextNode(new_el_tail))
-    return node
