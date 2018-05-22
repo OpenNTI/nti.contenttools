@@ -63,6 +63,7 @@ setup(
         'Pillow',
         'simplejson',
         'six',
+        'z3c.baseregistry',
         'zope.component',
         'zope.exceptions',
         'zope.interface',
