@@ -13,17 +13,13 @@ import six
 import logging
 import argparse
 
-from zope import component
-
-from zope.component.hooks import getSite
-from zope.component.hooks import setSite
 from zope.component.hooks import setHooks
 
 from zope.configuration import xmlconfig
 
-from zope.interface.interfaces import IComponents
-
 import nti.contenttools
+
+from nti.contenttools.adapters.common import prepare_site
 
 from nti.contenttools.adapters.epub.parser import EPUBParser
 
@@ -32,29 +28,6 @@ from nti.contenttools.util import string_replacer
 DEFAULT_FORMAT_STRING = '[%(asctime)-15s] [%(name)s] %(levelname)s: %(message)s'
 
 logger = __import__('logging').getLogger(__name__)
-
-
-class TrivialSite(object):
-
-    __name__ = ''
-    __parent__ = None
-
-    def __init__(self, sm):
-        self.sm = sm
-
-    def getSiteManager(self):
-        return self.sm
-
-
-def prepare_site(args):
-    if args.site:
-        name = args.site
-        site = getSite()
-        campus = component.getUtility(IComponents, name=name)
-        new_site = TrivialSite(campus)
-        new_site.__name__ = name
-        new_site.__parent__ = site
-        setSite(new_site)
 
 
 def parse_args():
@@ -119,6 +92,7 @@ def main():
 
     setHooks()
     setup_context()
+    prepare_site(args.site)
 
     # create a txt file to store information about image's name and location
     # used in nticard
