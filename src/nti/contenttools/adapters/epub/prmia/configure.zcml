@@ -17,7 +17,7 @@
 		<utility factory=".processors._ParagraphChildProcessor" name="p" />
 		<utility factory=".processors._DivChildProcessor" name="div" />
 		<utility factory=".processors._ImageChildProcessor" name="img" />
-		<utility factory=".processors._FigureChildProcessor" name="figure" />
+		<utility factory=".processors._HyperlinkChildProcessor" name="a" />
 	</registerIn>
 
 </configure>
