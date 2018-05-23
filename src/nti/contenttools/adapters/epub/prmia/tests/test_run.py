@@ -33,4 +33,4 @@ class TestRunAdapter(PRMIATestCase):
         node = Run.process(element, epub=epub)
         assert_that(epub.ids, is_(["ch01fig1"]))
         output = render_output(node)
-        assert_that(output, is_(u'\\begin{figure}\n\\begin{center}\n\\includegraphics[width=0px,height=0px]{Images/CourseAssets/PRMIATest/f0002-01.gif}\n\caption{\textbf{FIGURE 1-1} The Risk Management Process}\n\\label{ch01fig1}\n\\end{center}\n\\end{figure}\n'))
+        assert_that(output, is_(u'\\begin{figure}\n\\begin{center}\n\\includegraphics[width=0px,height=0px]{Images/CourseAssets/PRMIATest/f0002-01.gif}\n\\caption{\\textbf{FIGURE 1-1} The Risk Management Process}\n\\label{ch01fig1}\n\\end{center}\n\\end{figure}\n'))
