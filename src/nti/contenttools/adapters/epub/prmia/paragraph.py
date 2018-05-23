@@ -26,6 +26,8 @@ from nti.contenttools.types.lists import UnorderedList
 class Paragraph(types.Paragraph):
 
 	UNORDERED_LIST_DEF = ('list-bulleted-first', 'list-bulleted-middle', )
+	IMAGE_DEF = ('image', )
+	FIGURE_CAPTION_DEF = ('figcap', )
 
 	@classmethod
 	def process(cls, element, styles=(), epub=None):
@@ -47,4 +49,14 @@ class Paragraph(types.Paragraph):
 	    		item.children = me.children
 	    		bullet_class.children = [item]
 	    		me = bullet_class
+	    	elif any(s.lower() in para_class.lower() for s in cls.IMAGE_DEF):
+	    		node = types.Run()
+	    		node.element_type = 'Figure Image'
+	    		node.children = me.children
+	    		me = node
+	    	elif any(s.lower() in para_class.lower() for s in cls.FIGURE_CAPTION_DEF):
+	    		node = types.Run()
+	    		node.element_type = 'Figure Caption'
+	    		node.children = me.children
+	    		me = node
 	    return me

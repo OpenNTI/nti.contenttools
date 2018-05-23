@@ -60,17 +60,3 @@ def save_image(image_data, filepath, epub):
 
     with open(filepath, 'wb') as fp:
         fp.write(image_data.read())
-
-
-class Figure(types.Figure):
-
-    @classmethod
-    def process(cls, element, epub=None):
-        me = cls()
-        for child in element:
-            if child.tag == 'img':
-                el = Image.process(child, epub=epub)
-                me.add_child(el)
-            else:
-                logger.warning('Unhandled Figure element child %s', child.tag)
-        return me

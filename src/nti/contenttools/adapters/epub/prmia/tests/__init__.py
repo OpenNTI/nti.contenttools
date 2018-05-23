@@ -25,6 +25,8 @@ class Object(object):
 def create_epub_object():
     epub = Object()
     epub.ids = []
+    epub.book_title = 'PRMIATest'
+    epub.input_file = None
     return epub
 
 

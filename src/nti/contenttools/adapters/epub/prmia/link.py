@@ -34,7 +34,7 @@ class Hyperlink(types.Hyperlink):
                 me.add_child(Run.process(child))
         elif 'id' in link.attrib:
             epub.ids.append(link.attrib['id'])
-            return
+            me = types.TextNode(link.attrib['id'])
         else:
             me = Run()
             check_element_tail(me, link)
