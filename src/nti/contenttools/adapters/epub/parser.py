@@ -69,8 +69,9 @@ class EPUBParser(object):
         self.glossary_entry_sections = []
 
         self.tables = []
-
         self.chapter_num = chapter_num
+
+        self.ids = []
 
         self.epub_reader = EPUBReader(input_file)
         self.epub_reader(self)

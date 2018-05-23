@@ -14,13 +14,13 @@ from zope import interface
 from nti.contenttools.adapters.epub.interfaces import IChildProcessor
 
 from nti.contenttools.adapters.epub.prmia.media import Image
-from nti.contenttools.adapters.epub.prmia.media import Figure
 
 from nti.contenttools.adapters.epub.prmia.paragraph import Paragraph
 
 from nti.contenttools.adapters.epub.prmia.run import process_div_elements
 from nti.contenttools.adapters.epub.prmia.run import process_span_elements
 
+from nti.contenttools.adapters.epub.prmia.link import Hyperlink
 
 from nti.contenttools.types import TextNode
 
@@ -67,13 +67,12 @@ class _ImageChildProcessor(object):
         node.add_child(result)
         return result
 
-
 @interface.implementer(IChildProcessor)
-class _FigureChildProcessor(object):
+class _HyperlinkChildProcessor(object):
 
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Figure.process(child, epub=epub)
+        result = Hyperlink.process(child, epub=epub)
         node.add_child(result)
         return result
