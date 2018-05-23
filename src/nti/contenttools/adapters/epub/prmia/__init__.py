@@ -14,6 +14,7 @@ from nti.contenttools.adapters.epub.generic import check_child
 from nti.contenttools.adapters.epub.generic import check_element_tail
 from nti.contenttools.adapters.epub.generic import check_element_text
 
+
 def adapt(fragment, epub=None):
     body = fragment.find('body')
     epub_body = EPUBBody.process(body, epub)

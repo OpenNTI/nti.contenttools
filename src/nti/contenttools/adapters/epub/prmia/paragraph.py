@@ -9,15 +9,23 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from nti.contenttools import types
-
 from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.adapters.epub.prmia import check_child
 from nti.contenttools.adapters.epub.prmia import check_element_text
 from nti.contenttools.adapters.epub.prmia import check_element_tail
 
+from nti.contenttools import types
+
+from nti.contenttools.types.note import BlockQuote
+from nti.contenttools.types.note import CenterNode
+
+from nti.contenttools.types.lists import Item
+from nti.contenttools.types.lists import UnorderedList
+
 class Paragraph(types.Paragraph):
+
+	UNORDERED_LIST_DEF = ('list-bulleted-first', 'list-bulleted-middle', )
 
 	@classmethod
 	def process(cls, element, styles=(), epub=None):
@@ -25,4 +33,18 @@ class Paragraph(types.Paragraph):
 	    me = check_element_text(me, element)
 	    me = check_child(me, element, epub)
 	    me = check_element_tail(me, element)
+
+	    attrib = element.attrib
+	    if 'class' in attrib:
+	    	para_class = attrib['class'] if 'class' in attrib else u'' 
+	    	if para_class == 'center':
+	    		center_node = CenterNode()
+	    		center_node.children = me.children
+	    		me = center_node
+	    	elif any(s.lower() in para_class.lower() for s in cls.UNORDERED_LIST_DEF):
+	    		item = Item()
+	    		bullet_class = UnorderedList()
+	    		item.children = me.children
+	    		bullet_class.children = [item]
+	    		me = bullet_class
 	    return me
