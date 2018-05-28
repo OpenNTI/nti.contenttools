@@ -17,8 +17,6 @@ from nti.contenttools import types
 
 from nti.contenttools._compat import text_
 
-from nti.contenttools.adapters.epub.ifsta.interfaces import IChildProcessor
-
 from nti.contenttools.types import TextNode
 from nti.contenttools.types import ChapterCounter
 
