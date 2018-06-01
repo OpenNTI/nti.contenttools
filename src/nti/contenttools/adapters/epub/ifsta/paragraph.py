@@ -41,7 +41,7 @@ class Paragraph(types.Paragraph):
     bullet_list = (u'Bullet ParaOverride-1', u'Bullet')
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD')
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
-    paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride',)
+    paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride', u'Basic-Paragraph')
 
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
@@ -77,6 +77,18 @@ class Paragraph(types.Paragraph):
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)
                 me = check_element_tail(me, element)
+                if epub:
+                    if u'Sub1' in attrib['class'] and epub.chapter_num == 'Index':
+                        el = types.BlockQuote()
+                        el.children = me.children
+                        me = el
+                    elif u'Sub2' in attrib['class'] and epub.chapter_num == 'Index':
+                        el = types.BlockQuote()
+                        el_2 = types.BlockQuote()
+                        el_2.children = me.children
+                        el.add_child(el_2)
+                        me = el
+
                 if any(s.lower() in attrib['class'].lower() for s in cls.sidebar_list):
                     sidebar_class = Sidebar()
                     if 'Case-History' in element.attrib['class']:
@@ -202,19 +214,6 @@ class Paragraph(types.Paragraph):
                                             el = BlockQuote()
                                             el.children = me.children
                                             me = el
-                elif epub.chapter_num:
-                    if u'Sub1' in attrib['class'] and epub.chapter_num == 'Index':
-                        el = types.BlockQuote()
-                        el.children = me.children
-                        me = el
-                    elif u'Sub2' in attrib['class'] and epub.chapter_num == 'Index':
-                        el = types.BlockQuote()
-                        el_2 = types.BlockQuote()
-                        el_2.children = me.children
-                        el.add_child(el_2)
-                        me = el
-                else:
-                    add_basic_paragraph_children(me, element, epub)
             else:
                 add_basic_paragraph_children(me, element, epub)
         else:
