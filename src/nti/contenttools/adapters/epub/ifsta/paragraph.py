@@ -41,7 +41,7 @@ class Paragraph(types.Paragraph):
     bullet_list = (u'Bullet ParaOverride-1', u'Bullet')
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD')
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
-    paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride',)
+    paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride', u'Basic-Paragraph')
 
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
