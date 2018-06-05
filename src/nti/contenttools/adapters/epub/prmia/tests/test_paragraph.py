@@ -75,3 +75,11 @@ class TestParagraphAdapter(PRMIATestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\subsection{\\textbf{CORPORATE RISK MANAGEMENT: A PRIMER}}\n\\label{subsection:CORPORATE_RISK_MANAGEMENT__A_PRIMER_}\n\n'))
+
+    def test_footnote_node(self):
+        script = u'<div><p class="footnote">This is footnote</p></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\footnote{This is footnote}'))
