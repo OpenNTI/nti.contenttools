@@ -23,3 +23,19 @@ def search_run_node_with_element_type(root, element_type, nodes):
 		for child in root:
 			search_run_node_with_element_type(child, element_type, nodes)
 	return nodes
+
+
+def search_label_node_in_list(nodes, label):
+	for item in nodes:
+		if IRunNode.providedBy(item):
+			if item.element_type == 'Label':
+				label = item
+				nodes.remove(item)
+	return label
+
+def remove_node_from_parent(node):
+	parent = node.__parent__
+	children = []
+	for child in parent.children:
+		if child == node:
+			parent.children.remove(child)

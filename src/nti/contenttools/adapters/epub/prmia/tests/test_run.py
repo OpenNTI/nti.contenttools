@@ -34,3 +34,11 @@ class TestRunAdapter(PRMIATestCase):
         assert_that(epub.ids, is_(["ch01fig1"]))
         output = render_output(node)
         assert_that(output, is_(u'\\begin{figure}\n\\begin{center}\n\\includegraphics[width=0px,height=0px]{Images/CourseAssets/PRMIATest/f0002-01.gif}\n\\caption{\\textbf{FIGURE 1-1} The Risk Management Process}\n\\label{ch01fig1}\n\\end{center}\n\\end{figure}\n'))
+
+    def test_div_sidebar(self):
+        script = u"""<div><div class="sidebar"><p class="side-title"><a id="ch03sb1"></a><strong>BOX 3-1 BANK REGULATION AND RISK MANAGEMENT</strong></p><p class="noindentt">Para 1</p><p class="indent">Para 2</p></div></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        output = render_output(node)
+        assert_that(output, is_(u'\n\\begin{sidebar}{\\textbf{BOX 3-1 BANK REGULATION AND RISK MANAGEMENT}}\n\\label{ch03sb1}Para 1\n\nPara 2\n\n\n\\end{sidebar}\n\\\\\n'))
