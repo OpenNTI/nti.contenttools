@@ -65,4 +65,10 @@ class Paragraph(types.Paragraph):
 	    		node.element_type = 'Sidebar Title'
 	    		node.children = me.children
 	    		me = node
+	    	elif para_class == 'footnote':
+	    		node = types.Note()
+	    		node.children = me.children
+	    		me = node
+	    	else:
+	    		me.styles.extend(styles)
 	    return me
