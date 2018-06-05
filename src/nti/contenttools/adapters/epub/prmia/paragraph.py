@@ -28,6 +28,7 @@ class Paragraph(types.Paragraph):
 	UNORDERED_LIST_DEF = ('list-bulleted-first', 'list-bulleted-middle', )
 	IMAGE_DEF = ('image', )
 	FIGURE_CAPTION_DEF = ('figcap', )
+	SIDEBAR_TITLE_DEF = ('side-title', )
 
 	@classmethod
 	def process(cls, element, styles=(), epub=None):
@@ -57,6 +58,11 @@ class Paragraph(types.Paragraph):
 	    	elif any(s.lower() in para_class.lower() for s in cls.FIGURE_CAPTION_DEF):
 	    		node = types.Run()
 	    		node.element_type = 'Figure Caption'
+	    		node.children = me.children
+	    		me = node
+	    	elif any(s.lower() in para_class.lower() for s in cls.SIDEBAR_TITLE_DEF):
+	    		node = types.Run()
+	    		node.element_type = 'Sidebar Title'
 	    		node.children = me.children
 	    		me = node
 	    return me
