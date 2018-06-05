@@ -22,6 +22,8 @@ from nti.contenttools.adapters.epub.tcia import adapt as adapt_tcia
 
 from nti.contenttools.adapters.epub.ifsta import adapt as adapt_ifsta
 
+from nti.contenttools.adapters.epub.prmia import adapt as adapt_prmia
+
 from nti.contenttools.renderers.model import DefaultRendererContext
 
 from nti.contenttools.renderers.LaTeX.base import render_node
@@ -36,7 +38,7 @@ from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IEPUBBody
 
-EPUB_COURSE_TYPE = (u'ifsta', u'ifsta_rf', u'tcia')
+EPUB_COURSE_TYPE = (u'ifsta', u'ifsta_rf', u'tcia', u'prmia')
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -104,6 +106,8 @@ class EPUBParser(object):
                     epub_chapter = adapt_ifsta(fragment, self)
                 elif self.epub_type == 'tcia':
                     epub_chapter = adapt_tcia(fragment, self)
+                elif self.epub_type == 'prmia':
+                    epub_chapter = adapt_prmia(fragment, self)
                 else:
                     # TODO: create generic adapter
                     # epub_chapter = adapt(fragment)

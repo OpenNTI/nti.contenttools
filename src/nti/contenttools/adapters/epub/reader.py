@@ -19,6 +19,8 @@ from nti.contenttools import types
 
 etree_fromstring = getattr(etree, 'fromstring')
 
+from nti.contenttools._compat import text_
+
 
 class EPUBReader(object):
     """
@@ -148,6 +150,6 @@ class EPUBReader(object):
                     logger.warn("Spine item %s does not exist", item_name)
 
         self.document = types.Document()
-        self.document.author = self.author
-        self.document.title = self.title
+        self.document.author = text_(self.author)
+        self.document.title = text_(self.title)
         self.docfrags = docfrags
