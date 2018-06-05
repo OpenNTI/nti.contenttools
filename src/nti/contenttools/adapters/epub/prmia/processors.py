@@ -22,8 +22,11 @@ from nti.contenttools.adapters.epub.prmia.run import process_span_elements
 
 from nti.contenttools.adapters.epub.prmia.link import Hyperlink
 
+from nti.contenttools import types
+
 from nti.contenttools.types import TextNode
 
+from nti.contenttools.renderers.LaTeX.utils import create_label
 
 @interface.implementer(IChildProcessor)
 class _ParagraphChildProcessor(object):
@@ -76,3 +79,58 @@ class _HyperlinkChildProcessor(object):
         result = Hyperlink.process(child, epub=epub)
         node.add_child(result)
         return result
+
+@interface.implementer(IChildProcessor)
+class _HeadingOneChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Paragraph.process(child, (u'Heading1',), epub=epub)
+        result.label = generate_section_label(result, 'chapter')
+        node.add_child(result)
+        return result
+
+
+@interface.implementer(IChildProcessor)
+class _HeadingTwoChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Paragraph.process(child, (u'Heading2',), epub=epub)
+        result.label = generate_section_label(result, 'section')
+        node.add_child(result)
+        return result
+
+
+@interface.implementer(IChildProcessor)
+class _HeadingThreeChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Paragraph.process(child, (u'Heading3',), epub=epub)
+        result.label = generate_section_label(result, 'subsection')
+        node.add_child(result)
+        return result
+
+
+@interface.implementer(IChildProcessor)
+class _HeadingFourChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Paragraph.process(child, (u'Heading4',), epub=epub)
+        result.label = generate_section_label(result, 'subsubsection')
+        node.add_child(result)
+        return result
+
+
+def generate_section_label(section_node, section_type):
+    label = types.Run()
+    label.children = section_node.children
+    label = TextNode(create_label(section_type, label))
+    return label
+

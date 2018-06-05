@@ -65,4 +65,6 @@ class Paragraph(types.Paragraph):
 	    		node.element_type = 'Sidebar Title'
 	    		node.children = me.children
 	    		me = node
+	    	else:
+	    		me.styles.extend(styles)
 	    return me

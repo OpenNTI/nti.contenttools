@@ -51,3 +51,27 @@ class TestParagraphAdapter(PRMIATestCase):
         assert_that(output,
                     is_(u'\\begin{itemize}\n\\item * \\textit{The role of the board must be strengthened.} Strengthening board oversight of risk does not diminish the fundamental responsibility of management for the risk management process. \n\n\\end{itemize}\n'))
 
+
+    def test_heading_2(self):
+        script = u'<div><h2 class="h2a"><strong>CORPORATE RISK MANAGEMENT: A PRIMER</strong></h2></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\chapter{\\textbf{CORPORATE RISK MANAGEMENT: A PRIMER}}\n\\label{chapter:CORPORATE_RISK_MANAGEMENT__A_PRIMER_}\n\n'))
+
+    def test_heading_3(self):
+        script = u'<div><h3 class="h3a"><strong>CORPORATE RISK MANAGEMENT: A PRIMER</strong></h3></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\section{\\textbf{CORPORATE RISK MANAGEMENT: A PRIMER}}\n\\label{section:CORPORATE_RISK_MANAGEMENT__A_PRIMER_}\n\n'))
+
+    def test_heading_4(self):
+        script = u'<div><h4 class="h4a"><strong>CORPORATE RISK MANAGEMENT: A PRIMER</strong></h4></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\subsection{\\textbf{CORPORATE RISK MANAGEMENT: A PRIMER}}\n\\label{subsection:CORPORATE_RISK_MANAGEMENT__A_PRIMER_}\n\n'))
