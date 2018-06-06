@@ -13,19 +13,13 @@ from zope import interface
 
 from nti.contenttools.adapters.epub.interfaces import IChildProcessor
 
-from nti.contenttools.adapters.epub.tcia.lists import OrderedList
-from nti.contenttools.adapters.epub.tcia.lists import UnorderedList
-
 from nti.contenttools.adapters.epub.tcia.media import Image
 from nti.contenttools.adapters.epub.tcia.media import Figure
-
-from nti.contenttools.adapters.epub.tcia.link import Hyperlink
 
 from nti.contenttools.adapters.epub.tcia.paragraph import Paragraph
 
 from nti.contenttools.adapters.epub.tcia.run import Run
 from nti.contenttools.adapters.epub.tcia.run import process_span_elements
-
 
 from nti.contenttools.types import TextNode
 
