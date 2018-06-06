@@ -52,6 +52,11 @@ def process_div_elements(element, parent, epub=None):
             el = sidebar
     return el
 
+def process_sup_elements(element, parent, epub=None):
+    el = Run.process(element, epub=epub)
+    el.element_type = 'Superscript'
+    return el
+
 def process_span_elements(element, epub=None):
     el = Run.process(element, epub=epub)
     return el
