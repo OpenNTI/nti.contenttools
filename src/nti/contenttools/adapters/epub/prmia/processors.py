@@ -18,6 +18,7 @@ from nti.contenttools.adapters.epub.prmia.media import Image
 from nti.contenttools.adapters.epub.prmia.paragraph import Paragraph
 
 from nti.contenttools.adapters.epub.prmia.run import process_div_elements
+from nti.contenttools.adapters.epub.prmia.run import process_sup_elements
 from nti.contenttools.adapters.epub.prmia.run import process_span_elements
 
 from nti.contenttools.adapters.epub.prmia.link import Hyperlink
@@ -58,6 +59,15 @@ class _DivChildProcessor(object):
         node.add_child(result)
         return result
 
+@interface.implementer(IChildProcessor)
+class _SuperscriptChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = process_sup_elements(child, node, epub=epub)
+        node.add_child(result)
+        return result
 
 
 @interface.implementer(IChildProcessor)

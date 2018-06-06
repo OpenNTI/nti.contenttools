@@ -22,6 +22,7 @@
 		<utility factory=".processors._HeadingTwoChildProcessor" name="h3" />
 		<utility factory=".processors._HeadingThreeChildProcessor" name="h4" />
 		<utility factory=".processors._HeadingFourChildProcessor" name="h5" />
+		<utility factory=".processors._SuperscriptChildProcessor" name="sup" />
 	</registerIn>
 
 </configure>
