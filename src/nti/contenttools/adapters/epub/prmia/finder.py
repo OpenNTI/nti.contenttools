@@ -11,6 +11,10 @@ logger = __import__('logging').getLogger(__name__)
 
 
 from nti.contenttools.types.interfaces import IRunNode
+from nti.contenttools.types.interfaces import IHyperlink
+
+from nti.contenttools.renderers.LaTeX.base import render_output
+
 
 def search_run_node_with_element_type(root, element_type, nodes):
 	if IRunNode.providedBy(root):
@@ -35,7 +39,38 @@ def search_label_node_in_list(nodes, label):
 
 def remove_node_from_parent(node):
 	parent = node.__parent__
-	children = []
 	for child in parent.children:
 		if child == node:
 			parent.children.remove(child)
+
+				
+def find_sup_under_paragraph(root, para_type, label_dict):
+	if IRunNode.providedBy(root):
+		if root.element_type == 'Superscript':
+			sup_type = u'%_Superscript' %(para_type) 
+			find_label_node(root, sup_type, label_dict)
+
+def find_label_node(node, parent_type, label_dict):
+	if IRunNode.providedBy(node):
+		if node.element_type == 'Label':
+			label_type = parent_type
+			label_dict['parent_type'] = render_output(node)
+		elif hasattr(node, 'children'):
+			for child in node:
+				find_label_node(child, parent_type, label_dict)
+	elif hasattr(node, 'children'):
+		for child in node:
+			find_label_node(child, parent_type, label_dict)
+	return label_dict
+
+def find_ref_node(node, ref_label_node):
+	if IHyperlink.providedBy(node):
+		target = node.target
+		if '#' in target:
+			label_ref_idx = target.find('#') + 1
+			node.target = target[label_ref_idx:]
+			ref_label_node.append(node.target)
+	elif hasattr(node, 'children'):
+		for child in node:
+			find_ref_node(child, ref_label_node)
+	return ref_label_node
