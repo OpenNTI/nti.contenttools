@@ -44,17 +44,29 @@ def remove_node_from_parent(node):
 			parent.children.remove(child)
 
 				
-def find_sup_under_paragraph(root, para_type, label_dict):
+def find_superscript_node(root, root_type, label_dict, label_ref_dict):
 	if IRunNode.providedBy(root):
 		if root.element_type == 'Superscript':
-			sup_type = u'%_Superscript' %(para_type) 
+			sup_type = u'%s_Superscript' %(root_type) 
 			find_label_node(root, sup_type, label_dict)
+			ref_label_node = []
+			find_ref_node(root, ref_label_node)
+			if label_dict and ref_label_node:
+				if len(label_dict) == len(ref_label_node):
+					for i, key in enumerate(label_dict):
+						label_ref_dict[label_dict[key]] = ref_label_node[i]
+		elif hasattr(root, 'children'):
+			for child in root:
+				find_superscript_node(child, root_type, label_dict, label_ref_dict)
+	elif hasattr(root, 'children'):
+		for child in root:
+			find_superscript_node(child, root_type, label_dict, label_ref_dict)
+	return label_dict, label_ref_dict
 
 def find_label_node(node, parent_type, label_dict):
 	if IRunNode.providedBy(node):
 		if node.element_type == 'Label':
-			label_type = parent_type
-			label_dict['parent_type'] = render_output(node)
+			label_dict[parent_type] = render_output(node)
 		elif hasattr(node, 'children'):
 			for child in node:
 				find_label_node(child, parent_type, label_dict)
