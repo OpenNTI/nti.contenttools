@@ -75,6 +75,10 @@ class EPUBParser(object):
 
         self.ids = []
 
+        self.labels = {} ## id - id type
+        self.footnote_ids = {} ## footnote id - content
+        self.label_refs = {} ## id - id to ref
+
         self.epub_reader = EPUBReader(input_file)
         self.epub_reader(self)
         main_title = rename_filename(self.epub_reader.title)
