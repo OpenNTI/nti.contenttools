@@ -121,5 +121,7 @@ class TestFinder(PRMIATestCase):
         element = html.fromstring(script)
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
-        output = render_output(node)
-        assert_that(output, is_(u'\\footnote{This is a footnote}'))
+        for item in epub.footnote_ids:
+            footnote_node = epub.footnote_ids[item]
+            output = render_output(footnote_node)
+            assert_that(output, is_(u'\\footnote{This is a footnote}'))

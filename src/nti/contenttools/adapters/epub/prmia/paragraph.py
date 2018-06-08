@@ -77,11 +77,16 @@ class Paragraph(types.Paragraph):
 	    		label_ref_dict = {}
 	    		sup_nodes = []
 	    		find_superscript_node(node, 'Footnote', label_dict, label_ref_dict, sup_nodes)
-	    		if sup_nodes:
+	    		if sup_nodes and epub:
 	    			for item in sup_nodes:
 	    				for child in item:
 	    					remove_node_from_parent(child)
-	    		me = node
+	    			epub.label_refs = merge_two_dicts(epub.label_refs, label_ref_dict)
+	    			footnote_id = label_dict['Footnote_Superscript']
+	    			epub.footnote_ids[footnote_id] = node
+	    			me = types.Run()
+	    		else: 
+	    			me = node
 	    	else:
 	    		me.styles.extend(styles)
 	    return me
