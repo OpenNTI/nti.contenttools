@@ -44,7 +44,7 @@ def remove_node_from_parent(node):
 			parent.children.remove(child)
 
 				
-def find_superscript_node(root, root_type, label_dict, label_ref_dict):
+def find_superscript_node(root, root_type, label_dict, label_ref_dict, sup_nodes):
 	if IRunNode.providedBy(root):
 		if root.element_type == 'Superscript':
 			sup_type = u'%s_Superscript' %(root_type) 
@@ -55,12 +55,13 @@ def find_superscript_node(root, root_type, label_dict, label_ref_dict):
 				if len(label_dict) == len(ref_label_node):
 					for i, key in enumerate(label_dict):
 						label_ref_dict[label_dict[key]] = ref_label_node[i]
+					sup_nodes.append(root)
 		elif hasattr(root, 'children'):
 			for child in root:
-				find_superscript_node(child, root_type, label_dict, label_ref_dict)
+				find_superscript_node(child, root_type, label_dict, label_ref_dict, sup_nodes)
 	elif hasattr(root, 'children'):
 		for child in root:
-			find_superscript_node(child, root_type, label_dict, label_ref_dict)
+			find_superscript_node(child, root_type, label_dict, label_ref_dict, sup_nodes)
 	return label_dict, label_ref_dict
 
 def find_label_node(node, parent_type, label_dict):

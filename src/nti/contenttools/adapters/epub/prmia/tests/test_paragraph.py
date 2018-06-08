@@ -83,3 +83,11 @@ class TestParagraphAdapter(PRMIATestCase):
         output = render_output(node)
         assert_that(output,
                     is_(u'\\footnote{This is footnote}'))
+
+    def test_footnote_node2(self):
+        script = u'<div><p class="footnote"><sup><a id="ch03fn29"></a><a href="ch03.html#ch03fn_29">29</a></sup>The stock of high-quality liquid assets is composed of Level 1 assets and Level 2 assets.</p></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output,
+                    is_(u'\\footnote{The stock of high-quality liquid assets is composed of Level 1 assets and Level 2 assets.}'))
