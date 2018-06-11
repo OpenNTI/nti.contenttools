@@ -27,6 +27,8 @@ def create_epub_object():
     epub.ids = []
     epub.book_title = 'PRMIATest'
     epub.input_file = None
+    epub.label_refs = {}
+    epub.footnote_ids = {}
     return epub
 
 

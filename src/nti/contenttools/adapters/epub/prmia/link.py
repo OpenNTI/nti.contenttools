@@ -33,7 +33,8 @@ class Hyperlink(types.Hyperlink):
             for child in link:
                 me.add_child(Run.process(child))
         elif 'id' in link.attrib:
-            epub.ids.append(link.attrib['id'])
+            if epub:
+                epub.ids.append(link.attrib['id'])
             me = Run()
             label = Run()
             label.element_type = 'Label'

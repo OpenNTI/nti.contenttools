@@ -44,7 +44,7 @@ def remove_node_from_parent(node):
 			parent.children.remove(child)
 
 				
-def find_superscript_node(root, root_type, label_dict, label_ref_dict):
+def find_superscript_node(root, root_type, label_dict, label_ref_dict, sup_nodes):
 	if IRunNode.providedBy(root):
 		if root.element_type == 'Superscript':
 			sup_type = u'%s_Superscript' %(root_type) 
@@ -55,13 +55,14 @@ def find_superscript_node(root, root_type, label_dict, label_ref_dict):
 				if len(label_dict) == len(ref_label_node):
 					for i, key in enumerate(label_dict):
 						label_ref_dict[label_dict[key]] = ref_label_node[i]
+						sup_nodes[label_dict[key]] = root
 		elif hasattr(root, 'children'):
 			for child in root:
-				find_superscript_node(child, root_type, label_dict, label_ref_dict)
+				find_superscript_node(child, root_type, label_dict, label_ref_dict, sup_nodes)
 	elif hasattr(root, 'children'):
 		for child in root:
-			find_superscript_node(child, root_type, label_dict, label_ref_dict)
-	return label_dict, label_ref_dict
+			find_superscript_node(child, root_type, label_dict, label_ref_dict, sup_nodes)
+	return label_dict, label_ref_dict, sup_nodes
 
 def find_label_node(node, parent_type, label_dict):
 	if IRunNode.providedBy(node):
@@ -86,3 +87,21 @@ def find_ref_node(node, ref_label_node):
 		for child in node:
 			find_ref_node(child, ref_label_node)
 	return ref_label_node
+
+def search_footnote_refs(root, epub):
+	label_dict = {}
+	label_ref_dict = {}
+	sup_nodes = {}
+	find_superscript_node(root, 'Refs', label_dict, label_ref_dict, sup_nodes)
+	for item in sup_nodes.keys():
+		id_ref = label_ref_dict[item]
+		if id_ref in epub.footnote_ids.keys():
+			node = sup_nodes[item]
+			parent = node.__parent__
+			footnote_node = epub.footnote_ids[id_ref]
+			for i, child in enumerate(parent):
+				if child == node:
+					parent.children.remove(child)
+					parent.children.insert(i, footnote_node)
+	return label_dict, label_ref_dict, sup_nodes
+

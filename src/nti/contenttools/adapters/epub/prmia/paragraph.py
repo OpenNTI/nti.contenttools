@@ -23,6 +23,11 @@ from nti.contenttools.types.note import CenterNode
 from nti.contenttools.types.lists import Item
 from nti.contenttools.types.lists import UnorderedList
 
+from nti.contenttools.adapters.epub.prmia.finder import find_superscript_node
+from nti.contenttools.adapters.epub.prmia.finder import remove_node_from_parent
+
+from nti.contenttools.util import merge_two_dicts
+
 class Paragraph(types.Paragraph):
 
 	UNORDERED_LIST_DEF = ('list-bulleted-first', 'list-bulleted-middle', )
@@ -68,7 +73,20 @@ class Paragraph(types.Paragraph):
 	    	elif para_class == 'footnote':
 	    		node = types.Note()
 	    		node.children = me.children
-	    		me = node
+	    		label_dict = {}
+	    		label_ref_dict = {}
+	    		sup_nodes = {}
+	    		find_superscript_node(node, 'Footnote', label_dict, label_ref_dict, sup_nodes)
+	    		if sup_nodes and epub:
+	    			for item in sup_nodes:
+	    				for child in sup_nodes[item]:
+	    					remove_node_from_parent(child)
+	    			epub.label_refs = merge_two_dicts(epub.label_refs, label_ref_dict)
+	    			footnote_id = label_dict['Footnote_Superscript']
+	    			epub.footnote_ids[footnote_id] = node
+	    			me = types.Run()
+	    		else: 
+	    			me = node
 	    	else:
 	    		me.styles.extend(styles)
 	    return me
