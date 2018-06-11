@@ -26,6 +26,7 @@ from nti.contenttools.adapters.epub.prmia.finder import find_label_node
 from nti.contenttools.adapters.epub.prmia.finder import find_superscript_node
 
 from nti.contenttools.adapters.epub.prmia.finder import search_footnote_refs
+from nti.contenttools.adapters.epub.prmia.finder import search_href_node
 
 class TestFinder(PRMIATestCase):
     def test_find_ref_node(self):
@@ -145,3 +146,12 @@ class TestFinder(PRMIATestCase):
         label_dict, label_ref_dict, sup_nodes = search_footnote_refs(node, epub)
         output = render_output(node)
         assert_that(output, is_(u'1 \\footnote{\\label{ch03fn40}Footnote 1}\n\n2 \\footnote{\\label{ch03fn41}Footnote 2}\n\n'))
+
+    def test_search_href_node(self):
+        script = u"""<div><p>Box <a href="ch03.html#ch03sb1">Box 3-1</a></p><div class="sidebar"><p class="side-title"><a id="ch03sb1"></a><strong>BOX 3-1 BANK REGULATION AND RISK MANAGEMENT</strong></p><p class="noindentt">Para 1</p><p class="indent">Para 2</p></div></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        search_href_node(node, epub)
+        output = render_output(node)
+        assert_that(output, is_(u'Box \\ntiidref{ch03sb1}<Box 3-1>\n\n\n\\begin{sidebar}{\\textbf{BOX 3-1 BANK REGULATION AND RISK MANAGEMENT}}\n\\label{ch03sb1}Para 1\n\nPara 2\n\n\n\\end{sidebar}\n\\\\\n'))

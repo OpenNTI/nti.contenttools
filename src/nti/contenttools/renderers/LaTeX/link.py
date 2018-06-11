@@ -37,6 +37,9 @@ def render_hyperlink(context, node):
             set_link(context, u'ntiincludevideo', target)
         elif node.type == u'Pageref':
             set_link(context, u'ntiidref', target)
+        elif node.type == u'ntiidref':
+            set_link(context, u'ntiidref', target)
+            set_option(context, node)
     return node
 
 
@@ -46,6 +49,11 @@ def set_link(context, command, target):
     context.write(u'{')
     context.write(target)
     context.write(u'}')
+
+def set_option(context, node):
+    context.write(u'<')
+    render_children(context, node)
+    context.write(u'>')
 
 
 @component.adapter(IHyperlink)
