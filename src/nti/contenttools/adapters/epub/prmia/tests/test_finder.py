@@ -25,6 +25,8 @@ from nti.contenttools.adapters.epub.prmia.finder import find_ref_node
 from nti.contenttools.adapters.epub.prmia.finder import find_label_node
 from nti.contenttools.adapters.epub.prmia.finder import find_superscript_node
 
+from nti.contenttools.adapters.epub.prmia.finder import search_footnote_refs
+
 class TestFinder(PRMIATestCase):
     def test_find_ref_node(self):
         script = u"""<div><p class="fnote"><sup><a id="ch03fn28"></a><a href="ch03.html#ch03fn_28">28</a></sup>Federal Reserve Chairman Ben S. Bernanke said &#8220;the Fed plans to avert strains in the banking system by pushing financial companies to better manage liquidity risk and reduce reliance on wholesale funding. Regulators will continue to press banks to reduce further their dependence on wholesale funding, which proved highly unreliable during the crisis.&#8221; Speech given on April 8, 2013, in Stone Mountain, Georgia.</p></div>"""
@@ -94,7 +96,7 @@ class TestFinder(PRMIATestCase):
         node_type = 'Fnote'
         label_dict = {}
         label_ref_dict = {}
-        sup_nodes = []
+        sup_nodes = {}
         find_superscript_node(node, node_type, label_dict, label_ref_dict, sup_nodes)
         assert_that(label_dict.keys(), has_item('Fnote_Superscript'))
         assert_that(label_dict['Fnote_Superscript'], is_('ch03fn28'))
@@ -109,7 +111,7 @@ class TestFinder(PRMIATestCase):
         node_type = 'Div'
         label_dict = {}
         label_ref_dict = {}
-        sup_nodes = []
+        sup_nodes = {}
         find_superscript_node(node, node_type, label_dict, label_ref_dict, sup_nodes)
         assert_that(label_dict.keys(), has_item('Div_Superscript'))
         assert_that(label_dict['Div_Superscript'], is_('ch03fn28'))
@@ -125,3 +127,12 @@ class TestFinder(PRMIATestCase):
             footnote_node = epub.footnote_ids[item]
             output = render_output(footnote_node)
             assert_that(output, is_(u'\\footnote{This is a footnote}'))
+
+    def test_find_search_footnote_refs(self):
+        script = u"""<div><p>Hello...</p><p>This refers to footnote <sup><a id="ch03fn_28"></a><a href="ch03.html#ch03fn28">28</a></sup></p></p><p class="footnote"><sup><a id="ch03fn28"></a><a href="ch03.html#ch03fn_28">28</a></sup>This is a footnote</div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        label_dict, label_ref_dict, sup_nodes = search_footnote_refs(node, epub)
+        output = render_output(node)
+        assert_that(output, is_(u'Hello...\n\nThis refers to footnote \\footnote{This is a footnote}\n\n'))

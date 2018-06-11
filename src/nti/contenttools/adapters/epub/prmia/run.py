@@ -53,7 +53,7 @@ def process_div_elements(element, parent, epub=None):
     return el
 
 def process_sup_elements(element, parent, epub=None):
-    el = Run.process(element, epub=epub)
+    el = Run.process(element, styles=('sup',), epub=epub)
     el.element_type = 'Superscript'
     return el
 
