@@ -13,6 +13,7 @@ from zope import interface
 
 from nti.contenttools.adapters.epub.interfaces import IChildProcessor
 
+
 from nti.contenttools.adapters.epub.prmia.media import Image
 
 from nti.contenttools.adapters.epub.prmia.paragraph import Paragraph
@@ -28,6 +29,8 @@ from nti.contenttools import types
 from nti.contenttools.types import TextNode
 
 from nti.contenttools.renderers.LaTeX.utils import create_label
+
+from nti.contenttools.adapters.epub.generic.run import Run
 
 @interface.implementer(IChildProcessor)
 class _ParagraphChildProcessor(object):
@@ -96,8 +99,10 @@ class _HeadingOneChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, (u'Heading1',), epub=epub)
-        result.label = generate_section_label(result, 'chapter')
+        result = types.Chapter()
+        el = Run.process(child, epub=epub)
+        result.title = el
+        set_heading_label(child, result, 'chapter')
         node.add_child(result)
         return result
 
@@ -108,8 +113,10 @@ class _HeadingTwoChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, (u'Heading2',), epub=epub)
-        result.label = generate_section_label(result, 'section')
+        result = types.Section()
+        el = Run.process(child, epub=epub)
+        result.title = el
+        set_heading_label(child, result, 'section')
         node.add_child(result)
         return result
 
@@ -120,8 +127,10 @@ class _HeadingThreeChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, (u'Heading3',), epub=epub)
-        result.label = generate_section_label(result, 'subsection')
+        result = types.SubSection()
+        el = Run.process(child, epub=epub)
+        result.title = el
+        set_heading_label(child, result, 'subsection')
         node.add_child(result)
         return result
 
@@ -132,15 +141,23 @@ class _HeadingFourChildProcessor(object):
     __slots__ = ()
 
     def process(self, child, node, element, epub=None):
-        result = Paragraph.process(child, (u'Heading4',), epub=epub)
-        result.label = generate_section_label(result, 'subsubsection')
+        result = types.SubSubSection()
+        el = Run.process(child, epub=epub)
+        result.title = el
+        set_heading_label(child, result, 'subsubsection')
         node.add_child(result)
         return result
 
+def set_heading_label(element, header_node, section_type):
+    attrib = element.attrib
+    if 'id' in attrib:
+        header_node.label = TextNode(attrib['id'])
+    else:
+        header_node.label = generate_section_label(header_node.title, section_type)
 
 def generate_section_label(section_node, section_type):
     label = types.Run()
     label.children = section_node.children
-    label = TextNode(create_label(section_type, label))
+    label = TextNode(create_label(section_type, label, label_tag_ignored=True))
     return label
 
