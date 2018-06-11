@@ -36,6 +36,8 @@ def process_div_elements(element, parent, epub=None):
                 figure.children.append(image_node[0].children[1])
                 figure.label = image_node[0].children[0]
                 el = figure
+                if epub:
+                    epub.labels[render_output(figure.label)] = 'Figure'
         elif div_class == 'sidebar':
             sidebar = types.Sidebar()
             sidebar_title_node = []
