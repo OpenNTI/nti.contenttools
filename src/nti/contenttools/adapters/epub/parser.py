@@ -24,6 +24,8 @@ from nti.contenttools.adapters.epub.ifsta import adapt as adapt_ifsta
 
 from nti.contenttools.adapters.epub.prmia import adapt as adapt_prmia
 
+from nti.contenttools.adapters.epub.prmia.finder import search_href_node as search_href_node_prmia
+
 from nti.contenttools.renderers.model import DefaultRendererContext
 
 from nti.contenttools.renderers.LaTeX.base import render_node
@@ -80,6 +82,7 @@ class EPUBParser(object):
         self.label_refs = {} ## id - id to ref
 
         self.epub_reader = EPUBReader(input_file)
+        self.epub_chapters = {}
         self.epub_reader(self)
         main_title = rename_filename(self.epub_reader.title)
         self.book_title = main_title
@@ -108,42 +111,42 @@ class EPUBParser(object):
                 self.current_dir = item
                 if self.epub_type == 'ifsta' or self.epub_type == 'ifsta_rf':
                     epub_chapter = adapt_ifsta(fragment, self)
+                    self.epub_chapters[item] = epub_chapter
                 elif self.epub_type == 'tcia':
                     epub_chapter = adapt_tcia(fragment, self)
+                    self.epub_chapters[item] = epub_chapter
                 elif self.epub_type == 'prmia':
                     epub_chapter = adapt_prmia(fragment, self)
-                else:
-                    # TODO: create generic adapter
-                    # epub_chapter = adapt(fragment)
-                    pass
-                tex_filename = u'%s.tex' % rename_filename(item)
-                self.latex_filenames.append(tex_filename)
-                logger.info("Processing ...")
-                logger.info(tex_filename)
-                if IEPUBBody.providedBy(epub_chapter):
-                    context = DefaultRendererContext(name=u"LaTeX")
-                    render_node(context, epub_chapter)
-                    content = context.read()
-                    content = self.update_image_ref(content)
-                    content = self.cleanup_tex(content)
-                    if self.reading_def_dir:
-                        self.write_to_file(content,
-                                           self.reading_def_dir,
-                                           tex_filename)
-                        if self.epub_type == u'ifsta':
-                            generate_glossary_term_from_sidebar(epub_chapter,
-                                                                self.glossary_terms,
-                                                                self.glossary_labels)
-                    else:
-                        self.write_to_file(content,
-                                           self.output_directory,
-                                           tex_filename)
-                self.tables = search_tables(epub_chapter, self.tables)
-
+                    self.epub_chapters[item] = epub_chapter
+        self.write_chapter_to_tex_file()
         self.create_main_latex()
         logger.info(epub_reader.spine)
-
         self.process_support_files()
+
+    def write_chapter_to_tex_file(self):
+        for item in self.epub_chapters.keys():
+            epub_chapter = self.epub_chapters[item]
+            if self.epub_type == 'prmia':
+                search_href_node_prmia(epub_chapter, self)
+            tex_filename = u'%s.tex' % rename_filename(item)
+            self.latex_filenames.append(tex_filename)
+            logger.info("Processing ...")
+            logger.info(tex_filename)
+            if IEPUBBody.providedBy(epub_chapter):
+                context = DefaultRendererContext(name=u"LaTeX")
+                render_node(context, epub_chapter)
+                content = context.read()
+                content = self.update_image_ref(content)
+                content = self.cleanup_tex(content)
+                if self.reading_def_dir:
+                    self.write_to_file(content,
+                                       self.reading_def_dir,
+                                       tex_filename)
+                else:
+                    self.write_to_file(content,
+                                       self.output_directory,
+                                       tex_filename)
+            self.tables = search_tables(epub_chapter, self.tables)
 
     def cleanup_tex(self, content):
         # cleanup page number
@@ -384,24 +387,6 @@ def generate_main_tex_content(metadata, included_tex_list):
     package = get_packages()
     latex = get_included_tex(included_tex_list)
     return DOC_STRING % (package, title, author, latex)
-
-
-def generate_glossary_term_from_sidebar(epub_body, glossary_terms, glossary_labels):
-    search_sidebar_term(epub_body, glossary_terms, glossary_labels)
-
-
-def search_sidebar_term(root, sidebars, labels):
-    if ISidebar.providedBy(root):
-        if root.type == "sidebar_term":
-            sidebars[root.title] = root.base
-            if root.label:
-                label = root.label.replace(u'\\label', u'\\ref')
-                label = u'%s\\\\\n' % (label)
-                labels.append(label)
-    elif hasattr(root, 'children'):
-        for node in root:
-            search_sidebar_term(node, sidebars, labels)
-    return sidebars
 
 
 def search_tables(root, tables):
