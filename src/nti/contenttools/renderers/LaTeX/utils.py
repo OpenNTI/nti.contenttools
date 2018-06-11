@@ -20,7 +20,7 @@ from nti.contenttools.types.interfaces import IRunNode
 FORBIDDEN_CHARACTERS = r'[<>:"/\\\|\?\*\s\-,\t\'\!{}()]'
 
 
-def create_label(name, value):
+def create_label(name, value, label_tag_ignored=False):
     """
     create label based on the given name and value
     for example :
@@ -34,6 +34,8 @@ def create_label(name, value):
         value = render_output(value)
         value = re.sub(FORBIDDEN_CHARACTERS, '_', value)
     value = value.replace(u'_textbf_', u'').replace(u'_textit_', u'')
+    if label_tag_ignored:
+        return u'%s:%s' % (name, value)
     return u'\\label{%s:%s}' % (name, value)
 
 

@@ -105,3 +105,15 @@ def search_footnote_refs(root, epub):
 					parent.children.insert(i, footnote_node)
 	return label_dict, label_ref_dict, sup_nodes
 
+def search_href_node(node, epub):
+	if IHyperlink.providedBy(node):
+		target = node.target
+		if '#' in target:
+			label_ref_idx = target.find('#') + 1
+			node.target = target[label_ref_idx:]
+			if node.target in epub.labels.keys():
+				node.type = 'ntiidref'
+	elif hasattr(node, 'children'):
+		for child in node:
+			search_href_node(child, epub)
+

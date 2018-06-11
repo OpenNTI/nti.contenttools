@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import copy
+
 from nti.contenttools import types
 
 from nti.contenttools._compat import text_
@@ -16,7 +18,6 @@ from nti.contenttools._compat import text_
 from nti.contenttools.adapters.epub.prmia import check_element_tail
 
 from nti.contenttools.adapters.epub.prmia.run import Run
-
 
 class Hyperlink(types.Hyperlink):
 
@@ -32,6 +33,11 @@ class Hyperlink(types.Hyperlink):
                 me.add_child(types.TextNode(link.text))
             for child in link:
                 me.add_child(Run.process(child))
+            node = types.Run()
+            temp = copy.deepcopy(me)
+            node.add_child(temp)
+            node = check_element_tail(node, link)
+            me = node
         elif 'id' in link.attrib:
             if epub:
                 epub.ids.append(link.attrib['id'])
@@ -43,5 +49,5 @@ class Hyperlink(types.Hyperlink):
             me = check_element_tail(me, link)
         else:
             me = Run()
-            check_element_tail(me, link)
+            me = check_element_tail(me, link)
         return me

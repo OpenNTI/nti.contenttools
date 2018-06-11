@@ -59,7 +59,7 @@ class TestParagraphAdapter(PRMIATestCase):
         node = Run.process(element)
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\chapter{\\textbf{CORPORATE RISK MANAGEMENT: A PRIMER}}\n\\label{chapter:CORPORATE_RISK_MANAGEMENT__A_PRIMER_}\n\n'))
+                    is_(u'\\chapter{\\textbf{CORPORATE RISK MANAGEMENT: A PRIMER}}\n\\label{chapter:CORPORATE_RISK_MANAGEMENT__A_PRIMER_}\n'))
 
     def test_heading_3(self):
         script = u'<div><h3 class="h3a"><strong>CORPORATE RISK MANAGEMENT: A PRIMER</strong></h3></div>'
@@ -67,7 +67,7 @@ class TestParagraphAdapter(PRMIATestCase):
         node = Run.process(element)
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\section{\\textbf{CORPORATE RISK MANAGEMENT: A PRIMER}}\n\\label{section:CORPORATE_RISK_MANAGEMENT__A_PRIMER_}\n\n'))
+                    is_(u'\\section{\\textbf{CORPORATE RISK MANAGEMENT: A PRIMER}}\n\\label{section:CORPORATE_RISK_MANAGEMENT__A_PRIMER_}\n'))
 
     def test_heading_4(self):
         script = u'<div><h4 class="h4a"><strong>CORPORATE RISK MANAGEMENT: A PRIMER</strong></h4></div>'
@@ -75,7 +75,7 @@ class TestParagraphAdapter(PRMIATestCase):
         node = Run.process(element)
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\subsection{\\textbf{CORPORATE RISK MANAGEMENT: A PRIMER}}\n\\label{subsection:CORPORATE_RISK_MANAGEMENT__A_PRIMER_}\n\n'))
+                    is_(u'\\subsection{\\textbf{CORPORATE RISK MANAGEMENT: A PRIMER}}\n\\label{subsection:CORPORATE_RISK_MANAGEMENT__A_PRIMER_}\n'))
 
     def test_footnote_node(self):
         script = u'<div><p class="footnote">This is footnote</p></div>'
@@ -94,4 +94,4 @@ class TestParagraphAdapter(PRMIATestCase):
             footnote_node = epub.footnote_ids[item]
             output = render_output(footnote_node)
             assert_that(output,
-                    is_(u'\\footnote{The stock of high-quality liquid assets is composed of Level 1 assets and Level 2 assets.}'))
+                    is_(u'\\footnote{\\label{ch03fn29}The stock of high-quality liquid assets is composed of Level 1 assets and Level 2 assets.}'))

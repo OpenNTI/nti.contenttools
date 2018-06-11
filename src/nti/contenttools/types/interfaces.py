@@ -119,9 +119,10 @@ class IChapter(IDocumentStructureNode):
     suppressed = Bool(title=u"Suppressed",
                       default=False)
 
-    title = ValidTextLine(title=u"Chapter Title",
-                          required=True,
-                          default=u'')
+    title = Variant((Object(IDocumentStructureNode,
+                            title=u"Title"),
+                     ValidTextLine(title=u"Title")),
+                    required=False)
 
     label = Variant((Object(IDocumentStructureNode,
                             title=u"Label"),
@@ -152,9 +153,10 @@ class ISection(IDocumentStructureNode):
                       default=False,
                       required=False)
 
-    title = ValidTextLine(title=u"Section Title",
-                          required=True,
-                          default=u'')
+    title = Variant((Object(IDocumentStructureNode,
+                            title=u"Title"),
+                     ValidTextLine(title=u"Title")),
+                    required=False)
 
     label = Variant((Object(IDocumentStructureNode,
                             title=u"Label"),
@@ -169,15 +171,9 @@ class ISection(IDocumentStructureNode):
 
 
 class ISubSection(ISection):
-
-    title = ValidTextLine(title=u"Section Title",
-                          required=True,
-                          default=u'')
-
-    label = Variant((Object(IDocumentStructureNode,
-                            title=u"Label"),
-                     ValidTextLine(title=u"Label")),
-                    required=False)
+    """
+    SubSubSection
+    """
 
 
 class ISubSubSection(ISection):

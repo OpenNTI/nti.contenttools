@@ -17,6 +17,8 @@ from nti.contenttools.adapters.epub.prmia.finder import remove_node_from_parent
 from nti.contenttools.adapters.epub.prmia.finder import search_label_node_in_list
 from nti.contenttools.adapters.epub.prmia.finder import search_run_node_with_element_type
 
+from nti.contenttools.renderers.LaTeX.base import render_output
+
 def process_div_elements(element, parent, epub=None):
     el = Run.process(element, epub=epub)
     attrib = element.attrib
@@ -34,6 +36,8 @@ def process_div_elements(element, parent, epub=None):
                 figure.children.append(image_node[0].children[1])
                 figure.label = image_node[0].children[0]
                 el = figure
+                if epub:
+                    epub.labels[render_output(figure.label)] = 'Figure'
         elif div_class == 'sidebar':
             sidebar = types.Sidebar()
             sidebar_title_node = []
@@ -46,6 +50,9 @@ def process_div_elements(element, parent, epub=None):
                 sidebar.title.children = sidebar_title_node
                 if label:
                     sidebar.label = label
+                    if epub:
+                        label_text = render_output(label)
+                        epub.labels[label_text] = 'Sidebar'
                 for node in sidebar_title_node:
                     remove_node_from_parent(node)
             sidebar.children = el.children

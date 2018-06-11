@@ -29,6 +29,7 @@ def create_epub_object():
     epub.input_file = None
     epub.label_refs = {}
     epub.footnote_ids = {}
+    epub.labels = {}
     return epub
 
 

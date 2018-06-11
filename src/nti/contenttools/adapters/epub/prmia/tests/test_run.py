@@ -42,3 +42,14 @@ class TestRunAdapter(PRMIATestCase):
         node = Run.process(element, epub=epub)
         output = render_output(node)
         assert_that(output, is_(u'\n\\begin{sidebar}{\\textbf{BOX 3-1 BANK REGULATION AND RISK MANAGEMENT}}\n\\label{ch03sb1}Para 1\n\nPara 2\n\n\n\\end{sidebar}\n\\\\\n'))
+
+
+    def test_h2_element(self):
+        script = """<div><h2 class="h2" id="ch07">Chapter 7</h2></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        output = render_output(node)
+        assert_that(output, is_(u'\\chapter{Chapter 7}\n\\label{ch07}\n'))
+        for item in epub.labels:
+            assert_that(item, is_(u'ch07'))

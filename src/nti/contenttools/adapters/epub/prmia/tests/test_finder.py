@@ -26,6 +26,7 @@ from nti.contenttools.adapters.epub.prmia.finder import find_label_node
 from nti.contenttools.adapters.epub.prmia.finder import find_superscript_node
 
 from nti.contenttools.adapters.epub.prmia.finder import search_footnote_refs
+from nti.contenttools.adapters.epub.prmia.finder import search_href_node
 
 class TestFinder(PRMIATestCase):
     def test_find_ref_node(self):
@@ -126,7 +127,7 @@ class TestFinder(PRMIATestCase):
         for item in epub.footnote_ids:
             footnote_node = epub.footnote_ids[item]
             output = render_output(footnote_node)
-            assert_that(output, is_(u'\\footnote{This is a footnote}'))
+            assert_that(output, is_(u'\\footnote{\\label{ch03fn28}This is a footnote}'))
 
     def test_find_search_footnote_refs(self):
         script = u"""<div><p>Hello...</p><p>This refers to footnote <sup><a id="ch03fn_28"></a><a href="ch03.html#ch03fn28">28</a></sup></p></p><p class="footnote"><sup><a id="ch03fn28"></a><a href="ch03.html#ch03fn_28">28</a></sup>This is a footnote</div>"""
@@ -135,7 +136,7 @@ class TestFinder(PRMIATestCase):
         node = Run.process(element, epub=epub)
         label_dict, label_ref_dict, sup_nodes = search_footnote_refs(node, epub)
         output = render_output(node)
-        assert_that(output, is_(u'Hello...\n\nThis refers to footnote \\footnote{This is a footnote}\n\n'))
+        assert_that(output, is_(u'Hello...\n\nThis refers to footnote \\footnote{\\label{ch03fn28}This is a footnote}\n\n'))
 
     def test_find_search_footnote_refs2(self):
         script = u"""<div><p>1 <sup><a id="ch03fn_40"></a><a href="ch03.html#ch03fn40">42</a></sup></p><p>2 <sup><a id="ch03fn_41"></a><a href="ch03.html#ch03fn41">41</a></sup></p><p class="footnote"><sup><a id="ch03fn40"></a><a href="ch03.html#ch03fn_40">40</a></sup>Footnote 1</p><p class="footnote"><sup><a id="ch03fn41"></a><a href="ch03.html#ch03fn_41">41</a></sup>Footnote 2</p></div>"""
@@ -144,4 +145,22 @@ class TestFinder(PRMIATestCase):
         node = Run.process(element, epub=epub)
         label_dict, label_ref_dict, sup_nodes = search_footnote_refs(node, epub)
         output = render_output(node)
-        assert_that(output, is_(u'1 \\footnote{Footnote 1}\n\n2 \\footnote{Footnote 2}\n\n'))
+        assert_that(output, is_(u'1 \\footnote{\\label{ch03fn40}Footnote 1}\n\n2 \\footnote{\\label{ch03fn41}Footnote 2}\n\n'))
+
+    def test_search_href_node(self):
+        script = u"""<div><p>Box <a href="ch03.html#ch03sb1">Box 3-1</a></p><div class="sidebar"><p class="side-title"><a id="ch03sb1"></a><strong>BOX 3-1 BANK REGULATION AND RISK MANAGEMENT</strong></p><p class="noindentt">Para 1</p><p class="indent">Para 2</p></div></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        search_href_node(node, epub)
+        output = render_output(node)
+        assert_that(output, is_(u'Box \\ntiidref{ch03sb1}<Box 3-1>\n\n\n\\begin{sidebar}{\\textbf{BOX 3-1 BANK REGULATION AND RISK MANAGEMENT}}\n\\label{ch03sb1}Para 1\n\nPara 2\n\n\n\\end{sidebar}\n\\\\\n'))
+
+    def test_search_href_node_with_tail(self):
+        script = u"""<div><p>Box <a href="ch03.html#ch03sb1">Box 3-1</a> with tail</p><div class="sidebar"><p class="side-title"><a id="ch03sb1"></a><strong>BOX 3-1 BANK REGULATION AND RISK MANAGEMENT</strong></p><p class="noindentt">Para 1</p><p class="indent">Para 2</p></div></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        search_href_node(node, epub)
+        output = render_output(node)
+        assert_that(output, is_(u'Box \\ntiidref{ch03sb1}<Box 3-1> with tail\n\n\n\\begin{sidebar}{\\textbf{BOX 3-1 BANK REGULATION AND RISK MANAGEMENT}}\n\\label{ch03sb1}Para 1\n\nPara 2\n\n\n\\end{sidebar}\n\\\\\n'))
