@@ -71,7 +71,7 @@ class Paragraph(types.Paragraph):
 	    		node.children = me.children
 	    		me = node
 	    	elif para_class == 'footnote':
-	    		node = types.Note()
+	    		node = types.Footnote()
 	    		node.children = me.children
 	    		label_dict = {}
 	    		label_ref_dict = {}
@@ -84,6 +84,7 @@ class Paragraph(types.Paragraph):
 	    			epub.label_refs = merge_two_dicts(epub.label_refs, label_ref_dict)
 	    			footnote_id = label_dict['Footnote_Superscript']
 	    			epub.footnote_ids[footnote_id] = node
+	    			node.label = types.TextNode(footnote_id)
 	    			me = types.Run()
 	    		else: 
 	    			me = node

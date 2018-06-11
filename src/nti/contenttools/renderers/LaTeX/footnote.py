@@ -23,13 +23,19 @@ from nti.contenttools.types.interfaces import IFootnote
 from nti.contenttools.types.interfaces import IFootnoteText
 from nti.contenttools.types.interfaces import IFootnoteMark
 
+from nti.contenttools.renderers.LaTeX.utils import get_variant_field_string_value
 
 def render_footnote(context, node):
     base = render_children_output(node)
     if base:
         context.write(u'\\footnote{')
+        if node.label:
+            label = get_variant_field_string_value(node.label).rstrip()
+            context.write(u'\\label{')
+            context.write(label)
+            context.write(u'}')
         context.write(base)
-        context.write(u'')
+        context.write(u'}')
     return node
 
 

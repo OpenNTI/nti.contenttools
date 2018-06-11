@@ -94,4 +94,4 @@ class TestParagraphAdapter(PRMIATestCase):
             footnote_node = epub.footnote_ids[item]
             output = render_output(footnote_node)
             assert_that(output,
-                    is_(u'\\footnote{The stock of high-quality liquid assets is composed of Level 1 assets and Level 2 assets.}'))
+                    is_(u'\\footnote{\\label{ch03fn29}The stock of high-quality liquid assets is composed of Level 1 assets and Level 2 assets.}'))
