@@ -51,3 +51,5 @@ class TestRunAdapter(PRMIATestCase):
         node = Run.process(element, epub=epub)
         output = render_output(node)
         assert_that(output, is_(u'\\chapter{Chapter 7}\n\\label{ch07}\n'))
+        for item in epub.labels:
+            assert_that(item, is_(u'ch07'))

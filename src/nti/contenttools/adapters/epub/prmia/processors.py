@@ -102,7 +102,7 @@ class _HeadingOneChildProcessor(object):
         result = types.Chapter()
         el = Run.process(child, epub=epub)
         result.title = el
-        set_heading_label(child, result, 'chapter')
+        set_heading_label(child, result, 'chapter', epub)
         node.add_child(result)
         return result
 
@@ -116,7 +116,7 @@ class _HeadingTwoChildProcessor(object):
         result = types.Section()
         el = Run.process(child, epub=epub)
         result.title = el
-        set_heading_label(child, result, 'section')
+        set_heading_label(child, result, 'section', epub)
         node.add_child(result)
         return result
 
@@ -130,7 +130,7 @@ class _HeadingThreeChildProcessor(object):
         result = types.SubSection()
         el = Run.process(child, epub=epub)
         result.title = el
-        set_heading_label(child, result, 'subsection')
+        set_heading_label(child, result, 'subsection',epub)
         node.add_child(result)
         return result
 
@@ -144,14 +144,15 @@ class _HeadingFourChildProcessor(object):
         result = types.SubSubSection()
         el = Run.process(child, epub=epub)
         result.title = el
-        set_heading_label(child, result, 'subsubsection')
+        set_heading_label(child, result, 'subsubsection', epub)
         node.add_child(result)
         return result
 
-def set_heading_label(element, header_node, section_type):
+def set_heading_label(element, header_node, section_type, epub):
     attrib = element.attrib
     if 'id' in attrib:
         header_node.label = TextNode(attrib['id'])
+        epub.labels[attrib['id']] = section_type
     else:
         header_node.label = generate_section_label(header_node.title, section_type)
 
