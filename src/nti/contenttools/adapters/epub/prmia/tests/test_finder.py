@@ -136,3 +136,12 @@ class TestFinder(PRMIATestCase):
         label_dict, label_ref_dict, sup_nodes = search_footnote_refs(node, epub)
         output = render_output(node)
         assert_that(output, is_(u'Hello...\n\nThis refers to footnote \\footnote{This is a footnote}\n\n'))
+
+    def test_find_search_footnote_refs2(self):
+        script = u"""<div><p>1 <sup><a id="ch03fn_40"></a><a href="ch03.html#ch03fn40">42</a></sup></p><p>2 <sup><a id="ch03fn_41"></a><a href="ch03.html#ch03fn41">41</a></sup></p><p class="footnote"><sup><a id="ch03fn40"></a><a href="ch03.html#ch03fn_40">40</a></sup>Footnote 1</p><p class="footnote"><sup><a id="ch03fn41"></a><a href="ch03.html#ch03fn_41">41</a></sup>Footnote 2</p></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        label_dict, label_ref_dict, sup_nodes = search_footnote_refs(node, epub)
+        output = render_output(node)
+        assert_that(output, is_(u'1 \\footnote{Footnote 1}\n\n2 \\footnote{Footnote 2}\n\n'))
