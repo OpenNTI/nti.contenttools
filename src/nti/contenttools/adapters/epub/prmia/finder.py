@@ -11,21 +11,26 @@ logger = __import__('logging').getLogger(__name__)
 
 
 from nti.contenttools.types.interfaces import IRunNode
+from nti.contenttools.types.interfaces import IImage
 from nti.contenttools.types.interfaces import IHyperlink
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
 
-def search_run_node_with_element_type(root, element_type, nodes):
+def search_run_node_with_element_type(root, element_type, nodes, option=None):
 	if IRunNode.providedBy(root):
 		if root.element_type == element_type:
+			if element_type == 'Figure Image' and option:
+				for child in root:
+					if IImage.providedBy(child):
+						child.inline_image = True
 			nodes.append(root)
 		elif hasattr(root, 'children'):
 			for child in root:
-				search_run_node_with_element_type(child, element_type, nodes)
+				search_run_node_with_element_type(child, element_type, nodes, option)
 	elif hasattr(root, 'children'):
 		for child in root:
-			search_run_node_with_element_type(child, element_type, nodes)
+			search_run_node_with_element_type(child, element_type, nodes, option)
 	return nodes
 
 

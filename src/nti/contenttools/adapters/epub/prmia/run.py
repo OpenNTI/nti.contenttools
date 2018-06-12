@@ -26,13 +26,13 @@ def process_div_elements(element, parent, epub=None):
     if 'class' in attrib:
     	div_class = attrib['class']
     	if div_class == 'group':
-            image_node = []
-            search_run_node_with_element_type(el, 'Figure Image', image_node)
             caption_node = []
             search_run_node_with_element_type(el, 'Figure Caption', caption_node)
             table_caption = []
             search_run_node_with_element_type(el, 'Table', table_caption)
-            if image_node and caption_node:
+            if caption_node:
+                image_node = []
+                search_run_node_with_element_type(el, 'Figure Image', image_node)
             	figure = types.Figure()
             	figure.caption = types.Run()
             	figure.caption.children = caption_node
@@ -41,7 +41,9 @@ def process_div_elements(element, parent, epub=None):
                 el = figure
                 if epub:
                     epub.labels[render_output(figure.label)] = 'Figure'
-            elif image_node and table_caption:
+            elif table_caption:
+                image_node = []
+                search_run_node_with_element_type(el, 'Figure Image', image_node, option=True)
                 table = types.Table()
                 table.caption = table_caption[0].children[1]
                 label_dict = {}

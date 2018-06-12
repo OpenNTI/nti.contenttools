@@ -63,4 +63,4 @@ class TestRunAdapter(PRMIATestCase):
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
         output = render_output(node)
-        assert_that(output, is_(u'\n\\begin{table}\n\\caption{\\textbf{TABLE 7-2} Example of a Selection of Risk Factors}\n\\label{table:ch07tab2}\n\\begin{tabular}{ l }\n\\includegraphics[width=0px,height=0px]{Images/CourseAssets/PRMIATest/f0247-01.gif}\n\\end{tabular}\n\\end{table}\n'))
+        assert_that(output, is_(u'\n\\begin{table}\n\\caption{\\textbf{TABLE 7-2} Example of a Selection of Risk Factors}\n\\label{table:ch07tab2}\n\\begin{tabular}{ l }\n\\includegraphics{Images/CourseAssets/PRMIATest/f0247-01.gif}\n\\end{tabular}\n\\end{table}\n'))
