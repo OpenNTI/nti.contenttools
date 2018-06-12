@@ -48,13 +48,14 @@ def process_div_elements(element, parent, epub=None):
                 image_node = []
                 search_run_node_with_element_type(el, 'Figure Image', image_node, option=True)
                 table = types.Table()
-                table.label = u'\\label{%s}' %(get_label_from_node(el))
+                label = get_label_from_node(el)
+                table.label = u'\\label{%s}' %(label)
                 table.caption = types.Run()
                 table.caption.children = table_caption
                 table.number_of_col_header = len(image_node)
                 table.children = image_node
                 if epub:
-                    epub.labels[table.label] = 'Table'
+                    epub.labels[label] = 'Table'
                 el = table
         elif div_class == 'sidebar':
             sidebar = types.Sidebar()
