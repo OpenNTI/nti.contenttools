@@ -33,25 +33,28 @@ def process_div_elements(element, parent, epub=None):
             if caption_node:
                 image_node = []
                 search_run_node_with_element_type(el, 'Figure Image', image_node)
-            	figure = types.Figure()
-            	figure.caption = types.Run()
-            	figure.caption.children = caption_node
-                figure.children.append(image_node[0].children[1])
-                figure.label = image_node[0].children[0]
-                el = figure
-                if epub:
-                    epub.labels[render_output(figure.label)] = 'Figure'
+                if image_node:
+                    figure = types.Figure()
+                    figure.caption = types.Run()
+                    figure.caption.children = caption_node
+                    inode = types.Run()
+                    inode.children = image_node
+                    figure.label = get_label_from_node(inode)
+                    figure.add_child(inode)
+                    el = figure
+                    if epub:
+                        epub.labels[figure.label] = 'Figure'
             elif table_caption:
                 image_node = []
                 search_run_node_with_element_type(el, 'Figure Image', image_node, option=True)
                 table = types.Table()
-                table.caption = table_caption[0].children[1]
-                label_dict = {}
-                label_dict = find_label_node(el, 'Table', label_dict)
-                table.children = image_node
-                if label_dict:
-                    table.label = label_dict['Table']
+                table.label = get_label_from_node(el)
+                table.caption = types.Run()
+                table.caption.children = table_caption
                 table.number_of_col_header = len(image_node)
+                table.children = image_node
+                if epub:
+                    epub.labels[table.label] = 'Table'
                 el = table
         elif div_class == 'sidebar':
             sidebar = types.Sidebar()
@@ -82,3 +85,14 @@ def process_sup_elements(element, parent, epub=None):
 def process_span_elements(element, epub=None):
     el = Run.process(element, epub=epub)
     return el
+
+def get_label_from_node(node):
+    labels = []
+    search_run_node_with_element_type(node, 'Label', labels)
+    if labels :
+        label = types.Run()
+        label.children = labels
+        label_text = render_output(label)
+        for child in label:
+            remove_node_from_parent(child)
+    return label_text
