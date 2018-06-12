@@ -45,7 +45,7 @@ class TestRunAdapter(PRMIATestCase):
 
 
     def test_h2_element(self):
-        script = """<div><h2 class="h2" id="ch07">Chapter 7</h2></div>"""
+        script = u"""<div><h2 class="h2" id="ch07">Chapter 7</h2></div>"""
         element = html.fromstring(script)
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
@@ -53,3 +53,14 @@ class TestRunAdapter(PRMIATestCase):
         assert_that(output, is_(u'\\chapter{Chapter 7}\n\\label{ch07}\n'))
         for item in epub.labels:
             assert_that(item, is_(u'ch07'))
+
+    def test_div_group_table(self):
+        script = u"""<div><div class="group">
+        <p class="tabcap"><a id="ch07tab2"></a><strong>TABLE 7-2</strong> Example of a Selection of Risk Factors</p>
+        <p class="image"><img src="f0247-01.gif" alt="Image"/></p>
+        </div></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        output = render_output(node)
+        assert_that(output, is_(u'\n\\begin{table}\n\\caption{\\textbf{TABLE 7-2} Example of a Selection of Risk Factors}\n\\label{table:ch07tab2}\n\\begin{tabular}{ l }\n\\includegraphics{Images/CourseAssets/PRMIATest/f0247-01.gif}\n\\end{tabular}\n\\end{table}\n'))

@@ -91,7 +91,7 @@ def set_image_params_and_command(node, command):
 
     # make sure if image is an equation image or inline_image, the command
     # will be 'includegraphics'
-    if node.equation_image == True or node.inline_image == True:
+    if node.equation_image or node.inline_image:
         command = u'includegraphics'
 
     return params, command

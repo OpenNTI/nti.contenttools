@@ -13,6 +13,7 @@ from nti.contenttools import types
 
 from nti.contenttools.adapters.epub.generic.run import Run
 
+from nti.contenttools.adapters.epub.prmia.finder import find_label_node
 from nti.contenttools.adapters.epub.prmia.finder import remove_node_from_parent
 from nti.contenttools.adapters.epub.prmia.finder import search_label_node_in_list
 from nti.contenttools.adapters.epub.prmia.finder import search_run_node_with_element_type
@@ -25,34 +26,49 @@ def process_div_elements(element, parent, epub=None):
     if 'class' in attrib:
     	div_class = attrib['class']
     	if div_class == 'group':
-            image_node = []
-            search_run_node_with_element_type(el, 'Figure Image', image_node)
             caption_node = []
             search_run_node_with_element_type(el, 'Figure Caption', caption_node)
-            if image_node and caption_node:
-            	figure = types.Figure()
-            	figure.caption = types.Run()
-            	figure.caption.children = caption_node
-                figure.children.append(image_node[0].children[1])
-                figure.label = image_node[0].children[0]
-                el = figure
+            table_caption = []
+            search_run_node_with_element_type(el, 'Table', table_caption)
+            if caption_node:
+                image_node = []
+                search_run_node_with_element_type(el, 'Figure Image', image_node)
+                if image_node:
+                    figure = types.Figure()
+                    figure.caption = types.Run()
+                    figure.caption.children = caption_node
+                    inode = types.Run()
+                    inode.children = image_node
+                    figure.label = get_label_from_node(inode)
+                    figure.add_child(inode)
+                    el = figure
+                    if epub:
+                        epub.labels[figure.label] = 'Figure'
+            elif table_caption:
+                image_node = []
+                search_run_node_with_element_type(el, 'Figure Image', image_node, option=True)
+                table = types.Table()
+                table.label = get_label_from_node(el)
+                table.caption = types.Run()
+                table.caption.children = table_caption
+                table.number_of_col_header = len(image_node)
+                table.children = image_node
                 if epub:
-                    epub.labels[render_output(figure.label)] = 'Figure'
+                    epub.labels[table.label] = 'Table'
+                el = table
         elif div_class == 'sidebar':
             sidebar = types.Sidebar()
             sidebar_title_node = []
             search_run_node_with_element_type(el, 'Sidebar Title', sidebar_title_node)
             label = None
             if sidebar_title_node: 
-                title_node = sidebar_title_node[0]
-                label = search_label_node_in_list(title_node.children[0].children, label)
                 sidebar.title = types.Run()
                 sidebar.title.children = sidebar_title_node
+                label = get_label_from_node(sidebar.title)
                 if label:
                     sidebar.label = label
                     if epub:
-                        label_text = render_output(label)
-                        epub.labels[label_text] = 'Sidebar'
+                        epub.labels[label] = 'Sidebar'
                 for node in sidebar_title_node:
                     remove_node_from_parent(node)
             sidebar.children = el.children
@@ -67,3 +83,14 @@ def process_sup_elements(element, parent, epub=None):
 def process_span_elements(element, epub=None):
     el = Run.process(element, epub=epub)
     return el
+
+def get_label_from_node(node):
+    labels = []
+    search_run_node_with_element_type(node, 'Label', labels)
+    if labels :
+        label = types.Run()
+        label.children = labels
+        label_text = render_output(label)
+        for child in label:
+            remove_node_from_parent(child)
+    return label_text
