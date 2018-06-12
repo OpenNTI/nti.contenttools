@@ -39,13 +39,14 @@ class Hyperlink(types.Hyperlink):
             node = check_element_tail(node, link)
             me = node
         elif 'id' in link.attrib:
-            if epub:
-                epub.ids.append(link.attrib['id'])
-            me = Run()
-            label = Run()
-            label.element_type = 'Label'
-            label.add_child(types.TextNode(link.attrib['id']))
-            me.add_child(label)
+            me = types.Run()
+            if 'page_' not in link.attrib['id']:
+                label = Run()
+                label.element_type = 'Label'
+                label.add_child(types.TextNode(link.attrib['id']))
+                me.add_child(label)
+                if epub:
+                    epub.ids.append(link.attrib['id'])
             me = check_element_tail(me, link)
         else:
             me = Run()

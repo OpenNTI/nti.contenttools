@@ -26,10 +26,19 @@ from nti.contenttools.adapters.epub.prmia.tests import create_epub_object
 
 class TestHyperlinkAdapter(PRMIATestCase):
     def test_link_id(self):
-        script = u'<div><a id="ch01fig1"></div>'
+        script = u'<div><a id="ch01fig1"></a></div>'
         element = html.fromstring(script)
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
         assert_that(epub.ids, is_(["ch01fig1"]))
-        
+
+    def test_ignored_link(self):
+    	script = u'<div>This is an ignored <a id="page_240"></a>link</div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        output = render_output(node)
+        assert_that(output, is_(u'This is an ignored link'))
+
+
         
