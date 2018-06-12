@@ -62,15 +62,13 @@ def process_div_elements(element, parent, epub=None):
             search_run_node_with_element_type(el, 'Sidebar Title', sidebar_title_node)
             label = None
             if sidebar_title_node: 
-                title_node = sidebar_title_node[0]
-                label = search_label_node_in_list(title_node.children[0].children, label)
                 sidebar.title = types.Run()
                 sidebar.title.children = sidebar_title_node
+                label = get_label_from_node(sidebar.title)
                 if label:
                     sidebar.label = label
                     if epub:
-                        label_text = render_output(label)
-                        epub.labels[label_text] = 'Sidebar'
+                        epub.labels[label] = 'Sidebar'
                 for node in sidebar_title_node:
                     remove_node_from_parent(node)
             sidebar.children = el.children
