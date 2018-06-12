@@ -122,3 +122,20 @@ def search_href_node(node, epub):
 		for child in node:
 			search_href_node(child, epub)
 
+
+def search_a_label_node(node, label):
+	if IRunNode.providedBy(node):
+		if node.element_type == 'Label':
+			label = node
+		elif hasattr(node, 'children'):
+			for child in node:
+				label = search_a_label_node(child, label)
+				if label:
+					return label
+	elif hasattr(node, 'children'):
+		for child in node:
+			label = search_a_label_node(child, label)
+			if label:
+				return label
+	return label
+

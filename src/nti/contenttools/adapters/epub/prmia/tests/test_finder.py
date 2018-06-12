@@ -8,6 +8,7 @@ __docformat__ = "restructuredtext en"
 # pylint: disable=W0212,R0904
 
 from hamcrest import is_
+from hamcrest import is_not
 from hamcrest import has_item 
 from hamcrest import assert_that
 
@@ -27,6 +28,7 @@ from nti.contenttools.adapters.epub.prmia.finder import find_superscript_node
 
 from nti.contenttools.adapters.epub.prmia.finder import search_footnote_refs
 from nti.contenttools.adapters.epub.prmia.finder import search_href_node
+from nti.contenttools.adapters.epub.prmia.finder import search_a_label_node
 
 class TestFinder(PRMIATestCase):
     def test_find_ref_node(self):
@@ -164,3 +166,14 @@ class TestFinder(PRMIATestCase):
         search_href_node(node, epub)
         output = render_output(node)
         assert_that(output, is_(u'Box \\ntiidref{ch03sb1}<Box 3-1> with tail\n\n\n\\begin{sidebar}{\\textbf{BOX 3-1 BANK REGULATION AND RISK MANAGEMENT}}\n\\label{ch03sb1}Para 1\n\nPara 2\n\n\n\\end{sidebar}\n\\\\\n'))
+
+    def test_search_label_node(self):
+        script = u"""<div><sup><a id="ch03fn28"></a><a href="ch03.html#ch03fn_28">28</a></sup></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        label = search_a_label_node(node, None)
+        label_text = render_output(label)
+        assert_that(label, is_not(None))
+        assert_that(label_text, is_(u'ch03fn28'))
+    
