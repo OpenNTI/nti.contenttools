@@ -173,5 +173,7 @@ class TestFinder(PRMIATestCase):
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
         label = search_a_label_node(node, None)
+        label_text = render_output(label)
         assert_that(label, is_not(None))
+        assert_that(label_text, is_(u'ch03fn28'))
     
