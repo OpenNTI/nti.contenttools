@@ -13,9 +13,8 @@ from nti.contenttools import types
 
 from nti.contenttools.adapters.epub.generic.run import Run
 
-from nti.contenttools.adapters.epub.prmia.finder import find_label_node
+from nti.contenttools.adapters.epub.prmia.finder import search_a_label_node
 from nti.contenttools.adapters.epub.prmia.finder import remove_node_from_parent
-from nti.contenttools.adapters.epub.prmia.finder import search_label_node_in_list
 from nti.contenttools.adapters.epub.prmia.finder import search_run_node_with_element_type
 
 from nti.contenttools.renderers.LaTeX.base import render_output
@@ -86,12 +85,7 @@ def process_span_elements(element, epub=None):
     return el
 
 def get_label_from_node(node):
-    labels = []
-    search_run_node_with_element_type(node, 'Label', labels)
-    if labels :
-        label = types.Run()
-        label.children = labels
-        label_text = render_output(label)
-        for child in label:
-            remove_node_from_parent(child)
+    label = search_a_label_node(node, None)
+    label_text = render_output(label)
+    remove_node_from_parent(label)
     return label_text
