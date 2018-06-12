@@ -13,6 +13,7 @@ from nti.contenttools import types
 
 from nti.contenttools.adapters.epub.generic.run import Run
 
+from nti.contenttools.adapters.epub.prmia.finder import find_label_node
 from nti.contenttools.adapters.epub.prmia.finder import remove_node_from_parent
 from nti.contenttools.adapters.epub.prmia.finder import search_label_node_in_list
 from nti.contenttools.adapters.epub.prmia.finder import search_run_node_with_element_type
@@ -29,6 +30,8 @@ def process_div_elements(element, parent, epub=None):
             search_run_node_with_element_type(el, 'Figure Image', image_node)
             caption_node = []
             search_run_node_with_element_type(el, 'Figure Caption', caption_node)
+            table_caption = []
+            search_run_node_with_element_type(el, 'Table', table_caption)
             if image_node and caption_node:
             	figure = types.Figure()
             	figure.caption = types.Run()
@@ -38,6 +41,16 @@ def process_div_elements(element, parent, epub=None):
                 el = figure
                 if epub:
                     epub.labels[render_output(figure.label)] = 'Figure'
+            elif image_node and table_caption:
+                table = types.Table()
+                table.caption = table_caption[0].children[1]
+                label_dict = {}
+                label_dict = find_label_node(el, 'Table', label_dict)
+                table.children = image_node
+                if label_dict:
+                    table.label = label_dict['Table']
+                table.number_of_col_header = len(image_node)
+                el = table
         elif div_class == 'sidebar':
             sidebar = types.Sidebar()
             sidebar_title_node = []

@@ -34,6 +34,7 @@ class Paragraph(types.Paragraph):
 	IMAGE_DEF = ('image', )
 	FIGURE_CAPTION_DEF = ('figcap', )
 	SIDEBAR_TITLE_DEF = ('side-title', )
+	TABLE_DEF = ('tabcap', )
 
 	@classmethod
 	def process(cls, element, styles=(), epub=None):
@@ -88,6 +89,11 @@ class Paragraph(types.Paragraph):
 	    			me = types.Run()
 	    		else: 
 	    			me = node
+	    	elif any(s.lower() in para_class.lower() for s in cls.TABLE_DEF):
+	    		node = types.Run()
+	    		node.element_type = 'Table'
+	    		node.children = me.children
+	    		me = node
 	    	else:
 	    		me.styles.extend(styles)
 	    return me
