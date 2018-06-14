@@ -198,9 +198,13 @@ def process_span_elements(element, epub=None):
 
                 if font_style == 'italic' or font_style == 'oblique':
                     el_text.styles.append('italic')
+                elif 'italic' in font_family.lower():
+                    el_text.styles.append('italic')
 
                 if font_weight == 'bold':
                     el_text.styles.append(font_weight)
+                elif 'bold' in font_family.lower():
+                    el_text.styles.append('bold')
 
                 if vertical_align == 'super':
                     el_text.styles.append('superscript')
