@@ -58,9 +58,9 @@ def set_option(context, node):
 
 
 def render_real_page_number(context, node):
-    context.write(u' \\realpagenumber{')
+    context.write(u'\\realpagenumber{')
     render_children(context, node)
-    context.write(u'} ')
+    context.write(u'}')
     return node
 
 @component.adapter(IHyperlink)

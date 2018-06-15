@@ -54,4 +54,4 @@ class TestLink(ContentToolsTestCase):
         node = RealPageNumber()
         node.add_child(TextNode('1'))
         output = render_output(node)
-        assert_that(output, is_(' \\realpagenumber{1} '))
+        assert_that(output, is_('\\realpagenumber{1}'))
