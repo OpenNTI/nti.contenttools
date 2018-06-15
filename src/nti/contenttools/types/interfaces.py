@@ -81,6 +81,8 @@ class IRunNode(IDocumentStructureNode):
     element_type = ValidTextLine(title=u"Element type",
                                  required=False)
 
+class IRealPageNumber(IDocumentStructureNode):
+    pass
 
 class IDocument(IDocumentStructureNode):
 

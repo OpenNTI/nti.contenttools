@@ -174,6 +174,7 @@ from nti.contenttools.types.code import CodeLine
 from nti.contenttools.types.code import Verbatim
 
 from nti.contenttools.types.link import Hyperlink
+from nti.contenttools.types.link import RealPageNumber
 
 from nti.contenttools.types.alternate_content import AlternateContent
 from nti.contenttools.types.alternate_content import TextBoxContent

@@ -516,6 +516,11 @@
 		 for="nti.contenttools.types.interfaces.IHyperlink"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
+
+	<adapter factory=".link.RealPageNumberRenderer"
+		 for="nti.contenttools.types.interfaces.IRealPageNumber"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
 		
 	<!-- Alternate Content -->
 	<adapter factory=".alternate_content.AlternateContentRenderer"

@@ -20,6 +20,7 @@ from nti.contenttools.renderers.interfaces import IRenderer
 
 from nti.contenttools.types.interfaces import IHyperlink
 
+from nti.contenttools.types.interfaces import IRealPageNumber
 
 def render_hyperlink(context, node):
     if not node.target:
@@ -56,6 +57,12 @@ def set_option(context, node):
     context.write(u'>')
 
 
+def render_real_page_number(context, node):
+    context.write(u' \\realpagenumber{')
+    render_children(context, node)
+    context.write(u'} ')
+    return node
+
 @component.adapter(IHyperlink)
 @interface.implementer(IRenderer)
 class HyperlinkRenderer(object):
@@ -68,4 +75,18 @@ class HyperlinkRenderer(object):
     def render(self, context, node=None, *args, **kwargs):
         node = self.node if node is None else node
         return render_hyperlink(context, node)
+    __call__ = render
+
+@component.adapter(IRealPageNumber)
+@interface.implementer(IRenderer)
+class RealPageNumberRenderer(object):
+
+    __slots__ = ('node',)
+
+    def __init__(self, node):
+        self.node = node
+
+    def render(self, context, node=None, *args, **kwargs):
+        node = self.node if node is None else node
+        return render_real_page_number(context, node)
     __call__ = render
