@@ -13,6 +13,7 @@ from hamcrest import assert_that
 from nti.contenttools.renderers.LaTeX.base import render_output
 
 from nti.contenttools.types.link import Hyperlink
+from nti.contenttools.types.link import RealPageNumber
 
 from nti.contenttools.types.run import Run
 
@@ -48,3 +49,9 @@ class TestLink(ContentToolsTestCase):
         output = render_output(node)
         assert_that(output, 
                     is_(u'\\ntiincludevideo{//www.youtube.com/embed/GUgtVXP0HJg?html5=1&rel=0}'))
+
+    def test_real_page_number(self):
+        node = RealPageNumber()
+        node.add_child(TextNode('1'))
+        output = render_output(node)
+        assert_that(output, is_('\\realpagenumber{1}'))

@@ -47,6 +47,11 @@ class Hyperlink(types.Hyperlink):
                 me.add_child(label)
                 if epub:
                     epub.ids.append(link.attrib['id'])
+            else:
+                node = types.RealPageNumber()
+                number = link.attrib['id'].replace('page_', '')
+                node.add_child(types.TextNode(number))
+                me.add_child(node)
             me = check_element_tail(me, link)
         else:
             me = Run()

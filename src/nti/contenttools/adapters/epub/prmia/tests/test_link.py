@@ -38,7 +38,13 @@ class TestHyperlinkAdapter(PRMIATestCase):
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
         output = render_output(node)
-        assert_that(output, is_(u'This is an ignored link'))
+        assert_that(output, is_(u'This is an ignored \\realpagenumber{240}link'))
 
-
+    def test_real_page_number(self):
+        script = u'<div><p><a id="page_68"></a>&#8226; Second, some countries may decide not to adopt a standard for the whole of their banking sector.</p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        output = render_output(node)
+        assert_that(output, is_(u'\\realpagenumber{68}* Second, some countries may decide not to adopt a standard for the whole of their banking sector.\n\n'))
         
