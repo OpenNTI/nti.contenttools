@@ -9,13 +9,19 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import six
+
+text_type = six.text_type
 
 from nti.contenttools.types.interfaces import IRunNode
 from nti.contenttools.types.interfaces import IImage
 from nti.contenttools.types.interfaces import IHyperlink
+from nti.contenttools.types.interfaces import ISection
+from nti.contenttools.types.interfaces import IChapter
+from nti.contenttools.types.interfaces import IRealPageNumber
 
 from nti.contenttools.renderers.LaTeX.base import render_output
-
+from nti.contenttools.renderers.LaTeX.base import render_children_output
 
 def search_run_node_with_element_type(root, element_type, nodes, option=None):
 	if IRunNode.providedBy(root):
@@ -139,3 +145,17 @@ def search_a_label_node(node, label):
 				return label
 	return label
 
+def search_sections_of_real_page_number(root, sections, page_numbers):
+	if ISection.providedBy(root) or IChapter.providedBy(root):
+		sections.append(root)
+	elif IRealPageNumber.providedBy(root):
+		if sections:
+			last_section = sections[-1]
+			if isinstance(last_section.label, text_type):
+				page_numbers[render_children_output(root)] = last_section.label
+			else:
+				page_numbers[render_children_output(root)] = render_output(last_section.label)
+	elif hasattr(root, 'children'):
+		for child in root:
+			search_sections_of_real_page_number(child, sections, page_numbers)
+	return sections, page_numbers
