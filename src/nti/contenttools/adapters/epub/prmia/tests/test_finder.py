@@ -205,4 +205,19 @@ class TestFinder(PRMIATestCase):
         assert_that(page_numbers, 
                     has_entries('68', 'section:Section_1',
                                 '70', 'section:Section_2'))
+
+    def test_search_sections_of_real_page_number3(self):
+        script = u'<div><h2>Chapter 1</h2><h3>Section 1</h3><p><a id="page_68"></a></p>test 1<h3>Section 2</h3><p><a id="page_70"></a> and <a id="page_71"></a> </p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        sections = []
+        page_numbers = {}
+        search_sections_of_real_page_number(node, sections, page_numbers)
+        assert_that(len(sections), is_(3))
+        assert_that(len(page_numbers), is_(3))
+        assert_that(page_numbers, 
+                    has_entries('68', 'section:Section_1',
+                                '70', 'section:Section_2',
+                                '71', 'section:Section_2'))
     
