@@ -10,6 +10,7 @@ __docformat__ = "restructuredtext en"
 from hamcrest import is_
 from hamcrest import is_not
 from hamcrest import has_item 
+from hamcrest import has_entries
 from hamcrest import assert_that
 
 from lxml import html
@@ -24,11 +25,14 @@ from nti.contenttools.adapters.epub.prmia.tests import create_epub_object
 
 from nti.contenttools.adapters.epub.prmia.finder import find_ref_node
 from nti.contenttools.adapters.epub.prmia.finder import find_label_node
+from nti.contenttools.adapters.epub.prmia.finder import find_href_node_index
 from nti.contenttools.adapters.epub.prmia.finder import find_superscript_node
 
 from nti.contenttools.adapters.epub.prmia.finder import search_footnote_refs
 from nti.contenttools.adapters.epub.prmia.finder import search_href_node
 from nti.contenttools.adapters.epub.prmia.finder import search_a_label_node
+
+from nti.contenttools.adapters.epub.prmia.finder import search_sections_of_real_page_number
 
 class TestFinder(PRMIATestCase):
     def test_find_ref_node(self):
@@ -176,4 +180,65 @@ class TestFinder(PRMIATestCase):
         label_text = render_output(label)
         assert_that(label, is_not(None))
         assert_that(label_text, is_(u'ch03fn28'))
+
+    def test_search_sections_of_real_page_number(self):
+        script = u'<div><h2>Chapter 1</h2><h3>Section 1</h3><p><a id="page_68"></a></p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        sections = []
+        page_numbers = {}
+        search_sections_of_real_page_number(node, sections, page_numbers)
+        assert_that(len(sections), is_(2))
+        assert_that(len(page_numbers), is_(1))
+        assert_that(page_numbers, has_entries('68', 'section:Section_1'))
+
+    def test_search_sections_of_real_page_number2(self):
+        script = u'<div><h2>Chapter 1</h2><h3>Section 1</h3><p><a id="page_68"></a></p>test 1<h3>Section 2</h3><p><a id="page_70"></a></p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        sections = []
+        page_numbers = {}
+        search_sections_of_real_page_number(node, sections, page_numbers)
+        assert_that(len(sections), is_(3))
+        assert_that(len(page_numbers), is_(2))
+        assert_that(page_numbers, 
+                    has_entries('68', 'section:Section_1',
+                                '70', 'section:Section_2'))
+
+    def test_search_sections_of_real_page_number3(self):
+        script = u'<div><h2>Chapter 1</h2><h3>Section 1</h3><p><a id="page_68"></a></p>test 1<h3>Section 2</h3><p><a id="page_70"></a> and <a id="page_71"></a> </p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        sections = []
+        page_numbers = {}
+        search_sections_of_real_page_number(node, sections, page_numbers)
+        assert_that(len(sections), is_(3))
+        assert_that(len(page_numbers), is_(3))
+        assert_that(page_numbers, 
+                    has_entries('68', 'section:Section_1',
+                                '70', 'section:Section_2',
+                                '71', 'section:Section_2'))
     
+    def test_find_href_node_index(self):
+        script = u'<div><p class="indexmain">Apple, <a href="ch01a.html#page_39">39</a></p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        targets = {}
+        find_href_node_index(node, targets)
+        assert_that(len(targets), is_(1))
+        assert_that(targets.keys(), has_item('39'))
+
+    def test_find_href_node_index(self):
+        script = u'<div><p class="indexmain">Agency risk, <a href="ch02.html#page_48">48</a>, <a href="ch04.html#page_156">156</a></p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        targets = {}
+        find_href_node_index(node, targets)
+        assert_that(len(targets), is_(2))
+        assert_that(targets.keys(), has_item('48'))
+        assert_that(targets.keys(), has_item('156'))
