@@ -25,6 +25,7 @@ from nti.contenttools.adapters.epub.prmia.tests import create_epub_object
 
 from nti.contenttools.adapters.epub.prmia.finder import find_ref_node
 from nti.contenttools.adapters.epub.prmia.finder import find_label_node
+from nti.contenttools.adapters.epub.prmia.finder import find_href_node_index
 from nti.contenttools.adapters.epub.prmia.finder import find_superscript_node
 
 from nti.contenttools.adapters.epub.prmia.finder import search_footnote_refs
@@ -221,3 +222,23 @@ class TestFinder(PRMIATestCase):
                                 '70', 'section:Section_2',
                                 '71', 'section:Section_2'))
     
+    def test_find_href_node_index(self):
+        script = u'<div><p class="indexmain">Apple, <a href="ch01a.html#page_39">39</a></p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        targets = {}
+        find_href_node_index(node, targets)
+        assert_that(len(targets), is_(1))
+        assert_that(targets.keys(), has_item('39'))
+
+    def test_find_href_node_index(self):
+        script = u'<div><p class="indexmain">Agency risk, <a href="ch02.html#page_48">48</a>, <a href="ch04.html#page_156">156</a></p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        targets = {}
+        find_href_node_index(node, targets)
+        assert_that(len(targets), is_(2))
+        assert_that(targets.keys(), has_item('48'))
+        assert_that(targets.keys(), has_item('156'))

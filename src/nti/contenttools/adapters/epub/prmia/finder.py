@@ -128,6 +128,17 @@ def search_href_node(node, epub):
 		for child in node:
 			search_href_node(child, epub)
 
+def find_href_node_index(node, targets):
+	if IHyperlink.providedBy(node):
+		if '#' in node.target:
+			label_ref_idx = node.target.find('#') + 1
+			target = node.target[label_ref_idx:]
+			target = target.replace('page_', '')
+			targets[target] = node
+	elif hasattr(node, 'children'):
+		for child in node:
+			find_href_node_index(child, targets)
+	return targets
 
 def search_a_label_node(node, label):
 	if IRunNode.providedBy(node):
