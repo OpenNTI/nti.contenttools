@@ -223,7 +223,7 @@ class TestFinder(PRMIATestCase):
                                 '71', 'section:Section_2'))
     
     def test_find_href_node_index(self):
-        script = u'<div><p class="indexmain">Apple, <a href="ch01a.html#page_39">39</a></p></div>'
+        script = u'<div><p class="index">Apple, <a href="ch01a.html#page_39">39</a></p></div>'
         element = html.fromstring(script)
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
@@ -232,8 +232,8 @@ class TestFinder(PRMIATestCase):
         assert_that(len(targets), is_(1))
         assert_that(targets.keys(), has_item('39'))
 
-    def test_find_href_node_index(self):
-        script = u'<div><p class="indexmain">Agency risk, <a href="ch02.html#page_48">48</a>, <a href="ch04.html#page_156">156</a></p></div>'
+    def test_find_href_node_index2inde(self):
+        script = u'<div><p class="index">Agency risk, <a href="ch02.html#page_48">48</a>, <a href="ch04.html#page_156">156</a></p></div>'
         element = html.fromstring(script)
         epub = create_epub_object()
         node = Run.process(element, epub=epub)

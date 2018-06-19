@@ -30,6 +30,7 @@ def create_epub_object():
     epub.label_refs = {}
     epub.footnote_ids = {}
     epub.labels = {}
+    epub.page_numbers = {}
     return epub
 
 
