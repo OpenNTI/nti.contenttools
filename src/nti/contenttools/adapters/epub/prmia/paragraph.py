@@ -100,7 +100,7 @@ class Paragraph(types.Paragraph):
 	    	elif any(s.lower() in para_class.lower() for s in cls.INDEX_DEF):
 	    		targets = {}
 	    		find_href_node_index(me, targets)
-	    		index_node = types.Run()
+	    		index_node = types.Paragraph()
 	    		for i, item in enumerate(targets):
 	    			if item in epub.page_numbers:
 	    				node = types.Hyperlink()
@@ -113,7 +113,6 @@ class Paragraph(types.Paragraph):
 	    				index_node.add_child(node)
 	    			if i < len(targets) - 1:
 	    				index_node.add_child(types.TextNode(u', '))
-	    		index_node.add_child(types.Paragraph())
 	    		me = index_node
 	    	else:
 	    		me.styles.extend(styles)
