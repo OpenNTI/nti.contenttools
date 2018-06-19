@@ -120,7 +120,8 @@ class EPUBParser(object):
                     self.epub_chapters[item] = epub_chapter
                 elif self.epub_type == 'prmia':
                     epub_chapter = adapt_prmia(fragment, self)
-                    self.epub_chapters[item] = epub_chapter
+                    search_sections_of_real_page_number_prmia(epub_chapter, [], self.page_numbers)
+                    self.epub_chapters[item] = epub_chapter            
         self.write_chapter_to_tex_file()
         self.create_main_latex()
         logger.info(epub_reader.spine)
@@ -131,7 +132,6 @@ class EPUBParser(object):
             epub_chapter = self.epub_chapters[item]
             if self.epub_type == 'prmia':
                 search_href_node_prmia(epub_chapter, self)
-                search_sections_of_real_page_number_prmia(epub_chapter, [], self.page_numbers)
             tex_filename = u'%s.tex' % rename_filename(item)
             self.latex_filenames.append(tex_filename)
             logger.info("Processing ...")
