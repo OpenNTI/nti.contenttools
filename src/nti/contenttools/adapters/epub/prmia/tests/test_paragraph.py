@@ -24,6 +24,8 @@ from nti.contenttools.adapters.epub.prmia.tests import PRMIATestCase
 
 from nti.contenttools.adapters.epub.prmia.tests import create_epub_object
 
+from nti.contenttools.adapters.epub.prmia.finder import search_sections_of_real_page_number
+
 class TestParagraphAdapter(PRMIATestCase):
 
     def test_simple_paragraph(self):
@@ -95,3 +97,33 @@ class TestParagraphAdapter(PRMIATestCase):
             output = render_output(footnote_node)
             assert_that(output,
                     is_(u'\\footnote{\\label{ch03fn29}The stock of high-quality liquid assets is composed of Level 1 assets and Level 2 assets.}'))
+
+    def test_para_index(self):
+        script_1 = u'<div><h2>Chapter 1</h2><h3>Section 1</h3><p><a id="page_39"></a></p></div>'
+        element = html.fromstring(script_1)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        search_sections_of_real_page_number(node, [], epub.page_numbers)
+        
+        script_2 = u'<div><p class="indexmain">Apple, <a href="ch01a.html#page_39">39</a></p></div>'
+        element_2 = html.fromstring(script_2)
+        node_2 = Run.process(element_2, epub=epub)
+        
+        output = render_output(node_2)
+        assert_that(output, is_(u'\\ntiidref{section:Section_1}<Apple>\n\n'))
+        
+
+    def test_para_index2(self):
+        script_1 = u'<div><h2>Chapter 1</h2><h3>Section 1</h3><p><a id="page_48"></a></p><h3>Section 2</h3><p><a id="page_156"></a></p></div>'
+        element = html.fromstring(script_1)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        search_sections_of_real_page_number(node, [], epub.page_numbers)
+
+        script_2 = u'<div><p class="indexmain">Agency risk, <a href="ch02.html#page_48">48</a>, <a href="ch04.html#page_156">156</a></p></div>'
+        element_2 = html.fromstring(script_2)
+        node_2 = Run.process(element_2, epub=epub)
+        
+        output = render_output(node_2)
+        assert_that(output, is_(u'\\ntiidref{section:Section_1}<Agency risk>, \\ntiidref{section:Section_2}<Agency risk>\n\n'))
+

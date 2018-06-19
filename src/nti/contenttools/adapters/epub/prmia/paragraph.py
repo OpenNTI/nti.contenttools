@@ -26,6 +26,8 @@ from nti.contenttools.types.lists import UnorderedList
 from nti.contenttools.adapters.epub.prmia.finder import find_superscript_node
 from nti.contenttools.adapters.epub.prmia.finder import remove_node_from_parent
 
+from nti.contenttools.adapters.epub.prmia.finder import find_href_node_index
+
 from nti.contenttools.util import merge_two_dicts
 
 class Paragraph(types.Paragraph):
@@ -35,6 +37,7 @@ class Paragraph(types.Paragraph):
 	FIGURE_CAPTION_DEF = ('figcap', )
 	SIDEBAR_TITLE_DEF = ('side-title', )
 	TABLE_DEF = ('tabcap', )
+	INDEX_DEF = ('indexmain', )
 
 	@classmethod
 	def process(cls, element, styles=(), epub=None):
@@ -94,6 +97,24 @@ class Paragraph(types.Paragraph):
 	    		node.element_type = 'Table'
 	    		node.children = me.children
 	    		me = node
+	    	elif any(s.lower() in para_class.lower() for s in cls.INDEX_DEF):
+	    		targets = {}
+	    		find_href_node_index(me, targets)
+	    		index_node = types.Run()
+	    		for i, item in enumerate(targets):
+	    			if item in epub.page_numbers:
+	    				node = types.Hyperlink()
+	    				node.type = 'ntiidref'
+	    				node.target = epub.page_numbers[item]
+	    				text = render_output(me)
+	    				text = text.replace(u',', '')
+	    				text = text.rstrip()
+	    				node.add_child(types.TextNode(text))
+	    				index_node.add_child(node)
+	    			if i < len(targets) - 1:
+	    				index_node.add_child(types.TextNode(u', '))
+	    		index_node.add_child(types.Paragraph())
+	    		me = index_node
 	    	else:
 	    		me.styles.extend(styles)
 	    return me
