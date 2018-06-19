@@ -37,7 +37,7 @@ class Paragraph(types.Paragraph):
 	FIGURE_CAPTION_DEF = ('figcap', )
 	SIDEBAR_TITLE_DEF = ('side-title', )
 	TABLE_DEF = ('tabcap', )
-	INDEX_DEF = ('indexmain', )
+	INDEX_DEF = ('indexmain', 'indexsub')
 
 	@classmethod
 	def process(cls, element, styles=(), epub=None):
@@ -100,7 +100,11 @@ class Paragraph(types.Paragraph):
 	    	elif any(s.lower() in para_class.lower() for s in cls.INDEX_DEF):
 	    		targets = {}
 	    		find_href_node_index(me, targets)
-	    		index_node = types.Paragraph()
+	    		if 'sub' in para_class:
+	    			index_node = BlockQuote()
+	    		else:
+	    			index_node = types.Paragraph()
+
 	    		for i, item in enumerate(targets):
 	    			if item in epub.page_numbers:
 	    				node = types.Hyperlink()
