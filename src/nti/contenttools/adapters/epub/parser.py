@@ -242,7 +242,8 @@ class EPUBParser(object):
 
         content = content.replace(u'\\end{sidebar}\n\n\\begin{sidebar}{Case History}', u'\n')
 
-        content = content.replace(u'\\end{quote}\n\\begin{quote}', u'')
+        if self.chapter_num == 'Index':
+            content = content.replace(u'\\end{quote}\n\\begin{quote}', u'')
 
         content = content.replace(u'\\begin{center}\n\item \item \item \n\\end{center}', u'\\begin{center}\n *** \n\\end{center}\n')
         return content

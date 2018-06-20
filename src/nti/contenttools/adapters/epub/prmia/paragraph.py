@@ -100,6 +100,7 @@ class Paragraph(types.Paragraph):
 	    				me = types.Run()
 	    			elif para_class == 'sfootnote':
 	    				sfootnote_id = u'\\label{%s}\n' %label_dict['Footnote_Superscript']
+	    				epub.labels[label_dict['Footnote_Superscript']] = 'sfootnote'
 	    				node.children.insert(0, types.TextNode(sfootnote_id))
 	    				me = node
 	    		else: 
