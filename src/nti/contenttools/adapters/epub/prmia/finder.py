@@ -124,6 +124,9 @@ def search_href_node(node, epub):
 			node.target = target[label_ref_idx:]
 			if node.target in epub.labels.keys():
 				node.type = 'ntiidref'
+		elif node.target in epub.labels.keys():
+			node.type = 'ntiidref'
+
 	elif hasattr(node, 'children'):
 		for child in node:
 			search_href_node(child, epub)

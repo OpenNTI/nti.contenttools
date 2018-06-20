@@ -26,6 +26,8 @@ from nti.contenttools.adapters.epub.prmia.tests import create_epub_object
 
 from nti.contenttools.adapters.epub.prmia.finder import search_sections_of_real_page_number
 
+from nti.contenttools.adapters.epub.prmia.finder import search_href_node
+
 class TestParagraphAdapter(PRMIATestCase):
 
     def test_simple_paragraph(self):
@@ -152,3 +154,5 @@ class TestParagraphAdapter(PRMIATestCase):
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
         assert_that(epub.labels['ch01fns1'], is_('sfootnote'))
+        search_href_node(node, epub)
+        
