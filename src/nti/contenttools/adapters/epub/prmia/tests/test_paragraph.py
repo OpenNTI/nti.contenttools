@@ -127,3 +127,19 @@ class TestParagraphAdapter(PRMIATestCase):
         output = render_output(node_2)
         assert_that(output, is_(u'\\ntiidref{section:Section_1}<Agency risk>, \\ntiidref{section:Section_2}<Agency risk>\n\n'))
 
+
+    def test_sfootnote_node(self):
+        script = u'<div><p class="sfootnote"><sup><a id="ch01fns1"></a><a href="ch01.html#ch01fns_1">1</a></sup>test</p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{quote}\n\\label{ch01fns1} test\n\\end{quote}\n'))
+
+    def test_blockquote_node(self):
+        script = u'<div><p class="blockquote"><em>Test</em></p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{quote}\n\\textit{Test}\n\\end{quote}\n'))
