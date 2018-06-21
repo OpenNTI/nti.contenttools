@@ -155,4 +155,5 @@ class TestParagraphAdapter(PRMIATestCase):
         node = Run.process(element, epub=epub)
         assert_that(epub.labels['ch01fns1'], is_('sfootnote'))
         search_href_node(node, epub)
-        
+        output = render_output(node)
+        assert_that(output, is_(u'\\textsuperscript{ch01fns_1\\ntiidref{ch01fns1}<1>}\n\n\\begin{quote}\n\\label{ch01fns1} test\n\\end{quote}\n'))
