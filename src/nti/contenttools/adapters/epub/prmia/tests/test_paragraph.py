@@ -26,6 +26,8 @@ from nti.contenttools.adapters.epub.prmia.tests import create_epub_object
 
 from nti.contenttools.adapters.epub.prmia.finder import search_sections_of_real_page_number
 
+from nti.contenttools.adapters.epub.prmia.finder import search_href_node
+
 class TestParagraphAdapter(PRMIATestCase):
 
     def test_simple_paragraph(self):
@@ -127,3 +129,31 @@ class TestParagraphAdapter(PRMIATestCase):
         output = render_output(node_2)
         assert_that(output, is_(u'\\ntiidref{section:Section_1}<Agency risk>, \\ntiidref{section:Section_2}<Agency risk>\n\n'))
 
+
+    def test_sfootnote_node(self):
+        script = u'<div><p class="sfootnote"><sup><a id="ch01fns1"></a><a href="ch01.html#ch01fns_1">1</a></sup>test</p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{quote}\n\\label{ch01fns1} test\n\\end{quote}\n'))
+        assert_that(epub.labels['ch01fns1'], is_('sfootnote'))
+
+    def test_blockquote_node(self):
+        script = u'<div><p class="blockquote"><em>Test</em></p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{quote}\n\\textit{Test}\n\\end{quote}\n'))
+
+
+    def test_sfootnote_ref_node(self):
+        script = u'<div><p><sup><a id="ch01fns_1"></a><a href="ch01.html#ch01fns1">1</a></sup></p><p class="sfootnote"><sup><a id="ch01fns1"></a><a href="ch01.html#ch01fns_1">1</a></sup>test</p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        assert_that(epub.labels['ch01fns1'], is_('sfootnote'))
+        search_href_node(node, epub)
+        output = render_output(node)
+        assert_that(output, is_(u'\\textsuperscript{ch01fns_1\\ntiidref{ch01fns1}<1>}\n\n\\begin{quote}\n\\label{ch01fns1} test\n\\end{quote}\n'))

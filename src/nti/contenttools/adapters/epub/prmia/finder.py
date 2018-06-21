@@ -87,6 +87,28 @@ def find_label_node(node, parent_type, label_dict):
 			find_label_node(child, parent_type, label_dict)
 	return label_dict
 
+def find_label_node_to_cleanup(node, label_dict):
+	if IRunNode.providedBy(node):
+		if node.element_type == 'Label':
+			label_dict[render_output(node)] = node
+		elif hasattr(node, 'children'):
+			for child in node:
+				find_label_node_to_cleanup(child, label_dict)
+	elif hasattr(node, 'children'):
+		for child in node:
+			find_label_node_to_cleanup(child, label_dict)
+	return label_dict
+
+def cleanup_label_node(node, epub):
+	label_dict = {}
+	find_label_node_to_cleanup(node, label_dict)
+	temp = list(epub.label_refs.keys())
+	for label in label_dict:
+		if label not in temp:
+			lnode = label_dict[label]
+			parent = lnode.__parent__
+			parent.remove(lnode)
+
 def find_ref_node(node, ref_label_node):
 	if IHyperlink.providedBy(node):
 		target = node.target
@@ -124,6 +146,9 @@ def search_href_node(node, epub):
 			node.target = target[label_ref_idx:]
 			if node.target in epub.labels.keys():
 				node.type = 'ntiidref'
+		elif node.target in epub.labels.keys():
+			node.type = 'ntiidref'
+
 	elif hasattr(node, 'children'):
 		for child in node:
 			search_href_node(child, epub)

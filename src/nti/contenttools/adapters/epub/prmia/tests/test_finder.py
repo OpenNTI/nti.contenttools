@@ -27,6 +27,8 @@ from nti.contenttools.adapters.epub.prmia.finder import find_ref_node
 from nti.contenttools.adapters.epub.prmia.finder import find_label_node
 from nti.contenttools.adapters.epub.prmia.finder import find_href_node_index
 from nti.contenttools.adapters.epub.prmia.finder import find_superscript_node
+from nti.contenttools.adapters.epub.prmia.finder import find_label_node_to_cleanup
+from nti.contenttools.adapters.epub.prmia.finder import cleanup_label_node
 
 from nti.contenttools.adapters.epub.prmia.finder import search_footnote_refs
 from nti.contenttools.adapters.epub.prmia.finder import search_href_node
@@ -232,7 +234,7 @@ class TestFinder(PRMIATestCase):
         assert_that(len(targets), is_(1))
         assert_that(targets.keys(), has_item('39'))
 
-    def test_find_href_node_index2inde(self):
+    def test_find_href_node_index2(self):
         script = u'<div><p class="index">Agency risk, <a href="ch02.html#page_48">48</a>, <a href="ch04.html#page_156">156</a></p></div>'
         element = html.fromstring(script)
         epub = create_epub_object()
@@ -242,3 +244,32 @@ class TestFinder(PRMIATestCase):
         assert_that(len(targets), is_(2))
         assert_that(targets.keys(), has_item('48'))
         assert_that(targets.keys(), has_item('156'))
+
+    def test_find_label_node_to_cleanup(self):
+        script = u'<div><p><sup><a id="ch01fns_1"></a><a href="ch01.html#ch01fns1">1</a></sup></p><p class="sfootnote"><sup><a id="ch01fns1"></a><a href="ch01.html#ch01fns_1">1</a></sup>test</p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        assert_that(epub.labels['ch01fns1'], is_('sfootnote'))
+        search_href_node(node, epub)
+        label_dict = {}
+        find_label_node_to_cleanup(node, label_dict)
+        temp = list(epub.label_refs.keys())
+        for label in label_dict:
+            if label not in temp:
+                lnode = label_dict[label]
+                parent = lnode.__parent__
+                parent.remove(lnode)
+        output = render_output(node)
+        assert_that(output, is_(u'\\textsuperscript{\\ntiidref{ch01fns1}<1>}\n\n\\begin{quote}\n\\label{ch01fns1} test\n\\end{quote}\n'))
+
+    def test_cleanup_label_node(self):
+        script = u'<div><p><sup><a id="ch01fns_1"></a><a href="ch01.html#ch01fns1">1</a></sup></p><p class="sfootnote"><sup><a id="ch01fns1"></a><a href="ch01.html#ch01fns_1">1</a></sup>test</p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        assert_that(epub.labels['ch01fns1'], is_('sfootnote'))
+        search_href_node(node, epub)
+        cleanup_label_node(node, epub)
+        output = render_output(node)
+        assert_that(output, is_(u'\\textsuperscript{\\ntiidref{ch01fns1}<1>}\n\n\\begin{quote}\n\\label{ch01fns1} test\n\\end{quote}\n'))
