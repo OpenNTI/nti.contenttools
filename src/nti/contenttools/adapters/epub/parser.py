@@ -25,6 +25,7 @@ from nti.contenttools.adapters.epub.ifsta import adapt as adapt_ifsta
 from nti.contenttools.adapters.epub.prmia import adapt as adapt_prmia
 
 from nti.contenttools.adapters.epub.prmia.finder import search_href_node as search_href_node_prmia
+from nti.contenttools.adapters.epub.prmia.finder import cleanup_label_node as cleanup_label_node_prmia
 from nti.contenttools.adapters.epub.prmia.finder import search_sections_of_real_page_number as search_sections_of_real_page_number_prmia
 
 from nti.contenttools.renderers.model import DefaultRendererContext
@@ -132,6 +133,7 @@ class EPUBParser(object):
             epub_chapter = self.epub_chapters[item]
             if self.epub_type == 'prmia':
                 search_href_node_prmia(epub_chapter, self)
+                cleanup_label_node_prmia(epub_chapter, self)
             tex_filename = u'%s.tex' % rename_filename(item)
             self.latex_filenames.append(tex_filename)
             logger.info("Processing ...")
