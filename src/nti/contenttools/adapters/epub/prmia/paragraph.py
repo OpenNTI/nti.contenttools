@@ -83,7 +83,7 @@ class Paragraph(types.Paragraph):
 	    		if para_class == 'footnote':
 	    			node = types.Footnote()
 	    		elif para_class == 'sfootnote':
-	    			node = types.BlockQuote()
+	    			node = types.Sidebar()
 	    		node.children = me.children
 	    		label_dict = {}
 	    		label_ref_dict = {}
