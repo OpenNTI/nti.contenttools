@@ -249,6 +249,7 @@ class EPUBParser(object):
             content = content.replace(u'\\end{quote}\n\\begin{quote}', u'')
 
         content = content.replace(u'\\begin{center}\n\item \item \item \n\\end{center}', u'\\begin{center}\n *** \n\\end{center}\n')
+        content = content.replace(u'\\end{itemize}\n}', u'\\end{itemize}}')
         return content
 
     def process_support_files(self):
