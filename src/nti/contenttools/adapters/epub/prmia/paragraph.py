@@ -80,10 +80,7 @@ class Paragraph(types.Paragraph):
 	    		node.children = me.children
 	    		me = node
 	    	elif para_class == 'footnote' or para_class == 'sfootnote':
-	    		if para_class == 'footnote':
-	    			node = types.Footnote()
-	    		elif para_class == 'sfootnote':
-	    			node = types.Sidebar()
+	    		node = types.Footnote()
 	    		node.children = me.children
 	    		label_dict = {}
 	    		label_ref_dict = {}
@@ -93,17 +90,11 @@ class Paragraph(types.Paragraph):
 	    			for item in sup_nodes:
 	    				remove_node_from_parent(sup_nodes[item])
 	    			epub.label_refs = merge_two_dicts(epub.label_refs, label_ref_dict)
-	    			if para_class == 'footnote':
-	    				footnote_id = label_dict['Footnote_Superscript']
-	    				epub.footnote_ids[footnote_id] = node
-	    				epub.last_footnote_id = footnote_id
-	    				node.label = types.TextNode(footnote_id)
-	    				me = types.Run()
-	    			elif para_class == 'sfootnote':
-	    				sfootnote_id = u'\\label{%s}\n' %label_dict['Footnote_Superscript']
-	    				epub.labels[label_dict['Footnote_Superscript']] = 'sfootnote'
-	    				node.children.insert(0, types.TextNode(sfootnote_id))
-	    				me = node
+	    			footnote_id = label_dict['Footnote_Superscript']
+    				epub.footnote_ids[footnote_id] = node
+    				epub.last_footnote_id = footnote_id
+    				node.label = types.TextNode(footnote_id)
+    				me = types.Run()
 	    		else: 
 	    			me = node
 	    	elif any(s.lower() in para_class.lower() for s in cls.FOOTNOTE_SUB_DEF):
@@ -112,13 +103,16 @@ class Paragraph(types.Paragraph):
 	    			node.element_type == 'Sub FNote'
 	    			if epub.last_footnote_id:
 	    				if para_class == 'footnote-bull-s1':
-	    					sub_node = types.UnorderedList()
+	    					list_node = types.UnorderedList()
+	    					sub_node = types.Item()
+	    					list_node.add(sub_node)
 	    					node.add_child(types.TextNode('\n'))
+	    					node.add_child(list_node)
 	    				else:
 	    					sub_node = types.Run()
-	    					node.add_child(types.TextNode('\n\n'))
+	    					node.add_child(types.TextNode('\\\\\n'))
+	    					node.add_child(sub_node)
 	    				sub_node.children = me.children
-	    				node.add_child(sub_node)
 	    				last_footnote_node = epub.footnote_ids[epub.last_footnote_id]
 	    				last_footnote_node.add_child(node)
 	    				me = types.Run()
