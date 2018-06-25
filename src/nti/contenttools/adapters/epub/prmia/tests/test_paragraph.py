@@ -137,7 +137,7 @@ class TestParagraphAdapter(PRMIATestCase):
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
         output = render_output(node)
-        assert_that(output, is_(u'\\begin{quote}\n\\label{ch01fns1} test\n\\end{quote}\n'))
+        assert_that(output, is_(u'\n\\begin{sidebar}{}\n\\label{ch01fns1} test\n\\end{sidebar}\n\\\\\n'))
         assert_that(epub.labels['ch01fns1'], is_('sfootnote'))
 
     def test_blockquote_node(self):
@@ -157,7 +157,7 @@ class TestParagraphAdapter(PRMIATestCase):
         assert_that(epub.labels['ch01fns1'], is_('sfootnote'))
         search_href_node(node, epub)
         output = render_output(node)
-        assert_that(output, is_(u'\\textsuperscript{ch01fns_1\\ntiidref{ch01fns1}<1>}\n\n\\begin{quote}\n\\label{ch01fns1} test\n\\end{quote}\n'))
+        assert_that(output, is_(u'\\textsuperscript{ch01fns_1\\ntiidref{ch01fns1}<1>}\n\n\n\\begin{sidebar}{}\n\\label{ch01fns1} test\n\\end{sidebar}\n\\\\\n'))
 
     def test_footnote_ref(self):
         script = u'<div><p>Refer to <sup><a id="ch03fn_29"></a><a href="ch00.html#ch03fn29">1</a></sup> tail</p></div><div><p class="footnote"><sup><a id="ch03fn29"></a><a href="ch03.html#ch03fn_29">29</a></sup>footnote</p></div>'

@@ -261,7 +261,7 @@ class TestFinder(PRMIATestCase):
                 parent = lnode.__parent__
                 parent.remove(lnode)
         output = render_output(node)
-        assert_that(output, is_(u'\\textsuperscript{\\ntiidref{ch01fns1}<1>}\n\n\\begin{quote}\n\\label{ch01fns1} test\n\\end{quote}\n'))
+        assert_that(output, is_(u'\\textsuperscript{\\ntiidref{ch01fns1}<1>}\n\n\n\\begin{sidebar}{}\n\\label{ch01fns1} test\n\\end{sidebar}\n\\\\\n'))
 
     def test_cleanup_label_node(self):
         script = u'<div><p><sup><a id="ch01fns_1"></a><a href="ch01.html#ch01fns1">1</a></sup></p><p class="sfootnote"><sup><a id="ch01fns1"></a><a href="ch01.html#ch01fns_1">1</a></sup>test</p></div>'
@@ -272,4 +272,4 @@ class TestFinder(PRMIATestCase):
         search_href_node(node, epub)
         cleanup_label_node(node, epub)
         output = render_output(node)
-        assert_that(output, is_(u'\\textsuperscript{\\ntiidref{ch01fns1}<1>}\n\n\\begin{quote}\n\\label{ch01fns1} test\n\\end{quote}\n'))
+        assert_that(output, is_(u'\\textsuperscript{\\ntiidref{ch01fns1}<1>}\n\n\n\\begin{sidebar}{}\n\\label{ch01fns1} test\n\\end{sidebar}\n\\\\\n'))
