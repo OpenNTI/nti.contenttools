@@ -27,6 +27,7 @@ from nti.contenttools.adapters.epub.prmia.tests import create_epub_object
 from nti.contenttools.adapters.epub.prmia.finder import search_sections_of_real_page_number
 
 from nti.contenttools.adapters.epub.prmia.finder import search_href_node
+from nti.contenttools.adapters.epub.prmia.finder import search_footnote_refs
 
 class TestParagraphAdapter(PRMIATestCase):
 
@@ -157,3 +158,12 @@ class TestParagraphAdapter(PRMIATestCase):
         search_href_node(node, epub)
         output = render_output(node)
         assert_that(output, is_(u'\\textsuperscript{ch01fns_1\\ntiidref{ch01fns1}<1>}\n\n\\begin{quote}\n\\label{ch01fns1} test\n\\end{quote}\n'))
+
+    def test_footnote_ref(self):
+        script = u'<div><p>Refer to <sup><a id="ch03fn_29"></a><a href="ch00.html#ch03fn29">1</a></sup> tail</p></div><div><p class="footnote"><sup><a id="ch03fn29"></a><a href="ch03.html#ch03fn_29">29</a></sup>footnote</p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        search_footnote_refs(node, epub)
+        output = render_output(node)
+        assert_that(output, is_(u'Refer to \\footnote{\\label{ch03fn29}footnote} tail\n\n'))
