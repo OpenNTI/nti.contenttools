@@ -81,6 +81,7 @@ class EPUBParser(object):
 
         self.labels = {} ## id - id type
         self.footnote_ids = {} ## footnote id - content
+        self.last_footnote_id = u''
         self.label_refs = {} ## id - id to ref
 
         self.page_numbers = {} # page_number - section id

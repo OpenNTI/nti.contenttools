@@ -167,3 +167,21 @@ class TestParagraphAdapter(PRMIATestCase):
         search_footnote_refs(node, epub)
         output = render_output(node)
         assert_that(output, is_(u'Refer to \\footnote{\\label{ch03fn29}footnote} tail\n\n'))
+
+    def test_subfootnote(self):
+        script = u'<div><p>Main paragraph <sup><a id="ch03fn_46"></a><a href="ch03.html#ch03fn46">46</a></sup></p><p class="footnote"><sup><a id="ch03fn46"></a><a href="ch03.html#ch03fn_46">46</a></sup>This is footnote</p><p class="footnote-s1">Sub footnote 1</div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        search_footnote_refs(node, epub)
+        output = render_output(node)
+        assert_that(output, is_(u'Main paragraph \\footnote{\\label{ch03fn46}This is footnote\n\nSub footnote 1}\n\n'))
+
+    def test_subfootnote_bullet(self):
+        script = u'<div><p>Main paragraph <sup><a id="ch03fn_46"></a><a href="ch03.html#ch03fn46">46</a></sup></p><p class="footnote"><sup><a id="ch03fn46"></a><a href="ch03.html#ch03fn_46">46</a></sup>This is footnote</p><p class="footnote-bull-s1">Sub Bullet 1</div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        search_footnote_refs(node, epub)
+        output = render_output(node)
+        assert_that(output, is_(u'Main paragraph \\footnote{\\label{ch03fn46}This is footnote\n\\begin{itemize}\nSub Bullet 1\n\\end{itemize}\n}\n\n'))
