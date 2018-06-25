@@ -38,7 +38,7 @@ class Paragraph(types.Paragraph):
 	SIDEBAR_TITLE_DEF = ('side-title', )
 	TABLE_DEF = ('tabcap', )
 	INDEX_DEF = ('indexmain', 'indexsub')
-	FOOTNOTE_SUB_DEF = ('footnote-s1', 'footnote-bull-s1',)
+	FOOTNOTE_SUB_DEF = ('footnote-s1', 'footnote-bull-s1', 'sfootnotebull')
 
 	@classmethod
 	def process(cls, element, styles=(), epub=None):
@@ -102,12 +102,10 @@ class Paragraph(types.Paragraph):
 	    			node = types.Run()
 	    			node.element_type == 'Sub FNote'
 	    			if epub.last_footnote_id:
-	    				if para_class == 'footnote-bull-s1':
-	    					list_node = types.UnorderedList()
-	    					sub_node = types.Item()
-	    					list_node.add(sub_node)
+	    				if para_class == 'footnote-bull-s1' or para_class == 'sfootnotebull':
+	    					sub_node = types.BlockQuote()
 	    					node.add_child(types.TextNode('\n'))
-	    					node.add_child(list_node)
+	    					node.add_child(sub_node)
 	    				else:
 	    					sub_node = types.Run()
 	    					node.add_child(types.TextNode('\\\\\n'))

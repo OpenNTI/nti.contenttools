@@ -181,4 +181,4 @@ class TestParagraphAdapter(PRMIATestCase):
         node = Run.process(element, epub=epub)
         search_footnote_refs(node, epub)
         output = render_output(node)
-        assert_that(output, is_(u'Main paragraph \\footnote{\\label{ch03fn46}This is footnote\n\\begin{itemize}\n\\item Sub Bullet 1 \n\n\\end{itemize}\n}\n\n'))
+        assert_that(output, is_( u'Main paragraph \\footnote{\\label{ch03fn46}This is footnote\n\\begin{quote}\nSub Bullet 1\n\\end{quote}\n}\n\n'))
