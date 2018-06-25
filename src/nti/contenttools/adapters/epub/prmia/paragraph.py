@@ -38,6 +38,7 @@ class Paragraph(types.Paragraph):
 	SIDEBAR_TITLE_DEF = ('side-title', )
 	TABLE_DEF = ('tabcap', )
 	INDEX_DEF = ('indexmain', 'indexsub')
+	FOOTNOTE_SUB_DEF = ('footnote-s1', 'footnote-bull-s1',)
 
 	@classmethod
 	def process(cls, element, styles=(), epub=None):
@@ -82,7 +83,7 @@ class Paragraph(types.Paragraph):
 	    		if para_class == 'footnote':
 	    			node = types.Footnote()
 	    		elif para_class == 'sfootnote':
-	    			node = types.BlockQuote()
+	    			node = types.Sidebar()
 	    		node.children = me.children
 	    		label_dict = {}
 	    		label_ref_dict = {}
@@ -95,6 +96,7 @@ class Paragraph(types.Paragraph):
 	    			if para_class == 'footnote':
 	    				footnote_id = label_dict['Footnote_Superscript']
 	    				epub.footnote_ids[footnote_id] = node
+	    				epub.last_footnote_id = footnote_id
 	    				node.label = types.TextNode(footnote_id)
 	    				me = types.Run()
 	    			elif para_class == 'sfootnote':
@@ -104,6 +106,22 @@ class Paragraph(types.Paragraph):
 	    				me = node
 	    		else: 
 	    			me = node
+	    	elif any(s.lower() in para_class.lower() for s in cls.FOOTNOTE_SUB_DEF):
+	    		if epub:
+	    			node = types.Run()
+	    			node.element_type == 'Sub FNote'
+	    			if epub.last_footnote_id:
+	    				if para_class == 'footnote-bull-s1':
+	    					sub_node = types.UnorderedList()
+	    					node.add_child(types.TextNode('\n'))
+	    				else:
+	    					sub_node = types.Run()
+	    					node.add_child(types.TextNode('\n\n'))
+	    				sub_node.children = me.children
+	    				node.add_child(sub_node)
+	    				last_footnote_node = epub.footnote_ids[epub.last_footnote_id]
+	    				last_footnote_node.add_child(node)
+	    				me = types.Run()
 	    	elif any(s.lower() in para_class.lower() for s in cls.TABLE_DEF):
 	    		node = types.Run()
 	    		node.element_type = 'Table'
