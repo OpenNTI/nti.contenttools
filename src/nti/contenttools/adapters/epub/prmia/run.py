@@ -13,6 +13,10 @@ from nti.contenttools import types
 
 from nti.contenttools.adapters.epub.generic.run import Run
 
+from nti.contenttools.adapters.epub.generic import check_child
+from nti.contenttools.adapters.epub.generic import check_element_tail
+from nti.contenttools.adapters.epub.generic import check_element_text
+
 from nti.contenttools.adapters.epub.prmia.finder import search_a_label_node
 from nti.contenttools.adapters.epub.prmia.finder import remove_node_from_parent
 from nti.contenttools.adapters.epub.prmia.finder import search_run_node_with_element_type
@@ -76,9 +80,18 @@ def process_div_elements(element, parent, epub=None):
     return el
 
 def process_sup_elements(element, parent, epub=None):
-    el = Run.process(element, styles=('sup',), epub=epub)
+    main_el = types.Run()
+    el = types.Run()
+    el = check_element_text(el, element)
+    el = check_child(el, element)
+    el.styles.extend(('sup',))
     el.element_type = 'Superscript'
-    return el
+    main_el.add_child(el)
+    if element.tail:
+        el_tail = types.Run()
+        el_tail = check_element_tail(el_tail, element)
+        main_el.add_child(el_tail)
+    return main_el
 
 def process_span_elements(element, epub=None):
     el = Run.process(element, epub=epub)

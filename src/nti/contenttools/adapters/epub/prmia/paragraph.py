@@ -90,8 +90,7 @@ class Paragraph(types.Paragraph):
 	    		find_superscript_node(node, 'Footnote', label_dict, label_ref_dict, sup_nodes)
 	    		if sup_nodes and epub:
 	    			for item in sup_nodes:
-	    				for child in sup_nodes[item]:
-	    					remove_node_from_parent(child)
+	    				remove_node_from_parent(sup_nodes[item])
 	    			epub.label_refs = merge_two_dicts(epub.label_refs, label_ref_dict)
 	    			if para_class == 'footnote':
 	    				footnote_id = label_dict['Footnote_Superscript']
