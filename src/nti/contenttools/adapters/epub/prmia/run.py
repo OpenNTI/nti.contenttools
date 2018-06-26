@@ -57,6 +57,9 @@ def process_div_elements(element, parent, epub=None):
                 table.caption.children = table_caption
                 table.number_of_col_header = len(image_node)
                 table.children = image_node
+                table.children.insert(0, table.caption)
+                table.children.insert(1, types.TextNode('\\\\\n'))
+                table.caption.styles.append('bold')
                 if epub:
                     epub.labels[label] = 'Table'
                 el = table
