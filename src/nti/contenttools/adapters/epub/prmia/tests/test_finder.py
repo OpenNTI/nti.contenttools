@@ -250,7 +250,8 @@ class TestFinder(PRMIATestCase):
         element = html.fromstring(script)
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
-        assert_that(epub.labels['ch01fns1'], is_('sfootnote'))
+        assert_that(epub.label_refs['ch01fns1'], is_('ch01fns_1'))
+        search_footnote_refs(node, epub)
         search_href_node(node, epub)
         label_dict = {}
         find_label_node_to_cleanup(node, label_dict)
@@ -261,15 +262,16 @@ class TestFinder(PRMIATestCase):
                 parent = lnode.__parent__
                 parent.remove(lnode)
         output = render_output(node)
-        assert_that(output, is_(u'\\textsuperscript{\\ntiidref{ch01fns1}<1>}\n\n\n\\begin{sidebar}{}\n\\label{ch01fns1} test\n\\end{sidebar}\n\\\\\n'))
+        assert_that(output, is_(u'\\footnote{\\label{ch01fns1}test}\n\n'))
 
     def test_cleanup_label_node(self):
         script = u'<div><p><sup><a id="ch01fns_1"></a><a href="ch01.html#ch01fns1">1</a></sup></p><p class="sfootnote"><sup><a id="ch01fns1"></a><a href="ch01.html#ch01fns_1">1</a></sup>test</p></div>'
         element = html.fromstring(script)
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
-        assert_that(epub.labels['ch01fns1'], is_('sfootnote'))
+        assert_that(epub.label_refs['ch01fns1'], is_('ch01fns_1'))
+        search_footnote_refs(node, epub)
         search_href_node(node, epub)
         cleanup_label_node(node, epub)
         output = render_output(node)
-        assert_that(output, is_(u'\\textsuperscript{\\ntiidref{ch01fns1}<1>}\n\n\n\\begin{sidebar}{}\n\\label{ch01fns1} test\n\\end{sidebar}\n\\\\\n'))
+        assert_that(output, is_(u'\\footnote{\\label{ch01fns1}test}\n\n'))
