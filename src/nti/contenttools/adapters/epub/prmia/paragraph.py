@@ -55,6 +55,11 @@ class Paragraph(types.Paragraph):
 	    		center_node = CenterNode()
 	    		center_node.children = me.children
 	    		me = center_node
+	    	elif para_class.lower() == 'source':
+	    		node = types.Run()
+	    		node.element_type = 'Source'
+	    		node.children = me.children
+	    		me = node
 	    	elif any(s.lower() in para_class.lower() for s in cls.UNORDERED_LIST_DEF):
 	    		item = Item()
 	    		bullet_class = UnorderedList()

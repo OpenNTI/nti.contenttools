@@ -33,6 +33,8 @@ def process_div_elements(element, parent, epub=None):
             search_run_node_with_element_type(el, 'Figure Caption', caption_node)
             table_caption = []
             search_run_node_with_element_type(el, 'Table', table_caption)
+            sources = []
+            search_run_node_with_element_type(el, 'Source', sources)
             if caption_node:
                 image_node = []
                 search_run_node_with_element_type(el, 'Figure Image', image_node)
@@ -47,6 +49,9 @@ def process_div_elements(element, parent, epub=None):
                     el = figure
                     if epub:
                         epub.labels[figure.label] = 'Figure'
+                    if sources:
+                        figure.caption.children.append(types.TextNode(u'\\\\\n'))
+                        figure.caption.children.extend(sources)
             elif table_caption:
                 image_node = []
                 search_run_node_with_element_type(el, 'Figure Image', image_node, option=True)
@@ -62,6 +67,10 @@ def process_div_elements(element, parent, epub=None):
                 table.caption.styles.append('bold')
                 if epub:
                     epub.labels[label] = 'Table'
+                if sources:
+                    for source in sources:
+                        table.children.append(types.TextNode(u'\\\\\n'))
+                        table.children.append(source)
                 el = table
         elif div_class == 'sidebar':
             sidebar = types.Sidebar()

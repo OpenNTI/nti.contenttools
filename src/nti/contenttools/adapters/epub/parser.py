@@ -163,9 +163,10 @@ class EPUBParser(object):
 
         if self.epub_type in EPUB_REPLACE_STAR_WITH_ITEM:
             content = content.replace(u"*", u"\\item ")
-            content = content.replace(u"\\item *", u"\\item ")
             content = content.replace(u"\\renewcommand\\item ", u"\\renewcommand*")
             content = content.replace(u'\\item --- ', u'\\\\ --- ')
+
+        content = content.replace(u"\\item *", u"\\item ")
         
         # consolidate list
         content = content.replace(u'\n\\end{itemize}\n\\begin{itemize}\n', u'')
