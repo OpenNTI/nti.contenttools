@@ -43,6 +43,8 @@ from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IEPUBBody
 
 EPUB_COURSE_TYPE = (u'ifsta', u'ifsta_rf', u'tcia', u'prmia')
+EPUB_REMOVE_PAGE_NUMBER = (u'ifsta', u'ifsta_rf')
+EPUB_REPLACE_STAR_WITH_ITEM = (u'ifsta', u'ifsta_rf')
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -156,9 +158,15 @@ class EPUBParser(object):
             self.tables = search_tables(epub_chapter, self.tables)
 
     def cleanup_tex(self, content):
-        # cleanup page number
-        content = re.sub(r'(, p\.).[0-9]*[0-9]', u'', content)
+        if self.epub_type in EPUB_REMOVE_PAGE_NUMBER:
+            content = re.sub(r'(, p\.).[0-9]*[0-9]', u'', content)
 
+        if self.epub_type in EPUB_REPLACE_STAR_WITH_ITEM:
+            content = content.replace(u"*", u"\\item ")
+            content = content.replace(u"\\item *", u"\\item ")
+            content = content.replace(u"\\renewcommand\\item ", u"\\renewcommand*")
+            content = content.replace(u'\\item --- ', u'\\\\ --- ')
+        
         # consolidate list
         content = content.replace(u'\n\\end{itemize}\n\\begin{itemize}\n', u'')
         content = content.replace(u'\n\\end{itemize}\n\n\\begin{itemize}\n', u'')
@@ -224,10 +232,6 @@ class EPUBParser(object):
         content = content.replace(u'``', u'"')
         content = content.replace(u"''", u'"')
 
-        content = content.replace(u"\\item *", u"\\item ")
-        content = content.replace(u"*", u"\\item ")
-        content = content.replace(u"\\renewcommand\\item ", u"\\renewcommand*")
-        content = content.replace(u'\\item --- ', u'\\\\ --- ')
 
         content = content.replace(u'\n\\end{sidebar}\n\\\\\n\n\\begin{sidebar}{Case History}', u'')
 
