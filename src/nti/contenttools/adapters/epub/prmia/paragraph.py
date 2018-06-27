@@ -39,6 +39,7 @@ class Paragraph(types.Paragraph):
 	TABLE_DEF = ('tabcap', )
 	INDEX_DEF = ('indexmain', 'indexsub')
 	FOOTNOTE_SUB_DEF = ('footnote-s1', 'footnote-bull-s1', 'sfootnotebull', 'footnote-bull', 'footnote-bull1')
+	CENTER_DEF = ('eq-image', 'center',)
 
 	@classmethod
 	def process(cls, element, styles=(), epub=None):
@@ -50,10 +51,15 @@ class Paragraph(types.Paragraph):
 	    attrib = element.attrib
 	    if 'class' in attrib:
 	    	para_class = attrib['class'] if 'class' in attrib else u'' 
-	    	if para_class == 'center':
+	    	if any(s.lower() in para_class.lower() for s in cls.CENTER_DEF):
 	    		center_node = CenterNode()
 	    		center_node.children = me.children
 	    		me = center_node
+	    	elif para_class.lower() == 'source':
+	    		node = types.Run()
+	    		node.element_type = 'Source'
+	    		node.children = me.children
+	    		me = node
 	    	elif any(s.lower() in para_class.lower() for s in cls.UNORDERED_LIST_DEF):
 	    		item = Item()
 	    		bullet_class = UnorderedList()

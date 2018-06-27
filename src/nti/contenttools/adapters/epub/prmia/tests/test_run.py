@@ -65,3 +65,29 @@ class TestRunAdapter(PRMIATestCase):
         output = render_output(node)
         assert_that(output, 
             is_(u'\n\\begin{table}\n\\caption{\\textbf{\\textbf{TABLE 7-2} Example of a Selection of Risk Factors}}\n\\label{ch07tab2}\n\\begin{tabular}{ l }\n\\textbf{\\textbf{TABLE 7-2} Example of a Selection of Risk Factors}\\\\ \\includegraphics{Images/CourseAssets/PRMIATest/f0247-01.gif}\n\\end{tabular}\n\\end{table}\n'))
+
+    def test_div_group_image_with_sources(self):
+        script = u"""<div><div class="group">
+<p class="image"><a id="ch11fig8"></a><img src="f0392-01.gif" alt="Image"/></p>
+<p class="source">Source: KMV Corporation.</p>
+<p class="figcap"><strong>FIGURE 11-8</strong> Factor Model for Asset Return Correlations</p>
+</div></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        assert_that(epub.ids, is_(["ch11fig8"]))
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{figure}\n\\begin{center}\n\\includegraphics[width=0px,height=0px]{Images/CourseAssets/PRMIATest/f0392-01.gif}\n\\caption{\\textbf{FIGURE 11-8} Factor Model for Asset Return Correlations\\\\ Source: KMV Corporation.}\n\\label{ch11fig8}\n\\end{center}\n\\end{figure}\n'))
+
+    def test_div_group_table_with_sources(self):
+        script = u"""<div><div class="group">
+<p class="tabcap"><a id="ch11tab4"></a><strong>TABLE 11-4</strong> Distribution of the Bond Values, and Changes in Value of a BBB Bond, in One Year</p>
+<p class="image"><img src="f0378-01.gif" alt="Image"/></p>
+<p class="source">Source: CreditMetrics, JP Morgan</p>
+</div></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        assert_that(epub.ids, is_(["ch11tab4"]))
+        output = render_output(node)
+        assert_that(output, is_(u'\n\\begin{table}\n\\caption{\\textbf{\\textbf{TABLE 11-4} Distribution of the Bond Values, and Changes in Value of a BBB Bond, in One Year}}\n\\label{ch11tab4}\n\\begin{tabular}{ l }\n\\textbf{\\textbf{TABLE 11-4} Distribution of the Bond Values, and Changes in Value of a BBB Bond, in One Year}\\\\ \\includegraphics{Images/CourseAssets/PRMIATest/f0378-01.gif}\\\\ Source: CreditMetrics, JP Morgan\n\\end{tabular}\n\\end{table}\n'))

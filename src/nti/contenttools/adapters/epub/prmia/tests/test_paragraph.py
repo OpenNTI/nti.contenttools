@@ -200,3 +200,10 @@ class TestParagraphAdapter(PRMIATestCase):
         search_footnote_refs(node, epub)
         output = render_output(node)
         assert_that(output, is_( u'Main paragraph \\footnote{\\label{ch03fn46}This is footnote\n\\begin{quote}\nSub Bullet 1\n\\end{quote}\n}\n\n'))
+
+    def test_equation_image(self):
+        script = u'<div><p class="eq-image">VaR&#8242; = worst-case loss at the 99 percent confidence level</p></div>'
+        element = html.fromstring(script)
+        node = Run.process(element)
+        output = render_output(node)
+        assert_that(output, is_(u'\\begin{center}\nVaR\u2032 = worst-case loss at the 99 percent confidence level\n\\end{center}\n'))
