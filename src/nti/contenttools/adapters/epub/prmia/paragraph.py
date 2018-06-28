@@ -126,26 +126,41 @@ class Paragraph(types.Paragraph):
 	    		node.children = me.children
 	    		me = node
 	    	elif any(s.lower() in para_class.lower() for s in cls.INDEX_DEF):
-	    		targets = {}
+	    		targets = []
 	    		find_href_node_index(me, targets)
 	    		if 'sub' in para_class:
 	    			index_node = BlockQuote()
 	    		else:
 	    			index_node = types.Paragraph()
 
+	    		text = render_output(me)
+	    		text = text.replace(u',', '')
+	    		text = text.rstrip()
+
 	    		for i, item in enumerate(targets):
-	    			if item in epub.page_numbers:
+	    			if item[0] in epub.page_numbers:
 	    				node = types.Hyperlink()
 	    				node.type = 'ntiidref'
-	    				node.target = epub.page_numbers[item]
-	    				text = render_output(me)
-	    				text = text.replace(u',', '')
-	    				text = text.rstrip()
+	    				node.target = epub.page_numbers[item[0]]
+	    			else:
+	    				node = types.Run()
+
+	    			if i == 0:
 	    				node.add_child(types.TextNode(text))
-	    				index_node.add_child(node)
-	    			if i < len(targets) - 1:
-	    				index_node.add_child(types.TextNode(u', '))
+	    				if len(targets) > 1:
+	    					node.add_child(generate_index_reference_description(str(i+1)))
+	    			else:
+	    				node.add_child(generate_index_reference_description(str(i+1)))
+	    				if i < len(targets) - 1:
+	    					node.add_child(types.TextNode(u', '))
+	    			index_node.add_child(node)
 	    		me = index_node
 	    	else:
 	    		me.styles.extend(styles)
 	    return me
+
+def generate_index_reference_description(number):
+	node = types.Run()
+	node.styles.append('sup')
+	node.add_child(types.TextNode(number))
+	return node

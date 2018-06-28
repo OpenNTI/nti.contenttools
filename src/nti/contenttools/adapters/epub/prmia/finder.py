@@ -159,8 +159,9 @@ def find_href_node_index(node, targets):
 			label_ref_idx = node.target.find('#') + 1
 			target = node.target[label_ref_idx:]
 			target = target.replace('page_', '')
-			targets[target] = node
-			remove_node_from_parent(node)
+			targets.append((target, node))
+			parent = node.__parent__
+			parent.children = ()
 	elif hasattr(node, 'children'):
 		for child in node:
 			find_href_node_index(child, targets)

@@ -128,8 +128,35 @@ class TestParagraphAdapter(PRMIATestCase):
         node_2 = Run.process(element_2, epub=epub)
         
         output = render_output(node_2)
-        assert_that(output, is_(u'\\ntiidref{section:Section_1}<Agency risk>, \\ntiidref{section:Section_2}<Agency risk>\n\n'))
+        assert_that(output, is_(u'\\ntiidref{section:Section_1}<Agency risk\\textsuperscript{1}>\\ntiidref{section:Section_2}<\\textsuperscript{2}>\n\n'))
 
+    def test_para_index3(self):
+        script_1 = u'<div><h2>Chapter 1</h2><h3>Section 1</h3><p><a id="page_42"></a></p><h3>Section 2</h3><p><a id="page_82"></a></p><p><a id="page_501"></a></p><p><a id="page_573"></a></p></div>'
+        element = html.fromstring(script_1)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        search_sections_of_real_page_number(node, [], epub.page_numbers)
+
+        script_2 = u'<div><p class="indexmain">AIG, <a href="ch01a.html#page_42">42</a>, <a href="ch03.html#page_82">82</a>, <a href="ch14.html#page_501">501</a>n, <a href="ch16.html#page_573">573</a>n</p></div>'
+        element_2 = html.fromstring(script_2)
+        node_2 = Run.process(element_2, epub=epub)
+        
+        output = render_output(node_2)
+        assert_that(output, is_(u'\\ntiidref{section:Section_1}<AIG\\textsuperscript{1}>\\ntiidref{section:Section_2}<\\textsuperscript{2}, >\\ntiidref{section:Section_2}<\\textsuperscript{3}, >\\ntiidref{section:Section_2}<\\textsuperscript{4}>\n\n'))
+
+    def test_para_index4(self):
+        script_1 = u'<div><h2>Chapter 1</h2><h3>Section 1</h3><h3>Section 2</h3><p><a id="page_82"></a></p><p><a id="page_501"></a></p><p><a id="page_573"></a></p></div>'
+        element = html.fromstring(script_1)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        search_sections_of_real_page_number(node, [], epub.page_numbers)
+
+        script_2 = u'<div><p class="indexmain">AIG, <a href="ch01a.html#page_42">42</a>, <a href="ch03.html#page_82">82</a>, <a href="ch14.html#page_501">501</a>n, <a href="ch16.html#page_573">573</a>n</p></div>'
+        element_2 = html.fromstring(script_2)
+        node_2 = Run.process(element_2, epub=epub)
+        
+        output = render_output(node_2)
+        assert_that(output, is_(u'AIG\\textsuperscript{1}\\ntiidref{section:Section_2}<\\textsuperscript{2}, >\\ntiidref{section:Section_2}<\\textsuperscript{3}, >\\ntiidref{section:Section_2}<\\textsuperscript{4}>\n\n'))
 
     def test_sfootnote_node(self):
         script = u'<div><p class="sfootnote"><sup><a id="ch01fns1"></a><a href="ch01.html#ch01fns_1">1</a></sup>test</p></div>'
