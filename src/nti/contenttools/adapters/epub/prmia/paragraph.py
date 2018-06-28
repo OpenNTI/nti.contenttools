@@ -134,9 +134,8 @@ class Paragraph(types.Paragraph):
 	    			index_node = types.Paragraph()
 
 	    		text = render_output(me)
-	    		text = text.replace(u',', '')
 	    		text = text.rstrip()
-
+	    		index_node.add_child(types.TextNode(text))
 	    		for i, item in enumerate(targets):
 	    			if item[0] in epub.page_numbers:
 	    				node = types.Hyperlink()
@@ -146,11 +145,11 @@ class Paragraph(types.Paragraph):
 	    				node = types.Run()
 
 	    			if i == 0:
-	    				node.add_child(types.TextNode(text))
+	    				node.add_child(types.TextNode(item[0]))
 	    				if len(targets) > 1:
-	    					node.add_child(generate_index_reference_description(str(i+1)))
+	    					node.add_child(types.TextNode(u', '))
 	    			else:
-	    				node.add_child(generate_index_reference_description(str(i+1)))
+	    				node.add_child(types.TextNode(item[0]))
 	    				if i < len(targets) - 1:
 	    					node.add_child(types.TextNode(u', '))
 	    			index_node.add_child(node)
