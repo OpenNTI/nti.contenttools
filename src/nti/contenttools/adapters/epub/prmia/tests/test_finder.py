@@ -229,21 +229,21 @@ class TestFinder(PRMIATestCase):
         element = html.fromstring(script)
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
-        targets = {}
+        targets = []
         find_href_node_index(node, targets)
         assert_that(len(targets), is_(1))
-        assert_that(targets.keys(), has_item('39'))
+        assert_that(targets[0], has_item('39'))
 
     def test_find_href_node_index2(self):
         script = u'<div><p class="index">Agency risk, <a href="ch02.html#page_48">48</a>, <a href="ch04.html#page_156">156</a></p></div>'
         element = html.fromstring(script)
         epub = create_epub_object()
         node = Run.process(element, epub=epub)
-        targets = {}
+        targets = []
         find_href_node_index(node, targets)
         assert_that(len(targets), is_(2))
-        assert_that(targets.keys(), has_item('48'))
-        assert_that(targets.keys(), has_item('156'))
+        assert_that(targets[0], has_item('48'))
+        assert_that(targets[1], has_item('156'))
 
     def test_find_label_node_to_cleanup(self):
         script = u'<div><p><sup><a id="ch01fns_1"></a><a href="ch01.html#ch01fns1">1</a></sup></p><p class="sfootnote"><sup><a id="ch01fns1"></a><a href="ch01.html#ch01fns_1">1</a></sup>test</p></div>'
