@@ -197,3 +197,12 @@ def search_sections_of_real_page_number(root, sections, page_numbers):
 		for child in root:
 			search_sections_of_real_page_number(child, sections, page_numbers)
 	return sections, page_numbers
+
+def search_real_page_number_in_title(title, label, page_numbers):
+	if IRealPageNumber.providedBy(title):
+		page_numbers[render_children_output(title)] = label
+	elif hasattr(title, 'children'):
+		for child in title:
+			search_real_page_number_in_title(child, label, page_numbers)
+	return page_numbers
+
