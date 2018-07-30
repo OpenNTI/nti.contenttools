@@ -113,7 +113,7 @@ class TestParagraphAdapter(PRMIATestCase):
         node_2 = Run.process(element_2, epub=epub)
         
         output = render_output(node_2)
-        assert_that(output, is_(u'Apple,\\ntiidref{section:Section_1}<39>\n\n'))
+        assert_that(output, is_(u'Apple, \\ntiidref{section:Section_1}<39>\n\n'))
         
 
     def test_para_index2(self):
@@ -128,7 +128,7 @@ class TestParagraphAdapter(PRMIATestCase):
         node_2 = Run.process(element_2, epub=epub)
         
         output = render_output(node_2)
-        assert_that(output, is_(u'Agency risk,\\ntiidref{section:Section_1}<48, >\\ntiidref{section:Section_2}<156>\n\n'))
+        assert_that(output, is_(u'Agency risk, \\ntiidref{section:Section_1}<48, >\\ntiidref{section:Section_2}<156>\n\n'))
 
     def test_para_index3(self):
         script_1 = u'<div><h2>Chapter 1</h2><h3>Section 1</h3><p><a id="page_42"></a></p><h3>Section 2</h3><p><a id="page_82"></a></p><p><a id="page_501"></a></p><p><a id="page_573"></a></p></div>'
@@ -142,7 +142,7 @@ class TestParagraphAdapter(PRMIATestCase):
         node_2 = Run.process(element_2, epub=epub)
         
         output = render_output(node_2)
-        assert_that(output, is_(u'AIG,\\ntiidref{section:Section_1}<42, >\\ntiidref{section:Section_2}<82, >\\ntiidref{section:Section_2}<501, >\\ntiidref{section:Section_2}<573>\n\n'))
+        assert_that(output, is_(u'AIG, \\ntiidref{section:Section_1}<42, >\\ntiidref{section:Section_2}<82, >\\ntiidref{section:Section_2}<501n, >\\ntiidref{section:Section_2}<573n>\n\n'))
 
     def test_para_index4(self):
         script_1 = u'<div><h2>Chapter 1</h2><h3>Section 1</h3><h3>Section 2</h3><p><a id="page_82"></a></p><p><a id="page_501"></a></p><p><a id="page_573"></a></p></div>'
@@ -156,7 +156,21 @@ class TestParagraphAdapter(PRMIATestCase):
         node_2 = Run.process(element_2, epub=epub)
         
         output = render_output(node_2)
-        assert_that(output, is_(u'AIG,42, \\ntiidref{section:Section_2}<82, >\\ntiidref{section:Section_2}<501, >\\ntiidref{section:Section_2}<573>\n\n'))
+        assert_that(output, is_(u'AIG, 42, \\ntiidref{section:Section_2}<82, >\\ntiidref{section:Section_2}<501n, >\\ntiidref{section:Section_2}<573n>\n\n'))
+
+    def test_para_index5(self):
+        script_1 = u'<div><h2>Chapter 1</h2><h3>Section 1</h3><p><a id="page_467"></a></p></div>'
+        element = html.fromstring(script_1)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        search_sections_of_real_page_number(node, [], epub.page_numbers)
+        
+        script_2 = u'<div><p class="indexmain">rating agencies, <a href="ch12a.html#page_467">467</a>&#8211;469</p></div>'
+        element_2 = html.fromstring(script_2)
+        node_2 = Run.process(element_2, epub=epub)
+        
+        output = render_output(node_2)
+        assert_that(output, is_(u'rating agencies, \\ntiidref{section:Section_1}<467-469>\n\n'))
 
     def test_sfootnote_node(self):
         script = u'<div><p class="sfootnote"><sup><a id="ch01fns1"></a><a href="ch01.html#ch01fns_1">1</a></sup>test</p></div>'

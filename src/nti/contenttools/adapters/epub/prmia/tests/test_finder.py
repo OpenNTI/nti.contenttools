@@ -245,6 +245,15 @@ class TestFinder(PRMIATestCase):
         assert_that(targets[0], has_item('48'))
         assert_that(targets[1], has_item('156'))
 
+    def test_find_href_node_index3(self):
+        script = u'<div><p class="index">rating agencies, <a href="ch12a.html#page_467">467</a>&#8211;469</p></div>'
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        node = Run.process(element, epub=epub)
+        targets = []
+        find_href_node_index(node, targets)
+        assert_that(len(targets), is_(1))
+
     def test_find_label_node_to_cleanup(self):
         script = u'<div><p><sup><a id="ch01fns_1"></a><a href="ch01.html#ch01fns1">1</a></sup></p><p class="sfootnote"><sup><a id="ch01fns1"></a><a href="ch01.html#ch01fns_1">1</a></sup>test</p></div>'
         element = html.fromstring(script)

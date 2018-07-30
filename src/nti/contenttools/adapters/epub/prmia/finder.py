@@ -23,6 +23,8 @@ from nti.contenttools.types.interfaces import IRealPageNumber
 from nti.contenttools.renderers.LaTeX.base import render_output
 from nti.contenttools.renderers.LaTeX.base import render_children_output
 
+from nti.contenttools import types
+
 def search_run_node_with_element_type(root, element_type, nodes, option=None):
 	if IRunNode.providedBy(root):
 		if root.element_type == element_type:
@@ -159,9 +161,16 @@ def find_href_node_index(node, targets):
 			label_ref_idx = node.target.find('#') + 1
 			target = node.target[label_ref_idx:]
 			target = target.replace('page_', '')
-			targets.append((target, node))
 			parent = node.__parent__
+			el = types.Run()
+			el.add_child(node)
+			for _, child in enumerate(parent):
+				if child == node:
+					pass
+				else:
+					el.add(child)
 			parent.children = ()
+			targets.append((target, el))
 	elif hasattr(node, 'children'):
 		for child in node:
 			find_href_node_index(child, targets)
