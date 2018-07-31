@@ -32,6 +32,8 @@ from nti.contenttools.renderers.LaTeX.utils import create_label
 
 from nti.contenttools.adapters.epub.generic.run import Run
 
+from nti.contenttools.adapters.epub.prmia.finder import search_real_page_number_in_title
+
 @interface.implementer(IChildProcessor)
 class _ParagraphChildProcessor(object):
 
@@ -104,6 +106,8 @@ class _HeadingOneChildProcessor(object):
         result.title = el
         set_heading_label(child, result, 'chapter', epub)
         node.add_child(result)
+        if epub:
+            search_real_page_number_in_title(el, result.label, epub.page_numbers)
         return result
 
 
@@ -118,6 +122,8 @@ class _HeadingTwoChildProcessor(object):
         result.title = el
         set_heading_label(child, result, 'section', epub)
         node.add_child(result)
+        if epub:
+            search_real_page_number_in_title(el, result.label, epub.page_numbers)
         return result
 
 
@@ -132,6 +138,8 @@ class _HeadingThreeChildProcessor(object):
         result.title = el
         set_heading_label(child, result, 'subsection',epub)
         node.add_child(result)
+        if epub:
+            search_real_page_number_in_title(el, result.label, epub.page_numbers)
         return result
 
 
@@ -146,6 +154,8 @@ class _HeadingFourChildProcessor(object):
         result.title = el
         set_heading_label(child, result, 'subsubsection', epub)
         node.add_child(result)
+        if epub:
+            search_real_page_number_in_title(el, result.label, epub.page_numbers)
         return result
 
 def set_heading_label(element, header_node, section_type, epub):

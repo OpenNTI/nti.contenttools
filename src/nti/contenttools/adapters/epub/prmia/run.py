@@ -23,6 +23,8 @@ from nti.contenttools.adapters.epub.prmia.finder import search_run_node_with_ele
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
+from nti.contenttools.adapters.epub.prmia.finder import search_real_page_number_in_title
+
 def process_div_elements(element, parent, epub=None):
     el = Run.process(element, epub=epub)
     attrib = element.attrib
@@ -52,6 +54,7 @@ def process_div_elements(element, parent, epub=None):
                     if sources:
                         figure.caption.children.append(types.TextNode(u'\\\\\n'))
                         figure.caption.children.extend(sources)
+                    search_real_page_number_in_title(figure.caption, figure.label, epub.page_numbers)
             elif table_caption:
                 image_node = []
                 search_run_node_with_element_type(el, 'Figure Image', image_node, option=True)
@@ -72,6 +75,7 @@ def process_div_elements(element, parent, epub=None):
                         table.children.append(types.TextNode(u'\\\\\n'))
                         table.children.append(source)
                 el = table
+                search_real_page_number_in_title(table.caption, label, epub.page_numbers)
         elif div_class == 'sidebar':
             sidebar = types.Sidebar()
             sidebar_title_node = []
@@ -89,6 +93,7 @@ def process_div_elements(element, parent, epub=None):
                     remove_node_from_parent(node)
             sidebar.children = el.children
             el = sidebar
+            search_real_page_number_in_title(sidebar.title, sidebar.label, epub.page_numbers)
     return el
 
 def process_sup_elements(element, parent, epub=None):
