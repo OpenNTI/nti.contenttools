@@ -1,0 +1,684 @@
+{
+	"tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.chapter:1": {
+		"BlockElementDetails": {
+			"figure": {
+				"char_count": 40,
+				"count": 2,
+				"non_whitespace_char_count": 34,
+				"sentence_count": 2,
+				"word_count": 8
+			},
+			"glossary": {
+				"char_count": 208,
+				"count": 1,
+				"non_whitespace_char_count": 179,
+				"sentence_count": 1,
+				"word_count": 30
+			},
+			"sidebar_caution": {
+				"char_count": 135,
+				"count": 1,
+				"non_whitespace_char_count": 115,
+				"sentence_count": 2,
+				"word_count": 21
+			},
+			"sidebar_note": {
+				"char_count": 70,
+				"count": 1,
+				"non_whitespace_char_count": 61,
+				"sentence_count": 1,
+				"word_count": 10
+			},
+			"sidebar_warning": {
+				"char_count": 173,
+				"count": 1,
+				"non_whitespace_char_count": 150,
+				"sentence_count": 5,
+				"word_count": 24
+			},
+			"table": {
+				"char_count": 143,
+				"count": 1,
+				"non_whitespace_char_count": 80,
+				"sentence_count": 1,
+				"word_count": 17
+			}
+		},
+		"avg_word_per_paragraph": 23.5,
+		"avg_word_per_sentence": 9.724137931034482,
+		"char_count": 1569,
+		"length_of_the_longest_word": 12,
+		"length_of_the_shortest_word": 1,
+		"non_figure_image_count": 0,
+		"non_whitespace_char_count": 1245,
+		"paragraph_count": 12,
+		"sentence_count": 29,
+		"total_char_count": 2338,
+		"total_non_whitespace_char_count": 1864,
+		"total_sentence_count": 41,
+		"total_word_count": 392,
+		"unique_percentage_of_word_count": 0.5283687943262412,
+		"unique_word_count": 149,
+		"word_count": 282
+	},
+	"tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.chapter:2": {
+		"BlockElementDetails": {
+			"figure": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"glossary": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_caution": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_note": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_warning": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"table": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			}
+		},
+		"avg_word_per_paragraph": 48.2,
+		"avg_word_per_sentence": 18.53846153846154,
+		"char_count": 1549,
+		"length_of_the_longest_word": 13,
+		"length_of_the_shortest_word": 1,
+		"non_figure_image_count": 0,
+		"non_whitespace_char_count": 1294,
+		"paragraph_count": 5,
+		"sentence_count": 13,
+		"total_char_count": 1549,
+		"total_non_whitespace_char_count": 1294,
+		"total_sentence_count": 13,
+		"total_word_count": 241,
+		"unique_percentage_of_word_count": 0.6016597510373444,
+		"unique_word_count": 145,
+		"word_count": 241
+	},
+	"tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.sample_book": {
+		"BlockElementDetails": {
+			"figure": {
+				"char_count": 40,
+				"count": 2,
+				"non_whitespace_char_count": 34,
+				"sentence_count": 2,
+				"word_count": 8
+			},
+			"glossary": {
+				"char_count": 208,
+				"count": 1,
+				"non_whitespace_char_count": 179,
+				"sentence_count": 1,
+				"word_count": 30
+			},
+			"sidebar_caution": {
+				"char_count": 135,
+				"count": 1,
+				"non_whitespace_char_count": 115,
+				"sentence_count": 2,
+				"word_count": 21
+			},
+			"sidebar_note": {
+				"char_count": 70,
+				"count": 1,
+				"non_whitespace_char_count": 61,
+				"sentence_count": 1,
+				"word_count": 10
+			},
+			"sidebar_warning": {
+				"char_count": 173,
+				"count": 1,
+				"non_whitespace_char_count": 150,
+				"sentence_count": 5,
+				"word_count": 24
+			},
+			"table": {
+				"char_count": 143,
+				"count": 1,
+				"non_whitespace_char_count": 80,
+				"sentence_count": 1,
+				"word_count": 17
+			}
+		},
+		"avg_word_per_paragraph": 30.764705882352942,
+		"avg_word_per_sentence": 12.452380952380953,
+		"char_count": 3121,
+		"length_of_the_longest_word": 13,
+		"length_of_the_shortest_word": 1,
+		"non_figure_image_count": 0,
+		"non_whitespace_char_count": 2539,
+		"paragraph_count": 17,
+		"sentence_count": 42,
+		"total_char_count": 3890,
+		"total_non_whitespace_char_count": 3158,
+		"total_sentence_count": 54,
+		"total_word_count": 633,
+		"unique_percentage_of_word_count": 0.5086042065009561,
+		"unique_word_count": 266,
+		"word_count": 523
+	},
+	"tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.section:1": {
+		"BlockElementDetails": {
+			"figure": {
+				"char_count": 20,
+				"count": 1,
+				"non_whitespace_char_count": 17,
+				"sentence_count": 1,
+				"word_count": 4
+			},
+			"glossary": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_caution": {
+				"char_count": 135,
+				"count": 1,
+				"non_whitespace_char_count": 115,
+				"sentence_count": 2,
+				"word_count": 21
+			},
+			"sidebar_note": {
+				"char_count": 70,
+				"count": 1,
+				"non_whitespace_char_count": 61,
+				"sentence_count": 1,
+				"word_count": 10
+			},
+			"sidebar_warning": {
+				"char_count": 173,
+				"count": 1,
+				"non_whitespace_char_count": 150,
+				"sentence_count": 5,
+				"word_count": 24
+			},
+			"table": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			}
+		},
+		"avg_word_per_paragraph": 14.25,
+		"avg_word_per_sentence": 6.333333333333333,
+		"char_count": 316,
+		"length_of_the_longest_word": 11,
+		"length_of_the_shortest_word": 1,
+		"non_figure_image_count": 0,
+		"non_whitespace_char_count": 243,
+		"paragraph_count": 4,
+		"sentence_count": 9,
+		"total_char_count": 714,
+		"total_non_whitespace_char_count": 586,
+		"total_sentence_count": 18,
+		"total_word_count": 116,
+		"unique_percentage_of_word_count": 0.6842105263157895,
+		"unique_word_count": 39,
+		"word_count": 57
+	},
+	"tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.section:2": {
+		"BlockElementDetails": {
+			"figure": {
+				"char_count": 20,
+				"count": 1,
+				"non_whitespace_char_count": 17,
+				"sentence_count": 1,
+				"word_count": 4
+			},
+			"glossary": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_caution": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_note": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_warning": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"table": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			}
+		},
+		"avg_word_per_paragraph": 43.0,
+		"avg_word_per_sentence": 17.2,
+		"char_count": 472,
+		"length_of_the_longest_word": 10,
+		"length_of_the_shortest_word": 1,
+		"non_figure_image_count": 0,
+		"non_whitespace_char_count": 380,
+		"paragraph_count": 2,
+		"sentence_count": 5,
+		"total_char_count": 492,
+		"total_non_whitespace_char_count": 397,
+		"total_sentence_count": 6,
+		"total_word_count": 90,
+		"unique_percentage_of_word_count": 0.7674418604651163,
+		"unique_word_count": 66,
+		"word_count": 86
+	},
+	"tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.section:2_1": {
+		"BlockElementDetails": {
+			"figure": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"glossary": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_caution": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_note": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_warning": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"table": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			}
+		},
+		"avg_word_per_paragraph": 54.666666666666664,
+		"avg_word_per_sentence": 20.5,
+		"char_count": 1051,
+		"length_of_the_longest_word": 13,
+		"length_of_the_shortest_word": 1,
+		"non_figure_image_count": 0,
+		"non_whitespace_char_count": 880,
+		"paragraph_count": 3,
+		"sentence_count": 8,
+		"total_char_count": 1051,
+		"total_non_whitespace_char_count": 880,
+		"total_sentence_count": 8,
+		"total_word_count": 164,
+		"unique_percentage_of_word_count": 0.6646341463414634,
+		"unique_word_count": 109,
+		"word_count": 164
+	},
+	"tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.section:2_2": {
+		"BlockElementDetails": {
+			"figure": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"glossary": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_caution": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_note": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_warning": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"table": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			}
+		},
+		"avg_word_per_paragraph": 69.0,
+		"avg_word_per_sentence": 17.25,
+		"char_count": 448,
+		"length_of_the_longest_word": 12,
+		"length_of_the_shortest_word": 1,
+		"non_figure_image_count": 0,
+		"non_whitespace_char_count": 376,
+		"paragraph_count": 1,
+		"sentence_count": 4,
+		"total_char_count": 448,
+		"total_non_whitespace_char_count": 376,
+		"total_sentence_count": 4,
+		"total_word_count": 69,
+		"unique_percentage_of_word_count": 0.7246376811594203,
+		"unique_word_count": 50,
+		"word_count": 69
+	},
+	"tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.section:3": {
+		"BlockElementDetails": {
+			"figure": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"glossary": {
+				"char_count": 208,
+				"count": 1,
+				"non_whitespace_char_count": 179,
+				"sentence_count": 1,
+				"word_count": 30
+			},
+			"sidebar_caution": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_note": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_warning": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"table": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			}
+		},
+		"avg_word_per_paragraph": 28.0,
+		"avg_word_per_sentence": 14.0,
+		"char_count": 462,
+		"length_of_the_longest_word": 12,
+		"length_of_the_shortest_word": 1,
+		"non_figure_image_count": 0,
+		"non_whitespace_char_count": 368,
+		"paragraph_count": 3,
+		"sentence_count": 6,
+		"total_char_count": 670,
+		"total_non_whitespace_char_count": 547,
+		"total_sentence_count": 7,
+		"total_word_count": 114,
+		"unique_percentage_of_word_count": 0.6785714285714286,
+		"unique_word_count": 57,
+		"word_count": 84
+	},
+	"tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.section:4": {
+		"BlockElementDetails": {
+			"figure": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"glossary": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_caution": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_note": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_warning": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"table": {
+				"char_count": 143,
+				"count": 1,
+				"non_whitespace_char_count": 80,
+				"sentence_count": 1,
+				"word_count": 17
+			}
+		},
+		"avg_word_per_paragraph": 23.5,
+		"avg_word_per_sentence": 5.875,
+		"char_count": 266,
+		"length_of_the_longest_word": 11,
+		"length_of_the_shortest_word": 1,
+		"non_figure_image_count": 0,
+		"non_whitespace_char_count": 213,
+		"paragraph_count": 2,
+		"sentence_count": 8,
+		"total_char_count": 409,
+		"total_non_whitespace_char_count": 293,
+		"total_sentence_count": 9,
+		"total_word_count": 64,
+		"unique_percentage_of_word_count": 0.723404255319149,
+		"unique_word_count": 34,
+		"word_count": 47
+	},
+	"tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.subsection:2_2_1": {
+		"BlockElementDetails": {
+			"figure": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"glossary": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_caution": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_note": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_warning": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"table": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			}
+		},
+		"avg_word_per_paragraph": 48.0,
+		"avg_word_per_sentence": 16.0,
+		"char_count": 289,
+		"length_of_the_longest_word": 11,
+		"length_of_the_shortest_word": 1,
+		"non_figure_image_count": 0,
+		"non_whitespace_char_count": 240,
+		"paragraph_count": 1,
+		"sentence_count": 3,
+		"total_char_count": 289,
+		"total_non_whitespace_char_count": 240,
+		"total_sentence_count": 3,
+		"total_word_count": 48,
+		"unique_percentage_of_word_count": 0.875,
+		"unique_word_count": 42,
+		"word_count": 48
+	},
+	"tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.subsection:2_2_2": {
+		"BlockElementDetails": {
+			"figure": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"glossary": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_caution": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_note": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"sidebar_warning": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			},
+			"table": {
+				"char_count": 0,
+				"count": 0,
+				"non_whitespace_char_count": 0,
+				"sentence_count": 0,
+				"word_count": 0
+			}
+		},
+		"avg_word_per_paragraph": 74.0,
+		"avg_word_per_sentence": 24.666666666666668,
+		"char_count": 488,
+		"length_of_the_longest_word": 11,
+		"length_of_the_shortest_word": 1,
+		"non_figure_image_count": 0,
+		"non_whitespace_char_count": 412,
+		"paragraph_count": 1,
+		"sentence_count": 3,
+		"total_char_count": 488,
+		"total_non_whitespace_char_count": 412,
+		"total_sentence_count": 3,
+		"total_word_count": 74,
+		"unique_percentage_of_word_count": 0.7567567567567568,
+		"unique_word_count": 56,
+		"word_count": 74
+	}
+}

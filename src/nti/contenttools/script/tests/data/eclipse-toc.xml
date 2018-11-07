@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><toc NTIRelativeScrollHeight="8" href="index.html" icon="icons/chapters/generic_book.png" isCourse="false" label="Sample Book" level="root" levelnum="0" ntiid="tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.sample_book" renderVersion="2">
+    <topic NTIRelativeScrollHeight="90" href="tag_nextthought_com_2011-10_IFSTA-HTML-sample_book_chapter_1.html" label="Chapter 1" level="part" levelnum="1" ntiid="tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.chapter:1">
+       <topic NTIRelativeScrollHeight="1550" href="tag_nextthought_com_2011-10_IFSTA-HTML-sample_book_section_1.html" label="Section 1" level="chapter" levelnum="2" ntiid="tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.section:1"/>
+       <topic NTIRelativeScrollHeight="606" href="tag_nextthought_com_2011-10_IFSTA-HTML-sample_book_section_2.html" label="Section 2" level="chapter" levelnum="2" ntiid="tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.section:2"/>
+       <topic NTIRelativeScrollHeight="472" href="tag_nextthought_com_2011-10_IFSTA-HTML-sample_book_section_3.html" label="Section 3" level="chapter" levelnum="2" ntiid="tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.section:3"/>
+       <topic NTIRelativeScrollHeight="635" href="tag_nextthought_com_2011-10_IFSTA-HTML-sample_book_section_4.html" label="Section 4" level="chapter" levelnum="2" ntiid="tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.section:4"/>
+    </topic>
+    <topic NTIRelativeScrollHeight="90" href="tag_nextthought_com_2011-10_IFSTA-HTML-sample_book_chapter_2.html" label="Chapter 2" level="part" levelnum="1" ntiid="tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.chapter:2">
+       <topic NTIRelativeScrollHeight="136" href="tag_nextthought_com_2011-10_IFSTA-HTML-sample_book_section_2_1.html" label="Section 2.1" level="chapter" levelnum="2" ntiid="tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.section:2_1">
+          <topic NTIRelativeScrollHeight="148" href="tag_nextthought_com_2011-10_IFSTA-HTML-sample_book_subsection_2_2_1.html" label="Sub Section 2.1.1" level="section" levelnum="3" ntiid="tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.subsection:2_2_1"/>
+          <topic NTIRelativeScrollHeight="212" href="tag_nextthought_com_2011-10_IFSTA-HTML-sample_book_subsection_2_2_2.html" label="Sub Section 2.1.2" level="section" levelnum="3" ntiid="tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.subsection:2_2_2"/>
+       </topic>
+       <topic NTIRelativeScrollHeight="184" href="tag_nextthought_com_2011-10_IFSTA-HTML-sample_book_section_2_2.html" label="Section 2.2" level="chapter" levelnum="2" ntiid="tag:nextthought.com,2011-10:IFSTA-HTML-sample_book.section:2_2"/>
+    </topic>
+</toc>
