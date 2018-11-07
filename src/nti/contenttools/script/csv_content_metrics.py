@@ -33,8 +33,8 @@ def parse_args():
                             default=1,
                             help="Count non figure image as n words. The default is count non figure image as 1 word")
     arg_parser.add_argument('-d', '--details',
-                            default=1,
-                            help="Set 1 if we want to include image, table, and figure count in total word count. Set 0 if we do not want to include them. The default is 1")
+                            default='false',
+                            help="Set true if we want to include image, table, and figure count in total word count. Set false if we do not want to include them. The default is false")
     return arg_parser.parse_args()
 
 def read_json(filename):
@@ -60,10 +60,16 @@ def write_to_csv(data_csv, filename, header, details=False):
             w = csv.writer(fp)
             w.writerow(header)
             if not details:
-                w.writerows([(ntiid, data.title, data.block, data.minutes, data.total_words) for ntiid, data in data_csv.items()])
+                rows = [(ntiid, 
+                         data.title.encode("utf-8"), 
+                         data.block, 
+                         data.minutes, 
+                         data.total_words) 
+                for ntiid, data in data_csv.items()]
+                w.writerows(rows)
             else:
                 rows = [(ntiid, 
-                         data.title, 
+                         data.title.encode("utf-8"), 
                          data.block, 
                          data.minutes, 
                          data.total_words, 
@@ -138,6 +144,11 @@ def main():
 
     output = output_csv(root.attrib['label'])
     nblock = u'%smin Blocks' %block
+
+    if args.details in (1, 'true', 'True'):
+        args.details = True
+    else:
+        args.details = False
 
     if args.details:
         header = ('NTIID', 'Title', nblock, 'Minutes', 'Total words', 'Figures counted as words', 'Tables counted as words', 'Non Figure Image counted as words')
