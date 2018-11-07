@@ -23,18 +23,18 @@ def parse_args():
     arg_parser.add_argument('-b', '--block',
                             default=15,
                             help="Minutes block. The default is 15")
-    arg_parser.add_argument('-f', '--figurecount',
-                            default=1,
-                            help="Count figure as n words. The default is count figure as 1 word")
-    arg_parser.add_argument('-t', '--tablecount',
-                            default=1,
-                            help="Count table as n words. The default is count table as 1 word")
-    arg_parser.add_argument('-i', '--nonfigureimage',
-                            default=1,
-                            help="Count non figure image as n words. The default is count non figure image as 1 word")
     arg_parser.add_argument('-d', '--details',
                             default='false',
-                            help="Set true if we want to include image, table, and figure count in total word count. Set false if we do not want to include them. The default is false")
+                            help="Set true if we want to include image, table, and figure count in total word count. Set false if we do not want to include them. The default is false.")
+    arg_parser.add_argument('-f', '--figurecount',
+                            default=1,
+                            help="Count figure as n words. The default is count figure as 1 word.")
+    arg_parser.add_argument('-t', '--tablecount',
+                            default=1,
+                            help="Count table as n words. The default is count table as 1 word.")
+    arg_parser.add_argument('-i', '--nonfigureimage',
+                            default=1,
+                            help="Count non figure image as n words. The default is count non figure image as 1 word.")
     return arg_parser.parse_args()
 
 def read_json(filename):
