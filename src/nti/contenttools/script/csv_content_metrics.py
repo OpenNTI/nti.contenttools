@@ -33,8 +33,8 @@ def parse_args():
                             default=1,
                             help="Count non figure image as n words. The default is count non figure image as 1 word")
     arg_parser.add_argument('-d', '--details',
-                            default=0,
-                            help="Set 1 if we want to include image, table, and figure count in total word count. Set 0 if we do not want to display it. The default is 0")
+                            default=1,
+                            help="Set 1 if we want to include image, table, and figure count in total word count. Set 0 if we do not want to include them. The default is 1")
     return arg_parser.parse_args()
 
 def read_json(filename):
