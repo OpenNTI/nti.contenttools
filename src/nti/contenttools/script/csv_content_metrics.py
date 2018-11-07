@@ -141,7 +141,7 @@ def main():
 
     if args.details:
         header = ('NTIID', 'Title', nblock, 'Minutes', 'Total words', 'Figures counted as words', 'Tables counted as words', 'Non Figure Image counted as words')
-        details = build_details()
+        details = build_details(args)
         process_data(data, root, block, wpm, tup, data_csv, details)
     else:
         header = ('NTIID', 'Title', nblock, 'Minutes', 'Total Words')
