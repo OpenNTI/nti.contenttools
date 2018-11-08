@@ -12,14 +12,13 @@ import xml.etree.ElementTree as ET
 
 from collections import namedtuple, OrderedDict
 
-
 def parse_args():
     arg_parser = argparse.ArgumentParser(description="Update text files")
     arg_parser.add_argument('inputdir',
                             help="Content package dir")
     arg_parser.add_argument('-w', '--wpm',
                             default=200,
-                            help="Average words per minute")
+                            help="Average words per minute. The default is 200.")
     arg_parser.add_argument('-b', '--block',
                             default=15,
                             help="Minutes block. The default is 15")
@@ -35,6 +34,9 @@ def parse_args():
     arg_parser.add_argument('-i', '--nonfigureimage',
                             default=1,
                             help="Count non figure image as n words. The default is count non figure image as 1 word.")
+    arg_parser.add_argument('-ln', '--levelnum',
+                            default=0,
+                            help="Sectioning level, root level = 0, root child level = 1, and so on. However, the maximum level to show depends on the split level value set when rendering the content. The level default value is 0")
     return arg_parser.parse_args()
 
 def read_json(filename):
@@ -87,11 +89,13 @@ def output_csv(name):
     value = re.sub(FORBIDDEN_CHARACTERS, '_', name)
     return u'%s.csv' %value
 
-def process_data(data, root, block, wpm, tup, data_csv, details=()):
-    if 'ntiid' in root.attrib and 'label' in root.attrib:
+
+def process_data(data, root, block, wpm, tup, data_csv, details=(), level=0):
+    if 'ntiid' in root.attrib and 'label' in root.attrib and 'levelnum' in root.attrib:
         ntiid = root.attrib['ntiid']
         label = root.attrib['label']
-        if ntiid in data:
+        levelnum = int(root.attrib['levelnum'])
+        if ntiid in data and level >= levelnum:
             detail_dict = get_block_element_detail(data[ntiid], details)
             if details:
                 total_words = data[ntiid]['total_word_count'] \
@@ -103,7 +107,8 @@ def process_data(data, root, block, wpm, tup, data_csv, details=()):
             row = tup(title=label, block=nblocks, minutes=minutes, total_words=total_words, details=detail_dict)
             data_csv[ntiid] = row
     for child in root:
-        process_data(data, child, block, wpm, tup, data_csv, details) 
+        process_data(data, child, block, wpm, tup, data_csv, details, level) 
+
 
 def get_block_element_detail(el, details):
     detail_dict = {}
@@ -132,7 +137,8 @@ def main():
     args = parse_args()
     block = args.block
     wpm = args.wpm
-    
+    level = int(args.levelnum)
+        
     xml = os.path.join(args.inputdir, 'eclipse-toc.xml')
     root = read_xml(xml)
 
@@ -153,10 +159,10 @@ def main():
     if args.details:
         header = ('NTIID', 'Title', nblock, 'Minutes', 'Total words', 'Figures counted as words', 'Tables counted as words', 'Non Figure Image counted as words')
         details = build_details(args)
-        process_data(data, root, block, wpm, tup, data_csv, details)
+        process_data(data, root, block, wpm, tup, data_csv, details=details, level=level)
     else:
         header = ('NTIID', 'Title', nblock, 'Minutes', 'Total Words')
-        process_data(data, root, block, wpm, tup, data_csv)
+        process_data(data, root, block, wpm, tup, data_csv, details=(), level=level)
     
     write_to_csv(data_csv, output, header, args.details)
 
