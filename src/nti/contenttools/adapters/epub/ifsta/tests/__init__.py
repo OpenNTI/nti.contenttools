@@ -30,6 +30,7 @@ def create_epub_object():
     with codecs.open(css_file, 'r', 'utf-8') as fp:
         epub.css_dict = json.load(fp)
     epub.chapter_num = None
+    epub.term_defs = {}
     return epub
 
 

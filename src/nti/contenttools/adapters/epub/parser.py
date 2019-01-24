@@ -75,18 +75,19 @@ class EPUBParser(object):
         self.section_list = []
         self.glossary_labels = []
         self.glossary_entry_sections = []
+        self.term_defs = {}
 
         self.tables = []
         self.chapter_num = chapter_num
 
         self.ids = []
 
-        self.labels = {} ## id - id type
-        self.footnote_ids = {} ## footnote id - content
+        self.labels = {}  # id - id type
+        self.footnote_ids = {}  # footnote id - content
         self.last_footnote_id = u''
-        self.label_refs = {} ## id - id to ref
+        self.label_refs = {}  # id - id to ref
 
-        self.page_numbers = {} # page_number - section id
+        self.page_numbers = {}  # page_number - section id
 
         self.epub_reader = EPUBReader(input_file)
         self.epub_chapters = {}
@@ -125,7 +126,7 @@ class EPUBParser(object):
                 elif self.epub_type == 'prmia':
                     epub_chapter = adapt_prmia(fragment, self)
                     search_sections_of_real_page_number_prmia(epub_chapter, [], self.page_numbers)
-                    self.epub_chapters[item] = epub_chapter            
+                    self.epub_chapters[item] = epub_chapter
         self.write_chapter_to_tex_file()
         self.create_main_latex()
         logger.info(epub_reader.spine)
@@ -167,7 +168,7 @@ class EPUBParser(object):
             content = content.replace(u'\\item --- ', u'\\\\ --- ')
 
         content = content.replace(u"\\item *", u"\\item ")
-        
+
         # consolidate list
         content = content.replace(u'\n\\end{itemize}\n\\begin{itemize}\n', u'')
         content = content.replace(u'\n\\end{itemize}\n\n\\begin{itemize}\n', u'')
@@ -184,7 +185,7 @@ class EPUBParser(object):
         content = content.replace(u'\n\n\n', u'\n\n')
 
         # replace with subsubsection (works for book 1, 2 and 3)
-        content = content.replace(u'\\textit{\\textbf{', 
+        content = content.replace(u'\\textit{\\textbf{',
                                   u'\\subsubsection{\\textit{')
 
         # cleanup extra newline after subsubsection
@@ -195,11 +196,11 @@ class EPUBParser(object):
         content = content.replace(u'\\\\\n\n\\subsection{', u'\n\\subsection{')
         content = content.replace(u'\\\\\n\n\\subsubsection{', u'\n\\subsubsection{')
 
-        #remove unnecessary \newline
+        # remove unnecessary \newline
         content = content.replace(u'\\newline None', u'')
 
-        #add css-class to sidebar
-        content = content.replace(u'\\begin{sidebar}{CAUTION}', 
+        # add css-class to sidebar
+        content = content.replace(u'\\begin{sidebar}{CAUTION}',
                                   u'\\begin{sidebar}[css-class=caution]{CAUTION}')
 
         content = content.replace(u'\\begin{sidebar}{WARNING}',
@@ -207,7 +208,7 @@ class EPUBParser(object):
 
         content = content.replace(u'\\begin{sidebar}{WARNING!}',
                                   u'\\begin{sidebar}[css-class=warning]{WARNING!}')
-        
+
         content = content.replace(u'\\begin{sidebar}[css-class=note]{NOTE:}\nNOTE:',
                                   u'\\begin{sidebar}[css-class=note]{NOTE:}')
         content = content.replace(u'\\begin{sidebar}[css-class=note]{NOTE:}\n\\textbf{NOTE:}',
@@ -227,12 +228,10 @@ class EPUBParser(object):
         content = content.replace(u'\\begin{sidebar}[css-class=note]{WARNING:}\n\\textbf{WARNING!:}',
                                   u'\\begin{sidebar}[css-class=note]{WARNING!:}')
 
-
         content = content.replace(u'\\\\ \n\n\\end{sidebar}', u'\n\\end{sidebar}')
         content = content.replace(u'\n\\end{sidebar}\n\\\\', u'\\end{sidebar}')
         content = content.replace(u'``', u'"')
         content = content.replace(u"''", u'"')
-
 
         content = content.replace(u'\n\\end{sidebar}\n\\\\\n\n\\begin{sidebar}{Case History}', u'')
 
@@ -255,6 +254,9 @@ class EPUBParser(object):
 
         content = content.replace(u'\\begin{center}\n\item \item \item \n\\end{center}', u'\\begin{center}\n *** \n\\end{center}\n')
         content = content.replace(u'\\end{itemize}\n}', u'\\end{itemize}}')
+
+        content = content.replace(u'\\item \\textbf{\\item }', u'\\item ')
+
         return content
 
     def process_support_files(self):
@@ -417,7 +419,7 @@ def search_tables(root, tables):
 
 def process_key_terms_section(lnodes):
     key_terms_section = {}
-    # just in case there is sidebar found before section/subsection 
+    # just in case there is sidebar found before section/subsection
     # is defined in the epub
     label = u'temp'
     key_terms_section[label] = []
@@ -430,7 +432,7 @@ def process_key_terms_section(lnodes):
         if ISidebar.providedBy(node):
             if node.title:
                 key_terms_section[label].append(node.title)
-                
+
     key_terms_toc = {}
     for key in key_terms_section:
         value = key.replace(u'\\label', u'\\ntiidref')

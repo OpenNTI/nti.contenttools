@@ -128,7 +128,7 @@ class TestParagraphAdapter(IFSTATestCase):
         epub.book_title = 'epub_test'
         epub.epub_type = 'ifsta_rf'
         epub.input_file = False
-        node = Run.process(element, epub=epub) 
+        node = Run.process(element, epub=epub)
         output = render_output(node)
         assert_that(output,
                     is_(u'\n\\begin{sidebar}{\\textit{\\begin{figure}[h]\n\\includegraphics{Images/CourseAssets/epub_test/Info_Icon.png}\n\\end{figure}\nOther Possible Duties}}\n\n\\end{sidebar}\n\\\\\n'))
@@ -143,7 +143,7 @@ class TestParagraphAdapter(IFSTATestCase):
         epub.book_title = 'epub_test'
         epub.epub_type = 'ifsta_rf'
         epub.input_file = False
-        node = Run.process(element, epub=epub) 
+        node = Run.process(element, epub=epub)
         output = render_output(node)
         assert_that(output,
                     is_(u'\n\\begin{sidebar}{\\begin{figure}[h]\n\\includegraphics{Images/CourseAssets/epub_test/Info_Icon.png}\n\\end{figure}\nElements of Flashover}\n\n\\end{sidebar}\n\\\\\n'))
@@ -155,7 +155,7 @@ class TestParagraphAdapter(IFSTATestCase):
         epub.book_title = 'epub_test'
         epub.epub_type = 'ifsta_rf'
         epub.input_file = False
-        node = Run.process(element, epub=epub) 
+        node = Run.process(element, epub=epub)
         output = render_output(node)
         assert_that(output,
                     is_(u'\n\\begin{sidebar}{\\textit{What This Means to You}}\n\n\\end{sidebar}\n\\\\\n'))
@@ -167,7 +167,7 @@ class TestParagraphAdapter(IFSTATestCase):
         epub.book_title = 'epub_test'
         epub.epub_type = 'ifsta_rf'
         epub.input_file = False
-        node = Run.process(element, epub=epub) 
+        node = Run.process(element, epub=epub)
         output = render_output(node)
         assert_that(output,
                     is_(u'\n\\begin{sidebar}[css-class=note]{NOTE:}\nNOTE: Some suggestions are an empty\n\\end{sidebar}\n\\\\\n'))
@@ -179,7 +179,7 @@ class TestParagraphAdapter(IFSTATestCase):
         epub.book_title = 'epub_test'
         epub.epub_type = 'ifsta_rf'
         epub.input_file = False
-        node = Run.process(element, epub=epub) 
+        node = Run.process(element, epub=epub)
         output = render_output(node)
         assert_that(output,
                     is_(u'\n\\begin{sidebar}[css-class=note]{WARNING:}\nWARNING: Some suggestions are an empty\n\\end{sidebar}\n\\\\\n'))
@@ -191,7 +191,19 @@ class TestParagraphAdapter(IFSTATestCase):
         epub.book_title = 'epub_test'
         epub.epub_type = 'ifsta_rf'
         epub.input_file = False
-        node = Run.process(element, epub=epub) 
+        node = Run.process(element, epub=epub)
         output = render_output(node)
         assert_that(output,
                     is_(u'\n\\begin{sidebar}[css-class=note]{CAUTION:}\nCAUTION: Some suggestions are an empty\n\\end{sidebar}\n\\\\\n'))
+
+    def test_paragraph_key_terms(self):
+        script = """<div><p class="Body-Copy_Keyterm_End-of-chapter"><span class="CharOverride-13">Endothermic Reaction</span> — Chemical reaction in which a substance absorbs heat.</p><p class="Body-Copy_Keyterm_End-of-chapter"><span class="CharOverride-13">Energy </span>— Capacity to perform work; occurs when a force is applied to an object over a distance, or when a substance undergoes a chemical, biological, or physical transformation. </p></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.book_title = 'epub_test'
+        epub.epub_type = 'ifsta_rf'
+        epub.input_file = False
+        node = Run.process(element, epub=epub)
+        output = render_output(node)
+        assert_that(epub.term_defs['Energy'], is_(u'\\textbf{Energy }--- Capacity to perform work; occurs when a force is applied to an object over a distance, or when a substance undergoes a chemical, biological, or physical transformation. '))
+        assert_that(epub.term_defs['Endothermic Reaction'], is_(u'\\textbf{Endothermic Reaction} --- Chemical reaction in which a substance absorbs heat.'))

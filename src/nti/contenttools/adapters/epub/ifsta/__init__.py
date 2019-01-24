@@ -43,6 +43,7 @@ from nti.contenttools.adapters.epub.generic import check_child
 from nti.contenttools.adapters.epub.generic import check_element_tail
 from nti.contenttools.adapters.epub.generic import check_element_text
 
+
 def adapt(fragment, epub=None):
     body = fragment.find('body')
     epub_body = EPUBBody.process(body, epub)
@@ -77,8 +78,13 @@ def adapt(fragment, epub=None):
     else:
         sidebars = {}
         search_sidebar_terms(epub_body, sidebars, epub.sidebar_term_nodes, epub.chapter_num, epub.glossary_entry_sections)
-        term_defs = dict((k.lower(), v) for k,v in sidebars.iteritems())
-        search_and_update_glossary_entries(epub_body, sidebars, term_defs)
+        if sidebars:
+            term_defs = dict((k.lower(), v) for k, v in sidebars.iteritems())
+            search_and_update_glossary_entries(epub_body, sidebars, term_defs)
+
+        if epub.term_defs:
+            term_defs = dict((k.lower(), v) for k, v in epub.term_defs.iteritems())
+            search_and_update_glossary_entries(epub_body, epub.term_defs, term_defs)
 
         snodes = []
         search_sidebar_head_and_body(epub_body, snodes)
@@ -101,6 +107,7 @@ def adapt(fragment, epub=None):
         process_sidebar_figure_info_rf(sfnodes)
 
     return epub_body
+
 
 class EPUBBody(types.EPUBBody):
 

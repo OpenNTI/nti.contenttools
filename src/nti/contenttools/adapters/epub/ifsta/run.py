@@ -29,6 +29,7 @@ from nti.contenttools.types.interfaces import IParagraph
 
 from nti.contenttools.renderers.LaTeX.base import render_output
 
+
 class Run(types.Run):
 
     @classmethod
@@ -136,7 +137,7 @@ def process_span_elements(element, epub=None):
 
     term_class = (u'Key_Term_in_Body', u'Key-Term-in-text')
 
-    term_colors = (u'#c00000', u'#c8161d', u'#bf2026', u'#802023', u'#812023', u'#a30022', u'#ff0000', u'#c8151c')
+    term_colors = (u'#c00000', u'#c8161d', u'#bf2026', u'#802023', u'#812023', u'#a30022', u'#ff0000', u'#c8151c', u'#ab1d22',)
     font_terms = (u'Utopia Std', u'Minion Pro', u'Helvetica LT Std',)
 
     attrib = element.attrib
@@ -144,7 +145,7 @@ def process_span_elements(element, epub=None):
 
     if 'bullet' in span_class:
         el = Run()
-        el_text  = Run()
+        el_text = Run()
         check_element_text(el_text, element)
         check_element_tail(el_text, element)
         span_class = u'span_%s' % span_class.replace('-', '_').replace('bullet ', '')
@@ -178,16 +179,16 @@ def process_span_elements(element, epub=None):
 
             if 'fontFamily' in epub.css_dict[span_class]:
                 font_family = epub.css_dict[span_class]['fontFamily']
-                font_family = font_family.replace('"','')
-                
+                font_family = font_family.replace('"', '')
+
             if 'verticalAlign' in epub.css_dict[span_class]:
                 vertical_align = epub.css_dict[span_class]['verticalAlign']
 
-            if      epub.epub_type == 'ifsta_rf' \
-                and (font_style == u'normal' or font_style == u'italic')\
-                and font_weight == u'bold' \
-                and color in term_colors \
-                and font_family in font_terms:
+            if epub.epub_type == 'ifsta_rf' \
+                    and (font_style == u'normal' or font_style == u'italic')\
+                    and font_weight == u'bold' \
+                    and color in term_colors \
+                    and font_family in font_terms:
                 fstyles = [font_style, font_weight]
                 el = create_glossary_entry(element, fstyles)
             else:
@@ -224,18 +225,20 @@ def process_span_elements(element, epub=None):
         check_span_child(el)
     return el
 
+
 def create_glossary_entry(element, fstyles=('bold')):
     el = Run()
     t_el = Run()
     check_element_text(t_el, element)
     check_term = render_output(t_el)
     if not check_term.isspace():
-        t_el.styles = t_el.styles + fstyles 
+        t_el.styles = t_el.styles + fstyles
         glossary = GlossaryEntry()
         glossary.term = t_el
         el.add(glossary)
     check_element_tail(el, element)
     return el
+
 
 def check_span_child(span_node):
     for child in span_node:

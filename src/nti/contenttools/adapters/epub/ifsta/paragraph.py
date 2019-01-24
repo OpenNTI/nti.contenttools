@@ -26,6 +26,7 @@ from nti.contenttools.adapters.epub.ifsta.note import Sidebar
 
 from nti.contenttools.adapters.epub.ifsta.run import Run
 
+from nti.contenttools.types import TextNode
 from nti.contenttools.types.interfaces import ITextNode
 
 from nti.contenttools.adapters.epub.ifsta.finder import search_span_note
@@ -35,6 +36,7 @@ from nti.contenttools.adapters.epub.ifsta.finder import search_figure_icon_on_si
 from nti.contenttools.types.note import BlockQuote
 from nti.contenttools.types.note import CenterNode
 
+
 class Paragraph(types.Paragraph):
 
     sidebar_list = (u'Case-History ParaOverride-1', u'Case-History',)
@@ -42,6 +44,7 @@ class Paragraph(types.Paragraph):
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD')
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride', u'Basic-Paragraph')
+    term_list = (u'Body-Copy_Keyterm_End-of-chapter', )
 
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
@@ -73,7 +76,22 @@ class Paragraph(types.Paragraph):
         definition_list = (u'definition', 'GlossaryTerm')
 
         if 'class' in attrib:
-            if attrib['class'] != "ParaOverride-1":
+            if any(s.lower() in attrib['class'].lower() for s in cls.term_list):
+                if epub:
+                    for child in element:
+                        key = child.text
+                        el_key = Run()
+                        el_key.styles = ['bold']
+                        el_key.add_child(TextNode(key))
+                        me.add_child(el_key)
+                        el_def = Run()
+                        el_def = check_element_tail(el_def, child)
+                        term_def = render_output(el_def)
+                        me.add_child(el_def)
+                        if key and term_def:
+                            term_def = u'{}{}'.format(render_output(el_key), term_def)
+                            epub.term_defs[key.strip()] = term_def
+            elif attrib['class'] != "ParaOverride-1":
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)
                 me = check_element_tail(me, element)
@@ -104,7 +122,7 @@ class Paragraph(types.Paragraph):
                     me = el_main
                     check = render_output(me)
                     if u'What This Means to You'.lower() in check.lower():
-                        el.styles = ['italic']    
+                        el.styles = ['italic']
                         me.element_type = u'sidebars-heads'
                         if epub.epub_type == u'ifsta_rf':
                             el_sidebar = Sidebar()
@@ -197,9 +215,9 @@ class Paragraph(types.Paragraph):
                             elif u'WARNING' in check_content:
                                 el.title = u'WARNING:'
                             me = el
-                    ##Handle some text styling in SKILL SHEET
+                    # Handle some text styling in SKILL SHEET
                     if not check_head and not check_note:
-                        para_class = attrib['class'] if 'class' in attrib else u'' 
+                        para_class = attrib['class'] if 'class' in attrib else u''
                         para_class = u'p_%s' % para_class.replace('-', '_')
                         para_class = para_class.replace(u'Basic_Paragraph ', u'')
                         if epub is not None and para_class in epub.css_dict:
@@ -219,6 +237,7 @@ class Paragraph(types.Paragraph):
         else:
             add_basic_paragraph_children(me, element, epub)
         return me
+
 
 def add_basic_paragraph_children(node, element, epub):
     node = check_element_text(node, element)
