@@ -207,3 +207,14 @@ class TestParagraphAdapter(IFSTATestCase):
         output = render_output(node)
         assert_that(epub.term_defs['Energy'], is_(u'\\textbf{Energy }--- Capacity to perform work; occurs when a force is applied to an object over a distance, or when a substance undergoes a chemical, biological, or physical transformation. '))
         assert_that(epub.term_defs['Endothermic Reaction'], is_(u'\\textbf{Endothermic Reaction} --- Chemical reaction in which a substance absorbs heat.'))
+
+    def test_paragraph_key_terms_2(self):
+        script = """<div><p class="Body-Copy_Keyterm_End-of-chapter"><span class="CharOverride-13">Thermal Conductivity</span><span class="CharOverride-18"> </span>– The propensity of a material to conduct heat within its volume. Measured in energy transfer over distance per degree of temperature. </p></div>"""
+        element = html.fromstring(script)
+        epub = create_epub_object()
+        epub.book_title = 'epub_test'
+        epub.epub_type = 'ifsta_rf'
+        epub.input_file = False
+        node = Run.process(element, epub=epub)
+        output = render_output(node)
+        assert_that(epub.term_defs['Thermal Conductivity'], is_(u'\\textbf{Thermal Conductivity} - The propensity of a material to conduct heat within its volume. Measured in energy transfer over distance per degree of temperature. '))

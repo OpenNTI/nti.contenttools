@@ -173,19 +173,20 @@ def search_sidebar_terms(root, sidebars, sidebar_nodes, chapter_num=None, glossa
                 term = term.strip()
                 root.title = term
                 if chapter_num:
-                    term = '%s_%s' %(term, chapter_num)
+                    term = '%s_%s' % (term, chapter_num)
                 label = create_label('sidebar_term',
                                      term.replace(u'textbf', u'').replace(u'textit', u''))
                 root.label = label
             sidebar_nodes.append(root)
             glossary_entry_sections.append(root)
-            
-            ###we don't want to include the sidebar term in the generated tex
+
+            # we don't want to include the sidebar term in the generated tex
             rparent = root.__parent__
             rparent.remove(root)
     elif hasattr(root, u'children'):
         for child in root:
             search_sidebar_terms(child, sidebars, sidebar_nodes, chapter_num, glossary_entry_sections)
+
 
 def search_and_update_glossary_entries(root, sidebars, term_defs):
     if IGlossaryEntry.providedBy(root):
@@ -198,16 +199,16 @@ def search_and_update_glossary_entries(root, sidebars, term_defs):
         for word in terms:
             if word in sidebars.keys():
                 root.definition = sidebars[word]
-            
+
         if not root.definition:
             for key in term_defs.keys():
                 if key in term_lower:
                     root.definition = term_defs[key]
                 elif term_lower in key:
                     root.definition = term_defs[key]
-            if not root.definition:
-                logger.warning('Glossary definition is empty')
-                logger.warning(term)
+        if not root.definition:
+            logger.warning('Glossary definition is empty')
+            logger.warning(term)
     elif hasattr(root, u'children'):
         for child in root:
             search_and_update_glossary_entries(child, sidebars, term_defs)
@@ -341,6 +342,7 @@ def search_figure_icon_on_sidebar_title(tnode, figs):
             search_figure_icon_on_sidebar_title(child, figs)
     return figs
 
+
 def search_figure_icon_on_sidebar_body(tnode, figs):
     if IFigure.providedBy(tnode):
         if tnode.icon:
@@ -349,6 +351,7 @@ def search_figure_icon_on_sidebar_body(tnode, figs):
         for child in tnode:
             search_figure_icon_on_sidebar_body(child, figs)
     return figs
+
 
 def update_sidebar_body_bullet(node):
     if IRunNode.providedBy(node) and node.element_type == 'bullet':
@@ -363,6 +366,7 @@ def update_sidebar_body_bullet(node):
     elif hasattr(node, 'children'):
         for child in node:
             update_sidebar_body_bullet(child)
+
 
 def search_span_note(node, notes):
     if IRunNode.providedBy(node):

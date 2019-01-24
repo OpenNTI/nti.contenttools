@@ -78,19 +78,18 @@ class Paragraph(types.Paragraph):
         if 'class' in attrib:
             if any(s.lower() in attrib['class'].lower() for s in cls.term_list):
                 if epub:
-                    for child in element:
-                        key = child.text
-                        el_key = Run()
-                        el_key.styles = ['bold']
-                        el_key.add_child(TextNode(key))
-                        me.add_child(el_key)
-                        el_def = Run()
-                        el_def = check_element_tail(el_def, child)
-                        term_def = render_output(el_def)
-                        me.add_child(el_def)
-                        if key and term_def:
-                            term_def = u'{}{}'.format(render_output(el_key), term_def)
-                            epub.term_defs[key.strip()] = term_def
+                    for i, child in enumerate(element):
+                        if i == 0:
+                            key = set_paragraph_term(me, child, epub)
+                        else:
+                            el = Run()
+                            el = check_element_text(el, child)
+                            el = check_child(el, child, epub)
+                            el = check_element_tail(el, child)
+                            if key in epub.term_defs.keys():
+                                epub.term_defs[key] = u'{}{}'.format(epub.term_defs[key], render_output(el))
+                            me.add_child(el)
+
             elif attrib['class'] != "ParaOverride-1":
                 me = check_element_text(me, element)
                 me = check_child(me, element, epub)
@@ -261,3 +260,19 @@ def get_caption_token(root):
             if result:
                 return result
     return False
+
+
+def set_paragraph_term(me, child, epub):
+    key = child.text
+    el_key = Run()
+    el_key.styles = ['bold']
+    el_key.add_child(TextNode(key))
+    me.add_child(el_key)
+    el_def = Run()
+    el_def = check_element_tail(el_def, child)
+    term_def = render_output(el_def)
+    me.add_child(el_def)
+    if key:
+        term_def = u'{}{}'.format(render_output(el_key), term_def)
+        epub.term_defs[key.strip()] = term_def
+    return key.strip()
