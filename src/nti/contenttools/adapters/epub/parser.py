@@ -41,6 +41,7 @@ from nti.contenttools.types.interfaces import IParagraph
 from nti.contenttools.types.interfaces import ISidebar
 from nti.contenttools.types.interfaces import ITable
 from nti.contenttools.types.interfaces import IEPUBBody
+from nti.contenttools.types.interfaces import IGlossaryEntry
 
 EPUB_COURSE_TYPE = (u'ifsta', u'ifsta_rf', u'tcia', u'prmia')
 EPUB_REMOVE_PAGE_NUMBER = (u'ifsta', u'ifsta_rf')
@@ -311,7 +312,8 @@ class EPUBParser(object):
                            support_dir,
                            'table_refs.tex')
 
-        key_terms = process_key_terms_section(self.glossary_entry_sections)
+        key_terms_section = process_key_terms_section(self.glossary_entry_sections)
+        key_terms = build_key_terms_toc(key_terms_section)
         self.write_to_file(key_terms, support_dir, 'key_terms_toc.tex')
 
     def cleanup_extra_quote(self, content):
@@ -437,14 +439,20 @@ def process_key_terms_section(lnodes):
     key_terms_section[label] = []
     for i, node in enumerate(lnodes):
         if i < len(lnodes) - 1:
-            if IParagraph.providedBy(node) and ISidebar.providedBy(lnodes[i + 1]):
+            if IParagraph.providedBy(node) and \
+                    (ISidebar.providedBy(lnodes[i + 1]) or IGlossaryEntry.providedBy(lnodes[i + 1])):
                 label = node.label
                 if label not in key_terms_section.keys():
                     key_terms_section[label] = []
         if ISidebar.providedBy(node):
             if node.title:
                 key_terms_section[label].append(node.title)
+        elif IGlossaryEntry.providedBy(node):
+            key_terms_section[label].append(render_output(node.term))
+    return key_terms_section
 
+
+def build_key_terms_toc(key_terms_section):
     key_terms_toc = {}
     for key in key_terms_section:
         value = key.replace(u'\\label', u'\\ntiidref')
@@ -455,5 +463,4 @@ def process_key_terms_section(lnodes):
     for key in sorted(key_terms_toc):
         term_link = u'%s<%s>\\\\\n' % (key_terms_toc[key], key)
         key_terms.append(term_link)
-
     return u''.join(key_terms)

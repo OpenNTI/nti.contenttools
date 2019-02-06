@@ -376,3 +376,14 @@ def search_span_note(node, notes):
         for child in node:
             search_span_note(child, notes)
     return notes
+
+
+def search_glossary_section(root, glossary_entry_sections=None):
+    if IParagraph.providedBy(root):
+        if any(style in root.styles for style in ('Section', 'Subsection',)):
+            glossary_entry_sections.append(root)
+    elif IGlossaryEntry.providedBy(root):
+        glossary_entry_sections.append(root)
+    elif hasattr(root, u'children'):
+        for child in root:
+            search_glossary_section(child, glossary_entry_sections)
