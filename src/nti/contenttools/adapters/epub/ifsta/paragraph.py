@@ -45,6 +45,7 @@ class Paragraph(types.Paragraph):
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride', u'Basic-Paragraph')
     term_list = (u'Body-Copy_Keyterm_End-of-chapter', )
+    para_term_list = (u'Body-Copy_Body-Text ParaOverride-7', u'Body-Copy_Body-Text ParaOverride-6', u'Body-Copy_Body-Text ParaOverride-8',)
 
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
@@ -63,7 +64,7 @@ class Paragraph(types.Paragraph):
                           u'Safety-Alert-Box---Title',
                           u'Information-Box---Title',
                           u'WARNING---Title',
-                          u'CAUTION---Title')
+                          u'CAUTION---Title',)
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
                          u'Caution-Warning-Text',
                          u'sidebars-body-text ParaOverride-1',
@@ -78,22 +79,14 @@ class Paragraph(types.Paragraph):
         if 'class' in attrib:
             if any(s.lower() in attrib['class'].lower() for s in cls.term_list):
                 if epub:
-                    for i, child in enumerate(element):
-                        if i == 0:
-                            key = set_paragraph_term(me, child, epub)
-                        else:
-                            el = Run()
-                            el = check_element_text(el, child)
-                            el = check_child(el, child, epub)
-                            el = check_element_tail(el, child)
-                            if key in epub.term_defs.keys():
-                                epub.term_defs[key] = u'{}{}'.format(epub.term_defs[key], render_output(el))
-                            me.add_child(el)
-
+                    build_key_term_dict(me, element, epub)
+            elif any(s.lower() in attrib['class'].lower() for s in cls.para_term_list):
+                if epub and epub.para_term:
+                    build_key_term_dict(me, element, epub)
+                else:
+                    build_normal_paragraph(me, element, epub)
             elif attrib['class'] != "ParaOverride-1":
-                me = check_element_text(me, element)
-                me = check_child(me, element, epub)
-                me = check_element_tail(me, element)
+                build_normal_paragraph(me, element, epub)
                 if epub:
                     if u'Sub1' in attrib['class'] and epub.chapter_num == 'Index':
                         el = types.BlockQuote()
@@ -158,6 +151,14 @@ class Paragraph(types.Paragraph):
                         el.type = u'sidebar-head'
                         el.title = me
                         me = el
+                    icon = u''
+                    if 'info' in attrib['class'].lower():
+                        icon = u'\\begin{figure}[h] \\includegraphics{Images/Icon/Info.png}\\end{figure}\\\\'
+                    elif 'safety' in attrib['class'].lower():
+                        icon = u'\\begin{figure}[h] \\includegraphics{Images/Icon/Safety.png}\\end{figure}\\\\'
+                    if icon:
+                        el.title.children.insert(0, TextNode(icon))
+
                 elif any(s.lower() in attrib['class'].lower() for s in sidebars_body):
                     check_head = []
                     search_figure_icon_on_sidebar_body(me, check_head)
@@ -276,3 +277,23 @@ def set_paragraph_term(me, child, epub):
         term_def = u'{}{}'.format(render_output(el_key), term_def)
         epub.term_defs[key.strip()] = term_def
     return key.strip()
+
+
+def build_key_term_dict(me, element, epub):
+    for i, child in enumerate(element):
+        if i == 0:
+            key = set_paragraph_term(me, child, epub)
+        else:
+            el = Run()
+            el = check_element_text(el, child)
+            el = check_child(el, child, epub)
+            el = check_element_tail(el, child)
+            if key in epub.term_defs.keys():
+                epub.term_defs[key] = u'{}{}'.format(epub.term_defs[key], render_output(el))
+            me.add_child(el)
+
+
+def build_normal_paragraph(me, element, epub):
+    me = check_element_text(me, element)
+    me = check_child(me, element, epub)
+    me = check_element_tail(me, element)

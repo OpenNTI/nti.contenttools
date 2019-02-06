@@ -30,6 +30,7 @@ from nti.contenttools.adapters.epub.ifsta.finder import search_table
 from nti.contenttools.adapters.epub.ifsta.finder import update_caption_list
 from nti.contenttools.adapters.epub.ifsta.finder import search_sidebar_terms
 from nti.contenttools.adapters.epub.ifsta.finder import cleanup_table_element
+from nti.contenttools.adapters.epub.ifsta.finder import search_glossary_section
 from nti.contenttools.adapters.epub.ifsta.finder import add_icon_to_sidebar_info
 from nti.contenttools.adapters.epub.ifsta.finder import search_paragraph_section
 from nti.contenttools.adapters.epub.ifsta.finder import search_sidebar_head_and_body
@@ -81,8 +82,8 @@ def adapt(fragment, epub=None):
         if sidebars:
             term_defs = dict((k.lower(), v) for k, v in sidebars.iteritems())
             search_and_update_glossary_entries(epub_body, sidebars, term_defs)
-
-        if epub.term_defs:
+        else:
+            search_glossary_section(epub_body, epub.glossary_entry_sections)
             term_defs = dict((k.lower(), v) for k, v in epub.term_defs.iteritems())
             search_and_update_glossary_entries(epub_body, epub.term_defs, term_defs)
 

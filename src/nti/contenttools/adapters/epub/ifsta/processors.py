@@ -29,6 +29,8 @@ from nti.contenttools.adapters.epub.ifsta.run import process_span_elements
 
 from nti.contenttools.adapters.epub.ifsta.table import Table
 
+from nti.contenttools.adapters.epub.generic import check_element_tail
+
 from nti.contenttools.types import TextNode
 
 
@@ -129,5 +131,17 @@ class _FigureChildProcessor(object):
 
     def process(self, child, node, element, epub=None):
         result = Figure.process(child, epub=epub)
+        node.add_child(result)
+        return result
+
+
+@interface.implementer(IChildProcessor)
+class _BrChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Run()
+        result = check_element_tail(result, child)
         node.add_child(result)
         return result

@@ -5,15 +5,15 @@
 
 	<include package="zope.component" file="meta.zcml" />
 	<include package="zope.component" />
-	
+
 	<include package="z3c.baseregistry" file="meta.zcml" />
 	<utility
         component=".sites.IFSTA"
         provides="zope.component.interfaces.IComponents"
         name="ifsta" />
-	
+
 	<registerIn registry=".sites.IFSTA">
-		<!-- Utilities -->	
+		<!-- Utilities -->
 		<utility factory=".processors._SpanChildProcessor" name="span" />
 		<utility factory=".processors._ParagraphChildProcessor" name="p" />
 		<utility factory=".processors._HyperlinkChildProcessor" name="a" />
@@ -23,6 +23,7 @@
 		<utility factory=".processors._TableChildProcessor" name="table" />
 		<utility factory=".processors._ImageChildProcessor" name="img" />
 		<utility factory=".processors._FigureChildProcessor" name="figure" />
+		<utility factory=".processors._BrChildProcessor" name="br" />
 	</registerIn>
-	
+
 </configure>
