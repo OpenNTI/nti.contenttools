@@ -42,7 +42,7 @@ class TestParagraphAdapter(IFSTATestCase):
         node = Run.process(element)
         output = render_output(node)
         assert_that(output,
-                    is_(u'\\textbf{Cryogenic \\newline Containers}'))
+                    is_(u'\\textbf{Cryogenic Containers}'))
 
     def test_second_paragraph_2(self):
         script = u'<p>This is the first paragraph</p><p>This is the second paragraph</p>'
