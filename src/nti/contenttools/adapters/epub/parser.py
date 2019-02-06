@@ -314,6 +314,8 @@ class EPUBParser(object):
 
         key_terms_section = process_key_terms_section(self.glossary_entry_sections)
         key_terms = build_key_terms_toc(key_terms_section)
+        from IPython.terminal.debugger import set_trace
+        set_trace()
         self.write_to_file(key_terms, support_dir, 'key_terms_toc.tex')
 
     def cleanup_extra_quote(self, content):
@@ -448,7 +450,10 @@ def process_key_terms_section(lnodes):
             if node.title:
                 key_terms_section[label].append(node.title)
         elif IGlossaryEntry.providedBy(node):
-            key_terms_section[label].append(render_output(node.term))
+            if node.key_term:
+                key_terms_section[label].append(node.key_term)
+            else:
+                key_terms_section[label].append(render_output(node.term))
     return key_terms_section
 
 

@@ -199,13 +199,13 @@ def search_and_update_glossary_entries(root, sidebars, term_defs):
         for word in terms:
             if word in sidebars.keys():
                 root.definition = sidebars[word]
+                root.key_term = unicode(word)
 
         if not root.definition:
             for key in term_defs.keys():
-                if key in term_lower:
+                if key in term_lower or term_lower in key:
                     root.definition = term_defs[key]
-                elif term_lower in key:
-                    root.definition = term_defs[key]
+                    root.key_term = unicode(key)
         if not root.definition:
             logger.warning('Glossary definition is empty')
             logger.warning(term)
@@ -378,12 +378,13 @@ def search_span_note(node, notes):
     return notes
 
 
-def search_glossary_section(root, glossary_entry_sections=None):
+def search_glossary_section(root, glossary_entry_sections=()):
     if IParagraph.providedBy(root):
         if any(style in root.styles for style in ('Section', 'Subsection',)):
             glossary_entry_sections.append(root)
     elif IGlossaryEntry.providedBy(root):
         glossary_entry_sections.append(root)
-    elif hasattr(root, u'children'):
+
+    if hasattr(root, u'children'):
         for child in root:
             search_glossary_section(child, glossary_entry_sections)
