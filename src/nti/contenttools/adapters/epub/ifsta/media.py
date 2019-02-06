@@ -31,7 +31,7 @@ class Image(types.Image):
         me = cls()
         if not 'src' in element.attrib.keys():
             logger.warning('<image> has no src')
-            return 
+            return
         path = element.attrib['src']
 
         if '../' in path:
@@ -59,7 +59,7 @@ class Image(types.Image):
 
         fname, _ = os.path.splitext(filename)
 
-        if any(fig in filename for fig in figures_without_caption):
+        if any(fig.lower() in filename.lower() for fig in figures_without_caption):
             fnode = Run()
             figure = Figure()
             title, _ = os.path.splitext(filename)

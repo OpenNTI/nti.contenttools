@@ -256,6 +256,7 @@ class EPUBParser(object):
         content = content.replace(u'\\end{itemize}\n}', u'\\end{itemize}}')
 
         content = content.replace(u'\\item \\textbf{\\item }', u'\\item ')
+        content = content.replace(u'\\item \\item', u'\\item ')
 
         return content
 
