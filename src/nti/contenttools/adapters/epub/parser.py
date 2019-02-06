@@ -51,7 +51,7 @@ logger = __import__('logging').getLogger(__name__)
 
 class EPUBParser(object):
 
-    def __init__(self, input_file, output_directory, epub_type, css_json=None, chapter_num=None):
+    def __init__(self, input_file, output_directory, epub_type, css_json=None, chapter_num=None, para_term=None):
         self.image_list = []
         self.latex_filenames = []
         self.content_folder = []  # will be use to retrieve images or pdf
@@ -88,6 +88,8 @@ class EPUBParser(object):
         self.label_refs = {}  # id - id to ref
 
         self.page_numbers = {}  # page_number - section id
+
+        self.para_term = para_term
 
         self.epub_reader = EPUBReader(input_file)
         self.epub_chapters = {}
