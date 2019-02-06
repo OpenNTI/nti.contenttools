@@ -276,6 +276,7 @@ class EPUBParser(object):
                                'SidebarTerms.tex')
 
         content = u''.join(self.section_list)
+        content = self.cleanup_extra_quote(content)
         self.write_to_file(content,
                            support_dir,
                            'section_list.txt')
@@ -307,6 +308,12 @@ class EPUBParser(object):
 
         key_terms = process_key_terms_section(self.glossary_entry_sections)
         self.write_to_file(key_terms, support_dir, 'key_terms_toc.tex')
+
+    def cleanup_extra_quote(self, content):
+        content = content.replace(u'\\end{quote}\n\\begin{quote}\n', u'')
+        content = content.replace(u'\\\\\n\\begin{quote}', u'\n\\begin{quote}')
+        content = content.replace(u'\\\\\n\\end{quote}', u'\n\\end{quote}')
+        return content
 
     def generate_figure_tex(self):
         figures = []
