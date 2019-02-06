@@ -131,3 +131,14 @@ class _FigureChildProcessor(object):
         result = Figure.process(child, epub=epub)
         node.add_child(result)
         return result
+
+
+@interface.implementer(IChildProcessor)
+class _BrChildProcessor(object):
+
+    __slots__ = ()
+
+    def process(self, child, node, element, epub=None):
+        result = Run()
+        node.add_child(result)
+        return result
