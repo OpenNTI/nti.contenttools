@@ -44,7 +44,7 @@ class Paragraph(types.Paragraph):
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD')
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride', u'Basic-Paragraph')
-    term_list = (u'Body-Copy_Keyterm_End-of-chapter', )
+    term_list = (u'Body-Copy_Keyterm_End-of-chapter', u'Body-Copy_Body-Text ParaOverride-7', u'Body-Copy_Body-Text ParaOverride-6', )
 
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
