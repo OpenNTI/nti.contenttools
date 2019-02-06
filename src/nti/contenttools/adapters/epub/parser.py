@@ -287,17 +287,6 @@ class EPUBParser(object):
                            support_dir,
                            'section_list.txt')
 
-        glossaries = json.dumps(self.glossary_terms,
-                                sort_keys=True,
-                                indent='\t')
-        self.write_to_file(glossaries, support_dir, 'glossary.json')
-
-        glossary_labels = list(sorted(self.glossary_labels))
-        glossary_labels_content = u''.join(glossary_labels)
-        self.write_to_file(glossary_labels_content,
-                           support_dir,
-                           'glossary_label.txt')
-
         figure_labels = json.dumps(self.figure_labels,
                                    sort_keys=True,
                                    indent='\t')
@@ -313,10 +302,18 @@ class EPUBParser(object):
                            'table_refs.tex')
 
         key_terms_section = process_key_terms_section(self.glossary_entry_sections)
-        key_terms = build_key_terms_toc(key_terms_section)
-        from IPython.terminal.debugger import set_trace
-        set_trace()
+        key_terms_toc = build_key_terms_toc(key_terms_section)
+        key_terms = create_terms_toc_string(key_terms_toc)
         self.write_to_file(key_terms, support_dir, 'key_terms_toc.tex')
+
+        glossaries = json.dumps(key_terms_toc,
+                                sort_keys=True,
+                                indent='\t')
+        if self.chapter_num:
+            glossary_index = 'glossary_{}.json'.format(self.chapter_num)
+        else:
+            glossary_index = 'glossary.json'
+        self.write_to_file(glossaries, support_dir, glossary_index)
 
     def cleanup_extra_quote(self, content):
         content = content.replace(u'\\end{quote}\n\\begin{quote}\n', u'')
@@ -444,7 +441,7 @@ def process_key_terms_section(lnodes):
             if IParagraph.providedBy(node) and \
                     (ISidebar.providedBy(lnodes[i + 1]) or IGlossaryEntry.providedBy(lnodes[i + 1])):
                 label = node.label
-                if label not in key_terms_section.keys():
+                if label not in key_terms_section:
                     key_terms_section[label] = []
         if ISidebar.providedBy(node):
             if node.title:
@@ -463,7 +460,10 @@ def build_key_terms_toc(key_terms_section):
         value = key.replace(u'\\label', u'\\ntiidref')
         for term in key_terms_section[key]:
             key_terms_toc[term] = value
+    return key_terms_toc
 
+
+def create_terms_toc_string(key_terms_toc):
     key_terms = []
     for key in sorted(key_terms_toc):
         term_link = u'%s<%s>\\\\\n' % (key_terms_toc[key], key)
