@@ -55,7 +55,7 @@ class Image(types.Image):
                 return types.Run()
 
         figures_without_caption = (u'Icon', )
-        to_ignore = (u'Divider_Page', u'Warning', u'Caution')
+        to_ignore = (u'Divider_Page', u'Warning', u'Caution', u'infoBox_new2', u'SafetyBox')
 
         fname, _ = os.path.splitext(filename)
 

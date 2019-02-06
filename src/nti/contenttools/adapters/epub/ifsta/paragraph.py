@@ -64,7 +64,7 @@ class Paragraph(types.Paragraph):
                           u'Safety-Alert-Box---Title',
                           u'Information-Box---Title',
                           u'WARNING---Title',
-                          u'CAUTION---Title')
+                          u'CAUTION---Title',)
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
                          u'Caution-Warning-Text',
                          u'sidebars-body-text ParaOverride-1',
@@ -151,6 +151,14 @@ class Paragraph(types.Paragraph):
                         el.type = u'sidebar-head'
                         el.title = me
                         me = el
+                    icon = u''
+                    if 'info' in attrib['class'].lower():
+                        icon = u'\\begin{figure}[h] \\includegraphics{Images/Icon/Info.png}\\end{figure}\\\\'
+                    elif 'safety' in attrib['class'].lower():
+                        icon = u'\\begin{figure}[h] \\includegraphics{Images/Icon/Safety.png}\\end{figure}\\\\'
+                    if icon:
+                        el.title.children.insert(0, TextNode(icon))
+
                 elif any(s.lower() in attrib['class'].lower() for s in sidebars_body):
                     check_head = []
                     search_figure_icon_on_sidebar_body(me, check_head)
