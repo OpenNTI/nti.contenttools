@@ -263,6 +263,8 @@ class EPUBParser(object):
         content = content.replace(u'\\textbf{\\item }', u'\\item ')
         content = content.replace(u'\\textbf{\\item}', u'\\item ')
 
+        content = content.replace(u'\\newline\\\\', u'\\\\')
+
         return content
 
     def process_support_files(self):
