@@ -59,6 +59,10 @@ class Image(types.Image):
 
         fname, _ = os.path.splitext(filename)
 
+        tablename = u''
+        if epub:
+            tablename = u'Table_{}'.format(epub.chapter_num)
+
         if any(fig.lower() in filename.lower() for fig in figures_without_caption):
             fnode = Run()
             figure = Figure()
@@ -71,6 +75,19 @@ class Image(types.Image):
             fnode.add(figure)
             fnode = check_element_tail(fnode, element)
             return fnode
+        elif tablename and tablename.lower() in filename.lower():
+            me.equation_image = True
+            table_node = types.Table()
+            table_node.label = types.TextNode(fname)
+            table_node.caption = types.TextNode(fname)
+            row = types.Row()
+            cell = types.Cell()
+            cell.add_child(me)
+            row.add_child(cell)
+            table_node.set_number_of_col_body(1)
+            table_node.set_border(False)
+            table_node.add_child(row)
+            return table_node
         elif any(fig in filename for fig in to_ignore):
             return types.Run()
         elif (u'-' in filename or u'.' in fname) and filename[0] in epub.chapter_num:

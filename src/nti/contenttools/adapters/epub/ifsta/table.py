@@ -32,7 +32,6 @@ class Table(types.Table):
         me.border = True
         me = check_element_text(me, element)
         me.number_of_col_body = 0
-
         for child in element:
             if child.tag == 'colgroup':
                 pass
