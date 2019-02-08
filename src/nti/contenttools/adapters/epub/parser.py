@@ -272,16 +272,15 @@ class EPUBParser(object):
         if not os.path.exists(support_dir):
             os.makedirs(support_dir)
 
-        if self.epub_type == 'ifsta_rf':
-            content_fig = self.generate_figure_tex()
-            self.write_to_file(content_fig,
-                               support_dir,
-                               'Figures.tex')
+        content_fig = self.generate_figure_tex()
+        self.write_to_file(content_fig,
+                           support_dir,
+                           'Figures.tex')
 
-            content_sidebar_term = self.generate_sidebar_terms_nodes()
-            self.write_to_file(content_sidebar_term,
-                               support_dir,
-                               'SidebarTerms.tex')
+        content_sidebar_term = self.generate_terms_tex()
+        self.write_to_file(content_sidebar_term,
+                           support_dir,
+                           'Terms.tex')
 
         content = u''.join(self.section_list)
         content = self.cleanup_extra_quote(content)
@@ -330,17 +329,22 @@ class EPUBParser(object):
         content = u'\n'.join(figures)
         return content
 
-    def generate_sidebar_terms_nodes(self):
-        sidebars = []
-        for sidebar in self.sidebar_term_nodes:
-            sidebars.append(render_output(sidebar))
-            self.glossary_terms[sidebar.title] = sidebar.base
-            if sidebar.label:
-                label = sidebar.label.replace(u'\\label', u'\\ref')
-                label = u'%s\\\\\n' % (label)
-                self.glossary_labels.append(label)
-        content = u'\n'.join(sidebars)
-        return content
+    def generate_terms_tex(self):
+        if self.sidebar_term_nodes:
+            sidebars = []
+            for sidebar in self.sidebar_term_nodes:
+                sidebars.append(render_output(sidebar))
+                self.glossary_terms[sidebar.title] = sidebar.base
+                if sidebar.label:
+                    label = sidebar.label.replace(u'\\label', u'\\ref')
+                    label = u'%s\\\\\n' % (label)
+                    self.glossary_labels.append(label)
+            return u'\n'.join(sidebars)
+        else:
+            clist = []
+            for term in sorted(self.term_defs):
+                clist.append(u'{}'.format(self.term_defs[term]))
+            return u'\n\n'.join(clist)
 
     def create_main_latex(self):
         if not self.reading_def_dir:
