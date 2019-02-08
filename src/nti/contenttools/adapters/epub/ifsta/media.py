@@ -55,7 +55,7 @@ class Image(types.Image):
                 return types.Run()
 
         figures_without_caption = (u'Icon', )
-        to_ignore = (u'Divider_Page', u'Warning', u'Caution', u'infoBox_new2', u'SafetyBox')
+        to_ignore = (u'Divider_Page', u'Warning', u'Caution', u'infoBox_new2', u'SafetyBox', u'WhatThisMeansToYou_Box')
 
         fname, _ = os.path.splitext(filename)
 
@@ -76,7 +76,7 @@ class Image(types.Image):
             fnode = check_element_tail(fnode, element)
             return fnode
         elif tablename and tablename.lower() in filename.lower():
-            me.equation_image = True
+            me.inline_image = True
             table_node = types.Table()
             table_node.label = types.TextNode(fname)
             table_node.caption = types.TextNode(fname)
