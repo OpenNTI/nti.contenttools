@@ -264,6 +264,8 @@ class EPUBParser(object):
         content = content.replace(u'\\textbf{\\item}', u'\\item ')
 
         content = content.replace(u'\\newline\\\\', u'\\\\')
+        content = content.replace(u'[css-class=note]{CAUTION:}', u'[css-class=caution]{CAUTION:}')
+        content = content.replace(u'[css-class=note]{WARNING:}', u'[css-class=warning]{WARNING:}')
 
         return content
 

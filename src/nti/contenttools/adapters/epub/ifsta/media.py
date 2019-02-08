@@ -76,7 +76,7 @@ class Image(types.Image):
             fnode = check_element_tail(fnode, element)
             return fnode
         elif tablename and tablename.lower() in filename.lower():
-            me.equation_image = True
+            me.inline_image = True
             table_node = types.Table()
             table_node.label = types.TextNode(fname)
             table_node.caption = types.TextNode(fname)
