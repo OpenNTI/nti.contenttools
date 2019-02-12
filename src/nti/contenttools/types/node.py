@@ -15,7 +15,7 @@ from nti.contenttools.types.interfaces import INode
 from nti.contenttools.types.interfaces import _INode
 from nti.contenttools.types.interfaces import IDocumentStructureNode
 
-from nti.schema.field import SchemaConfigured
+from nti.schema.schema import SchemaConfigured
 
 from nti.schema.fieldproperty import createFieldProperties
 
@@ -30,7 +30,7 @@ class NodeMixin(object):
 
     def __init__(self, *args, **kwargs):
         super(NodeMixin, self).__init__(*args, **kwargs)
-        
+
     def _ensure_children(self):
         if     self.children is None \
             or isinstance(self.children, tuple):

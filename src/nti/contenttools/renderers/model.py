@@ -15,7 +15,7 @@ from zope import interface
 
 from nti.contenttools.renderers.interfaces import IRenderContext
 
-from nti.schema.field import SchemaConfigured
+from nti.schema.schema import SchemaConfigured
 
 from nti.schema.fieldproperty import createFieldProperties
 
