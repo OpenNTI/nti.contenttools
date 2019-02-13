@@ -3,7 +3,9 @@ import csv
 import codecs
 import argparse
 
-from nti.contenttools.renderers.LaTeX.base import render_output
+from nti.contenttools.renderers.LaTeX.base import render_node
+
+from nti.contenttools.renderers.model import DefaultRendererContext
 
 from nti.contenttools.types.concept import ConceptHierarchy
 from nti.contenttools.types.concept import Concept
@@ -46,10 +48,12 @@ def build_concepts_tree(names):
 
 def main():
     args = parse_args()
-    names = read_csv(args.input)
+    names = read_csv(args.input, args.column)
     if names:
         ctree = build_concepts_tree(names)
-        tex_tree = render_output(ctree)
+        context = DefaultRendererContext(name=u"LaTeX")
+        render_node(context, ctree)
+        tex_tree = context.read()
         output = args.output
         if not output:
             dir_path = os.path.split(args.input)[0]
