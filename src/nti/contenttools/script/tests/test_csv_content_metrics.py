@@ -24,12 +24,13 @@ from nti.contenttools.script.csv_content_metrics import output_csv
 from nti.contenttools.script.csv_content_metrics import build_details
 from nti.contenttools.tests import ContentToolsTestCase
 
+
 class TestCSVContentMetrics(ContentToolsTestCase):
     def data_file(self, name):
         return os.path.join(os.path.dirname(__file__), 'data', name)
 
     def test_process_data(self):
-        data  = read_json(self.data_file('content_metrics.json'))
+        data = read_json(self.data_file('content_metrics.json'))
         root = read_xml(self.data_file('eclipse-toc.xml'))
 
         tup = namedtuple('tup', ['title', 'block', 'minutes', 'total_words', 'details'])
@@ -51,7 +52,7 @@ class TestCSVContentMetrics(ContentToolsTestCase):
         write_to_csv(data_csv, output, header, details=False)
 
     def test_process_data_with_default_level(self):
-        data  = read_json(self.data_file('content_metrics.json'))
+        data = read_json(self.data_file('content_metrics.json'))
         root = read_xml(self.data_file('eclipse-toc.xml'))
 
         tup = namedtuple('tup', ['title', 'block', 'minutes', 'total_words', 'details'])
@@ -72,7 +73,7 @@ class TestCSVContentMetrics(ContentToolsTestCase):
         write_to_csv(data_csv, output, header, details=False)
 
     def test_process_data_with_details(self):
-        data  = read_json(self.data_file('content_metrics.json'))
+        data = read_json(self.data_file('content_metrics.json'))
         root = read_xml(self.data_file('eclipse-toc.xml'))
 
         tup = namedtuple('tup', ['title', 'block', 'minutes', 'total_words', 'details'])
