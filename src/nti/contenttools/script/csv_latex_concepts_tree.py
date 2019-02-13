@@ -53,7 +53,7 @@ def main():
         ctree = build_concepts_tree(names)
         context = DefaultRendererContext(name=u"LaTeX")
         render_node(context, ctree)
-        tex_tree = rcontext.read()
+        tex_tree = context.read()
         output = args.output
         if not output:
             dir_path = os.path.split(args.input)[0]
