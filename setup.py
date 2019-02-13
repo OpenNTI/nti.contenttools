@@ -13,7 +13,8 @@ entry_points = {
         'nti_import_cnx = nti.contenttools.import_cnx:main',
         'nti_epub_latex_parser = nti.contenttools.parser.epub_to_latex:main',
         'nti_html_latex_parser = nti.contenttools.parser.html_to_tex:main',
-        'nti_mathcounts_html_latex_parser = nti.contenttools.parse_mathcounts_html_latex:main'
+        'nti_mathcounts_html_latex_parser = nti.contenttools.parse_mathcounts_html_latex:main',
+        'nti_csv_latex_concepts = nti.contenttools.scripts.csv_latex_concepts_tree:main'
     ]
 }
 
