@@ -276,7 +276,7 @@ def set_paragraph_term(me, child, epub):
     if key:
         term_def = u'{}{}'.format(render_output(el_key), term_def)
         epub.term_defs[key.strip()] = term_def
-    return key.strip()
+        return key.strip()
 
 
 def build_key_term_dict(me, element, epub):

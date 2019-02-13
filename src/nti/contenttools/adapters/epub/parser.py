@@ -267,6 +267,9 @@ class EPUBParser(object):
         content = content.replace(u'[css-class=note]{CAUTION:}', u'[css-class=caution]{CAUTION:}')
         content = content.replace(u'[css-class=note]{WARNING:}', u'[css-class=warning]{WARNING:}')
 
+        content = content.replace(u' }', u'} ')
+        content = content.replace(u'} {', u'}{')
+        content = content.replace(u'\\end{figure}\n\\\\', u'\\end{figure}\\\\')
         return content
 
     def process_support_files(self):
@@ -309,7 +312,8 @@ class EPUBParser(object):
         key_terms = create_terms_toc_string(key_terms_toc)
         self.write_to_file(key_terms, support_dir, 'key_terms_toc.tex')
 
-        glossaries = json.dumps(key_terms_toc,
+        gterms = synchronize_key_terms(key_terms_section, self.term_defs.keys())
+        glossaries = json.dumps(gterms,
                                 sort_keys=True,
                                 indent='\t')
         if self.chapter_num:
@@ -477,3 +481,17 @@ def create_terms_toc_string(key_terms_toc):
         term_link = u'%s<%s>\\\\\n' % (key_terms_toc[key], key)
         key_terms.append(term_link)
     return u''.join(key_terms)
+
+
+def synchronize_key_terms(key_terms_section, term_defs):
+    key_terms = {}
+    for key in key_terms_section:
+        value = key.replace(u'\\label', u'\\ntiidref')
+        for term in key_terms_section[key]:
+            for td in term_defs:
+                if td.lower() in term.lower() or term.lower() in td.lower():
+                    key_terms[td] = value
+    for td in term_defs:
+        if td not in key_terms:
+            key_terms[td] = 'NOT FOUND'
+    return key_terms
