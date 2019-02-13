@@ -584,6 +584,18 @@ class ITFoot(IDocumentStructureNode):
     """
 
 
+class IConceptHierarchy(IDocumentStructureNode):
+  """
+  Node for Concept Hierarchy
+  """
+
+
+class IConcept(IDocumentStructureNode):
+  """
+  Node for Concept
+  """
+
+
 class IMath(IDocumentStructureNode):
 
   equation_type = ValidTextLine(title=u"Equation Type",
@@ -1356,10 +1368,10 @@ class IGlossaryEntry(IDocumentStructureNode):
                        required=True,
                        default=u'')
   key_term = Variant((Object(IDocumentStructureNode),
-                 ValidTextLine()),
-                title=u"Glossary key",
-                required=False,
-                default=u'')
+                      ValidTextLine()),
+                     title=u"Glossary key",
+                     required=False,
+                     default=u'')
 
 
 class ISolution (IDocumentStructureNode):
