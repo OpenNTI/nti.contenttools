@@ -66,7 +66,7 @@
 		 for="nti.contenttools.types.interfaces.IRunNode"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
-		 
+
 	<!-- Lists -->
 	<adapter factory=".lists.DDRenderer"
 			 for="nti.contenttools.types.interfaces.IDD"
@@ -107,7 +107,7 @@
 			 for="nti.contenttools.types.interfaces.IDescriptionList"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
-			 
+
 	<!-- HTML based Table -->
 	<adapter factory=".table.HTMLTableRenderer"
 			 for="nti.contenttools.types.interfaces.ITable"
@@ -138,7 +138,7 @@
 			 for="nti.contenttools.types.interfaces.ITHead"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
-	
+
 	<!-- Math ML -->
 	<adapter factory=".math.MathRenderer"
 			 for="nti.contenttools.types.interfaces.IMath"
@@ -249,7 +249,7 @@
 			 for="nti.contenttools.types.interfaces.IMLabeledTr"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
-	
+
 	<!-- Note -->
 	<adapter factory=".note.NoteRenderer"
 			 for="nti.contenttools.types.interfaces.INote"
@@ -290,7 +290,7 @@
 			 for="nti.contenttools.types.interfaces.ICenterNode"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
-	
+
 	<!-- Footnote -->
 	<adapter factory=".footnote.FootnoteRenderer"
 			 for="nti.contenttools.types.interfaces.IFootnote"
@@ -306,18 +306,18 @@
 			 for="nti.contenttools.types.interfaces.IFootnoteMark"
 			 provides="..interfaces.IRenderer"
 			 name="LaTeX" />
-	
+
 	<!-- Text -->
 	<adapter factory=".text.TextNodeRenderer"
 		 for="nti.contenttools.types.interfaces.ITextNode"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
-		
+
 	<!-- Media -->
 	<adapter factory=".media.ImageRenderer"
 		 for="nti.contenttools.types.interfaces.IImage"
 		 provides="..interfaces.IRenderer"
-		 name="LaTeX" />	
+		 name="LaTeX" />
 
 	<adapter factory=".media.FigureRenderer"
 		 for="nti.contenttools.types.interfaces.IFigure"
@@ -333,7 +333,7 @@
 		 for="nti.contenttools.types.interfaces.IEquationImage"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
-		 
+
 	<!-- OMath -->
 	<adapter factory=".omath.OMathRenderer"
 		 for="nti.contenttools.types.interfaces.IOMath"
@@ -358,7 +358,7 @@
 	<adapter factory=".omath.OMathDenominatorRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathDenominator"
 		 provides="..interfaces.IRenderer"
-		 name="LaTeX" />	
+		 name="LaTeX" />
 
 	<adapter factory=".omath.OMathNumeratorRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathNumerator"
@@ -403,12 +403,12 @@
 	<adapter factory=".omath.OMathSubSupRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathSubSup"
 		 provides="..interfaces.IRenderer"
-		 name="LaTeX" />	
+		 name="LaTeX" />
 
 	<adapter factory=".omath.OMathNaryRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathNary"
 		 provides="..interfaces.IRenderer"
-		 name="LaTeX" /> 
+		 name="LaTeX" />
 
 	<adapter factory=".omath.OMathNaryPrRenderer"
 		 for="nti.contenttools.types.interfaces.IOMathNaryPr"
@@ -494,7 +494,7 @@
 		 for="nti.contenttools.types.interfaces.IOMathBorderBox"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
-		 
+
 	<!-- Code -->
 	<adapter factory=".code.CodeRenderer"
 		 for="nti.contenttools.types.interfaces.ICode"
@@ -510,7 +510,7 @@
 		 for="nti.contenttools.types.interfaces.IVerbatim"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
-		 
+
 	<!-- Link -->
 	<adapter factory=".link.HyperlinkRenderer"
 		 for="nti.contenttools.types.interfaces.IHyperlink"
@@ -521,7 +521,7 @@
 		 for="nti.contenttools.types.interfaces.IRealPageNumber"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
-		
+
 	<!-- Alternate Content -->
 	<adapter factory=".alternate_content.AlternateContentRenderer"
 		 for="nti.contenttools.types.interfaces.IAlternateContent"
@@ -532,13 +532,13 @@
 		 for="nti.contenttools.types.interfaces.ITextBoxContent"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
-		 
+
 	<!-- CNX Alternate Content -->
 	<adapter factory=".cnx_alternate_content.CNXProblemSolutionRenderer"
 		 for="nti.contenttools.types.interfaces.ICNXProblemSolution"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
-	
+
 	<!-- Chapter Assessment -->
 	<adapter factory=".chapter_assessment.ChapterExerciseRenderer"
 		 for="nti.contenttools.types.interfaces.IChapterExercise"
@@ -559,13 +559,13 @@
 		 for="nti.contenttools.types.interfaces.IProblem"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
-	
+
 	<!-- Glossary -->
 	<adapter factory=".glossary.GlossaryEntryRenderer"
 		 for="nti.contenttools.types.interfaces.IGlossaryEntry"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
-		 
+
 	<!-- Docx Table -->
 	<adapter factory=".docx_table.DocxTableRenderer"
 		 for="nti.contenttools.types.interfaces.IDocxTable"
@@ -605,6 +605,16 @@
 
 	<adapter factory=".symmath.NaqSymmathPartSolutionExplanationRenderer"
 		 for="nti.contenttools.types.interfaces.INaqSymmathPartSolutionExplanation"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+
+	<adapter factory=".concept.ConceptHierarchyRenderer"
+		 for="nti.contenttools.types.interfaces.IConceptHierarchy"
+		 provides="..interfaces.IRenderer"
+		 name="LaTeX" />
+
+	<adapter factory=".concept.ConceptRenderer"
+		 for="nti.contenttools.types.interfaces.IConcept"
 		 provides="..interfaces.IRenderer"
 		 name="LaTeX" />
 

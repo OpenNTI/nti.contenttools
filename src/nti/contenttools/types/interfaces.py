@@ -594,6 +594,15 @@ class IConcept(IDocumentStructureNode):
   """
   Node for Concept
   """
+  name = Variant((Object(IDocumentStructureNode,
+                         title=u"Title"),
+                  ValidTextLine(title=u"Title")),
+                 required=True,
+                 default=u'')
+  label = Variant((Object(IDocumentStructureNode,
+                          title=u"Title"),
+                   ValidTextLine(title=u"Title")),
+                  required=False)
 
 
 class IMath(IDocumentStructureNode):
