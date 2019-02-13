@@ -185,6 +185,9 @@ from nti.contenttools.types.symmath import NaqSymmathPartSolution
 from nti.contenttools.types.symmath import NaqSymmathPartSolutionValue
 from nti.contenttools.types.symmath import NaqSymmathPartSolutionExplanation
 
+from nti.contenttools.types.concept import ConceptHierarchy
+from nti.contenttools.types.concept import Concept
+
 
 class Newline(DocumentStructureNode):
     pass

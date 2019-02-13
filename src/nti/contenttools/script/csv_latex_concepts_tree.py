@@ -10,6 +10,19 @@ from nti.contenttools.renderers.model import DefaultRendererContext
 from nti.contenttools.types.concept import ConceptHierarchy
 from nti.contenttools.types.concept import Concept
 
+from zope.component.hooks import setHooks
+
+from zope.configuration import xmlconfig
+
+import nti.contenttools
+
+
+def setup_context(context=None):
+    context = xmlconfig.file('configure.zcml',
+                             package=nti.contenttools,
+                             context=context)
+    return context
+
 
 def parse_args():
     arg_parser = argparse.ArgumentParser(description="Parse CSV to LaTex Concepts Tree")
@@ -47,8 +60,10 @@ def build_concepts_tree(names):
 
 
 def main():
+    setup_context()
     args = parse_args()
     names = read_csv(args.input, args.column)
+    print(names)
     if names:
         ctree = build_concepts_tree(names)
         context = DefaultRendererContext(name=u"LaTeX")
@@ -57,7 +72,7 @@ def main():
         output = args.output
         if not output:
             dir_path = os.path.split(args.input)[0]
-            output = os.path.join(args.inputdir, 'Concepts.tex')
+            output = os.path.join(dir_path, 'Concepts.tex')
         write_file(output, tex_tree)
 
 
