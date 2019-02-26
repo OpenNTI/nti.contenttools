@@ -46,6 +46,7 @@ class Paragraph(types.Paragraph):
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride', u'Basic-Paragraph')
     term_list = (u'Body-Copy_Keyterm_End-of-chapter', u'Body-Text_Key-Terms')
     para_term_list = (u'Body-Copy_Body-Text ParaOverride-7', u'Body-Copy_Body-Text ParaOverride-6', u'Body-Copy_Body-Text ParaOverride-8',)
+    caution_list = (u'CAUTION-BOX', )
 
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
@@ -101,7 +102,6 @@ class Paragraph(types.Paragraph):
                         el_2.children = me.children
                         el.add_child(el_2)
                         me = el
-
                 if any(s.lower() in attrib['class'].lower() for s in cls.sidebar_list):
                     sidebar_class = Sidebar()
                     if 'Case-History' in element.attrib['class']:
@@ -161,7 +161,12 @@ class Paragraph(types.Paragraph):
                         icon = u'\\begin{figure}[h] \\includegraphics{Images/Icon/Safety.png}\\end{figure}\\\\'
                     if icon:
                         el.title.children.insert(0, TextNode(icon))
-
+                elif any(s.lower() in attrib['class'].lower() for s in cls.caution_list):
+                    el = Sidebar()
+                    el.title = u'CAUTION:'
+                    el.children = me.children
+                    el.options = TextNode(u'css-class=caution')
+                    me = el
                 elif any(s.lower() in attrib['class'].lower() for s in sidebars_body):
                     check_head = []
                     search_figure_icon_on_sidebar_body(me, check_head)
