@@ -55,7 +55,7 @@ class Paragraph(types.Paragraph):
         if 'id' in attrib:
             me.label = attrib['id']
         me.styles.extend(styles)
-        captions = (u'Caption', u'Captions')
+        captions = (u'Caption', u'Captions', 'Body-Text_Captions')
         sidebars_heads = (u'Caution-Warning-Heads ParaOverride-1',
                           u'Caution-Warning-Heads',
                           u'sidebars-heads ParaOverride-1',
