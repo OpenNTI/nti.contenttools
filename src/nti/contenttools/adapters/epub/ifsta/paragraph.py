@@ -64,7 +64,8 @@ class Paragraph(types.Paragraph):
                           u'Safety-Alert-Box---Title',
                           u'Information-Box---Title',
                           u'WARNING---Title',
-                          u'CAUTION---Title',)
+                          u'CAUTION---Title',
+                          u'Information-Boxes_Header')
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
                          u'Caution-Warning-Text',
                          u'sidebars-body-text ParaOverride-1',
@@ -73,7 +74,8 @@ class Paragraph(types.Paragraph):
                          u'Safety-Alert-Box---Body-Text',
                          u'Information-Box---Body-Text',
                          u'CAUTION---Body-Text',
-                         u'WARNING---Body-Text')
+                         u'WARNING---Body-Text',
+                         u'Information-Boxes_Block-Text')
         definition_list = (u'definition', 'GlossaryTerm')
 
         if 'class' in attrib:
