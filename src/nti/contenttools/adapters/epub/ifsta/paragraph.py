@@ -75,7 +75,8 @@ class Paragraph(types.Paragraph):
                          u'Information-Box---Body-Text',
                          u'CAUTION---Body-Text',
                          u'WARNING---Body-Text',
-                         u'Information-Boxes_Block-Text')
+                         u'Information-Boxes_Block-Text',
+                         u'Information-Boxes_Body-Text')
         definition_list = (u'definition', 'GlossaryTerm')
 
         if 'class' in attrib:
