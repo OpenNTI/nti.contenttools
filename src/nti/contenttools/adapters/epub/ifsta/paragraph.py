@@ -70,6 +70,7 @@ class Paragraph(types.Paragraph):
                           u'Information-Boxes_Header',)
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
                          u'Caution-Warning-Text',
+                         u'Caution-body-text',
                          u'sidebars-body-text ParaOverride-1',
                          u'sidebars-body-text',
                          u'sidebars-block-body-text',
