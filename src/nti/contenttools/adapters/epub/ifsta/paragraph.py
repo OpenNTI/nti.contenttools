@@ -71,6 +71,7 @@ class Paragraph(types.Paragraph):
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
                          u'Caution-Warning-Text',
                          u'Caution-body-text',
+                         u'Warning-body-text',
                          u'sidebars-body-text ParaOverride-1',
                          u'sidebars-body-text',
                          u'sidebars-block-body-text',
