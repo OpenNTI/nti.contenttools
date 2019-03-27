@@ -230,6 +230,7 @@ def create_glossary_entry(element, fstyles=('bold')):
     el = Run()
     t_el = Run()
     check_element_text(t_el, element)
+    check_child(t_el, element)
     check_term = render_output(t_el)
     if not check_term.isspace():
         t_el.styles = t_el.styles + fstyles

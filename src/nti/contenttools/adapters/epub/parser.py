@@ -286,7 +286,7 @@ class EPUBParser(object):
         content_sidebar_term = self.generate_terms_tex()
         terms_filename = 'Terms.tex'
         if self.chapter_num:
-            terms_filename = '{}_{}'.format(terms_filename, self.chapter_num)
+            terms_filename = 'Terms_{}.tex'.format(self.chapter_num)
         self.write_to_file(content_sidebar_term,
                            support_dir,
                            terms_filename)
@@ -295,7 +295,7 @@ class EPUBParser(object):
         content = self.cleanup_extra_quote(content)
         section_toc_filename = 'section_list.tex'
         if self.chapter_num:
-            section_toc_filename = '{}_{}'.format(section_toc_filename, self.chapter_num)
+            section_toc_filename = 'section_list_{}.tex'.format(self.chapter_num)
         self.write_to_file(content,
                            support_dir,
                            section_toc_filename)
@@ -319,7 +319,7 @@ class EPUBParser(object):
         key_terms = create_terms_toc_string(key_terms_toc)
         key_terms_toc_filename = 'key_terms_toc.tex'
         if self.chapter_num:
-            key_terms_toc_filename = '{}_{}'.format(key_terms_toc_filename, self.chapter_num)
+            key_terms_toc_filename = 'key_terms_toc_{}.tex'.format(self.chapter_num)
         self.write_to_file(key_terms, support_dir, key_terms_toc_filename)
 
         gterms = synchronize_key_terms(key_terms_section, self.term_defs.keys())
@@ -328,7 +328,7 @@ class EPUBParser(object):
                                 indent='\t')
         glossary_index_filename = 'glossary.json'
         if self.chapter_num:
-            glossary_index_filename = '{}_{}.json'.format(glossary_index_filename, self.chapter_num)
+            glossary_index_filename = 'glossary_{}.json'.format(self.chapter_num)
         self.write_to_file(glossaries, support_dir, glossary_index_filename)
 
     def cleanup_extra_quote(self, content):
