@@ -60,6 +60,7 @@ setup(
         'setuptools',
         'lxml',
         'nti.contentfragments',
+	'nti.property',
         'nti.schema',
         'Pillow',
         'simplejson',
