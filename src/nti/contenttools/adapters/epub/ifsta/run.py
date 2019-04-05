@@ -226,14 +226,14 @@ def process_span_elements(element, epub=None):
     return el
 
 
-def create_glossary_entry(element, fstyles=('bold')):
+def create_glossary_entry(element, fstyles=('bold',)):
     el = Run()
     t_el = Run()
     check_element_text(t_el, element)
     check_child(t_el, element)
     check_term = render_output(t_el)
     if not check_term.isspace():
-        t_el.styles = t_el.styles + fstyles
+        t_el.styles = list(t_el.styles) + list(fstyles)
         glossary = GlossaryEntry()
         glossary.term = t_el
         el.add(glossary)
