@@ -162,6 +162,8 @@ def process_span_elements(element, epub=None):
         el.element_type = 'bullet'
     elif 'bold' in span_class.lower():
         el = Run.process(element, styles=('bold',), epub=epub)
+    elif 'italic' in span_class.lower():
+        el = Run.process(element, styles=('italic',), epub=epub)
     elif any(s.lower() in span_class.lower() for s in term_class):
         el = create_glossary_entry(element)
     elif 'NOTE' in span_class:
