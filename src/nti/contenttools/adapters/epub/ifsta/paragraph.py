@@ -48,6 +48,7 @@ class Paragraph(types.Paragraph):
     para_term_list = (u'Body-Copy_Body-Text ParaOverride-7', u'Body-Copy_Body-Text ParaOverride-6', u'Body-Copy_Body-Text ParaOverride-8',)
     caution_list = (u'CAUTION-BOX', )
     warning_list = (u'WARNING-BOX', )
+    note_list = (u'Note-text',)
 
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
@@ -176,6 +177,12 @@ class Paragraph(types.Paragraph):
                     el.title = u'WARNING:'
                     el.children = me.children
                     el.options = TextNode(u'css-class=warning')
+                    me = el
+                elif any(s.lower() in attrib['class'].lower() for s in cls.note_list):
+                    el = Sidebar()
+                    el.title = u'NOTE:'
+                    el.children = me.children
+                    el.options = TextNode(u'css-class=note')
                     me = el
                 elif any(s.lower() in attrib['class'].lower() for s in sidebars_body):
                     check_head = []
