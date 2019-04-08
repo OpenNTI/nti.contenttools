@@ -40,7 +40,7 @@ from nti.contenttools.types.note import CenterNode
 class Paragraph(types.Paragraph):
 
     sidebar_list = (u'Case-History ParaOverride-1', u'Case-History',)
-    bullet_list = (u'Bullet ParaOverride-1', u'Bullet')
+    bullet_list = (u'Bullet ParaOverride-1', u'Bullet', u'_-',)
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD')
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride', u'Basic-Paragraph')
