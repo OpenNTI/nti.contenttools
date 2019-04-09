@@ -135,7 +135,7 @@ def process_span_elements(element, epub=None):
     font_family = u''
     vertical_align = u''
 
-    term_class = (u'Key_Term_in_Body', u'Key-Term-in-text')
+    term_class = (u'Key_Term_in_Body', u'Key-Term-in-text', u'Key-Term', u'Key_Term')
 
     term_colors = (u'#c00000', u'#c8161d', u'#bf2026', u'#802023', u'#812023', u'#a30022', u'#ff0000', u'#c8151c', u'#ab1d22', u'#b4282e')
     font_terms = (u'Utopia Std', u'Minion Pro', u'Helvetica LT Std',)
@@ -160,6 +160,10 @@ def process_span_elements(element, epub=None):
                     el_text.styles.append('bold')
         el.add(el_text)
         el.element_type = 'bullet'
+    elif 'bold' in span_class.lower():
+        el = Run.process(element, styles=('bold',), epub=epub)
+    elif 'italic' in span_class.lower():
+        el = Run.process(element, styles=('italic',), epub=epub)
     elif any(s.lower() in span_class.lower() for s in term_class):
         el = create_glossary_entry(element)
     elif 'NOTE' in span_class:
@@ -226,13 +230,14 @@ def process_span_elements(element, epub=None):
     return el
 
 
-def create_glossary_entry(element, fstyles=('bold')):
+def create_glossary_entry(element, fstyles=('bold',)):
     el = Run()
     t_el = Run()
     check_element_text(t_el, element)
+    check_child(t_el, element)
     check_term = render_output(t_el)
     if not check_term.isspace():
-        t_el.styles = t_el.styles + fstyles
+        t_el.styles = list(t_el.styles) + list(fstyles)
         glossary = GlossaryEntry()
         glossary.term = t_el
         el.add(glossary)

@@ -40,7 +40,7 @@ from nti.contenttools.types.note import CenterNode
 class Paragraph(types.Paragraph):
 
     sidebar_list = (u'Case-History ParaOverride-1', u'Case-History',)
-    bullet_list = (u'Bullet ParaOverride-1', u'Bullet')
+    bullet_list = (u'Bullet ParaOverride-1', u'Bullet', u'_-',)
     subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD')
     section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
     paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride', u'Basic-Paragraph')
@@ -48,6 +48,7 @@ class Paragraph(types.Paragraph):
     para_term_list = (u'Body-Copy_Body-Text ParaOverride-7', u'Body-Copy_Body-Text ParaOverride-6', u'Body-Copy_Body-Text ParaOverride-8',)
     caution_list = (u'CAUTION-BOX', )
     warning_list = (u'WARNING-BOX', )
+    note_list = (u'Note-text',)
 
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
@@ -70,6 +71,8 @@ class Paragraph(types.Paragraph):
                           u'Information-Boxes_Header',)
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
                          u'Caution-Warning-Text',
+                         u'Caution-body-text',
+                         u'Warning-body-text',
                          u'sidebars-body-text ParaOverride-1',
                          u'sidebars-body-text',
                          u'sidebars-block-body-text',
@@ -174,6 +177,12 @@ class Paragraph(types.Paragraph):
                     el.title = u'WARNING:'
                     el.children = me.children
                     el.options = TextNode(u'css-class=warning')
+                    me = el
+                elif any(s.lower() in attrib['class'].lower() for s in cls.note_list):
+                    el = Sidebar()
+                    el.title = u'NOTE:'
+                    el.children = me.children
+                    el.options = TextNode(u'css-class=note')
                     me = el
                 elif any(s.lower() in attrib['class'].lower() for s in sidebars_body):
                     check_head = []

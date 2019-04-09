@@ -284,15 +284,21 @@ class EPUBParser(object):
                            'Figures.tex')
 
         content_sidebar_term = self.generate_terms_tex()
+        terms_filename = 'Terms.tex'
+        if self.chapter_num:
+            terms_filename = 'Terms_{}.tex'.format(self.chapter_num)
         self.write_to_file(content_sidebar_term,
                            support_dir,
-                           'Terms.tex')
+                           terms_filename)
 
         content = u''.join(self.section_list)
         content = self.cleanup_extra_quote(content)
+        section_toc_filename = 'section_list.tex'
+        if self.chapter_num:
+            section_toc_filename = 'section_list_{}.tex'.format(self.chapter_num)
         self.write_to_file(content,
                            support_dir,
-                           'section_list.txt')
+                           section_toc_filename)
 
         figure_labels = json.dumps(self.figure_labels,
                                    sort_keys=True,
@@ -311,17 +317,19 @@ class EPUBParser(object):
         key_terms_section = process_key_terms_section(self.glossary_entry_sections)
         key_terms_toc = build_key_terms_toc(key_terms_section)
         key_terms = create_terms_toc_string(key_terms_toc)
-        self.write_to_file(key_terms, support_dir, 'key_terms_toc.tex')
+        key_terms_toc_filename = 'key_terms_toc.tex'
+        if self.chapter_num:
+            key_terms_toc_filename = 'key_terms_toc_{}.tex'.format(self.chapter_num)
+        self.write_to_file(key_terms, support_dir, key_terms_toc_filename)
 
         gterms = synchronize_key_terms(key_terms_section, self.term_defs.keys())
         glossaries = json.dumps(gterms,
                                 sort_keys=True,
                                 indent='\t')
+        glossary_index_filename = 'glossary.json'
         if self.chapter_num:
-            glossary_index = 'glossary_{}.json'.format(self.chapter_num)
-        else:
-            glossary_index = 'glossary.json'
-        self.write_to_file(glossaries, support_dir, glossary_index)
+            glossary_index_filename = 'glossary_{}.json'.format(self.chapter_num)
+        self.write_to_file(glossaries, support_dir, glossary_index_filename)
 
     def cleanup_extra_quote(self, content):
         content = content.replace(u'\\end{quote}\n\\begin{quote}\n', u'')
