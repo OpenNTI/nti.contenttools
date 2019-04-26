@@ -135,7 +135,7 @@ def process_span_elements(element, epub=None):
     font_family = u''
     vertical_align = u''
 
-    term_class = (u'Key_Term_in_Body', u'Key-Term-in-text', u'Key-Term', u'Key_Term')
+    term_class = (u'Key_Term_in_Body', u'Key-Term-in-text', u'Key-Term', u'Key_Term',)
 
     term_colors = (u'#c00000', u'#c8161d', u'#bf2026', u'#802023', u'#812023', u'#a30022', u'#ff0000', u'#c8151c', u'#ab1d22', u'#b4282e')
     font_terms = (u'Utopia Std', u'Minion Pro', u'Helvetica LT Std',)

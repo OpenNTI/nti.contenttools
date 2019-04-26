@@ -102,6 +102,14 @@ class Image(types.Image):
             epub.figures.append(figure)
             epub.figure_labels[figure.caption] = figure.label
             return figure
+        elif epub.chapter_num == u'skillsheet':
+            figure = Figure()
+            figure.centered = False
+            title, _ = os.path.splitext(filename)
+            figure.label = u'fig:skillsheet_%s' % (title)
+            figure.caption = types.TextNode(title)
+            figure.add(me)
+            return figure
         elif '_' in filename or ('-' in filename and re.search(r'[a-zA-Z]', fname)):
             me.inline_image = True
             img_node = Run()
