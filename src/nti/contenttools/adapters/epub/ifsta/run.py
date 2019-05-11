@@ -144,22 +144,27 @@ def process_span_elements(element, epub=None):
     span_class = attrib['class'] if 'class' in attrib else u''
 
     if 'bullet' in span_class:
-        el = Run()
-        el_text = Run()
-        check_element_text(el_text, element)
-        check_element_tail(el_text, element)
         span_class = u'span_%s' % span_class.replace('-', '_').replace('bullet ', '')
         if epub is not None and span_class in epub.css_dict:
-            if 'fontStyle' in epub.css_dict[span_class]:
-                font_style = epub.css_dict[span_class]['fontStyle']
+            font_style, font_weight, font_family, color = get_font_attribute_value(epub, span_class)
+            if epub.epub_type == 'ifsta_rf' \
+                    and (font_style == u'normal' or font_style == u'italic')\
+                    and font_weight == u'bold' \
+                    and color in term_colors \
+                    and font_family in font_terms:
+                fstyles = [font_style, font_weight]
+                el = create_glossary_entry(element, fstyles)
+            else:
+                el = Run()
+                el_text = Run()
+                check_element_text(el_text, element)
+                check_element_tail(el_text, element)
                 if font_style == 'italic' or font_style == 'oblique':
                     el_text.styles.append('italic')
-            if 'fontWeight' in epub.css_dict[span_class]:
-                font_weight = epub.css_dict[span_class]['fontWeight']
                 if font_weight == 'bold':
                     el_text.styles.append('bold')
-        el.add(el_text)
-        el.element_type = 'bullet'
+                el.add(el_text)
+                el.element_type = 'bullet'
     elif 'bold' in span_class.lower():
         el = Run.process(element, styles=('bold',), epub=epub)
     elif 'italic' in span_class.lower():
@@ -172,19 +177,7 @@ def process_span_elements(element, epub=None):
     else:
         span_class = u'span_%s' % span_class.replace('-', '_')
         if epub is not None and span_class in epub.css_dict:
-            if 'fontStyle' in epub.css_dict[span_class]:
-                font_style = epub.css_dict[span_class]['fontStyle']
-
-            if 'fontWeight' in epub.css_dict[span_class]:
-                font_weight = epub.css_dict[span_class]['fontWeight']
-
-            if 'color' in epub.css_dict[span_class]:
-                color = epub.css_dict[span_class]['color']
-
-            if 'fontFamily' in epub.css_dict[span_class]:
-                font_family = epub.css_dict[span_class]['fontFamily']
-                font_family = font_family.replace('"', '')
-
+            font_style, font_weight, font_family, color = get_font_attribute_value(epub, span_class)
             if 'verticalAlign' in epub.css_dict[span_class]:
                 vertical_align = epub.css_dict[span_class]['verticalAlign']
 
@@ -250,3 +243,25 @@ def check_span_child(span_node):
         if ITextNode.providedBy(child):
             if child.endswith('-'):
                 child = child[:-1]
+
+
+def get_font_attribute_value(epub, span_class):
+    font_style = u''
+    font_weight = u''
+    color = u''
+    font_family = u''
+
+    if 'fontStyle' in epub.css_dict[span_class]:
+        font_style = epub.css_dict[span_class]['fontStyle']
+
+    if 'fontWeight' in epub.css_dict[span_class]:
+        font_weight = epub.css_dict[span_class]['fontWeight']
+
+    if 'color' in epub.css_dict[span_class]:
+        color = epub.css_dict[span_class]['color']
+
+    if 'fontFamily' in epub.css_dict[span_class]:
+        font_family = epub.css_dict[span_class]['fontFamily']
+        font_family = font_family.replace('"', '')
+
+    return font_style, font_weight, font_family, color
