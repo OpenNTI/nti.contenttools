@@ -52,9 +52,7 @@ class Run(types.Run):
 def examine_div_element_for_sidebar(el, caption, body_text):
     for child in el.children:
         if isinstance(child, types.Paragraph):
-            if child.element_type == 'sidebars-heads':
-                caption.add_child(child)
-            elif child.element_type == 'sidebars-body':
+            if child.element_type == 'sidebars-body':
                 check_list = check_paragraph_bullet(child)
                 if check_list:
                     bullet_class = UnorderedList()
@@ -64,8 +62,11 @@ def examine_div_element_for_sidebar(el, caption, body_text):
                     body_text.add_child(bullet_class)
                 else:
                     body_text.add_child(child)
+        elif isinstance(child, types.Sidebar):
+            caption.children.append(child.title)
         elif isinstance(child, Run):
             examine_div_element_for_sidebar(child, caption, body_text)
+    return caption
 
 
 def process_div_elements(element, parent, epub=None):
@@ -78,7 +79,7 @@ def process_div_elements(element, parent, epub=None):
         # need to check if there the div has sidebar-head and sidebar-text
         caption = Run()
         sidebar_body_text = Run()
-        examine_div_element_for_sidebar(el, caption, sidebar_body_text)
+        caption = examine_div_element_for_sidebar(el, caption, sidebar_body_text)
         if sidebar_body_text.children:
             new_el = Sidebar()
             if caption.children:
@@ -93,7 +94,6 @@ def process_div_elements(element, parent, epub=None):
         # need to clean up paragraph element that located under this particular div
         # therefore when the node is rendered it won't have extra \\
         update_node_under_table_div_class(el)
-
     return el
 
 
