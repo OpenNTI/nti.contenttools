@@ -64,15 +64,8 @@ def examine_div_element_for_sidebar(el, caption, body_text):
                     body_text.add_child(bullet_class)
                 else:
                     body_text.add_child(child)
-            elif child.element_type == 'caption':
-                pass
-            else:
-                body_text.add_child(child)
         elif isinstance(child, Run):
-            caption, body_text = examine_div_element_for_sidebar(child,
-                                                                 caption,
-                                                                 body_text)
-    return caption, body_text
+            examine_div_element_for_sidebar(child, caption, body_text)
 
 
 def process_div_elements(element, parent, epub=None):
@@ -81,17 +74,16 @@ def process_div_elements(element, parent, epub=None):
 
     el = Run.process(element, epub=epub)
 
-    if epub is not None and epub.epub_type == 'ifsta':
+    if epub is not None:
         # need to check if there the div has sidebar-head and sidebar-text
         caption = Run()
-        body_text = Run()
-        caption, body_text = examine_div_element_for_sidebar(el,
-                                                             caption,
-                                                             body_text)
-        if caption.children and body_text.children:
+        sidebar_body_text = Run()
+        examine_div_element_for_sidebar(el, caption, sidebar_body_text)
+        if sidebar_body_text.children:
             new_el = Sidebar()
-            new_el.title = caption
-            new_el.children = body_text.children
+            if caption.children:
+                new_el.title = caption
+            new_el.children = sidebar_body_text.children
             el = new_el
 
     attrib = element.attrib

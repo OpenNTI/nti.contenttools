@@ -234,11 +234,11 @@ class Paragraph(types.Paragraph):
                             el = Sidebar()
                             el.options = u'css-class=note'
                             el.children = me.children
-                            if u'NOTE' in check_content:
+                            if u'note' in check_content.lower():
                                 el.title = u'NOTE:'
-                            elif u'CAUTION' in check_content:
+                            elif u'caution' in check_content.lower():
                                 el.title = u'CAUTION:'
-                            elif u'WARNING' in check_content:
+                            elif u'warning' in check_content.lower():
                                 el.title = u'WARNING:'
                             me = el
                     # Handle some text styling in SKILL SHEET
