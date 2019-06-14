@@ -53,17 +53,9 @@ def examine_div_element_for_sidebar(el, caption, body_text):
     for child in el.children:
         if isinstance(child, types.Paragraph):
             if child.element_type == 'sidebars-body':
-                check_list = check_paragraph_bullet(child)
-                if check_list:
-                    bullet_class = UnorderedList()
-                    new_item = Item()
-                    new_item.children = [child]
-                    bullet_class.children = [new_item]
-                    body_text.add_child(bullet_class)
-                else:
-                    body_text.add_child(child)
+                body_text.append(child)
         elif isinstance(child, types.Sidebar):
-            caption.children.append(child.title)
+            caption.append(child)
         elif isinstance(child, Run):
             examine_div_element_for_sidebar(child, caption, body_text)
     return caption
@@ -77,15 +69,15 @@ def process_div_elements(element, parent, epub=None):
 
     if epub is not None:
         # need to check if there the div has sidebar-head and sidebar-text
-        caption = Run()
-        sidebar_body_text = Run()
+        caption = []
+        sidebar_body_text = []
         caption = examine_div_element_for_sidebar(el, caption, sidebar_body_text)
-        if sidebar_body_text.children:
-            new_el = Sidebar()
-            if caption.children:
-                new_el.title = caption
-            new_el.children = sidebar_body_text.children
-            el = new_el
+        if sidebar_body_text:
+            if not caption:
+                new_el = Sidebar()
+                new_el.type = u'sidebar-head'
+                parent = sidebar_body_text[0].__parent__
+                parent.children.insert(0, new_el)
 
     attrib = element.attrib
     div_class = attrib['class'] if 'class' in attrib else u''
