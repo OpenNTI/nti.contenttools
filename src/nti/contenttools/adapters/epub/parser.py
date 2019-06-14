@@ -205,6 +205,8 @@ class EPUBParser(object):
         # add css-class to sidebar
         content = content.replace(u'\\begin{sidebar}{CAUTION}',
                                   u'\\begin{sidebar}[css-class=caution]{CAUTION}')
+        content = content.replace(u'\\begin{sidebar}{Caution}',
+                                  u'\\begin{sidebar}[css-class=caution]{CAUTION}')
 
         content = content.replace(u'\\begin{sidebar}{WARNING}',
                                   u'\\begin{sidebar}[css-class=warning]{WARNING}')
@@ -252,10 +254,9 @@ class EPUBParser(object):
 
         content = content.replace(u'\\end{sidebar}\n\n\\begin{sidebar}{Case History}', u'\n')
 
-        if self.chapter_num == 'Index':
-            content = content.replace(u'\\end{quote}\n\\begin{quote}', u'')
+        content = content.replace(u'\\end{quote}\n\\begin{quote}', u'')
 
-        content = content.replace(u'\\begin{center}\n\item \item \item \n\\end{center}', u'\\begin{center}\n *** \n\\end{center}\n')
+        content = content.replace(u'\\begin{center}\n\\item \\item \\item \n\\end{center}', u'\\begin{center}\n *** \n\\end{center}\n')
         content = content.replace(u'\\end{itemize}\n}', u'\\end{itemize}}')
 
         content = content.replace(u'\\item \\textbf{\\item }', u'\\item ')
@@ -271,6 +272,7 @@ class EPUBParser(object):
         content = content.replace(u' }', u'} ')
         content = content.replace(u'} {', u'}{')
         content = content.replace(u'\\end{figure}\n\\\\', u'\\end{figure}\\\\')
+
         return content
 
     def process_support_files(self):

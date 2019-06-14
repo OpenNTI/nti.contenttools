@@ -49,6 +49,7 @@ class Paragraph(types.Paragraph):
     caution_list = (u'CAUTION-BOX', )
     warning_list = (u'WARNING-BOX', )
     note_list = (u'Note-text',)
+    block_quote_list = (u'Skill-Sheet-sub-text', )
 
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
@@ -97,7 +98,7 @@ class Paragraph(types.Paragraph):
             elif attrib['class'] != "ParaOverride-1":
                 build_normal_paragraph(me, element, epub)
                 if epub:
-                    if u'Sub1' in attrib['class'] and epub.chapter_num == 'Index':
+                    if (u'Sub1' in attrib['class'] and epub.chapter_num == 'Index') or any(s.lower() in attrib['class'].lower() for s in cls.block_quote_list):
                         el = types.BlockQuote()
                         el.children = me.children
                         me = el
@@ -233,11 +234,11 @@ class Paragraph(types.Paragraph):
                             el = Sidebar()
                             el.options = u'css-class=note'
                             el.children = me.children
-                            if u'NOTE' in check_content:
+                            if u'note' in check_content.lower():
                                 el.title = u'NOTE:'
-                            elif u'CAUTION' in check_content:
+                            elif u'caution' in check_content.lower():
                                 el.title = u'CAUTION:'
-                            elif u'WARNING' in check_content:
+                            elif u'warning' in check_content.lower():
                                 el.title = u'WARNING:'
                             me = el
                     # Handle some text styling in SKILL SHEET
