@@ -77,9 +77,8 @@ def process_div_elements(element, parent, epub=None):
                 new_el = Sidebar()
                 new_el.type = u'sidebar-head'
                 parent = sidebar_body_text[0].__parent__
-                index = parent.children.index(sidebar_body_text[0])
-                parent.children.insert(index, new_el)
-
+    index = parent.children.index(sidebar_body_text[0])
+    parent.children.insert(index, new_el)
     attrib = element.attrib
     div_class = attrib['class'] if 'class' in attrib else u''
 
