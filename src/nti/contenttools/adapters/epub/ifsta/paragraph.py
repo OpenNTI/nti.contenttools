@@ -50,6 +50,8 @@ class Paragraph(types.Paragraph):
     warning_list = (u'WARNING-BOX', )
     note_list = (u'Note-text',)
     block_quote_list = (u'Skill-Sheet-sub-text', )
+    quote_index_list = (u'Sub1', u'ParaOverride-3')
+    subquote_index_list = (u'Sub2', u'ParaOverride-4', u'ParaOverride-5')
 
     @classmethod
     def process(cls, element, styles=(), reading_type=None, epub=None):
@@ -98,11 +100,11 @@ class Paragraph(types.Paragraph):
             elif attrib['class'] != "ParaOverride-1":
                 build_normal_paragraph(me, element, epub)
                 if epub:
-                    if (u'Sub1' in attrib['class'] and epub.chapter_num == 'Index') or any(s.lower() in attrib['class'].lower() for s in cls.block_quote_list):
+                    if (any(s.lower() in attrib['class'].lower() for s in cls.quote_index_list) and epub.chapter_num.lower() == 'index') or any(s.lower() in attrib['class'].lower() for s in cls.block_quote_list):
                         el = types.BlockQuote()
                         el.children = me.children
                         me = el
-                    elif u'Sub2' in attrib['class'] and epub.chapter_num == 'Index':
+                    elif (any(s.lower() in attrib['class'].lower() for s in cls.subquote_index_list) and epub.chapter_num.lower() == 'index'):
                         el = types.BlockQuote()
                         el_2 = types.BlockQuote()
                         el_2.children = me.children
