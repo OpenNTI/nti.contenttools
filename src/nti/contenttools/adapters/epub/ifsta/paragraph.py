@@ -100,11 +100,11 @@ class Paragraph(types.Paragraph):
             elif attrib['class'] != "ParaOverride-1":
                 build_normal_paragraph(me, element, epub)
                 if epub:
-                    if (any(s.lower() in attrib['class'].lower() for s in cls.quote_index_list) and epub.chapter_num.lower() == 'index') or any(s.lower() in attrib['class'].lower() for s in cls.block_quote_list):
+                    if (any(s.lower() in attrib['class'].lower() for s in cls.quote_index_list) and epub.chapter_num and epub.chapter_num.lower() == 'index') or any(s.lower() in attrib['class'].lower() for s in cls.block_quote_list):
                         el = types.BlockQuote()
                         el.children = me.children
                         me = el
-                    elif (any(s.lower() in attrib['class'].lower() for s in cls.subquote_index_list) and epub.chapter_num.lower() == 'index'):
+                    elif (any(s.lower() in attrib['class'].lower() for s in cls.subquote_index_list) and epub.chapter_num and epub.chapter_num.lower() == 'index'):
                         el = types.BlockQuote()
                         el_2 = types.BlockQuote()
                         el_2.children = me.children
