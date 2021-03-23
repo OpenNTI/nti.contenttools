@@ -9,7 +9,7 @@
 	<include package="z3c.baseregistry" file="meta.zcml" />
 	<utility
         component=".sites.IFSTA"
-        provides="zope.component.interfaces.IComponents"
+        provides="zope.interface.interfaces.IComponents"
         name="ifsta" />
 
 	<registerIn registry=".sites.IFSTA">

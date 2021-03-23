@@ -9,7 +9,7 @@
 	<include package="z3c.baseregistry" file="meta.zcml" />
 	<utility
 		component=".sites.TCIA"
-		provides="zope.component.interfaces.IComponents"
+		provides="zope.interface.interfaces.IComponents"
 		name="tcia" />
 
     <registerIn registry=".sites.TCIA">
