@@ -293,6 +293,8 @@ def get_caption_token(root):
 
 def set_paragraph_term(me, child, epub):
     key = child.text
+    if key[-1] == '.':
+        key = key[:-1]
     el_key = Run()
     el_key.styles = ['bold']
     el_key.add_child(TextNode(key))

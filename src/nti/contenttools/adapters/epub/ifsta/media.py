@@ -57,6 +57,8 @@ class Image(types.Image):
         figures_without_caption = (u'Icon', )
         to_ignore = (u'Divider_Page', u'Warning', u'Caution', u'infoBox_new2', u'SafetyBox', u'WhatThisMeansToYou_Box')
 
+        # Sanitize filenames to help the hueristics
+        filename = filename.replace('Copy_of_','')
         fname, _ = os.path.splitext(filename)
 
         tablename = u''
@@ -94,6 +96,8 @@ class Image(types.Image):
             figure = Figure()
             figure.centered = False
             title, _ = os.path.splitext(filename)
+            # Sanitize title to help the hueristics
+            title = title.split('_')[0]
             figure.label = u'fig:%s_%s' % (epub.book_title, title)
             figure.caption = u'%s' % (title.replace('-', '.'))
             figure.add(me)
