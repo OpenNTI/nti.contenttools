@@ -153,6 +153,10 @@ class Paragraph(types.Paragraph):
                     me.styles.append('Subsection')
                     label = copy.deepcopy(me)
                     add_sectioning_label(me, label)
+                elif any(s.lower() in attrib['class'].lower() for s in cls.subsubsection_list):
+                    me.styles.append('Subsubsection')
+                    label = copy.deepcopy(me)
+                    add_sectioning_label(me, label)
                 elif any(s.lower() in attrib['class'].lower() for s in cls.bullet_list):
                     new_item = Item()
                     bullet_class = UnorderedList()
