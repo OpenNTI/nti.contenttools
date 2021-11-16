@@ -41,11 +41,12 @@ class Paragraph(types.Paragraph):
 
     sidebar_list = (u'Case-History ParaOverride-1', u'Case-History',)
     bullet_list = (u'Bullet ParaOverride-1', u'Bullet', u'_-',)
-    subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD')
-    section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1',)
-    paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride', u'Basic-Paragraph')
-    term_list = (u'Body-Copy_Keyterm_End-of-chapter', u'Body-Text_Key-Terms')
-    para_term_list = (u'Body-Copy_Body-Text ParaOverride-7', u'Body-Copy_Body-Text ParaOverride-6', u'Body-Copy_Body-Text ParaOverride-8',)
+    subsection_list = (u'B-HEAD ParaOverride-1', u'B-Head', u'B-HEAD', u'Subtitulo_2',)
+    subsubsection_list = (u'Subtitulo_3',)
+    section_list = (u'A-Head', u'A-HEAD', 'A-HEAD ParaOverride-1', u'Subtitulo_1',)
+    paragraph_list = (u'Body-Text', u'Block-Text', 'ParaOverride', u'Basic-Paragraph',)
+    term_list = (u'Body-Copy_Keyterm_End-of-chapter', u'Body-Text_Key-Terms', u'Texto-glosario')
+    para_term_list = (u'Body-Copy_Body-Text ParaOverride-7', u'Body-Copy_Body-Text ParaOverride-6', u'Body-Copy_Body-Text ParaOverride-8', u'Texto-glosario ParaOverride-7')
     caution_list = (u'CAUTION-BOX', )
     warning_list = (u'WARNING-BOX', )
     note_list = (u'Note-text',)
@@ -61,7 +62,7 @@ class Paragraph(types.Paragraph):
         if 'id' in attrib:
             me.label = attrib['id']
         me.styles.extend(styles)
-        captions = (u'Caption', u'Captions', 'Body-Text_Captions')
+        captions = (u'Caption', u'Captions', 'Body-Text_Captions', u'pie-de-foto')
         sidebars_heads = (u'Caution-Warning-Heads ParaOverride-1',
                           u'Caution-Warning-Heads',
                           u'sidebars-heads ParaOverride-1',
@@ -71,7 +72,8 @@ class Paragraph(types.Paragraph):
                           u'Information-Box---Title',
                           u'WARNING---Title',
                           u'CAUTION---Title',
-                          u'Information-Boxes_Header',)
+                          u'Information-Boxes_Header',
+                          u'cuadro-informativo-titulo')
         sidebars_body = (u'Caution-Warning-Text ParaOverride-1',
                          u'Caution-Warning-Text',
                          u'Caution-body-text',
@@ -85,8 +87,10 @@ class Paragraph(types.Paragraph):
                          u'WARNING---Body-Text',
                          u'Information-Boxes_Block-Text',
                          u'Information-Boxes_Body-Text',
-                         u'Information-Boxes_Bullets',)
-        definition_list = (u'definition', 'GlossaryTerm')
+                         u'Information-Boxes_Bullets',
+                         u'cuadro-informativo-tex',
+                         u'cuadro-informativo-tex_1')
+        definition_list = (u'definition', 'GlossaryTerm', u'Texto-glosario')
 
         if 'class' in attrib:
             if any(s.lower() in attrib['class'].lower() for s in cls.term_list):
